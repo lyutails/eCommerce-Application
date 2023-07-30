@@ -27,7 +27,7 @@ Consistent code, following principles of SRP, DRY, KISS.
 
 src (App, Api, core (BaseComponent, Store, observer / event emitter,), Components: pages, features(card), UI(buttons etc.))
 public
-products' data
+products' data (config)
 assets
 
 ## Commands
