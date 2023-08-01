@@ -37,6 +37,7 @@ Be in Top works of this course with this our project.
 - store<br />
 - observer
 - event_emitter<br />
+</details>
 <details><summary>components</summary>
 
 - pages<br />
@@ -44,15 +45,19 @@ Be in Top works of this course with this our project.
 - features(card etc.)<br />
 - UI (buttons etc.)<br />
 </details>
+
+
+- data (product's config, arrays of sounds etc.)<br />
+- assets (pics, icons, backgrounds etc.)<br />
+- types, enums, interfaces, constants<br />
 </details>
-products' data (config)<br />
-assets<br />
-types, enums, interfaces, constants<br />
-.scss file for each .ts file and one .scss file with imports<br />
-</details>
-public
+
+- public
 <p></p>
-NB: folders and branches names starts with lower case letters, files names starts with uppercase letters, class names are writter in upper camelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
+NB:
+
+- folders and branches names starts with lower case letters, files names starts with uppercase letters, class names are writter in upper camelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
+- .scss file for each .ts file and one .scss file with imports
 
 ## Commands
 
