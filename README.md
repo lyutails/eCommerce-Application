@@ -28,9 +28,9 @@ Project should have astonishing / just incredibly mesmerizing beautiful and real
 
 Gonna keep healthy atmoshpere and good mood of all teams' members and our server's allies while working in close collaboration with each other, also hosting daily meetups, doesn't matter what difficulties with the task we'll meet on the way.
 
-Deeply in the core of the project have to create consistent code, following principles of SRP, DRY, KISS.
+Deeply in the core of the project have to create consistent code base base, following principles of SRP, DRY, KISS.
 
-Be in Top works of this course after voting with this our project.
+Actually appear in the Top works with this our final project after voting at the end of the course.
 
 ## Project's Structure
 
