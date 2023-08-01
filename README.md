@@ -20,7 +20,7 @@
 ![ecommerce tools](./assets/tech-stack-images/ecommerce_tools.png)
 ![fsd](./assets/tech-stack-images/fsd_architecture.png)
 
-## Project's Purposeы
+## Project's Purposes
 
 Create during `Four Sprints` fully functional `eCommerce Application` with every Sprints' tasks done to the fullest and in time.<br />
 Project should have astonishing / just incredibly mesmerizing beautiful and real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.<br />
