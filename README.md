@@ -72,6 +72,6 @@ host to run project from
 
 ![trinity](./assets/trinity.png)
 
-![[craftsw0man](./assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)<br />
-![[yanabel1996](./assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)<br />
-![[lyutails](./assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)<br />
+[![craftsw0man](./assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)<br />
+[![yanabel1996](./assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)<br />
+[![lyutails](./assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)<br />
