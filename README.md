@@ -87,7 +87,7 @@ host to run project from
 
 ## Authors
 
-![trinity](./assets/trinity.png)
+![trinity](./src/assets/trinity.png)
 
 [![craftsw0man](./src/assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)
 [![yanabel1996](./src/assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)
