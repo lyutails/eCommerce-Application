@@ -22,10 +22,14 @@
 
 ## Project's Purposes
 
-Create during `Four Sprints` fully functional `eCommerce Application` with every Sprints' tasks done to the fullest and in time.<br />
-Project should have astonishing / just incredibly mesmerizing beautiful and real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.<br />
-Gonna keep healthy atmoshpere and good mood of all teams' members and our server's allies while working in close collaboration with each other, also hosting daily meetups, doesn't matter what difficulties with the task we'll meet on the way.<br />
+Create during `Four Sprints` fully functional `eCommerce Application` with every Sprints' tasks done to the fullest and in time.
+
+Project should have astonishing / just incredibly mesmerizing beautiful and real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.
+
+Gonna keep healthy atmoshpere and good mood of all teams' members and our server's allies while working in close collaboration with each other, also hosting daily meetups, doesn't matter what difficulties with the task we'll meet on the way.
+
 Deeply in the core of the project have to create consistent code, following principles of SRP, DRY, KISS.
+
 Be in Top works of this course after voting with this our project.
 
 ## Project's Structure
@@ -34,27 +38,27 @@ public<br />
 
 <details><summary>src</summary>
 
-- app<br />
-- api<br />
+- app
+- api
 <details><summary>core</summary>
 
-- base_component<br />
-- store<br />
+- base_component
+- store
 - observer
-- event_emitter<br />
+- event_emitter
 </details>
 <details><summary>components</summary>
 
-- pages<br />
+- pages
 - widgets
-- features(card etc.)<br />
-- UI (buttons etc.)<br />
+- features(card etc.)
+- UI (buttons etc.)
 </details>
 
 
-- data (product's config, arrays of sounds etc.)<br />
-- assets (pics, icons, backgrounds etc.)<br />
-- types, enums, interfaces, constants<br />
+- data (product's config, arrays of sounds etc.)
+- assets (pics, icons, backgrounds etc.)
+- types, enums, interfaces, constants
 </details>
 <p></p>
 NB:
