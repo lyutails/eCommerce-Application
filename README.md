@@ -2,23 +2,23 @@
 
 ## Tech Stack
 
-![js](./assets/tech-stack-images/js.png)
-![ts](./assets/tech-stack-images/ts.png)
-![react](./assets/tech-stack-images/react.png)
-![redux](./assets/tech-stack-images/redux.png)
-![webpack](./assets/tech-stack-images/webpack.png)
-![eslint](./assets/tech-stack-images/eslint.png)
-![prettier](./assets/tech-stack-images/prettier.png)
-![jest](./assets/tech-stack-images/jest.png)
-![husky](./assets/tech-stack-images/husky.png)
-![html](./assets/tech-stack-images/html.png)
-![css](./assets/tech-stack-images/css.png)
-![scss](./assets/tech-stack-images/scss.png)
-![node](./assets/tech-stack-images/node.png)
-![git](./assets/tech-stack-images/git.png)
-![github](./assets/tech-stack-images/github.png)
-![ecommerce tools](./assets/tech-stack-images/ecommerce_tools.png)
-![fsd](./assets/tech-stack-images/fsd_architecture.png)
+![js](./src/assets/tech-stack-images/js.png)
+![ts](./src/assets/tech-stack-images/ts.png)
+![react](./src/assets/tech-stack-images/react.png)
+![redux](./src/assets/tech-stack-images/redux.png)
+![webpack](./src/assets/tech-stack-images/webpack.png)
+![eslint](./src/assets/tech-stack-images/eslint.png)
+![prettier](./src/assets/tech-stack-images/prettier.png)
+![jest](./src/assets/tech-stack-images/jest.png)
+![husky](./src/assets/tech-stack-images/husky.png)
+![html](./src/assets/tech-stack-images/html.png)
+![css](./src/assets/tech-stack-images/css.png)
+![scss](./src/assets/tech-stack-images/scss.png)
+![node](./src/assets/tech-stack-images/node.png)
+![git](./src/assets/tech-stack-images/git.png)
+![github](./src/assets/tech-stack-images/github.png)
+![ecommerce tools](./src/assets/tech-stack-images/ecommerce_tools.png)
+![fsd](./src/assets/tech-stack-images/fsd_architecture.png)
 
 ## Project's Purposes
 
@@ -89,6 +89,6 @@ host to run project from
 
 ![trinity](./assets/trinity.png)
 
-[![craftsw0man](./assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)
-[![yanabel1996](./assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)
-[![lyutails](./assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)
+[![craftsw0man](./src/assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)
+[![yanabel1996](./src/assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)
+[![lyutails](./src/assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)
