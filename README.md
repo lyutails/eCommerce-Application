@@ -70,9 +70,9 @@ public<br />
 
 1. naming
 
-- branches names are written with lower case letters and divided with hyphens (i.e. kinda-branch)
+- branches names are written in lower case letters and divided with hyphens (i.e. kinda-branch)
 - folders start with upper case (e.g. Brand New Folder)
-- files names are written in lower case with hyphens (i.e. awesome-file)
+- files names are written in lower case and separated with hyphens (i.e. awesome-file)
 - classes names are written in upper CamelCase (i.e. GreatClass)
 - methods should be in lower camelCase (i.e. wowMethod)
 </details>
