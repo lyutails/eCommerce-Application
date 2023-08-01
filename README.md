@@ -73,11 +73,12 @@ public<br />
 - branches names are written in lower case letters and divided with hyphens (i.e. kinda-branch)
 - folders start with upper case (e.g. Brand New Folder)
 - files names are written in lower case and separated with hyphens (i.e. awesome-file)
-- classes names are written in upper CamelCase (i.e. GreatClass)
-- methods should be in lower camelCase (i.e. wowMethod)
+- functions names should be in lower camelCase (i.e. wowMethod)
 </details>
 
 2. .scss file for each .ts file and one global .scss file with imports
+
+3. workflow's based ond functions and hooks
 
 ## Commands
 
