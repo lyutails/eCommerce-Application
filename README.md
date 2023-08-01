@@ -27,6 +27,8 @@ Be in Top works of this course with this our project.
 
 ## Project's Structure
 
+public<br />
+
 <details><summary>src</summary>
 
 - app<br />
@@ -51,8 +53,6 @@ Be in Top works of this course with this our project.
 - assets (pics, icons, backgrounds etc.)<br />
 - types, enums, interfaces, constants<br />
 </details>
-
-- public
 <p></p>
 NB:
 
