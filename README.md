@@ -24,13 +24,13 @@
 
 Create during `Four Sprints` fully functional `eCommerce Application` with every Sprints' tasks done to the fullest and in time.
 
-Project should have astonishing / just incredibly mesmerizing beautiful and real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.
+Project should have astonishing / just incredibly beautiful and mesmerizing real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.
 
 Gonna keep healthy atmoshpere and good mood of all teams' members and our server's allies while working in close collaboration with each other, also hosting daily meetups, doesn't matter what difficulties with the task we'll meet on the way.
 
-Deeply in the core of the project have to create consistent code base base, following principles of SRP, DRY, KISS.
+Deeply in the core of the project should create consistent code base, following principles of SRP, DRY, KISS.
 
-Actually appear in the Top works with this our final project after voting at the end of the course.
+Also appear in the Top works with this our final project after voting at the end of the course.
 
 ## Project's Structure
 
@@ -78,7 +78,7 @@ public<br />
 
 2. .scss file for each .ts file and one global .scss file with imports
 
-3. workflow's based ond functions and hooks
+3. workflow's based on functions and hooks
 
 ## Commands
 
