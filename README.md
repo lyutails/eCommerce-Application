@@ -17,7 +17,7 @@ eCommerce Tools\
 Git and GitHub\
 FSD Architecture
 
-## Project's Purpose
+## Project's Purposeы
 
 Create during `Four Sprints` fully functional `eCommerce Application` with every Sprints' tasks done to the fullest and in time.<br />
 Project should have astonishing / just incredibly mesmerizing beautiful and real art design with good UI and UX... kinda eyes popping 👀, jaw dropping 👄, heart stopping 💖.<br />
@@ -61,11 +61,13 @@ NB:
 
 ## Commands
 
-for running project locally
+for running project locally<br />
 host to run project from
 
 ## Authors
 
-[craftsw0man](https://github.com/CRAFTSW0MAN/)<br />
+![trinity](https://imgur.com/F2yhOOP)
+
+![[craftsw0man](./assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)<br />
 [yanabel1996](https://github.com/yanabel1996)<br />
 [lyutails](https://github.com/lyutails)<br />
