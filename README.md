@@ -34,6 +34,8 @@ Be in Top works of this course after voting with this our project.
 
 ## Project's Structure
 
+### Folders
+
 public<br />
 
 <details><summary>src</summary>
@@ -61,11 +63,21 @@ public<br />
 - types, enums, interfaces, constants
 </details>
 <p></p>
-NB:
 
-- folders start with upper case, branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in lower case with hyphens (i.e. awesome-file), classes' names are written in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
-- .scss file for each .ts file and one global .scss file with imports
-- use Class Components
+---
+
+**NB**:
+
+1. naming
+
+- branches names are written in lower case letters and divided with hyphens (i.e. kinda-branch)
+- folders start with upper case (e.g. Brand New Folder)
+- files names are written in lower case and separated with hyphens (i.e. awesome-file)
+- classes names are written in upper CamelCase (i.e. GreatClass)
+- methods should be in lower camelCase (i.e. wowMethod)
+</details>
+
+2. .scss file for each .ts file and one global .scss file with imports
 
 ## Commands
 
