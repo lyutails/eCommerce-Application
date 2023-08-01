@@ -28,15 +28,22 @@ Be in Top works of this course with this our project.
 ## Project's Structure
 
 <details><summary>src</summary>
-- App<br />
-- Api<br />
+
+- app<br />
+- api<br />
 <details><summary>core</summary>
-- BaseComponent<br />
-- Store<br />
-- observer / event emitter<br />
-- Components: pages<br />
+
+- base_component<br />
+- store<br />
+- observer
+- event_emitter<br />
+<details><summary>components</summary>
+
+- pages<br />
+- widgets
 - features(card etc.)<br />
-- UI(buttons etc.)<br />
+- UI (buttons etc.)<br />
+</details>
 </details>
 products' data (config)<br />
 assets<br />
@@ -44,6 +51,8 @@ types, enums, interfaces, constants<br />
 .scss file for each .ts file and one .scss file with imports<br />
 </details>
 public
+<p></p>
+NB: folders and branches names starts with lower case letters, files names starts with uppercase letters, class names are writter in upper camelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
 
 ## Commands
 
