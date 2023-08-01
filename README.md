@@ -28,6 +28,7 @@ Be in Top works of this course with this our project.
 ## Project's Structure
 
 public<br />
+<style></style>
 
 <details><summary>src</summary>
 
@@ -56,7 +57,7 @@ public<br />
 <p></p>
 NB:
 
-- folders and branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in snake case (i.e. awesome_file), classes' names are writter in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
+- folders and branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in snake case (i.e. awesome_file), classes' names are written in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
 - .scss file for each .ts file and one global .scss file with imports
 
 ## Commands
@@ -69,5 +70,5 @@ host to run project from
 ![trinity](https://imgur.com/F2yhOOP)
 
 ![[craftsw0man](./assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)<br />
-[yanabel1996](https://github.com/yanabel1996)<br />
-[lyutails](https://github.com/lyutails)<br />
+![[yanabel1996](./assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)<br />
+![[lyutails](./assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)<br />
