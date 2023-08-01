@@ -59,7 +59,7 @@ public<br />
 <p></p>
 NB:
 
-- folders and branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in snake case (i.e. awesome_file), classes' names are written in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
+- folders start with upper case, branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in lower case with hyphens (i.e. awesome-file), classes' names are written in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
 - .scss file for each .ts file and one global .scss file with imports
 - use Class Components
 
