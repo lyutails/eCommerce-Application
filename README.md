@@ -56,8 +56,8 @@ Be in Top works of this course with this our project.
 <p></p>
 NB:
 
-- folders and branches names starts with lower case letters, files names starts with uppercase letters, class names are writter in upper camelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
-- .scss file for each .ts file and one .scss file with imports
+- folders and branches names are written with lower case letters and divided with hyphens (i.e. kinda-folder), files names are written in snake case (i.e. awesome_file), classes' names are writter in upper CamelCase (i.e. GreatClass) and methods in lower camelCase (i.e. wowMethod).
+- .scss file for each .ts file and one global .scss file with imports
 
 ## Commands
 
@@ -66,6 +66,6 @@ host to run project from
 
 ## Authors
 
-craftsw0man
-yanabel1996
-lyutails
+[craftsw0man](https://github.com/CRAFTSW0MAN/)<br />
+[yanabel1996](https://github.com/yanabel1996)<br />
+[lyutails](https://github.com/lyutails)<br />
