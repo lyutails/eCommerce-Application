@@ -1,8 +1,12 @@
-@import 'normalize.css';
-@import 'fonts.scss';
+@import "normalize.css";
+@import "fonts.scss";
 
 $back: aqua;
-body{
-  background-color: $back;
+
+html {
+  font-size: 10px;
 }
 
+body {
+  background-color: $back;
+}
