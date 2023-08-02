@@ -1,3 +1,7 @@
+🎆 hey there o/ every time you make PR - add Yourself as **Assigner** and Two others as **Reviewers**<br />
+🌆 merge only after **Approve** 🏙<br />
+🎋 write shortly about what's done
+
 Please choose the template for sprint number:
 
 * [Sprint #1](?expand=1&template=pull_request_template_first.md)
