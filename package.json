@@ -8,8 +8,8 @@
     "build-prod": "set NODE_ENV=production&&webpack",
     "test": "jest",
     "clear": "rd /s /q dist",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix",
+    "lint": "eslint ./src --color",
+    "lint:fix": "eslint ./src --fix --color",
     "format": "prettier --write --config ./.prettierrc",
     "prepare": "husky install"
   },
