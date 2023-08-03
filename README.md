@@ -57,7 +57,6 @@ public<br />
 - UI (buttons etc.)
 </details>
 
-
 - data (product's config, arrays of sounds etc.)
 - assets (pics, icons, backgrounds etc.)
 - types, enums, interfaces, constants
