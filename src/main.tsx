@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client'
 import '../public/style/style.scss'
 import { BrowserRouter } from 'react-router-dom'
 
-const name   =  1;
 const rootElement = document.getElementById('root')
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement)
