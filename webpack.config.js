@@ -1,33 +1,37 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const isDev = mode === 'development';
 
 const plugins = [
   new HtmlWebpackPlugin({
-    template: path.resolve(__dirname,'public/index.html'),
-    favicon: path.resolve(__dirname,'public/favicon/favicon.ico'),
+    template: path.resolve(__dirname, 'public/index.html'),
+    favicon: path.resolve(__dirname, 'public/favicon/favicon.ico'),
   }),
   new MiniCssExtractPlugin({
-    filename:'[name].css',
+    filename: '[name].css',
   }),
-]
+  new ESLintPlugin({ extensions: ['.ts'] }),
+  new StylelintPlugin({ fix: true }),
+];
 
 module.exports = {
   plugins,
   mode,
-  entry: path.resolve(__dirname,'src/main.tsx'),
+  entry: path.resolve(__dirname, 'src/main.tsx'),
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
     port: 3001,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
   },
-  devtool: isDev ? 'source-map' : false,
+  devtool: isDev ? 'inline-cheap-module-source-map' : false,
   module: {
     rules: [
       {
@@ -36,8 +40,8 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-          }
-        ]
+          },
+        ],
       },
       {
         test: /\.(c|sa|sc)ss$/i,
@@ -47,12 +51,12 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              postcssOptions:{
-                plugins: [require('postcss-preset-env')]
-              }
+              postcssOptions: {
+                plugins: [require('postcss-preset-env')],
+              },
             },
           },
-          'sass-loader'
+          'sass-loader',
         ],
       },
       {
