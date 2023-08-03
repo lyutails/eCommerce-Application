@@ -1,9 +1,9 @@
-import './_app.scss'
+import './_app.scss';
 
 function App() {
   return (
     <div>
-      <h1 className="app-title">Hello!</h1>
+      <h1 className="app_title">Hello!</h1>
     </div>
   )
 }
