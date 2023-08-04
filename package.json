@@ -84,6 +84,7 @@
     "jest-environment-jsdom": "^29.6.2",
     "lint-staged": "^13.2.3",
     "mini-css-extract-plugin": "^2.7.6",
+    "modern-normalize": "^2.0.0",
     "postcss": "^8.4.27",
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^9.1.0",

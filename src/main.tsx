@@ -1,8 +1,8 @@
-import App from './App/App';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import '../public/style/style.scss';
+import './style/style.scss';
 import { BrowserRouter } from 'react-router-dom';
+import App from './app/app';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

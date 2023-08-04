@@ -1,24 +1,28 @@
 # eCommerce-Application
 
+The eCommerce Application is an application for the [RSSchool](https://rs.school/) final task of 2023Q1 stage#2.
+Done in eager to match latest Front-end technologies alongside with pursue of learning [Commerce Tools](https://commercetools.com/) while following the goal of creating awesome design.
+
 ## Tech Stack
 
-![js](./src/assets/tech-stack-images/js.png)
-![ts](./src/assets/tech-stack-images/ts.png)
-![react](./src/assets/tech-stack-images/react.png)
-![redux](./src/assets/tech-stack-images/redux.png)
-![webpack](./src/assets/tech-stack-images/webpack.png)
-![eslint](./src/assets/tech-stack-images/eslint.png)
-![prettier](./src/assets/tech-stack-images/prettier.png)
-![jest](./src/assets/tech-stack-images/jest.png)
-![husky](./src/assets/tech-stack-images/husky.png)
-![html](./src/assets/tech-stack-images/html.png)
-![css](./src/assets/tech-stack-images/css.png)
-![scss](./src/assets/tech-stack-images/scss.png)
-![node](./src/assets/tech-stack-images/node.png)
-![git](./src/assets/tech-stack-images/git.png)
-![github](./src/assets/tech-stack-images/github.png)
-![ecommerce tools](./src/assets/tech-stack-images/ecommerce_tools.png)
-![fsd](./src/assets/tech-stack-images/fsd_architecture.png)
+![js](./public/assets/tech-stack-images/js.png)
+![ts](./public/assets/tech-stack-images/ts.png)
+![react](./public/assets/tech-stack-images/react.png)
+![redux](./public/assets/tech-stack-images/redux.png)
+![webpack](./public/assets/tech-stack-images/webpack.png)
+![eslint](./public/assets/tech-stack-images/eslint.png)
+![prettier](./public/assets/tech-stack-images/prettier.png)
+![jest](./public/assets/tech-stack-images/jest.png)
+![husky](./public/assets/tech-stack-images/husky.png)
+![html](./public/assets/tech-stack-images/html.png)
+![css](./public/assets/tech-stack-images/css.png)
+![scss](./public/assets/tech-stack-images/scss.png)
+![normalize](./public/assets/tech-stack-images/modern-normalize.png)
+![node](./public/assets/tech-stack-images/node.png)
+![git](./public/assets/tech-stack-images/git.png)
+![github](./public/assets/tech-stack-images/github.png)
+![ecommerce tools](./public/assets/tech-stack-images/ecommerce_tools.png)
+![fsd](./public/assets/tech-stack-images/fsd_architecture.png)
 
 ## Project's Purposes
 
@@ -34,32 +38,34 @@ Also appear in the Top works with this our final project after voting at the end
 
 ## Project's Structure
 
-### Folders
+### Folders Structure
 
-public<br />
+<details><summary>public</summary>
+
+- assets (pics, icons, backgrounds, design references etc.)
+- favicon
+- fonts
+</details>
 
 <details><summary>src</summary>
 
-- app
-- api
-<details><summary>core</summary>
-
-- base_component
-- store
-- observer
-- event_emitter
-</details>
+- app (One ring to rule them all, One ring to find them, One ring to bring them all ©Lord of the Rings)
 <details><summary>components</summary>
 
-- pages
-- widgets
-- features(card etc.)
-- UI (buttons etc.)
+- pages (composing layer for building whole pages consisting of Features and Shared)
+- features (composing Shared to create e.g. Card)
+- shared (reused code e.g. Buttons, Inputs etc.)
 </details>
 
+- store
+- hooks
 - data (product's config, arrays of sounds etc.)
-- assets (pics, icons, backgrounds etc.)
-- types, enums, interfaces, constants
+- types (types, enums, interfaces)
+- constants (base url, error messages codes etc.)
+- utils (just helpful functions, not particularly dedicated to one of the layers)
+- style (global with imports)
+- index.html
+- main.tsx
 </details>
 <p></p>
 
@@ -69,25 +75,63 @@ public<br />
 
 1. naming
 
-- branches names are written in lower case letters and divided with hyphens (i.e. kinda-branch)
-- folders start with upper case (e.g. Brand New Folder)
-- files names are written in lower case and separated with hyphens (i.e. awesome-file)
-- functions names should be in lower camelCase (i.e. wowMethod)
+- `branches` names are in kebab-case (i.e. kinda-branch)
+- `branches` have prefix of assigner name
+- folders and files names are in `kebab-case` (e.g. awesome-folder, cool-new-file etc.)
+- so called silly **components** are written in `PascalCase` (e.g. Main, Login, Auth, App etc.)
+- classic clever functions exposing behaviour are in `camelCase` and start with verb (e.g. makeMyDay)
+- **const** and **let** variables are in `camelCase` (e.g. niceNewThing)
 </details>
 
-2. .scss file for each .ts file and one global .scss file with imports
+2. .scss file for each .tsx file and one global .scss file with imports
 
-3. workflow's based on functions and hooks
+3. .scss files have names mirroring corresponding .tsx files' names
+
+4. using [modern-normalize](https://github.com/sindresorhus/modern-normalize) with scss modules alongside with scss nesting where it's necessary in components
+
+5. workflow's based on functions and hooks
+
+8. separated **logic** (business logic / data control) and the app's **UI** (how the app looks like / appearance)
+
+9. architecture idea is based on FSD (Feature Sliced Design) and Component Apporach
 
 ## Commands
 
-for running project locally<br />
-host to run project from
+### npm run start
+Runs the app in the development mode opening it in browser.<br />
+Open [https://localhost:3001](https://localhost:3001)
+
+### npm run build-prod
+Builds the app for production to the `dist` folder.
+
+### npm run test
+Launches the application test runner one time.
+
+### npm run test-watch
+Launches the test runner in the interactive watch mode.
+
+### npm run clear
+Deletes the `dist` folder after deploy.
+
+### npm run lint
+Launches ESLint checking the repository for errors.
+
+### npm run lint:fix
+Launches ESLint fixing all found errors.
+
+### npm run stylelint
+ESLint checks all the style files fixing alongside all the found errors.
+
+### npm run format
+Launches Prettier and fixes all the found errors in the working directory.
+
+### npm run prepare
+Checks all the files for errors before commit.
 
 ## Authors
 
-![trinity](./src/assets/trinity.png)
+![trinity](./public/assets/github-pics/trinity.png)
 
-[![craftsw0man](./src/assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)
-[![yanabel1996](./src/assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)
-[![lyutails](./src/assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)
+[![craftsw0man](./public/assets/github-pics/github_pic_tashenka.png)](https://github.com/CRAFTSW0MAN/)
+[![yanabel1996](./public/assets/github-pics/github_pic_yanabel1996.png)](https://github.com/yanabel1996)
+[![lyutails](./public/assets/github-pics/github_pic_lyutails.png)](https://github.com/lyutails)
