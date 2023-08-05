@@ -91,11 +91,10 @@ Also appear in the Top works with this our final project after voting at the end
 1. naming
 
 - `branches` names are in kebab-case and have prefix of assigner name (i.e. red-awesome-branch, yana-wow-branch, cherry-kinda-branch etc.)
-- names of **components** creating visual part of application (so called silly) are in `PascalCase` as well as their files' and folders' names (e.g. Main, Card, Auth, App etc.)
+- names of **components** creating **visual** part of application (so called silly) are in `PascalCase` as well as their files' and folders' names (e.g. Main, Card, Auth, App etc.)
 - all other folders and files, except components' ones, are in `kebab-case` (e.g. awesome-folder, cool-new-file etc.)
-- classic clever functions exposing behaviour are in `camelCase` and start with verb (e.g. makeMyDay)
+- classic clever functions exposing **behaviour** are in `camelCase` and start with verb (e.g. makeMyDay)
 - **const** and **let** variables are in `camelCase` (e.g. niceNewThing)
-</details>
 
 2. .scss file for each .tsx file and one global .scss file with imports
 
