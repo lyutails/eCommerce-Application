@@ -62,6 +62,7 @@ Also appear in the Top works with this our final project after voting at the end
 - Header
 - Footer
 - shared (reused code e.g. Buttons, Inputs etc.)
+</details>
 <details><summary>pages</summary>
 
 - Main
