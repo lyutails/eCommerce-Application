@@ -3,6 +3,10 @@
 The eCommerce Application is an application for the [RSSchool](https://rs.school/) final task of 2023Q1 stage#2.
 Done in eager to match latest Front-end technologies alongside with pursue of learning [Commerce Tools](https://commercetools.com/) while following the goal of creating awesome design.
 
+## Design Layout
+
+[Design](paste link here) Layout with UIKit and responsive versions for tablet and mobile.
+
 ## Tech Stack
 
 ![js](./public/assets/tech-stack-images/js.png)
@@ -23,6 +27,7 @@ Done in eager to match latest Front-end technologies alongside with pursue of le
 ![github](./public/assets/tech-stack-images/github.png)
 ![ecommerce tools](./public/assets/tech-stack-images/ecommerce_tools.png)
 ![fsd](./public/assets/tech-stack-images/fsd_architecture.png)
+![figma](./public/assets/tech-stack-images/figma.png)
 
 ## Project's Purposes
 
@@ -49,12 +54,23 @@ Also appear in the Top works with this our final project after voting at the end
 
 <details><summary>src</summary>
 
-- app (One ring to rule them all, One ring to find them, One ring to bring them all ©Lord of the Rings)
+- App (One ring to rule them all, One ring to find them, One ring to bring them all ©Lord of the Rings)
 <details><summary>components</summary>
 
-- pages (composing layer for building whole pages consisting of Features and Shared)
-- features (composing Shared to create e.g. Card)
+- Card
+- Catalog
+- Header
+- Footer
 - shared (reused code e.g. Buttons, Inputs etc.)
+<details><summary>pages</summary>
+
+- Main
+- Products
+- Product
+- Auth
+- Registration
+</details>
+
 </details>
 
 - store
@@ -75,10 +91,9 @@ Also appear in the Top works with this our final project after voting at the end
 
 1. naming
 
-- `branches` names are in kebab-case (i.e. kinda-branch)
-- `branches` have prefix of assigner name
-- folders and files names are in `kebab-case` (e.g. awesome-folder, cool-new-file etc.)
-- so called silly **components** are written in `PascalCase` (e.g. Main, Login, Auth, App etc.)
+- `branches` names are in kebab-case and have prefix of assigner name (i.e. red-awesome-branch, yana-wow-branch, cherry-kinda-branch etc.)
+- names of **components** creating visual part of application (so called silly) are in `PascalCase` as well as their files' and folders' names (e.g. Main, Card, Auth, App etc.)
+- all other folders and files, except components' ones, are in `kebab-case` (e.g. awesome-folder, cool-new-file etc.)
 - classic clever functions exposing behaviour are in `camelCase` and start with verb (e.g. makeMyDay)
 - **const** and **let** variables are in `camelCase` (e.g. niceNewThing)
 </details>
