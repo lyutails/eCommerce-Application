@@ -72,8 +72,6 @@ Also appear in the Top works with this our final project after voting at the end
 - Registration
 </details>
 
-</details>
-
 - store
 - hooks
 - data (product's config, arrays of sounds etc.)
