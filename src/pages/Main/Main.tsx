@@ -1,6 +1,6 @@
 import './_main.scss';
 
-function MainPage(): JSX.Element {
+function Main(): JSX.Element {
   return (
     <div className="products">
       <h1 className="products_title">New Awesome Products</h1>
@@ -10,4 +10,4 @@ function MainPage(): JSX.Element {
     </div>
   );
 }
-export default MainPage;
+export default Main;
