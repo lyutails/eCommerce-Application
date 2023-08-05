@@ -44,7 +44,31 @@ module.exports = {
         ],
       },
       {
+        test: /\.module\.s[ac]ss$/i,
+        use: [
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]_[hash:base64:4]',
+              },
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [require('postcss-preset-env')],
+              },
+            },
+          },
+          'sass-loader',
+        ],
+      },
+      {
         test: /\.(c|sa|sc)ss$/i,
+        exclude: /\.module\.(c|sa|sc)ss$/i,
         use: [
           isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',

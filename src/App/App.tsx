@@ -1,9 +1,9 @@
-import './_app.scss';
+import style from './_app.module.scss';
 
 function App(): JSX.Element {
   return (
     <div>
-      <h1 className="app_title">Hello!</h1>
+      <h1 className={style.title}>Hello!</h1>
     </div>
   );
 }
