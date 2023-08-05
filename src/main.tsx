@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style/style.scss';
 import { BrowserRouter } from 'react-router-dom';
-import App from './app/App';
+import App from './App/App
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
