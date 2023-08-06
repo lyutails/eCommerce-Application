@@ -1,18 +1,21 @@
 @import 'modern-normalize';
 @import 'fonts';
 
-$back: aquamarine;
+$background-test-color: aquamarine;
+$font-primary-color: #fff;
+$font-secondary-color: #000;
 
 html {
   font-family: Roboto, sans-serif;
   font-size: 10px;
+  color: $font-primary-color;
 }
 
 body {
   width: 100%;
   height: 100%;
 
-  background-image: url('../../public/assets/Sci-Fi.jpeg');
+  background-image: url('../../public/assets/backgrounds/cyberpunk_01.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
