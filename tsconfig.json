@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es2017",
     "moduleResolution": "node",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
