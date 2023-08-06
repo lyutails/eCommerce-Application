@@ -1,3 +1,5 @@
+$font-title-color: #e6ff2d;
+
 .products {
   display: flex;
   flex-direction: column;
@@ -6,6 +8,7 @@
 
   &_title {
     font-size: 2rem;
+    color: $font-title-color;
   }
 
   &_body {
