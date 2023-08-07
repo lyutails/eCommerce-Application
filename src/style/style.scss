@@ -1,9 +1,6 @@
 @import 'modern-normalize';
 @import 'fonts';
-
-$background-color-one: aqua;
-$font-primary-one: #eaff62;
-$font-primary-two: #ff47da;
+@import 'variables';
 
 html {
   font-size: 10px;
@@ -13,8 +10,4 @@ html {
 body {
   width: 100%;
   height: 100%;
-
-  background-image: url('../../public/assets/Sci-Fi.jpeg');
-  background-repeat: no-repeat;
-  background-size: cover;
 }

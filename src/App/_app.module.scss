@@ -1,9 +1,12 @@
+@import '../style/variables';
+
 .title {
   font-family: 'Dancing Script', cursive;
 }
 
 .pics {
   width: 90vw;
+  background-color: $background-color-one;
 }
 
 .pic {

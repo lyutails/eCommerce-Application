@@ -58,7 +58,7 @@ export async function getAllCustomers(): Promise<
 > {
   try {
     const customers = await apiRoot.customers().get().execute();
-    // console.log(customers);
+    console.log(customers);
     return customers;
   } catch {
     throw new Error('no customers found');
