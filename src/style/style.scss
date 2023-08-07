@@ -1,10 +1,13 @@
 @import 'modern-normalize';
 @import 'fonts';
 
-$back: aqua;
+$background-color-one: aqua;
+$font-primary-one: #eaff62;
+$font-primary-two: #ff47da;
 
 html {
   font-size: 10px;
+  color: $font-primary-one;
 }
 
 body {

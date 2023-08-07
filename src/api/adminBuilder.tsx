@@ -13,14 +13,14 @@ import fetch from 'node-fetch';
 // } from '@commercetools/platform-sdk';
 
 // Configure authMiddlewareOptions
-export const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: 'https://auth.us-central1.gcp.commercetools.com/',
+const authMiddlewareOptions: AuthMiddlewareOptions = {
+  host: 'https://auth.us-central1.gcp.commercetools.com',
   projectKey: 'tycteam',
   credentials: {
-    clientId: 'zqlceifwdjqdiKjoYsMlFBL7',
-    clientSecret: 'n1JGoAhk1Bl4_G1xyhT3O6axP2KdA8Hi',
+    clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',
+    clientSecret: '9nk3d8zlMyu1WciXuRXSn64H5MNmLMIq',
   },
-  scopes: ['manage_project:tycteam'],
+  scopes: ['manage_project:tycteam manage_api_clients:tycteam'],
   fetch,
 };
 
@@ -29,10 +29,10 @@ const authClient = new SdkAuth({
   projectKey: 'tycteam',
   disableRefreshToken: false,
   credentials: {
-    clientId: 'zqlceifwdjqdiKjoYsMlFBL7',
-    clientSecret: 'n1JGoAhk1Bl4_G1xyhT3O6axP2KdA8Hi',
+    clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',
+    clientSecret: '9nk3d8zlMyu1WciXuRXSn64H5MNmLMIq',
   },
-  scopes: ['manage_project:tycteam'],
+  scopes: ['manage_project:tycteam manage_api_clients:tycteam'],
   fetch,
 });
 
@@ -52,6 +52,7 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
+// Export the ClientBuilder
 export const ctpClient = new ClientBuilder()
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)

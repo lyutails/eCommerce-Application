@@ -37,7 +37,6 @@ function Main(): JSX.Element {
   return (
     <div className="products">
       <h1 className="products_title">New Awesome Products</h1>
-      <button className="get_token">Get Token</button>
       <div className="products_body">
         <div className="products_card"></div>
       </div>

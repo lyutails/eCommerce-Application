@@ -2,12 +2,16 @@ import { ctpClient } from './adminBuilder';
 import {
   ApiRoot,
   ClientResponse,
+  ProductPagedQueryResponse,
   Project,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
-const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
+export const apiRoot = createApiBuilderFromCtpClient(
+  ctpClient,
+  'https://auth.us-central1.gcp.commercetools.com/'
+).withProjectKey({
   projectKey: 'tycteam',
 });
 
@@ -22,3 +26,11 @@ export const getProject = async (): Promise<ClientResponse<Project>> => {
 getProject().then(console.log).catch(console.error);
 
 console.log(apiRoot.products());
+
+export const getAllProducts = async (): Promise<
+  ClientResponse<ProductPagedQueryResponse>
+> => {
+  const products = await apiRoot.products().get().execute();
+  console.log(products);
+  return products;
+};
