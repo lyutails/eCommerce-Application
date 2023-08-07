@@ -3,13 +3,15 @@ import { tokenAdmin } from '../../src/api/adminBuilder';
 import { apiRoot, getAllCustomers, getAllProducts } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
 import style from './_app.module.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setImage } from '../store/counterSlice';
 
 function App(): JSX.Element {
   // console.log(apiRoot.products().get());
   console.log(getAllProducts);
-  const url = getAllProducts();
   const dispatch = useDispatch();
+  const url = getAllProducts(dispatch(setImage));
+  // const image = useSelector(state => state.);
   console.log(
     url.then((response) => {
       return response.body.results[0].masterData.current.variants[0].images;
