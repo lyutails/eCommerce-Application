@@ -1,16 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-// Начальное значение
-// const initialState = {
-//   image: '',
-// };
+/* import { createSlice } from '@reduxjs/toolkit';
 
 const counterSlice = createSlice({
   name: 'api',
   initialState: {
     image: '',
   },
-  // Редьюсеры в слайсах мутируют состояние и ничего не возвращают наружу
   reducers: {
     setImage: (state, action) => {
       state.image = action.payload;
@@ -20,5 +14,5 @@ const counterSlice = createSlice({
 
 export const { setImage } = counterSlice.actions;
 
-// По умолчанию экспортируется редьюсер, сгенерированный слайсом
 export default counterSlice.reducer;
+ */
