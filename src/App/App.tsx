@@ -7,6 +7,7 @@ import style from './_app.module.scss';
 // import { setImage } from '../store/counterSlice';
 
 function App(): JSX.Element {
+  console.log('1');
   // console.log(apiRoot.products().get());
   // console.log(getAllProducts);
   // const dispatch = useDispatch();
