@@ -1,8 +1,10 @@
+import './style/style.scss';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './style/style.scss';
 import { BrowserRouter } from 'react-router-dom';
-import App from './app/App';
+import Main from './pages/Main/Main';
+import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -10,7 +12,9 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <App />
+        <Header />
+        <Main />
+        <Footer />
       </BrowserRouter>
     </React.StrictMode>
   );

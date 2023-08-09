@@ -1,4 +1,4 @@
-import style from '../Header/_header.module.scss';
+import style from './_header.module.scss';
 import { logo } from './logo';
 
 const cartCounter = 0;

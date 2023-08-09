@@ -2,7 +2,8 @@ import { CustomerFields, CustomerParam } from '../types/interfaces';
 import { Dispatch } from 'react';
 import { ctpClient } from './clientBuilder';
 import {
-  // ApiRoot,
+  ApiRoot,
+  CategoryPagedQueryResponse,
   ClientResponse,
   CustomerPagedQueryResponse,
   ProductPagedQueryResponse,
@@ -97,12 +98,30 @@ const customerDraftData = {
 // };
 
 export async function getAllCustomers(): Promise<ClientResponse<CustomerPagedQueryResponse>> {
-  try {
+try {
     const customers = await apiRoot.customers().get().execute();
     console.log(customers);
     return customers;
   } catch {
     throw new Error('no customers found');
+  }
+}
+
+export async function getCategories(): Promise<
+  ClientResponse<CategoryPagedQueryResponse>
+> {
+  try {
+    const categories = await apiRoot.categories().get().execute();
+    const categorisArray = await categories.body.results;
+    const categoryNamesArray = categorisArray.map((category) => category.name);
+    const categoryNameKey = 'en-US';
+    const categoryName = categoryNamesArray.map(
+      (catName) => catName[categoryNameKey]
+    );
+    console.log(categoryName);
+    return categories;
+  } catch {
+    throw new Error('no categories found');
   }
 }
 

@@ -1,4 +1,4 @@
-import style from '../Footer/_footer.module.scss';
+import style from './_footer.module.scss';
 
 function Footer(): JSX.Element {
   return (

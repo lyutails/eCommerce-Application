@@ -2,12 +2,41 @@
 @import 'fonts';
 @import 'variables';
 
+.body::-webkit-scrollbar {
+  width: 15px;
+}
+
+.body::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: $background-color-one;
+  border-radius: 20px;
+  outline: 1px solid transparent;
+}
+
 html {
+  scroll-behavior: smooth;
+
+  height: 100%;
+
+  font-family: Roboto, sans-serif;
   font-size: 10px;
-  color: $font-primary-one;
+  color: $font-color-primary-one;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }

@@ -46,6 +46,12 @@ $font-color-primary-one: #eaff62;
 
   &_teamlogo {
     font-size: 2.4rem;
+    aspect-ratio: 1 / 1;
+    width: 15%;
+
+    background-image: url('../../../public/assets/icons/trinity.png');
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 
   &_right {
@@ -54,11 +60,11 @@ $font-color-primary-one: #eaff62;
     align-items: center;
     justify-content: space-between;
 
-    width: 40%;
+    width: 35%;
   }
 
   &_github_link {
-    width: 20%;
+    width: 15%;
   }
 
   &_github_logo {
