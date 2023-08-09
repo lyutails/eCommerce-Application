@@ -4,11 +4,7 @@
 // const clientID = 'RsLm4scTNfDYdm76tjbYs0Hh';
 // const clientSecret = 'q1b9hUuYCXvrBbjNQXX4vsIHbudzTSyD';
 
-import {
-  ClientBuilder,
-  type AuthMiddlewareOptions,
-  type HttpMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
+import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 import SdkAuth from '@commercetools/sdk-auth';
 import { PROJECT_KEY } from '../constants';
@@ -24,6 +20,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   scopes: [
     'manage_customers:tycteam manage_my_quotes:tycteam manage_product_selections:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam manage_products:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam',
   ],
+
   fetch,
 };
 
@@ -38,6 +35,7 @@ const authClient = new SdkAuth({
   scopes: [
     'manage_customers:tycteam manage_my_quotes:tycteam manage_product_selections:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam manage_products:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam',
   ],
+
   fetch,
 });
 

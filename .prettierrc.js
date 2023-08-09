@@ -3,7 +3,7 @@ module.exports = {
   trailingComma: 'es5',
   singleQuote: true,
   jsxSingleQuote: false,
-  printWidth: 80,
+  printWidth: 120,
   tabWidth: 2,
   endOfLine: 'auto',
   bracketSpacing: true,
