@@ -15,7 +15,6 @@
   font-family: Cyberpank;
   src:
     url('../../public/fonts/cyberpunk.ttf') format(truetype),
-
     url('../../public/fonts/cyberpunk.woff') format(woff),
     url('../../public/fonts/cyberpunk.woff2') format(woff2);
 }
@@ -24,10 +23,9 @@
   font-family: Kingslay;
   src:
     url('../../public/fonts/kingslay.ttf') format(truetype),
+    url('../../public/fonts/kingslay.woff') format(woff);
 
-    url('../../public/fonts/kingslay.woff') format(woff)
-
-    // url('../../public/fonts/kingslay.woff2') format(woff2);
+  // url('../../public/fonts/kingslay.woff2') format(woff2);
 }
 
 // @font-face {
@@ -35,6 +33,6 @@
 //   src:
 //     url('../../public/fonts/no-signal.ttf') format(truetype),
 
-    // url('../../public/fonts/no-signal.woff') format(woff),
-    // url('../../public/fonts/no-signal.woff2') format(woff2);
+// url('../../public/fonts/no-signal.woff') format(woff),
+// url('../../public/fonts/no-signal.woff2') format(woff2);
 // }

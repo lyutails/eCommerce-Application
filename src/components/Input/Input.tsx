@@ -9,7 +9,12 @@ function Input(props: InputCustomFields): JSX.Element {
         <div className={style.label_img}>
           <img className={style.label_img_icon} src={props.img1} alt="Icon" />
         </div>
-        <input className={style.label_input} type={props.type} placeholder={props.placeholder} required />
+        <input
+          className={style.label_input}
+          type={props.type}
+          placeholder={props.placeholder}
+          required
+        />
       </div>
       <span className={style.clue}></span>
     </div>

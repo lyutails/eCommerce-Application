@@ -93,7 +93,9 @@ $background-color-customize: rgb(31 255 210 / 15%);
     background-color: $background-color-customize;
     filter: drop-shadow(0 0 8px $glow-green);
     border-radius: 10px;
-    box-shadow: 0 0 10px $glow-green, 0 0 10px $glow-green;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
   }
@@ -123,7 +125,9 @@ $background-color-customize: rgb(31 255 210 / 15%);
 
     background-color: $background-color-category;
     border-radius: 10px;
-    box-shadow: 0 0 5px $glow-violet, 0 0 10px $glow-violet;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
 
     -webkit-text-stroke: 1px;
   }
@@ -165,15 +169,21 @@ $background-color-customize: rgb(31 255 210 / 15%);
 
 @keyframes category-border-shine-anim {
   0% {
-    box-shadow: 0 0 5px $glow-violet, 0 0 10px $glow-violet;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 
   50% {
-    box-shadow: 0 0 10px $glow-violet, 0 0 15px $glow-violet;
+    box-shadow:
+      0 0 10px $glow-violet,
+      0 0 15px $glow-violet;
   }
 
   100% {
-    box-shadow: 0 0 5px $glow-violet, 0 0 10px $glow-violet;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 }
 
