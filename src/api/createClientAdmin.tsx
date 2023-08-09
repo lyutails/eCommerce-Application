@@ -6,13 +6,14 @@ import {
   Project,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
+import { PROJECT_KEY } from '../constants';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
 export const apiRoot = createApiBuilderFromCtpClient(
   ctpClient,
   'https://auth.us-central1.gcp.commercetools.com/'
 ).withProjectKey({
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
 });
 
 // Example call to return Project information
