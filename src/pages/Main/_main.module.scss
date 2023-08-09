@@ -137,8 +137,9 @@ $background-color-customize: rgb(31 255 210 / 15%);
 
     display: inline-block;
 
-    width: 50px;
-    height: 50px;
+    aspect-ratio: 1 / 1;
+    width: 4vw;
+    max-width: 50px;
 
     background-repeat: no-repeat;
     background-size: contain;
@@ -207,3 +208,25 @@ $background-color-customize: rgb(31 255 210 / 15%);
     }
   }
 }
+
+@media screen and (width >= 360px) and (width <= 767.98px) {
+  html {
+    font-size: 4px;
+  }
+
+  .main {
+    &_category {
+      aspect-ratio: 1 / 1.4;
+      width: 20%;
+      min-width: 100px;
+      max-width: 250px;
+    }
+
+    &_slide {
+      aspect-ratio: 1 / 1;
+      width: 20%;
+      max-width: 250px;
+    }
+  }
+}
+
