@@ -1,15 +1,17 @@
+import '../style/style.scss';
 // import { tokenCustomer } from '../../src/api/clientBuilder';
 // import { tokenAdmin } from '../../src/api/adminBuilder';
 // import { apiRoot, getAllCustomers, getAllProducts } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
+import { getAllProducts, getCategories } from '../api/createClient';
 import style from './_app.module.scss';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { setImage } from '../store/counterSlice';
 
 function App(): JSX.Element {
-  console.log('1');
   // console.log(apiRoot.products().get());
   // console.log(getAllProducts);
+  console.log(getCategories());
   // const dispatch = useDispatch();
   // const url = getAllProducts(dispatch(setImage));
   // const image = useSelector(state => state.);

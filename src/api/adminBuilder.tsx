@@ -6,6 +6,7 @@ import {
 } from '@commercetools/sdk-client-v2';
 import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
+import { PROJECT_KEY } from '../constants';
 // import {
 //   ApiRoot,
 //   Project,
@@ -15,7 +16,7 @@ import fetch from 'node-fetch';
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
   credentials: {
     clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',
     clientSecret: '9nk3d8zlMyu1WciXuRXSn64H5MNmLMIq',
@@ -26,7 +27,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
 
 const authClient = new SdkAuth({
   host: 'https://auth.us-central1.gcp.commercetools.com/',
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
   disableRefreshToken: false,
   credentials: {
     clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',

@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { ctpClient } from './clientBuilder';
 import {
   ApiRoot,
+  CategoryPagedQueryResponse,
   ClientResponse,
   CustomerPagedQueryResponse,
   ProductPagedQueryResponse,
@@ -9,6 +10,7 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import { AnyAction } from 'redux';
+import { PROJECT_KEY } from '../constants';
 // import { setImage } from '@/store/counterSlice';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
@@ -16,7 +18,7 @@ export const apiRoot = createApiBuilderFromCtpClient(
   ctpClient,
   'https://auth.us-central1.gcp.commercetools.com/'
 ).withProjectKey({
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
 });
 
 // Example call to return Project information
@@ -50,6 +52,24 @@ export async function getAllProducts(
     // put data in store
   } catch {
     throw new Error('no products found');
+  }
+}
+
+export async function getCategories(): Promise<
+  ClientResponse<CategoryPagedQueryResponse>
+> {
+  try {
+    const categories = await apiRoot.categories().get().execute();
+    const categorisArray = await categories.body.results;
+    const categoryNamesArray = categorisArray.map((category) => category.name);
+    const categoryNameKey = 'en-US';
+    const categoryName = categoryNamesArray.map(
+      (catName) => catName[categoryNameKey]
+    );
+    console.log(categoryName);
+    return categories;
+  } catch {
+    throw new Error('no categories found');
   }
 }
 
