@@ -1,0 +1,29 @@
+@import '../../style/variables';
+
+body {
+background-color: black;;
+}
+
+.login {
+    width: 25%;
+    margin: 0 auto;
+}
+
+.title {
+    color: white;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.email, .password {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration_button {
+    width: 100%;
+}

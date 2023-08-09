@@ -9,18 +9,18 @@ import {
 } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
 import style from './_app.module.scss';
-// import AuthPage from '../pages/Auth/Auth';
-// import Header from '../components/Header/Header';
-// import Footer from '../components/Footer/Footer';
+import AuthPage from '../pages/Auth/Auth';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { setImage } from '../store/counterSlice';
 
 function App(): JSX.Element {
   return (
     <div>
-      {/* <Header />
+      <Header />
       <AuthPage />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 }
