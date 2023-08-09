@@ -96,9 +96,7 @@ const customerDraftData = {
 //   };
 // };
 
-export async function getAllCustomers(): Promise<
-  ClientResponse<CustomerPagedQueryResponse>
-> {
+export async function getAllCustomers(): Promise<ClientResponse<CustomerPagedQueryResponse>> {
   try {
     const customers = await apiRoot.customers().get().execute();
     console.log(customers);
@@ -108,9 +106,7 @@ export async function getAllCustomers(): Promise<
   }
 }
 
-export async function createCustomer(
-  data: CustomerFields
-): Promise<ClientResponse<CustomerSignInResult>> {
+export async function createCustomer(data: CustomerFields): Promise<ClientResponse<CustomerSignInResult>> {
   try {
     const customer = await apiRoot
       .me()
@@ -129,9 +125,7 @@ export async function createCustomer(
   }
 }
 
-export async function createCustomerTwo(
-  data: CustomerFields
-): Promise<ClientResponse<CustomerSignInResult>> {
+export async function createCustomerTwo(data: CustomerFields): Promise<ClientResponse<CustomerSignInResult>> {
   try {
     const customer = await apiRoot
       .customers()

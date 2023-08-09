@@ -1,0 +1,18 @@
+.label {
+    display: flex;
+
+    &_input {
+        padding: 1rem;
+        color: black;
+        border: none;
+    }
+
+    &_img_icon {
+        width: 2rem;
+        height: 100%;
+    }
+
+    &_input:focus {
+        outline: none;
+    }
+}

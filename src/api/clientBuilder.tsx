@@ -4,11 +4,7 @@
 // const clientID = 'RsLm4scTNfDYdm76tjbYs0Hh';
 // const clientSecret = 'q1b9hUuYCXvrBbjNQXX4vsIHbudzTSyD';
 
-import {
-  ClientBuilder,
-  type AuthMiddlewareOptions,
-  type HttpMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
+import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 import SdkAuth from '@commercetools/sdk-auth';
 import { PROJECT_KEY } from '../constants';

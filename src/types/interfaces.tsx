@@ -29,3 +29,15 @@ export interface CustomerParam {
     apartment: string;
   }[];
 }
+
+export interface InputFields {
+  email: InputCustomFields;
+  password: InputCustomFields;
+}
+
+export interface InputCustomFields {
+  type: string;
+  placeholder: string;
+  img1: string;
+  img2?: string;
+}

@@ -1,17 +1,14 @@
 import { tokenCustomer } from '../../src/api/clientBuilder';
 import { tokenAdmin } from '../../src/api/adminBuilder';
-import {
-  apiRoot,
-  createCustomer,
-  createCustomerTwo,
-  getAllCustomers,
-  getAllProducts,
-} from '../api/createClient';
+import { apiRoot, createCustomer, createCustomerTwo, getAllCustomers, getAllProducts } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
 import style from './_app.module.scss';
 import AuthPage from '../pages/Auth/Auth';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import FormComponent from '../components/FormComponent/FormComponent';
+// import Input from '../components/Input/Input';
+// import { email, password } from '../components/Input/input-data';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { setImage } from '../store/counterSlice';
 
@@ -19,7 +16,7 @@ function App(): JSX.Element {
   return (
     <div>
       <Header />
-      <AuthPage />
+      <FormComponent />
       <Footer />
     </div>
   );
