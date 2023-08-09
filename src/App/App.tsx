@@ -1,8 +1,7 @@
 import { tokenCustomer } from '../../src/api/clientBuilder';
 import { tokenAdmin } from '../../src/api/adminBuilder';
-import { apiRoot, createCustomer, createCustomerTwo, getAllCustomers, getAllProducts } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
-import { getAllProducts, getCategories } from '../api/createClient';
+import { getCategories } from '../api/createClient';
 import style from './_app.module.scss';
 import AuthPage from '../pages/Auth/Auth';
 import Header from '../components/Header/Header';
@@ -17,6 +16,7 @@ function App(): JSX.Element {
   // console.log(apiRoot.products().get());
   // console.log(getAllProducts);
   console.log(getCategories());
+  console.log(process.env.ADMIN_CLIENT_ID, 'lalala');
   // const dispatch = useDispatch();
   // const url = getAllProducts(dispatch(setImage));
   // const image = useSelector(state => state.);

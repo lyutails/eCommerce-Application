@@ -1,3 +1,4 @@
+import '../../style/variables.scss';
 import style from './_header.module.scss';
 import { logo } from './logo';
 
@@ -5,10 +6,14 @@ const cartCounter = 0;
 const walletCost = 0;
 
 function Header(): JSX.Element {
+  const filter = {
+    filter:
+      'drop-shadow(0 0 5px $glow-green) drop-shadow(0 0 10px $glow-green)',
+  };
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
-        <a className={style.logo} href="http://localhost:3001/">
+        <a className={style.logo} style={filter} href="http://localhost:3001/">
           {logo}
         </a>
         <div className={style.header_categories}>
