@@ -1,0 +1,160 @@
+@import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
+
+$font-color-title: #e6ff2d;
+$background-color-category: rgb(217 46 255 / 40%);
+$background-color-customize: rgb(31 255 210 / 40%);
+
+.main {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+
+  width: 100%;
+
+  background-image: url('../../../public/assets/Sci-Fi.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &_wrapper {
+    display: flex;
+
+    // flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 90vw;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  &_title {
+    flex: 0 1 auto;
+
+    margin-bottom: 20px;
+
+    font-family: Cyberpunk, sans-serif;
+    font-size: 2rem;
+    color: $font-color-title;
+  }
+
+  &_categories {
+    display: flex;
+    flex-flow: row wrap;
+    flex-shrink: 0;
+    justify-content: space-between;
+  }
+
+  &_category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1.5;
+    width: 20%;
+    min-width: 100px;
+    max-width: 400px;
+
+    font-size: 2rem;
+    color: $font-color-title;
+    text-align: center;
+
+    background-color: $background-color-category;
+    border-radius: 10px;
+    box-shadow: 0 0 10px $font-color-title;
+
+    animation-name: category-border-shine-anim;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  &_advertisment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 0.2;
+    width: 100%;
+
+    font-size: 2rem;
+    text-align: center;
+
+    background-color: $background-color-customize;
+    border-radius: 10px;
+    box-shadow: 0 0 10px $font-color-title;
+  }
+
+  &_slider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 90vw;
+    margin-bottom: 20px;
+  }
+
+  &_slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    font-size: 2rem;
+    text-align: center;
+
+    background-color: $background-color-category;
+    border-radius: 10px;
+    box-shadow: 0 0 10px $font-color-title;
+  }
+
+  &_arrow {
+    position: absolute;
+
+    display: inline-block;
+
+    width: 50px;
+    height: 50px;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    transition: all 0.2s ease-in-out;
+
+    &.left {
+      transform: translate(-50px, 0);
+      background-image: url('../../../public/assets/icons/arrow_left.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/assets/icons/arrow_left_hover.svg');
+      }
+    }
+
+    &.right {
+      transform: translate(90vw, 0);
+      background-image: url('../../../public/assets/icons/arrow_right.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/assets/icons/arrow_right_hover.svg');
+      }
+    }
+  }
+}
+
+@keyframes category-border-shine-anim {
+  0% {
+    box-shadow: 0 0 10px $font-color-title;
+  }
+
+  50% {
+    box-shadow: 0 0 15px $font-color-title;
+  }
+
+  100% {
+    box-shadow: 0 0 10px $font-color-title;
+  }
+}

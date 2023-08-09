@@ -11,31 +11,32 @@ import {
 } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 import SdkAuth from '@commercetools/sdk-auth';
+import { PROJECT_KEY } from '../constants';
 
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
   credentials: {
-    clientId: 'zOqKQfqBwpqqZ6hfCPZn6U_O',
-    clientSecret: 'DCYzKNUCorrDpOgqDSZAFNfkr7vbqs12',
+    clientId: 'MnD3lYwVYb80uoQvugZvkLFY',
+    clientSecret: 'WM64L_47FMiVY1Yc-nW3aqUrIJfvmJYJ',
   },
   scopes: [
-    'view_products:tycteam manage_my_quotes:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam view_customer_groups:tycteam view_project_settings:tycteam view_customers:tycteam manage_my_orders:tycteam',
+    'manage_customers:tycteam manage_my_quotes:tycteam manage_product_selections:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam manage_products:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam',
   ],
   fetch,
 };
 
 const authClient = new SdkAuth({
   host: 'https://auth.us-central1.gcp.commercetools.com/',
-  projectKey: 'tycteam',
+  projectKey: PROJECT_KEY,
   disableRefreshToken: false,
   credentials: {
-    clientId: 'zOqKQfqBwpqqZ6hfCPZn6U_O',
-    clientSecret: 'DCYzKNUCorrDpOgqDSZAFNfkr7vbqs12',
+    clientId: 'MnD3lYwVYb80uoQvugZvkLFY',
+    clientSecret: 'WM64L_47FMiVY1Yc-nW3aqUrIJfvmJYJ',
   },
   scopes: [
-    'view_products:tycteam manage_my_quotes:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam view_customer_groups:tycteam view_project_settings:tycteam view_customers:tycteam manage_my_orders:tycteam',
+    'manage_customers:tycteam manage_my_quotes:tycteam manage_product_selections:tycteam view_categories:tycteam manage_my_business_units:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam manage_products:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam',
   ],
   fetch,
 });

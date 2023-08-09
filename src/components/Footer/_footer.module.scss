@@ -1,0 +1,77 @@
+$footer-background-color: purple;
+$font-color-primary-one: #eaff62;
+
+.footer {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100%;
+  height: 100px;
+
+  background-color: $footer-background-color;
+
+  &_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  &_left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 25%;
+  }
+
+  &_rsschool {
+    aspect-ratio: 1 / 0.38;
+    width: 60%;
+
+    background-image: url('../../../public/assets/icons/logo-rsschool.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_year {
+    font-size: 2.4rem;
+  }
+
+  &_teamlogo {
+    aspect-ratio: 1 / 1;
+    width: 15%;
+
+    background-image: url('../../../public/assets/icons/trinity.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 35%;
+  }
+
+  &_github_link {
+    width: 15%;
+  }
+
+  &_github_logo {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+
+    background-image: url('../../../public/assets/icons/github.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
