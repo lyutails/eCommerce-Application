@@ -5,11 +5,14 @@
 }
 
 .pics {
-  width: 90vw;
-  background-color: $background-color-one;
+  width: 90vw;;
 }
 
 .pic {
   aspect-ratio: 1 / 1;
   width: 20%;
+}
+
+.red {
+  color: red;
 }
