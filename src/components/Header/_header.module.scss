@@ -35,6 +35,10 @@ $footer-background-color: #041426;
   }
 }
 
+.logo {
+  filter: drop-shadow(0 0 5px $glow-green) drop-shadow(0 0 10px $glow-green),
+}
+
 .cart {
   position: relative;
 

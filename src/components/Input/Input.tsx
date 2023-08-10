@@ -1,36 +1,36 @@
 import style from '../Input/_input.module.scss';
-import { IInputCustomFields } from '../../types/interfaces';
-import { ReactNode } from 'react';
+import { ChangeEventHandler, ReactNode } from 'react';
+
 // import { clue } from '../Input/input-data';
 
 interface IInputProps {
   type: string;
+  classInput: string;
+  classClue: string;
+  classWrapper: string;
   placeholder: string;
-  imageBefore: string;
-  imageAfter?: string;
-  children?: ReactNode;
+  childrenBefore?: ReactNode;
+  childrenAfter?: ReactNode;
+  func?: ChangeEventHandler<HTMLInputElement>;
 }
 
 function Input(props: IInputProps): JSX.Element {
   return (
-    <div className={style.wrapper}>
+    <div className={`${style.wrapper} ${props.classWrapper}`}>
       <div className={style.wrapper_label}>
-        <div className={style.wrapper_img}>
-          <img
-            className={style.wrapper_img_icon}
-            src={props.imageBefore}
-            alt="Icon"
-          />
-        </div>
+        {props.childrenBefore}
         <input
-          className={style.wrapper_input}
+          onChange={props.func}
+          className={`${style.wrapper_input} ${props.classInput}`}
           type={props.type}
           placeholder={props.placeholder}
           required
         />
-        {props.children}
+        {props.childrenAfter}
       </div>
-      <span className={style.wrapper_clue}></span>
+      <span className={`${style.wrapper_clue} ${props.classClue}`}>
+        Please enter a valid email address (for example: name@example.com)
+      </span>
     </div>
   );
 }

@@ -10,9 +10,9 @@ function Header(): JSX.Element {
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
-        <a className={style.logo} href="http://localhost:3001/">
+        <Link className={style.logo} to="/">
           {logo}
-        </a>
+        </Link>
         <div className={style.header_categories}>
           <ul className={style.list}>
             <li className={style.main}>
