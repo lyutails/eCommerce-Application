@@ -54,3 +54,9 @@ export interface IButtonCustomFields {
   children: ReactNode;
   type?: 'button' | 'submit' | 'reset';
 }
+
+export interface IRootState {
+  user: {
+    isAuth: boolean;
+  };
+}

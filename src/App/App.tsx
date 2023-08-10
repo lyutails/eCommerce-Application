@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import style from './_app.module.scss';
 import AuthPage from '../pages/Auth/Auth';
 import RegistrationPage from '../pages/Registration/Registration';
 import Header from '../components/Header/Header';
@@ -10,9 +9,11 @@ import Main from '../pages/Main/Main';
 import AboutUsPage from '../pages/AboutUs/AboutUs';
 import BasketPage from '../pages/Basket/Basket';
 import CustomizePage from '../pages/Customize/Customize';
+import ProfilePage from '../pages/Profile/Profile';
+import { IRootState } from '../types/interfaces';
 
 function App(): JSX.Element {
-  const isAuth = false;
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
 
   return (
     <div>
@@ -24,7 +25,7 @@ function App(): JSX.Element {
             <Route path="/customize" element={<CustomizePage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/basket" element={<BasketPage />} />
-            <Route path="/Authorization" element={<AuthPage />} />
+            <Route path="/profile" element={<AuthPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
@@ -34,6 +35,7 @@ function App(): JSX.Element {
             <Route path="/customize" element={<CustomizePage />} />
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/basket" element={<BasketPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
         )}

@@ -33,7 +33,7 @@ function Header(): JSX.Element {
             </li>
             <li className={style.sum}>{`${walletCost}`}$</li>
             <li className={style.login}>
-              <Link to="/Authorization">LogIn</Link>
+              <Link to="/profile">LogIn</Link>
             </li>
           </ul>
         </div>
