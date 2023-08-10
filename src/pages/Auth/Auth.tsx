@@ -39,20 +39,37 @@ function AuthPageLogin(): JSX.Element {
           classWrapper={style.email}
           classClue={style.email_clue}
           classInput={style.email_input}
-          imageBefore={iconEmail}
+          childrenBefore={
+            <div className={style.wrapper_img}>
+              <img
+                className={style.wrapper_img_icon}
+                src={iconEmail}
+                alt="Icon"
+              />
+            </div>
+          }
         />
         <Input
           type="password"
           placeholder="Password"
-          imageBefore={iconPassword}
           classWrapper={style.password}
           classClue={style.password_clue}
           classInput={style.password_input}
-        >
-          <ButtonForm classNames={style.password_eye}>
-            <img className={style.label_img_icon} src={iconEye} alt="Icon" />
-          </ButtonForm>
-        </Input>
+          childrenBefore={
+            <div className={style.wrapper_img}>
+              <img
+                className={style.wrapper_img_icon}
+                src={iconPassword}
+                alt="Icon"
+              />
+            </div>
+          }
+          childrenAfter={
+            <ButtonForm classNames={style.password_eye}>
+              <img className={style.label_img_icon} src={iconEye} alt="Icon" />
+            </ButtonForm>
+          }
+        />
         <ButtonForm classNames={style.authorization_button} type="submit">
           LogIn
         </ButtonForm>
