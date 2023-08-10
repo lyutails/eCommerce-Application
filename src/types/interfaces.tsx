@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface CustomerFields {
   email: string;
   firstName: string;
@@ -40,4 +42,15 @@ export interface InputCustomFields {
   placeholder: string;
   img1: string;
   img2?: string;
+}
+
+export interface ButtonFields {
+  login: ButtonCustomFields;
+  registration: ButtonCustomFields;
+}
+
+export interface ButtonCustomFields {
+  classNames: string;
+  children: ReactNode;
+  type?: 'button' | 'submit' | 'reset';
 }

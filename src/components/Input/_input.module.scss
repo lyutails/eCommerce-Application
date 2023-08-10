@@ -1,18 +1,34 @@
-.label {
-  display: flex;
+.wrapper {
+    margin-bottom: 2rem;
 
-  &_input {
-    padding: 1rem;
-    color: black;
-    border: none;
-  }
+    &_label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-  &_img_icon {
-    width: 2rem;
-    height: 100%;
-  }
+        margin-bottom: 0.5rem;
+        padding: 0 1rem;
 
-  &_input:focus {
-    outline: none;
-  }
+        background-color: white;
+    }
+
+    &_input {
+        width: 100%;
+        padding: 1rem;
+        color: black;
+        border: none;
+    }
+
+    &_input:focus {
+        outline: none;
+    }
+
+    // &_img {
+
+    // }
+
+    &_img_icon {
+        width: 2rem;
+        height: 100%;
+    }
 }
