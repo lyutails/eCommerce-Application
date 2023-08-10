@@ -1,4 +1,4 @@
-import style from '../Card/_card.scss';
+import style from '../Card/_card.module.scss';
 
 function Card(): JSX.Element {
   return (

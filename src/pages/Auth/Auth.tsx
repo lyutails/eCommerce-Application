@@ -5,7 +5,8 @@ import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthStatus } from '../../store/reducers/userReducer';
 // import { checkEmail } from '../Auth/verify';
 // import { ChangeEventHandler } from 'react';
 
@@ -24,13 +25,17 @@ const clue = {
 };
 
 function AuthPage(): JSX.Element {
+  // const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   // для навигации
   const navigate = useNavigate();
-  const handleСreationAuth = (e: Event): void => {
+  const dispatch = useDispatch();
+  const handeleСreationAuth = (e: Event): void => {
     console.log(e);
+  };
+  const handleToLogin = (): void => {
+    dispatch(setAuthStatus(true));
     navigate('/registration');
   };
-
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -87,86 +92,91 @@ function AuthPage(): JSX.Element {
       </div>
       <div className={style.registration}>
         <h2 className={style.title}>Registartion</h2>
-        <ButtonForm classNames={style.registration_button}>SignUp</ButtonForm>
+        <ButtonForm
+          handlerLogin={handleToLogin}
+          classNames={style.registration_button}
+        >
+          SignUp
+        </ButtonForm>
       </div>
     </div>
   );
 }
 export default AuthPage;
 
-//  // const dispatch = useDispatch();
-//  const [login, setLogin] = useState('');
-//  const [password, setPassword] = useState('');
-//  //состояние ошибки
-//  const [loginError, setLoginError] = useState('');
-//  const [passwordError, setPasswordError] = useState('');
-//  //для навигации
-//  // const navigate = useNavigate();
-//  // для проверки состояний
-//  let loginСheck = false;
-//  let passwordСheck = false;
+// const dispatch = useDispatch();
+// const [login, setLogin] = useState('');
+// const [password, setPassword] = useState('');
+// //состояние ошибки
+// const [loginError, setLoginError] = useState('');
+// const [passwordError, setPasswordError] = useState('');
+// //для навигации
+// // const navigate = useNavigate();
+// // для проверки состояний
+// let loginСheck = false;
+// let passwordСheck = false;
 
-//  // чтобы значения из инпута попадали в логин и пароль
-//  const loginHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-//    setLogin((e.target as HTMLInputElement).value);
-//  };
+// // чтобы значения из инпута попадали в логин и пароль
+// const loginHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+//   setLogin((e.target as HTMLInputElement).value);
+// };
 
-//  const passwordHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-//    setPassword((e.target as HTMLInputElement).value);
-//  };
+// const passwordHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+//   setPassword((e.target as HTMLInputElement).value);
+// };
 
-//  const handeleСreationReg = (
-//    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-//  ): void => {
-//    e.preventDefault();
-//    //валидация для логина
-//    if (login === '') {
-//      setLoginError('Поле не должно быть пустым');
-//      loginСheck = false;
-//    } else if (login.length < 4) {
-//      setLoginError('Логин должен содержать не менее 4-х символов');
-//      loginСheck = false;
-//    } else {
-//      setLoginError('');
-//      loginСheck = true;
-//    }
-//    //валидация для пароля
-//    if (password === '') {
-//      setPasswordError('Поле не должно быть пустым');
-//      passwordСheck = false;
-//    } else if (password.length < 4) {
-//      setPasswordError('Логин должен содержать не менее 4-х символов');
-//      passwordСheck = false;
-//    } else {
-//      setPasswordError('');
-//      passwordСheck = true;
-//    }
-//    console.log(loginСheck, passwordСheck);
-//    console.log(login, password);
-// проверка общего состояния и если все хорошо переход на Вход
-// if (loginСheck === true && passwordСheck === true) {
-//   dispatch(
-//     creationAuth({
-//       login,
-//       password,
-//     })
-//   );
-//   navigate('/');
-// }
-//  };
-//  return (
-//    <div>
-//      <form action="">
-//        <input type="email" onChange={(event): void => loginHandler(event)} />
-//        <span className={style.red}>{loginError}</span>
-//        <input
-//          type="password"
-//          onChange={(event): void => passwordHandler(event)}
-//        />
-//        <span className={style.red}>{passwordError}</span>
-//        <button onClick={(event): void => handeleСreationReg(event)}>
-//          Click
-//        </button>
-//      </form>
-//    </div>
-//  );
+// const handeleСreationReg = (
+//   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+// ): void => {
+//   e.preventDefault();
+//   //валидация для логина
+//   if (login === '') {
+//     setLoginError('Поле не должно быть пустым');
+//     loginСheck = false;
+//   } else if (login.length < 4) {
+//     setLoginError('Логин должен содержать не менее 4-х символов');
+//     loginСheck = false;
+//   } else {
+//     setLoginError('');
+//     loginСheck = true;
+//   }
+//   //валидация для пароля
+//   if (password === '') {
+//     setPasswordError('Поле не должно быть пустым');
+//     passwordСheck = false;
+//   } else if (password.length < 4) {
+//     setPasswordError('Логин должен содержать не менее 4-х символов');
+//     passwordСheck = false;
+//   } else {
+//     setPasswordError('');
+//     passwordСheck = true;
+//   }
+//   console.log(loginСheck, passwordСheck);
+//   console.log(login, password);
+//   // проверка общего состояния и если все хорошо переход на Вход
+//   if (loginСheck === true && passwordСheck === true) {
+//     dispatch(setAuthStatus(true));
+//     navigate('/');
+//   }
+// };
+// return (
+//   <div>
+//     <form action="">
+//       <input type="email" onChange={(event): void => loginHandler(event)} />
+//       <span className={style.red}>{loginError}</span>
+//       <input
+//         type="password"
+//         onChange={(event): void => passwordHandler(event)}
+//       />
+//       <span className={style.red}>{passwordError}</span>
+//       <button onClick={(event): void => handeleСreationReg(event)}>
+//         Click
+//       </button>
+//     </form>
+//   </div>
+// );
+
+// //  {
+// //   login,
+// //   password,
+// // }

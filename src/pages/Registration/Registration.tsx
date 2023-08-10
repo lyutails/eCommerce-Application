@@ -2,6 +2,7 @@ import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEye from '../../../public/assets/icon/eye.svg';
+import { useNavigate } from 'react-router-dom';
 
 function RegistrationPage(): JSX.Element {
   return (
@@ -13,10 +14,19 @@ function RegistrationPage(): JSX.Element {
 }
 
 function RegistrationPageLogin(): JSX.Element {
+  const navigate = useNavigate();
+  const handleToLogin = (): void => {
+    navigate('/profile');
+  };
   return (
     <div className={style.authorization}>
       <h2 className={style.title}>Login</h2>
-      <ButtonForm classNames={style.authorization_button}>LogIn</ButtonForm>
+      <ButtonForm
+        handlerLogin={handleToLogin}
+        classNames={style.authorization_button}
+      >
+        LogIn
+      </ButtonForm>
     </div>
   );
 }

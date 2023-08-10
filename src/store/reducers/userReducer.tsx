@@ -14,14 +14,14 @@ const userReducer = createSlice({
     creationUser(state, action) {
       state.user = { ...action.payload };
     },
-    input(state) {
-      state.isAuth = true;
+    updateCustomer(state, action) {
+      state.user = { ...state.user, ...action.payload };
     },
-    exit(state) {
-      state.isAuth = false;
+    setAuthStatus(state, action) {
+      state.isAuth = action.payload;
     },
   },
 });
 
-export const { creationUser, input, exit } = userReducer.actions;
+export const { creationUser, setAuthStatus } = userReducer.actions;
 export default userReducer.reducer;
