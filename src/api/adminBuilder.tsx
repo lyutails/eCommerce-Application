@@ -13,13 +13,21 @@ import { PROJECT_KEY } from '../constants';
 //   createApiBuilderFromCtpClient,
 // } from '@commercetools/platform-sdk';
 
+if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
+  throw new Error('no client id found');
+}
+
+if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
+  throw new Error('no client id found');
+}
+
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
   projectKey: PROJECT_KEY,
   credentials: {
-    clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',
-    clientSecret: '9nk3d8zlMyu1WciXuRXSn64H5MNmLMIq',
+    clientId: process.env.ADMIN_CLIENT_ID,
+    clientSecret: process.env.ADMIN_CLIENT_SECRET,
   },
   scopes: ['manage_project:tycteam manage_api_clients:tycteam'],
   fetch,
@@ -30,8 +38,8 @@ const authClient = new SdkAuth({
   projectKey: PROJECT_KEY,
   disableRefreshToken: false,
   credentials: {
-    clientId: 'pGNr9S65n3Q9wLRDKGyla3SM',
-    clientSecret: '9nk3d8zlMyu1WciXuRXSn64H5MNmLMIq',
+    clientId: process.env.ADMIN_CLIENT_ID,
+    clientSecret: process.env.ADMIN_CLIENT_SECRET,
   },
   scopes: ['manage_project:tycteam manage_api_clients:tycteam'],
   fetch,

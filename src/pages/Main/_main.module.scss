@@ -1,8 +1,10 @@
+@import '../../style/variables';
+
 @import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
 
 $font-color-title: #e6ff2d;
-$background-color-category: rgb(217 46 255 / 40%);
-$background-color-customize: rgb(31 255 210 / 40%);
+$background-color-category: rgb(217 46 255 / 20%);
+$background-color-customize: rgb(31 255 210 / 15%);
 
 .main {
   display: flex;
@@ -11,9 +13,17 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
   width: 100%;
 
-  background-image: url('../../../public/assets/Sci-Fi.jpeg');
+  background-color: $background-color-primary-one;
+  background-image: url('../../../public/assets/background/cyberpunk_02.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-blend-mode: difference;
+
+  // background-blend-mode: luminosity;
+
+  // background-blend-mode: soft-light;
+
+  // background-blend-mode: hard-light;
 
   &_wrapper {
     display: flex;
@@ -32,7 +42,7 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
     margin-bottom: 20px;
 
-    font-family: Cyberpunk, sans-serif;
+    font-family: Cyberpank, cursive;
     font-size: 2rem;
     color: $font-color-title;
   }
@@ -49,10 +59,10 @@ $background-color-customize: rgb(31 255 210 / 40%);
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 1.5;
+    aspect-ratio: 2 / 1.4;
     width: 20%;
     min-width: 100px;
-    max-width: 400px;
+    max-width: 350px;
 
     font-size: 2rem;
     color: $font-color-title;
@@ -60,7 +70,7 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
     background-color: $background-color-category;
     border-radius: 10px;
-    box-shadow: 0 0 10px $font-color-title;
+    box-shadow: 0 0 10px $glow-violet;
 
     animation-name: category-border-shine-anim;
     animation-duration: 2s;
@@ -75,13 +85,19 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
     aspect-ratio: 1 / 0.2;
     width: 100%;
+    max-height: 200px;
 
     font-size: 2rem;
     text-align: center;
 
     background-color: $background-color-customize;
+    filter: drop-shadow(0 0 8px $glow-green);
     border-radius: 10px;
-    box-shadow: 0 0 10px $font-color-title;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 10px $glow-green;
+
+    -webkit-text-stroke: 1px;
   }
 
   &_slider {
@@ -101,13 +117,19 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
     aspect-ratio: 1 / 1;
     width: 20%;
+    max-width: 250px;
 
     font-size: 2rem;
+    color: $font-color-primary-one;
     text-align: center;
 
     background-color: $background-color-category;
     border-radius: 10px;
-    box-shadow: 0 0 10px $font-color-title;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+
+    -webkit-text-stroke: 1px;
   }
 
   &_arrow {
@@ -115,8 +137,9 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
     display: inline-block;
 
-    width: 50px;
-    height: 50px;
+    aspect-ratio: 1 / 1;
+    width: 4vw;
+    max-width: 50px;
 
     background-repeat: no-repeat;
     background-size: contain;
@@ -147,14 +170,63 @@ $background-color-customize: rgb(31 255 210 / 40%);
 
 @keyframes category-border-shine-anim {
   0% {
-    box-shadow: 0 0 10px $font-color-title;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 
   50% {
-    box-shadow: 0 0 15px $font-color-title;
+    box-shadow:
+      0 0 10px $glow-violet,
+      0 0 15px $glow-violet;
   }
 
   100% {
-    box-shadow: 0 0 10px $font-color-title;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 }
+
+@media screen and (width >= 768px) and (width <= 1199.98px) {
+  html {
+    font-size: 8px;
+  }
+
+  .main {
+    &_category {
+      aspect-ratio: 1 / 1.4;
+      width: 20%;
+      min-width: 100px;
+      max-width: 250px;
+    }
+
+    &_slide {
+      aspect-ratio: 1 / 1;
+      width: 20%;
+      max-width: 250px;
+    }
+  }
+}
+
+@media screen and (width >= 360px) and (width <= 767.98px) {
+  html {
+    font-size: 6px;
+  }
+
+  .main {
+    &_category {
+      aspect-ratio: 1 / 1.4;
+      width: 20%;
+      min-width: 100px;
+      max-width: 250px;
+    }
+
+    &_slide {
+      aspect-ratio: 1 / 1;
+      width: 20%;
+      max-width: 250px;
+    }
+  }
+}
+

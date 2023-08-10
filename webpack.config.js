@@ -7,6 +7,8 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const mode = process.env.NODE_ENV || 'development';
 const isDev = mode === 'development';
 
+const Dotenv = require('dotenv-webpack');
+
 const plugins = [
   new HtmlWebpackPlugin({
     template: path.resolve(__dirname, 'src/index.html'),
@@ -17,6 +19,8 @@ const plugins = [
   }),
   new ESLintPlugin({ extensions: ['.ts'] }),
   new StylelintPlugin({ fix: true }),
+
+  new Dotenv(),
 ];
 
 module.exports = {
@@ -84,7 +88,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ttf?|woff?)$/,
+        test: /\.(ttf?|woff?|woff2?)$/,
         type: 'asset/resource',
         generator: {
           filename: 'fonts/[name].[ext]',

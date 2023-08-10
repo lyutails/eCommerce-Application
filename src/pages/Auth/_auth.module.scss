@@ -1,22 +1,58 @@
 @import '../../style/variables';
 
 body {
-    background-color: black;
-    ;
+  background-color: black;
 }
 
 .login {
-    width: 25%;
-    margin: 0 auto;
-    padding: 5rem;
+  width: 25%;
+  margin: 0 auto;
+  padding: 5rem;
 
-    .title {
-        color: white;
-    }
+  .title {
+    color: white;
+  }
 
-    .form {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .email,
+  .password {
+    display: flex;
+    flex-direction: column;
+
+    height: 4rem;
+    margin-bottom: 2rem;
+
+    border: 1px solid $font-primary-two;
+  }
+
+  &_wrapper {
+    display: flex;
+  }
+
+  &_wrapper_img {
+    width: 10%;
+    height: 100%;
+
+    background-image: url('../../../public/assets/icon/email.svg');
+    background-repeat: no-repeat;
+    background-position: left 0.8rem center;
+  }
+
+  .password {
+    &_input {
+      background-image: url('../../../public/assets/icon/password.svg');
     }
+  }
+
+  .registration {
+    &_button {
+      width: 100%;
+    }
+  }
+
 }

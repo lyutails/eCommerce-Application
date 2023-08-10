@@ -12,13 +12,22 @@ function Footer(): JSX.Element {
         </div>
         <div className={style.footer_right}>
           <div className={style.footer_teamlogo}></div>
-          <a className={style.footer_github_link} href="https://github.com/CRAFTSW0MAN/">
+          <a
+            className={style.footer_github_link}
+            href="https://github.com/CRAFTSW0MAN/"
+          >
             <div className={style.footer_github_logo}></div>
           </a>
-          <a className={style.footer_github_link} href="https://github.com/yanabel1996">
+          <a
+            className={style.footer_github_link}
+            href="https://github.com/yanabel1996"
+          >
             <div className={style.footer_github_logo}></div>
           </a>
-          <a className={style.footer_github_link} href="https://github.com/lyutails/">
+          <a
+            className={style.footer_github_link}
+            href="https://github.com/lyutails/"
+          >
             <div className={style.footer_github_logo}></div>
           </a>
         </div>

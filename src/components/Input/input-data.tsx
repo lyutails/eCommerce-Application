@@ -18,12 +18,16 @@ const inputFields: InputFields = {
 };
 
 export const clue = {
-  invalidEmail: 'Please enter a valid email address (for example: name@example.com)',
+  invalidEmail:
+    'Please enter a valid email address (for example: name@example.com)',
   shortPassword: 'Password must be at least 8 characters long',
-  uppercasePassword: 'Password must contain at least one uppercase letter (A-Z)',
-  lowercasePassword: 'Password must contain at least one lowercase letter (a-z)',
+  uppercasePassword:
+    'Password must contain at least one uppercase letter (A-Z)',
+  lowercasePassword:
+    'Password must contain at least one lowercase letter (a-z)',
   digitPassword: 'Password must contain at least one digit (0-9)',
-  specialPassword: 'Password must contain at least one special character (e.g., !@#$%^&*)',
+  specialPassword:
+    'Password must contain at least one special character (e.g., !@#$%^&*)',
   requiredField: 'Required field.',
 };
 

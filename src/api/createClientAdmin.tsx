@@ -7,7 +7,6 @@ import {
   Project,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
-import { PROJECT_KEY } from '../constants';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
 export const apiRoot = createApiBuilderFromCtpClient(
@@ -29,7 +28,9 @@ getProject().then(console.log).catch(console.error);
 
 console.log(apiRoot.products());
 
-export const getAllProducts = async (): Promise<ClientResponse<ProductPagedQueryResponse>> => {
+export const getAllProducts = async (): Promise<
+  ClientResponse<ProductPagedQueryResponse>
+> => {
   const products = await apiRoot.products().get().execute();
   console.log(products);
   return products;

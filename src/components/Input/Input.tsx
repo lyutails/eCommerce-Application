@@ -16,9 +16,18 @@ function Input(props: InputProps): JSX.Element {
     <div className={style.wrapper}>
       <div className={style.wrapper_label}>
         <div className={style.wrapper_img}>
-          <img className={style.wrapper_img_icon} src={props.imageBefore} alt="Icon" />
+          <img
+            className={style.wrapper_img_icon}
+            src={props.imageBefore}
+            alt="Icon"
+          />
         </div>
-        <input className={style.wrapper_input} type={props.type} placeholder={props.placeholder} required />
+        <input
+          className={style.wrapper_input}
+          type={props.type}
+          placeholder={props.placeholder}
+          required
+        />
         {props.children}
       </div>
       <span className={style.wrapper_clue}></span>
