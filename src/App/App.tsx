@@ -1,3 +1,4 @@
+import style from './_app.module.scss';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
