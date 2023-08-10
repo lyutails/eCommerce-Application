@@ -48,8 +48,7 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-console": "off",
-    "no-debugger": "off",
-    "max-lines-per-function": ["error", 120]
+    "no-debugger": "off"
   },
   "settings": {
     "react": {

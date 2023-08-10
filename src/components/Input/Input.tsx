@@ -1,5 +1,5 @@
 import style from '../Input/_input.module.scss';
-import { ReactNode } from 'react';
+import { ChangeEventHandler, ReactNode } from 'react';
 // import { clue } from '../Input/input-data';
 
 interface InputProps {
@@ -8,10 +8,9 @@ interface InputProps {
   classClue: string;
   classWrapper: string;
   placeholder: string;
-  // imageBefore?: string;
-  // imageAfter?: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
+  func?: ChangeEventHandler<HTMLInputElement>;
 }
 
 function Input(props: InputProps): JSX.Element {
@@ -19,14 +18,8 @@ function Input(props: InputProps): JSX.Element {
     <div className={`${style.wrapper} ${props.classWrapper}`}>
       <div className={style.wrapper_label}>
         {props.childrenBefore}
-        {/* <div className={style.wrapper_img}>
-          <img
-            className={style.wrapper_img_icon}
-            src={props.imageBefore}
-            alt="Icon"
-          />
-        </div> */}
         <input
+          onChange={props.func}
           className={`${style.wrapper_input} ${props.classInput}`}
           type={props.type}
           placeholder={props.placeholder}
