@@ -1,4 +1,4 @@
-import { CustomerFields, CustomerParam } from '../types/interfaces';
+// import { CustomerFields, CustomerParam } from '../types/interfaces';
 import { Dispatch } from 'react';
 import { ctpClient } from './clientBuilder';
 import {
@@ -127,42 +127,42 @@ export async function getCategories(): Promise<
   }
 }
 
-export async function createCustomer(
-  data: CustomerFields
-): Promise<ClientResponse<CustomerSignInResult>> {
-  try {
-    const customer = await apiRoot
-      .me()
-      .signup()
-      .post({
-        // body: createCustomerDraft(data),
-        body: data,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .execute();
-    return customer;
-  } catch {
-    throw new Error('cannot create a customer me');
-  }
-}
+// export async function createCustomer(
+//   data: CustomerFields
+// ): Promise<ClientResponse<CustomerSignInResult>> {
+//   try {
+//     const customer = await apiRoot
+//       .me()
+//       .signup()
+//       .post({
+//         // body: createCustomerDraft(data),
+//         body: data,
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       })
+//       .execute();
+//     return customer;
+//   } catch {
+//     throw new Error('cannot create a customer me');
+//   }
+// }
 
-export async function createCustomerTwo(
-  data: CustomerFields
-): Promise<ClientResponse<CustomerSignInResult>> {
-  try {
-    const customer = await apiRoot
-      .customers()
-      .post({
-        body: data,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .execute();
-    return customer;
-  } catch {
-    throw new Error('cannot create a customer');
-  }
-}
+// export async function createCustomerTwo(
+//   data: CustomerFields
+// ): Promise<ClientResponse<CustomerSignInResult>> {
+//   try {
+//     const customer = await apiRoot
+//       .customers()
+//       .post({
+//         body: data,
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       })
+//       .execute();
+//     return customer;
+//   } catch {
+//     throw new Error('cannot create a customer');
+//   }
+// }

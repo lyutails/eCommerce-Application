@@ -38,3 +38,12 @@ body {
   flex-direction: column;
   height: 100%;
 }
+
+a {
+  color: $font-color-primary-one;
+  text-decoration: none;
+
+  &:visited {
+    color: $font-color-primary-one;
+  }
+}
