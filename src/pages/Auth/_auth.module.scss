@@ -4,55 +4,88 @@ body {
   background-color: black;
 }
 
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: white;
+}
+
 .login {
-  width: 25%;
+  width: 30%;
+  min-width: 50rem;
+  height: calc(100vh - 200px);
   margin: 0 auto;
   padding: 5rem;
+}
 
-  .title {
-    color: white;
-  }
-
-  .form {
+.authorization {
+  &_form {
     display: flex;
     flex-direction: column;
     width: 100%;
   }
 
-  .email,
-  .password {
-    display: flex;
-    flex-direction: column;
+  &_button {
+    cursor: pointer;
 
-    height: 4rem;
-    margin-bottom: 2rem;
+    width: 100%;
+    height: 5rem;
+    padding: 1rem 2rem;
 
-    border: 1px solid $font-primary-two;
+    font-size: 2rem;
+    color: white;
+
+    background-color: $button-default;
+    border: none;
+
+    transition: background-color ease-in-out 0.2s;
   }
 
-  &_wrapper {
-    display: flex;
+  &_button:focus {
+    background-color: $button-focus;
   }
 
-  &_wrapper_img {
-    width: 10%;
-    height: 100%;
-
-    background-image: url('../../../public/assets/icon/email.svg');
-    background-repeat: no-repeat;
-    background-position: left 0.8rem center;
+  &_button:hover {
+    background-color: $button-hover;
   }
 
-  .password {
-    &_input {
-      background-image: url('../../../public/assets/icon/password.svg');
-    }
+  &_button:active {
+    background-color: $button-active;
+  }
+}
+
+.registration {
+  &_button {
+    cursor: pointer;
+
+    width: 100%;
+    height: 5rem;
+    padding: 1rem 2rem;
+
+    font-size: 2rem;
+    color: white;
+
+    background-color: transparent;
+    border: 2px solid $border-default;
+
+    transition: border ease-in-out 0.2s;
   }
 
-  .registration {
-    &_button {
-      width: 100%;
-    }
+  &_button:focus {
+    border: 2px solid $border-focus;
   }
 
+  &_button:hover {
+    border: 2px solid $border-hover;
+  }
+
+  &_button:active {
+    border: 2px solid $border-active;
+  }
+}
+
+.password_eye {
+  background-color: transparent;
+  border: none;
 }
