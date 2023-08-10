@@ -60,3 +60,6 @@ export interface IRootState {
     isAuth: boolean;
   };
 }
+export interface IApiState {
+  currentCategory: string[];
+}

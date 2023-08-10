@@ -1,9 +1,5 @@
+import { IApiState } from '../../types/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
-import { SET_CATEGORY } from '../../constants';
-
-interface IApiState {
-  currentCategory: (typeof SET_CATEGORY)[];
-}
 
 const initialState: IApiState = {
   currentCategory: [],

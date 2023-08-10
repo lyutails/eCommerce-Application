@@ -5,5 +5,6 @@ import categoryReducer from './reducers/category';
 export default configureStore({
   reducer: {
     user: useReducer,
+    category: categoryReducer,
   },
 });
