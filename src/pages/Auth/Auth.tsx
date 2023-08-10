@@ -38,66 +38,68 @@ function AuthPage(): JSX.Element {
   };
   return (
     <div className={style.login}>
-      <div className={style.authorization}>
-        <h2 className={style.title}>Login</h2>
-        <form action="" className={style.authorization_form}>
-          <Input
-            // func={(event: ChangeEventHandler<HTMLInputElement>): void =>
-            //   checkEmail(event)
-            // }
-            type="email"
-            placeholder="E-mail"
-            classWrapper={style.email}
-            classClue={style.email_clue}
-            classInput={style.email_input}
-            childrenBefore={
-              <div className={style.wrapper_img}>
-                <img
-                  className={style.wrapper_img_icon}
-                  src={iconEmail}
-                  alt="Icon"
-                />
-              </div>
-            }
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            classWrapper={style.password}
-            classClue={style.password_clue}
-            classInput={style.password_input}
-            childrenBefore={
-              <div className={style.wrapper_img}>
-                <img
-                  className={style.wrapper_img_icon}
-                  src={iconPassword}
-                  alt="Icon"
-                />
-              </div>
-            }
-            childrenAfter={
-              <ButtonForm classNames={style.password_eye}>
-                <img
-                  className={style.label_img_icon}
-                  src={iconEye}
-                  alt="Icon"
-                />
-              </ButtonForm>
-            }
-          />
-          <ButtonForm classNames={style.authorization_button} type="submit">
-            LogIn
+      <div className={style.login_wrapper}>
+        <div className={style.authorization}>
+          <h2 className={style.title}>Login</h2>
+          <form action="" className={style.authorization_form}>
+            <Input
+              // func={(event: ChangeEventHandler<HTMLInputElement>): void =>
+              //   checkEmail(event)
+              // }
+              type="email"
+              placeholder="E-mail"
+              classWrapper={style.email}
+              classClue={style.email_clue}
+              classInput={style.email_input}
+              childrenBefore={
+                <div className={style.wrapper_img}>
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconEmail}
+                    alt="Icon"
+                  />
+                </div>
+              }
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              classWrapper={style.password}
+              classClue={style.password_clue}
+              classInput={style.password_input}
+              childrenBefore={
+                <div className={style.wrapper_img}>
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconPassword}
+                    alt="Icon"
+                  />
+                </div>
+              }
+              childrenAfter={
+                <ButtonForm classNames={style.password_eye}>
+                  <img
+                    className={style.label_img_icon}
+                    src={iconEye}
+                    alt="Icon"
+                  />
+                </ButtonForm>
+              }
+            />
+            <ButtonForm classNames={style.authorization_button} type="submit">
+              LogIn
+            </ButtonForm>
+          </form>
+        </div>
+        <div className={style.registration}>
+          <h2 className={style.title}>Registartion</h2>
+          <ButtonForm
+            handlerLogin={handleToLogin}
+            classNames={style.registration_button}
+          >
+            SignUp
           </ButtonForm>
-        </form>
-      </div>
-      <div className={style.registration}>
-        <h2 className={style.title}>Registartion</h2>
-        <ButtonForm
-          handlerLogin={handleToLogin}
-          classNames={style.registration_button}
-        >
-          SignUp
-        </ButtonForm>
+        </div>
       </div>
     </div>
   );

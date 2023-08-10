@@ -1,3 +1,4 @@
+import style from './_app.module.scss';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
@@ -18,7 +19,7 @@ function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   console.log(isAuth);
   return (
-    <div>
+    <section className={style.app}>
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
@@ -40,7 +41,7 @@ function App(): JSX.Element {
         )}
       </Routes>
       <Footer />
-    </div>
+    </section>
   );
 }
 export default App;
