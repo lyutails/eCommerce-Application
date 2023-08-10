@@ -1,4 +1,4 @@
-import { CustomerFields, CustomerParam } from '../types/interfaces';
+import { ICustomerFields, ICustomerParam } from '../types/interfaces';
 import { Dispatch } from 'react';
 import { ctpClient } from './clientBuilder';
 import {
@@ -102,7 +102,6 @@ export async function getAllCustomers(): Promise<
 > {
   try {
     const customers = await apiRoot.customers().get().execute();
-    console.log(customers);
     return customers;
   } catch {
     throw new Error('no customers found');
@@ -128,7 +127,7 @@ export async function getCategories(): Promise<
 }
 
 export async function createCustomer(
-  data: CustomerFields
+  data: ICustomerFields
 ): Promise<ClientResponse<CustomerSignInResult>> {
   try {
     const customer = await apiRoot
@@ -149,7 +148,7 @@ export async function createCustomer(
 }
 
 export async function createCustomerTwo(
-  data: CustomerFields
+  data: ICustomerFields
 ): Promise<ClientResponse<CustomerSignInResult>> {
   try {
     const customer = await apiRoot

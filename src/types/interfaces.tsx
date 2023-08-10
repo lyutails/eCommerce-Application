@@ -52,6 +52,7 @@ export interface IButtonFields {
 export interface IButtonCustomFields {
   classNames: string;
   children: ReactNode;
+  handlerLogin?: React.MouseEventHandler<HTMLButtonElement>;
   type?: 'button' | 'submit' | 'reset';
 }
 

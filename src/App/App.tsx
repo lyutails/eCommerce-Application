@@ -16,32 +16,26 @@ import Card from '../components/Card/Card';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  console.log(isAuth);
   return (
     <div>
       <Header />
       <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/customize" element={<CustomizePage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/basket" element={<BasketPage />} />
+        <Route path="/category/:category" element={<CategoryPage />} />
+        <Route path="/category/:category/:id" element={<Card />} />
+        <Route path="*" element={<NotFoundPage />} />
         {isAuth === false ? (
           <>
-            <Route path="/" element={<Main />} />
-            <Route path="/customize" element={<CustomizePage />} />
-            <Route path="/about-us" element={<AboutUsPage />} />
-            <Route path="/basket" element={<BasketPage />} />
             <Route path="/profile" element={<AuthPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
-            <Route path="/category/:category" element={<CategoryPage />} />
-            <Route path="/category/:category/:id" element={<Card />} />
-            <Route path="*" element={<NotFoundPage />} />
           </>
         ) : (
           <>
-            <Route path="/" element={<Main />} />
-            <Route path="/customize" element={<CustomizePage />} />
-            <Route path="/about-us" element={<AboutUsPage />} />
-            <Route path="/basket" element={<BasketPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/category/:category" element={<CategoryPage />} />
-            <Route path="/category/:category/:id" element={<Card />} />
-            <Route path="*" element={<NotFoundPage />} />
           </>
         )}
       </Routes>
