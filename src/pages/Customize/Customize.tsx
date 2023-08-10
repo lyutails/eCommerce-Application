@@ -1,4 +1,4 @@
-import style from '../Basket/_basket.module.scss';
+import style from '../Customize/_customize.module.scss';
 
 function CustomizePage(): JSX.Element {
   return (

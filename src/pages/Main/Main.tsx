@@ -11,6 +11,22 @@ import style from './_main.module.scss';
 function Main(): JSX.Element {
   console.log(getCategories());
   return (
+    //   {menuList.map((item, index) => {
+    //     const {id, idx, img, name, description, price, weight} = item;
+    //     return(
+    //         <Link to = {`/products/${id}`} key= {index}>
+    //         <Card
+    //             idx = {idx}
+    //             id={id}
+    //             img={img}
+    //             name ={name}
+    //             description ={description}
+    //             price ={price}
+    //             weight ={weight}
+    //         />
+    //         </Link>
+    //     );
+    // })}
     <div className={style.main}>
       <div className={style.main_wrapper}>
         <div className={style.main_categories_block}>

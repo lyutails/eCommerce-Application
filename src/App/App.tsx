@@ -11,6 +11,8 @@ import BasketPage from '../pages/Basket/Basket';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
 import { IRootState } from '../types/interfaces';
+import CategoryPage from '../pages/Category/Category';
+import Card from '../components/Card/Card';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -27,6 +29,8 @@ function App(): JSX.Element {
             <Route path="/basket" element={<BasketPage />} />
             <Route path="/profile" element={<AuthPage />} />
             <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/category/:category/:id" element={<Card />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
         ) : (
@@ -36,6 +40,8 @@ function App(): JSX.Element {
             <Route path="/about-us" element={<AboutUsPage />} />
             <Route path="/basket" element={<BasketPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/category/:category/:id" element={<Card />} />
             <Route path="*" element={<NotFoundPage />} />
           </>
         )}
