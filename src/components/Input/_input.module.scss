@@ -13,21 +13,21 @@
         padding: 0 2rem;
 
         background-color: white;
-        border: 1px solid $border-default;
+        border: 2px solid $border-default;
 
         transition: border ease-in-out 0.2s;
     }
 
     &_label:focus {
-        border: 1px solid $border-focus;
+        border: 2px solid $border-focus;
     }
 
     &_label:hover {
-        border: 1px solid $border-hover;
+        border: 2px solid $border-hover;
     }
 
     &_label:active {
-        border: 1px solid $border-active;
+        border: 2px solid $border-active;
     }
 
     &_input {

@@ -1,8 +1,6 @@
 import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEmail from '../../../public/assets/icon/email.svg';
-import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
 
 function RegistrationPage(): JSX.Element {
