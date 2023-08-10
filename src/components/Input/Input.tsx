@@ -1,8 +1,9 @@
 import style from '../Input/_input.module.scss';
 import { ChangeEventHandler, ReactNode } from 'react';
+
 // import { clue } from '../Input/input-data';
 
-interface InputProps {
+interface IInputProps {
   type: string;
   classInput: string;
   classClue: string;
@@ -13,7 +14,7 @@ interface InputProps {
   func?: ChangeEventHandler<HTMLInputElement>;
 }
 
-function Input(props: InputProps): JSX.Element {
+function Input(props: IInputProps): JSX.Element {
   return (
     <div className={`${style.wrapper} ${props.classWrapper}`}>
       <div className={style.wrapper_label}>

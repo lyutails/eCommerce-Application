@@ -15,14 +15,22 @@ function Header(): JSX.Element {
         </Link>
         <div className={style.header_categories}>
           <ul className={style.list}>
-            <li className={style.main}>Main</li>
-            <li className={style.customize}>Customize</li>
-            <li className={style.aboutus}>About Us</li>
+            <li className={style.main}>
+              <Link to="/">Main</Link>
+            </li>
+            <li className={style.customize}>
+              <Link to="/customize">Customize</Link>
+            </li>
+            <li className={style.aboutus}>
+              <Link to="/about-us">About Us</Link>
+            </li>
             <li className={style.cart}>
               <span className={style.cart_counter}>{`${cartCounter}`}</span>
             </li>
             <li className={style.sum}>{`${walletCost}`}$</li>
-            <li className={style.login}>LogIn</li>
+            <li className={style.login}>
+              <Link to="/profile">LogIn</Link>
+            </li>
           </ul>
         </div>
       </div>

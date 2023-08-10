@@ -1,6 +1,6 @@
-import { ButtonFields } from '../../../types/interfaces';
+import { IButtonFields } from '../../../types/interfaces';
 
-const buttonFields: ButtonFields = {
+const buttonFields: IButtonFields = {
   login: {
     classNames: 'button_login',
     children: 'LogIn',

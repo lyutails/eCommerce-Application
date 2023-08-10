@@ -4,6 +4,8 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // import { checkEmail } from '../Auth/verify';
 // import { ChangeEventHandler } from 'react';
 
@@ -22,6 +24,13 @@ const clue = {
 };
 
 function AuthPage(): JSX.Element {
+  // для навигации
+  const navigate = useNavigate();
+  const handeleСreationAuth = (e: Event): void => {
+    console.log(e);
+    navigate('/registration');
+  };
+
   return (
     <div className={style.login}>
       <div className={style.authorization}>

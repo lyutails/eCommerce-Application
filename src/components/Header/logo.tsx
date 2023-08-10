@@ -5,7 +5,6 @@ export const logo = (
     width="179"
     height="23"
     viewBox="0 0 179 23"
-    // filter={drop-shadow(0 0 5px {{$glow-green}}) drop-shadow(0 0 10px {{$glow-green}})}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
