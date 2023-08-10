@@ -2,7 +2,7 @@ import '../../style/variables.scss';
 
 export const logo = (
   <svg
-    width="179"
+    // width="179"
     height="23"
     viewBox="0 0 179 23"
     fill="none"

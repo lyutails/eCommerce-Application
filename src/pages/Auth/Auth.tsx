@@ -26,7 +26,7 @@ const clue = {
 function AuthPage(): JSX.Element {
   // для навигации
   const navigate = useNavigate();
-  const handeleСreationAuth = (e: Event): void => {
+  const handleСreationAuth = (e: Event): void => {
     console.log(e);
     navigate('/registration');
   };

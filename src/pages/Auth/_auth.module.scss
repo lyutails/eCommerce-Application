@@ -12,9 +12,10 @@ body {
 }
 
 .login {
+  flex: 1 1 auto;
+
   width: 30%;
   min-width: 50rem;
-  height: calc(100vh - 200px);
   margin: 0 auto;
   padding: 5rem;
 }
