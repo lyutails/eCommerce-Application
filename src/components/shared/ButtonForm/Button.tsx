@@ -1,7 +1,7 @@
-import { ButtonCustomFields } from '../../../types/interfaces';
+import { IButtonCustomFields } from '../../../types/interfaces';
 import style from '../ButtonForm/_button.module.scss';
 
-function ButtonForm(props: ButtonCustomFields): JSX.Element {
+function ButtonForm(props: IButtonCustomFields): JSX.Element {
   return (
     <button
       className={`${props.classNames} ${style.button}`}

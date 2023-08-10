@@ -23,11 +23,10 @@ body {
   .password {
     display: flex;
     flex-direction: column;
-
     height: 4rem;
     margin-bottom: 2rem;
 
-    border: 1px solid $font-primary-two;
+    // border: 1px solid $font-primary-two;
   }
 
   &_wrapper {

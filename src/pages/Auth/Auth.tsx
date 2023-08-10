@@ -4,6 +4,7 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const clue = {
   invalidEmail:
@@ -20,6 +21,14 @@ const clue = {
 };
 
 function AuthPage(): JSX.Element {
+  // Вызываем массив из form
+  // const user = useSelector(state => state.user.user);
+  // для навигации
+  const navigate = useNavigate();
+  const handeleСreationAuth = (e: Event): void => {
+    console.log(e);
+  };
+
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -42,7 +51,7 @@ function AuthPage(): JSX.Element {
       </div>
       <div className={style.registration}>
         <h2 className={style.title}>Registartion</h2>
-        <ButtonForm classNames={style.button_registration}>Sign Up</ButtonForm>
+        <ButtonForm onClick={handeleСreationAuth}classNames={style.button_registration}>Sign Up</ButtonForm>
       </div>
     </div>
   );

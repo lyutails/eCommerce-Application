@@ -1,9 +1,9 @@
 import style from '../Input/_input.module.scss';
-import { InputCustomFields } from '../../types/interfaces';
+import { IInputCustomFields } from '../../types/interfaces';
 import { ReactNode } from 'react';
 // import { clue } from '../Input/input-data';
 
-interface InputProps {
+interface IInputProps {
   type: string;
   placeholder: string;
   imageBefore: string;
@@ -11,7 +11,7 @@ interface InputProps {
   children?: ReactNode;
 }
 
-function Input(props: InputProps): JSX.Element {
+function Input(props: IInputProps): JSX.Element {
   return (
     <div className={style.wrapper}>
       <div className={style.wrapper_label}>

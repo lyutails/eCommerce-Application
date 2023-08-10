@@ -1,9 +1,9 @@
-import { InputFields } from '../../types/interfaces';
+import { IInputFields } from '../../types/interfaces';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
 
-const inputFields: InputFields = {
+const inputFields: IInputFields = {
   email: {
     type: 'email',
     placeholder: 'E-mail',
