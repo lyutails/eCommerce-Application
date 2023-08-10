@@ -13,12 +13,13 @@ import ProfilePage from '../pages/Profile/Profile';
 import { IRootState } from '../types/interfaces';
 import CategoryPage from '../pages/Category/Category';
 import Card from '../components/Card/Card';
+import style from './_app.module.scss';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   console.log(isAuth);
   return (
-    <div>
+    <section className={style.app}>
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
@@ -40,7 +41,7 @@ function App(): JSX.Element {
         )}
       </Routes>
       <Footer />
-    </div>
+    </section>
   );
 }
 export default App;
