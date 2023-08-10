@@ -7,7 +7,7 @@ const userReducer = createSlice({
     login: '',
     password: '',
     email: '',
-    isAuth: true,
+    isAuth: false,
   },
   reducers: {
     creationUser(state, action) {
