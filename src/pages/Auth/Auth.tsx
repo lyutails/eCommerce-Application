@@ -22,28 +22,67 @@ const clue = {
 function AuthPage(): JSX.Element {
   return (
     <div className={style.login}>
-      <div className={style.authorization}>
-        <h2 className={style.title}>Login</h2>
-        <form action="" className={style.form}>
-          <Input type="email" placeholder="E-mail" imageBefore={iconEmail} />
-          <Input
-            type="password"
-            placeholder="Password"
-            imageBefore={iconPassword}
-          >
-            <div className={style.password_eye}>
-              <img className={style.label_img_icon} src={iconEye} alt="Icon" />
+      <AuthPageLogin />
+      <AuthPageRegister />
+    </div>
+  );
+}
+
+function AuthPageLogin(): JSX.Element {
+  return (
+    <div className={style.authorization}>
+      <h2 className={style.title}>Login</h2>
+      <form action="" className={style.authorization_form}>
+        <Input
+          type="email"
+          placeholder="E-mail"
+          classWrapper={style.email}
+          classClue={style.email_clue}
+          classInput={style.email_input}
+          childrenBefore={
+            <div className={style.wrapper_img}>
+              <img
+                className={style.wrapper_img_icon}
+                src={iconEmail}
+                alt="Icon"
+              />
             </div>
-          </Input>
-          <ButtonForm classNames={style.button_login} type="submit">
-            Log In
-          </ButtonForm>
-        </form>
-      </div>
-      <div className={style.registration}>
-        <h2 className={style.title}>Registartion</h2>
-        <ButtonForm classNames={style.button_registration}>Sign Up</ButtonForm>
-      </div>
+          }
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          classWrapper={style.password}
+          classClue={style.password_clue}
+          classInput={style.password_input}
+          childrenBefore={
+            <div className={style.wrapper_img}>
+              <img
+                className={style.wrapper_img_icon}
+                src={iconPassword}
+                alt="Icon"
+              />
+            </div>
+          }
+          childrenAfter={
+            <ButtonForm classNames={style.password_eye}>
+              <img className={style.label_img_icon} src={iconEye} alt="Icon" />
+            </ButtonForm>
+          }
+        />
+        <ButtonForm classNames={style.authorization_button} type="submit">
+          LogIn
+        </ButtonForm>
+      </form>
+    </div>
+  );
+}
+
+function AuthPageRegister(): JSX.Element {
+  return (
+    <div className={style.registration}>
+      <h2 className={style.title}>Registartion</h2>
+      <ButtonForm classNames={style.registration_button}>SignUp</ButtonForm>
     </div>
   );
 }

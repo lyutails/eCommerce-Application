@@ -1,11 +1,10 @@
-import { tokenCustomer } from '../../src/api/clientBuilder';
-import { tokenAdmin } from '../../src/api/adminBuilder';
+// import { tokenCustomer } from '../../src/api/clientBuilder';
+// import { tokenAdmin } from '../../src/api/adminBuilder';
 // import { apiRoot } from '../../src/api/createClientAdmin';
 import { getCategories } from '../api/createClient';
-import style from './_app.module.scss';
-import AuthPage from '../pages/Auth/Auth';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+// import style from './_app.module.scss';
+// import AuthPage from '../pages/Auth/Auth';
+import RegistrationPage from '../pages/Registration/Registration';
 // import Input from '../components/Input/Input';
 // import { email, password } from '../components/Input/input-data';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +32,7 @@ function App(): JSX.Element {
   // console.log(tokenCustomer);
   return (
     <div>
-      <AuthPage />
+      <RegistrationPage />
     </div>
   );
 }

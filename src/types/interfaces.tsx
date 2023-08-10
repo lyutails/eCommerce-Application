@@ -32,11 +32,6 @@ export interface CustomerParam {
   }[];
 }
 
-export interface InputFields {
-  email: InputCustomFields;
-  password: InputCustomFields;
-}
-
 export interface InputCustomFields {
   type: string;
   placeholder: string;
