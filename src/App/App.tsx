@@ -2,12 +2,11 @@ import { tokenCustomer } from '../../src/api/clientBuilder';
 import { tokenAdmin } from '../../src/api/adminBuilder';
 import { apiRoot, createCustomer, createCustomerTwo, getAllCustomers, getAllProducts } from '../api/createClient';
 // import { apiRoot } from '../../src/api/createClientAdmin';
-import { getAllProducts, getCategories } from '../api/createClient';
+// import { getAllProducts, getCategories } from '../api/createClient';
 import style from './_app.module.scss';
 import AuthPage from '../pages/Auth/Auth';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
-import FormComponent from '../components/FormComponent/FormComponent';
 // import Input from '../components/Input/Input';
 // import { email, password } from '../components/Input/input-data';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +15,7 @@ import FormComponent from '../components/FormComponent/FormComponent';
 function App(): JSX.Element {
   // console.log(apiRoot.products().get());
   // console.log(getAllProducts);
-  console.log(getCategories());
+  // console.log(getCategories());
   // const dispatch = useDispatch();
   // const url = getAllProducts(dispatch(setImage));
   // const image = useSelector(state => state.);
@@ -34,9 +33,7 @@ function App(): JSX.Element {
   // console.log(tokenCustomer);
   return (
     <div>
-      <Header />
-      <FormComponent />
-      <Footer />
+      <AuthPage />
     </div>
   );
 }

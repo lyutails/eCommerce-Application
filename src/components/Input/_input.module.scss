@@ -1,18 +1,35 @@
-.label {
-    display: flex;
+.wrapper {
+    margin-bottom: 2rem;
+
+
+    &_label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 0.5rem;
+        padding: 0 1rem;
+
+        background-color: white;
+    }
 
     &_input {
+        width: 100%;
         padding: 1rem;
         color: black;
         border: none;
     }
 
+    &_input:focus {
+        outline: none;
+    }
+
+    // &_img {
+
+    // }
+
     &_img_icon {
         width: 2rem;
         height: 100%;
-    }
-
-    &_input:focus {
-        outline: none;
     }
 }

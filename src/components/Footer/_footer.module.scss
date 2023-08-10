@@ -1,4 +1,4 @@
-$footer-background-color: purple;
+$footer-background-color: #041426;
 $font-color-primary-one: #eaff62;
 
 .footer {
@@ -45,9 +45,10 @@ $font-color-primary-one: #eaff62;
   }
 
   &_teamlogo {
-    font-size: 2.4rem;
     aspect-ratio: 1 / 1;
     width: 15%;
+
+    font-size: 2.4rem;
 
     background-image: url('../../../public/assets/icons/trinity.png');
     background-repeat: no-repeat;

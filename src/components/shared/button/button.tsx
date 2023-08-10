@@ -1,8 +1,11 @@
-function Button(): JSX.Element {
+import style from '../Button/_button.module.scss';
+import { ButtonCustomFields } from '../../../types/interfaces';
+
+function Button(props: ButtonCustomFields): JSX.Element {
   return (
-    <div>
-      <h1 className="like-button_title">Hello!</h1>
-    </div>
+    <button className={`${props.classNames} ${style.button}`} type={props.type || 'button'}>
+      {props.children}
+    </button>
   );
 }
 export default Button;
