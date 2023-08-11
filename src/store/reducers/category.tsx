@@ -1,8 +1,8 @@
-import { IApiState } from '../../types/interfaces';
+import { ICategoryState } from '../../types/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: IApiState = {
-  currentCategory: [],
+const initialState: ICategoryState = {
+  category: [],
 };
 
 const categoryReducer = createSlice({
@@ -10,7 +10,7 @@ const categoryReducer = createSlice({
   initialState,
   reducers: {
     creationCategory(state, action) {
-      state.currentCategory = [...state.currentCategory, ...action.payload];
+      state.category = [...state.category, ...action.payload];
     },
   },
 });
