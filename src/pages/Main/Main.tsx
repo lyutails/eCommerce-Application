@@ -13,13 +13,12 @@ import style from './_main.module.scss';
 // why don't give to use {category}
 
 function Main(): JSX.Element {
+  console.log(categories);
   const category = useSelector((state: ICategoryState) => state.category);
-  const dispatch = useDispatch();
   // const createCategory = (): void => {
   //   dispatch(setCategory);
   // };
   console.log(category);
-  console.log(categories);
   // console.log(createCategory());
   return (
     <div className={style.main}>

@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { ICategoryState } from '../../types/interfaces';
+
+const initialState: ICategoryState = {
+  category: [],
+};
+
 const categoryReducer = createSlice({
   name: 'category',
-  initialState: {
-    category: [],
-  },
+  initialState,
   reducers: {
-    // getCategory(state, action) {
-    //   state.category = { ...action.payload };
-    // },
     createCategory(state, action) {
-      state.category = action.payload;
+      state.category = [...state.category, ...action.payload];
     },
   },
 });
