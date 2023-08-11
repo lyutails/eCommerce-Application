@@ -17,7 +17,7 @@ import Card from '../components/Card/Card';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  console.log(isAuth);
+  // console.log(isAuth);
   return (
     <section className={style.app}>
       <Header />

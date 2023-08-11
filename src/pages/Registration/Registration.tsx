@@ -34,7 +34,7 @@ function RegistrationPageLogin(): JSX.Element {
 function RegistrationPageRegister(): JSX.Element {
   return (
     <div className={style.registration}>
-      <h2 className={style.title}>Registartion</h2>
+      <h2 className={style.title}>Registration</h2>
       <form action="" className={style.registration_form}>
         <Input
           type="text"

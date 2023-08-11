@@ -64,3 +64,30 @@ export interface IRootState {
 export interface IApiState {
   currentCategory: string[];
 }
+
+export interface IPasswordErrors {
+  empty: {
+    text: string;
+    isError: boolean;
+  };
+  uppercase: {
+    text: string;
+    isError: boolean;
+  };
+  lowercase: {
+    text: string;
+    isError: boolean;
+  };
+  short: {
+    text: string;
+    isError: boolean;
+  };
+  whitespace: {
+    text: string;
+    isError: boolean;
+  };
+  digit: {
+    text: string;
+    isError: boolean;
+  };
+}

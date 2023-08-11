@@ -59,7 +59,7 @@ export type AuthAdmin = {
 };
 
 export const tokenCustomer = await authClient.clientCredentialsFlow();
-console.log(tokenCustomer);
+// console.log(tokenCustomer);
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
