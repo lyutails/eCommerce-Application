@@ -1,22 +1,16 @@
 import { ICustomerFields, ICustomerParam } from '../types/interfaces';
-import { Dispatch } from 'react';
 import { ctpClient } from './clientBuilder';
 import {
-  ApiRoot,
-  CategoryPagedQueryResponse,
   ClientResponse,
   CustomerPagedQueryResponse,
-  ProductPagedQueryResponse,
   Project,
   createApiBuilderFromCtpClient,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
-import { AnyAction } from 'redux';
-// '../../commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/requests-utils'
-// eslint-disable-next-line import/no-unresolved
-import { ApiRequest } from '@commercetools/platform-sdk/dist/declarations/src/generated/shared/utils/requests-utils';
+
 import { PROJECT_KEY } from '../constants';
-// import { setImage } from '@/store/counterSlice';
+import { GetCategories } from './getCategories';
+import { getProducts } from './getProducts';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
 export const apiRoot = createApiBuilderFromCtpClient(
@@ -36,29 +30,9 @@ export const getProject = async (): Promise<ClientResponse<Project>> => {
 // Retrieve Project information and output the result to the log
 // getProject().then(console.log).catch(console.error);
 
-console.log(apiRoot.categories());
+export const categories = GetCategories();
 
-console.log(apiRoot.products());
-
-console.log(apiRoot.customers().get());
-
-let image = '';
-
-export async function getAllProducts(
-  dispatch: Dispatch<AnyAction>
-): Promise<ClientResponse<ProductPagedQueryResponse>> {
-  try {
-    const products = await apiRoot.products().get().execute();
-    const url = products.body.results[0].masterData.current.variants[0].images;
-    url?.length ? (image = url[0].url) : console.log('error');
-    console.log(image, '1');
-    // dispatch(setImage(url));
-    return products;
-    // put data in store
-  } catch {
-    throw new Error('no products found');
-  }
-}
+export const products = getProducts();
 
 const customerDraftData = {
   email: 'johndFather@example.com',
@@ -105,24 +79,6 @@ export async function getAllCustomers(): Promise<
     return customers;
   } catch {
     throw new Error('no customers found');
-  }
-}
-
-export async function getCategories(): Promise<
-  ClientResponse<CategoryPagedQueryResponse>
-> {
-  try {
-    const categories = await apiRoot.categories().get().execute();
-    const categorisArray = await categories.body.results;
-    const categoryNamesArray = categorisArray.map((category) => category.name);
-    const categoryNameKey = 'en-US';
-    const categoryName = categoryNamesArray.map(
-      (catName) => catName[categoryNameKey]
-    );
-    console.log(categoryName);
-    return categories;
-  } catch {
-    throw new Error('no categories found');
   }
 }
 

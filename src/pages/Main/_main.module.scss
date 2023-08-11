@@ -50,8 +50,10 @@ $background-color-customize: rgb(31 255 210 / 15%);
   &_categories {
     display: flex;
     flex-flow: row wrap;
-    flex-shrink: 0;
+    row-gap: 2vh;
     justify-content: space-between;
+
+    width: 100%;
   }
 
   &_category {
@@ -59,10 +61,9 @@ $background-color-customize: rgb(31 255 210 / 15%);
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 2 / 1.4;
-    width: 20%;
-    min-width: 100px;
-    max-width: 350px;
+    aspect-ratio: 1 / 1.2;
+    width: 23%;
+    max-width: 400px;
 
     font-size: 2rem;
     color: $font-color-title;
@@ -83,9 +84,11 @@ $background-color-customize: rgb(31 255 210 / 15%);
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 0.2;
+    aspect-ratio: 1 / 0.15;
     width: 100%;
-    max-height: 200px;
+    min-height: 80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 
     font-size: 2rem;
     text-align: center;
@@ -117,7 +120,7 @@ $background-color-customize: rgb(31 255 210 / 15%);
 
     aspect-ratio: 1 / 1;
     width: 20%;
-    max-width: 250px;
+    max-width: 200px;
 
     font-size: 2rem;
     color: $font-color-primary-one;
@@ -188,17 +191,23 @@ $background-color-customize: rgb(31 255 210 / 15%);
   }
 }
 
-@media screen and (width >= 768px) and (width <= 1199.98px) {
+@media screen and (width >= 768px) and (width <= 1399.98px) {
   html {
     font-size: 8px;
   }
 
   .main {
     &_category {
-      aspect-ratio: 1 / 1.4;
-      width: 20%;
-      min-width: 100px;
-      max-width: 250px;
+      aspect-ratio: 1 / 0.6;
+      width: 48%;
+      max-width: unset;
+    }
+
+    &_advertisment {
+      aspect-ratio: 1 / 0.2;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     &_slide {
@@ -209,17 +218,31 @@ $background-color-customize: rgb(31 255 210 / 15%);
   }
 }
 
-@media screen and (width >= 360px) and (width <= 767.98px) {
+@media screen and (width >= 320px) and (width <= 767.98px) {
   html {
     font-size: 6px;
   }
 
   .main {
+    &_title {
+      text-align: center;
+    }
+
+    &_categories {
+      row-gap: 20px;
+    }
+
     &_category {
-      aspect-ratio: 1 / 1.4;
-      width: 20%;
-      min-width: 100px;
-      max-width: 250px;
+      aspect-ratio: 1 / 0.4;
+      width: 100%;
+      max-width: unset;
+    }
+
+    &_advertisment {
+      aspect-ratio: 1 / 0.4;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     &_slide {
@@ -229,4 +252,3 @@ $background-color-customize: rgb(31 255 210 / 15%);
     }
   }
 }
-
