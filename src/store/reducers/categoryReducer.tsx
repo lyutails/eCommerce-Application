@@ -17,4 +17,5 @@ const categoryReducer = createSlice({
 });
 
 export const { createCategory } = categoryReducer.actions;
+console.log(createCategory);
 export default categoryReducer.reducer;

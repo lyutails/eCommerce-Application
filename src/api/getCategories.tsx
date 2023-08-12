@@ -1,19 +1,12 @@
-import {
-  CategoryPagedQueryResponse,
-  ClientResponse,
-} from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
 import { useDispatch } from 'react-redux';
 import { createCategory } from '../store/reducers/categoryReducer';
 
-export async function GetCategories(): Promise<
-  ClientResponse<CategoryPagedQueryResponse>
-> {
+export async function GetCategories(): Promise<string[]> {
   try {
     const categories = await apiRoot.categories().get().execute();
     const categorisArray = categories.body.results;
     const categoryNamesArray = categorisArray.map((category) => category.name);
-    // console.log(categoryNamesArray);
     const categoryNameKey = 'en-US';
     const categoryNameArray = categoryNamesArray.map(
       (catName) => catName[categoryNameKey]
@@ -21,7 +14,7 @@ export async function GetCategories(): Promise<
     console.log(categoryNameArray);
     const dispatch = useDispatch();
     dispatch(createCategory(categoryNameArray));
-    return categories;
+    return categoryNameArray;
   } catch {
     throw new Error('no categories found');
   }
