@@ -1,25 +1,20 @@
-// import style from './_main.scss';
-// import { tokenCustomer } from '../../src/api/clientBuilder';
-// import { tokenAdmin } from '../../src/api/adminBuilder';
-// import { apiRoot, getAllCustomers, getAllProducts } from '../api/createClient';
-// import { apiRoot } from '../../src/api/createClientAdmin';
-import { ICategoryState } from '../../types/interfaces';
-import { products, categories } from '../../api/createClient';
-import { useDispatch, useSelector } from 'react-redux';
+import { categories } from '../../api/createClient';
+import { useSelector } from 'react-redux';
 import style from './_main.module.scss';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setImage } from '../store/counterSlice';
-
-// why don't give to use {category}
+import { useEffect, useState } from 'react';
 
 function Main(): JSX.Element {
-  console.log(categories);
-  const category = useSelector((state: ICategoryState) => state.category);
-  // const createCategory = (): void => {
-  //   dispatch(setCategory);
-  // };
-  console.log(category);
-  // console.log(createCategory());
+  categories;
+  // let category;
+  // const category = useSelector((state: ICategoryState) => state.category);
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+  useEffect(() => {
+    categories.then((response) => {
+      // category = response;
+      setAllCategories(response);
+    });
+    // return response;
+  }, []);
   return (
     <div className={style.main}>
       <div className={style.main_wrapper}>
@@ -27,20 +22,14 @@ function Main(): JSX.Element {
           <h1 className={style.main_title}>
             Awesome RSSchool Merch Categories
           </h1>
-
           <div className={style.main_categories}>
-            <div className={style.main_category}>
-              add Sloth pic here staring at / choosing Clothes
-            </div>
-            <div className={style.main_category}>
-              add Sloth pic here staring at / choosing PC gadgets
-            </div>
-            <div className={style.main_category}>
-              add Sloth pic here staring at / choosing Souvenirs
-            </div>
-            <div className={style.main_category}>
-              add Sloth pic here staring at / choosing Active things
-            </div>
+            {allCategories.map((category) => {
+              return (
+                <div className={style.main_category} key={category}>
+                  add Sloth pic here staring at / choosing {category}
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className={style.main_advertisment}>
