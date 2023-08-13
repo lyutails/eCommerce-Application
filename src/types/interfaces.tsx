@@ -62,9 +62,7 @@ export interface IRootState {
   };
 }
 export interface ICategoryState {
-  category: {
-    category: string[];
-  };
+  category: string[];
 }
 
 export interface IPasswordErrors {
