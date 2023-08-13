@@ -1,20 +1,27 @@
-import { categories } from '../../api/createClient';
-import { useSelector } from 'react-redux';
+import { getCustomer } from '../../api/createCustomer';
 import style from './_main.module.scss';
-import { useEffect, useState } from 'react';
 
 function Main(): JSX.Element {
-  categories;
-  // let category;
-  // const category = useSelector((state: ICategoryState) => state.category);
-  const [allCategories, setAllCategories] = useState<string[]>([]);
-  useEffect(() => {
-    categories.then((response) => {
-      // category = response;
-      setAllCategories(response);
-    });
-    // return response;
-  }, []);
+  console.log('lalala');
+  // // const [allCategories, setAllCategories] = useState<string[]>([]);
+  // useEffect(() => {
+  //   const customerDraftData = {
+  //     email: 'TashaOneMore@example.com',
+  //     firstName: 'lalala',
+  //     lastName: 'again',
+  //     password: 'secret123',
+  //     streetName: 'Stedman St',
+  //     streetNumber: '10',
+  //     postalCode: '99901',
+  //     city: 'Ketchikan',
+  //     state: 'AK',
+  //     country: 'US',
+  //     building: '5',
+  //     apartment: '2346',
+  //   };
+  //   createCustomer(customerDraftData);
+  // }, []);
+  getCustomer('TashaOneMore@example.com');
   return (
     <div className={style.main}>
       <div className={style.main_wrapper}>
@@ -22,16 +29,8 @@ function Main(): JSX.Element {
           <h1 className={style.main_title}>
             Awesome RSSchool Merch Categories
           </h1>
-          <div className={style.main_categories}>
-            {allCategories.map((category) => {
-              return (
-                <div className={style.main_category} key={category}>
-                  add Sloth pic here staring at / choosing {category}
-                </div>
-              );
-            })}
-          </div>
         </div>
+        <div className={style.main_advertisment}>discounts promotions</div>
         <div className={style.main_advertisment}>
           or pick and customize your own with RSSchool cool merch... paste sloth
           pic here... your advertisment can be here ^^

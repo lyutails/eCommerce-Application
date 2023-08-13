@@ -1,10 +1,10 @@
-import style from '../Category/_category.module.scss';
+import style from '../AboutUs/_about-us.module.scss';
 
-function CategoryPage(): JSX.Element {
+function Category(): JSX.Element {
   return (
     <div className={style.container}>
-      <h2 className={style.title}>Profile</h2>
+      <h2 className={style.title}>Category</h2>
     </div>
   );
 }
-export default CategoryPage;
+export default Category;

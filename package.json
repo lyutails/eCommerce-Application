@@ -58,10 +58,12 @@
     ]
   },
   "devDependencies": {
+    "@apollo/client": "^3.8.1",
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
+    "@commercetools-frontend/constants": "^22.5.0",
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-auth": "^4.0.1",
     "@commercetools/sdk-client-v2": "^2.2.0",
@@ -84,6 +86,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.1",
     "eslint-webpack-plugin": "^4.0.1",
+    "graphql": "^16.7.1",
     "html-webpack-plugin": "^5.5.3",
     "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
@@ -118,6 +121,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@apollo/server": "^4.9.1",
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react-hooks": "^4.6.0"
