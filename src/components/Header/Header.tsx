@@ -19,6 +19,9 @@ function Header(): JSX.Element {
               <Link to="/">Main</Link>
             </li>
             <li className={style.customize}>
+              <Link to="/catalog">Catalog</Link>
+            </li>
+            <li className={style.customize}>
               <Link to="/customize">Customize</Link>
             </li>
             <li className={style.aboutus}>

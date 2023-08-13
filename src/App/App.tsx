@@ -10,9 +10,10 @@ import BasketPage from '../pages/Basket/Basket';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
 import { IRootState } from '../types/interfaces';
-import CategoryPage from '../pages/Category/Category';
+import Catalog from '../pages/Catalog/Catalog';
 import Card from '../components/Card/Card';
 import { Layout } from '../components/Layout/Layout';
+import Category from '../pages/Category/Category';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -24,7 +25,8 @@ function App(): JSX.Element {
           <Route path="/customize" element={<CustomizePage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/basket" element={<BasketPage />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:category" element={<Category />} />
           <Route path="/category/:category/:id" element={<Card />} />
           <Route
             path="/profile"

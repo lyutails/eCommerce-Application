@@ -1,6 +1,4 @@
 import { apiRoot } from './createClient';
-import { useDispatch } from 'react-redux';
-import { createCategory } from '../store/reducers/categoryReducer';
 
 export async function GetCategories(): Promise<string[]> {
   try {
@@ -11,9 +9,6 @@ export async function GetCategories(): Promise<string[]> {
     const categoryNameArray = categoryNamesArray.map(
       (catName) => catName[categoryNameKey]
     );
-    console.log(categoryNameArray);
-    // const dispatch = useDispatch();
-    // dispatch(createCategory(categoryNameArray));
     return categoryNameArray;
   } catch {
     throw new Error('no categories found');
