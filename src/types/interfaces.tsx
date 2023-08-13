@@ -61,8 +61,10 @@ export interface IRootState {
     isAuth: boolean;
   };
 }
-export interface IApiState {
-  currentCategory: string[];
+export interface ICategoryState {
+  category: {
+    category: string[];
+  };
 }
 
 export interface IPasswordErrors {

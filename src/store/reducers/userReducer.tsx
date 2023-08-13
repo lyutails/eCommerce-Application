@@ -11,7 +11,7 @@ const userReducer = createSlice({
     isAuth: false,
   },
   reducers: {
-    creationUser(state, action) {
+    createUser(state, action) {
       state.user = { ...action.payload };
     },
     updateCustomer(state, action) {
@@ -23,5 +23,5 @@ const userReducer = createSlice({
   },
 });
 
-export const { creationUser, setAuthStatus } = userReducer.actions;
+export const { createUser, setAuthStatus } = userReducer.actions;
 export default userReducer.reducer;

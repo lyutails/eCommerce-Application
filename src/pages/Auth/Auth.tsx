@@ -36,12 +36,14 @@ function AuthPage(): JSX.Element {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const handeleСreationAuth = (e: Event): void => {
-  //   console.log(e);
-  // };
-
+  const handleСreationAuth = (e: Event): void => {
+    console.log(e);
+  };
   const handleToLogin = (): void => {
     dispatch(setAuthStatus(true));
+    navigate('/profile');
+  };
+  const handlerReg = (): void => {
     navigate('/registration');
   };
   const tooltipText = passwordErrors.map((text: string, i: number) => (
@@ -120,7 +122,6 @@ function AuthPage(): JSX.Element {
             <ButtonForm
               handlerLogin={(event): void =>
                 handleСreationReg(event, setLoginError, login, password)
-              }
               classNames={style.authorization_button}
               type="submit"
             >
@@ -131,7 +132,7 @@ function AuthPage(): JSX.Element {
         <div className={style.registration}>
           <h2 className={style.title}>Registration</h2>
           <ButtonForm
-            handlerLogin={handleToLogin}
+            handlerLogin={handlerReg}
             classNames={style.registration_button}
           >
             SignUp
