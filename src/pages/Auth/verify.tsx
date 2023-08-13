@@ -101,7 +101,7 @@ export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
   function hasWhitespace(): boolean {
     return !REGEXP.whitespacePassword.test(passwordField);
   }
-  const passwordErr = {
+  const passwordErr: IPasswordErrors = {
     empty: {
       text: 'This is required field',
       isError: isEmpty(),
@@ -138,20 +138,18 @@ export const handleСreationReg = (
 ): void => {
   e.preventDefault();
   handleLoginInput(loginField, setErrorLogin);
-  const passwordErr = handlePasswordInput(passwordField);
-  // for (const key in passwordErr) {
-  //   if (
-  //     passwordErr.hasOwnProperty(key) &&
-  //     passwordErr[key].hasOwnProperty('isError')
-  //   ) {
-  //     if (passwordErr[key].isError) {
-  //       console.log('Найден ключ isError в', key, 'со значением true');
-  //       // Добавьте вашу логику обработки здесь
-  //     } else {
-  //       console.log('Найден ключ isError в', key, 'со значением false');
-  //       // Добавьте вашу логику обработки здесь
-  //     }
+  const passwordErr = handlePasswordInput(passwordField) as IPasswordErrors;
+  // Object.keys(passwordErr).map((key) => {
+  //   if (passwordErr[key].isError) {
+  //     console.log('Найден ключ isError в', key, 'со значением true');
+  //     // Добавьте вашу логику обработки здесь
+  //   } else {
+  //     console.log('Найден ключ isError в', key, 'со значением false');
+  //     // Добавьте вашу логику обработки здесь
   //   }
+  // });
+  //  (const key in passwordErr) {
+
   // }
 };
 // return (

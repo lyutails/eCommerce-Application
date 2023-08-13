@@ -66,28 +66,15 @@ export interface IApiState {
 }
 
 export interface IPasswordErrors {
-  empty: {
-    text: string;
-    isError: boolean;
-  };
-  uppercase: {
-    text: string;
-    isError: boolean;
-  };
-  lowercase: {
-    text: string;
-    isError: boolean;
-  };
-  short: {
-    text: string;
-    isError: boolean;
-  };
-  whitespace: {
-    text: string;
-    isError: boolean;
-  };
-  digit: {
-    text: string;
-    isError: boolean;
-  };
+  empty: IPasswordErrorsFields;
+  uppercase: IPasswordErrorsFields;
+  lowercase: IPasswordErrorsFields;
+  short: IPasswordErrorsFields;
+  whitespace: IPasswordErrorsFields;
+  digit: IPasswordErrorsFields;
+}
+
+export interface IPasswordErrorsFields {
+  text: string;
+  isError: boolean;
 }
