@@ -1,20 +1,30 @@
-import { categories } from '../../api/createClient';
-import { useSelector } from 'react-redux';
+// import { categories } from '../../api/createClient';
+import { useDispatch, useSelector } from 'react-redux';
 import style from './_main.module.scss';
 import { useEffect, useState } from 'react';
+import { ICategoryState, IRootState } from '../../types/interfaces';
+import { createCategory } from '../../store/reducers/categoryReducer';
+import { GetCategories } from '../../api/getCategories';
 
 function Main(): JSX.Element {
-  categories;
-  // let category;
-  // const category = useSelector((state: ICategoryState) => state.category);
-  const [allCategories, setAllCategories] = useState<string[]>([]);
+  const category = useSelector(
+    (state: ICategoryState) => state.category.category
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    categories.then((response) => {
-      // category = response;
-      setAllCategories(response);
+    GetCategories().then((response) => {
+      dispatch(createCategory(response));
+      console.log(category);
     });
-    // return response;
   }, []);
+  // const [allCategories, setAllCategories] = useState<string[]>([]);
+  // useEffect(() => {
+  //   categories.then((response) => {
+  //     // category = response;
+  //     setAllCategories(response);
+  //   });
+  //   // return response;
+  // }, []);
   return (
     <div className={style.main}>
       <div className={style.main_wrapper}>
@@ -23,10 +33,10 @@ function Main(): JSX.Element {
             Awesome RSSchool Merch Categories
           </h1>
           <div className={style.main_categories}>
-            {allCategories.map((category) => {
+            {category.map((categor) => {
               return (
-                <div className={style.main_category} key={category}>
-                  add Sloth pic here staring at / choosing {category}
+                <div className={style.main_category} key={categor}>
+                  add Sloth pic here staring at / choosing {categor}
                 </div>
               );
             })}

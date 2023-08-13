@@ -12,8 +12,8 @@ export async function GetCategories(): Promise<string[]> {
       (catName) => catName[categoryNameKey]
     );
     console.log(categoryNameArray);
-    const dispatch = useDispatch();
-    dispatch(createCategory(categoryNameArray));
+    // const dispatch = useDispatch();
+    // dispatch(createCategory(categoryNameArray));
     return categoryNameArray;
   } catch {
     throw new Error('no categories found');

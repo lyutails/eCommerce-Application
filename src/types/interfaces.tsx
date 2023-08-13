@@ -62,5 +62,7 @@ export interface IRootState {
   };
 }
 export interface ICategoryState {
-  category: string[];
+  category: {
+    category: string[];
+  };
 }

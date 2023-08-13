@@ -6,7 +6,6 @@ import {
 } from '@commercetools/platform-sdk';
 
 import { PROJECT_KEY } from '../constants';
-import { GetCategories } from './getCategories';
 import { getProducts } from './getProducts';
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
@@ -26,7 +25,5 @@ export const getProject = async (): Promise<ClientResponse<Project>> => {
 
 // Retrieve Project information and output the result to the log
 // getProject().then(console.log).catch(console.error);
-
-export const categories = GetCategories();
 
 export const products = getProducts();
