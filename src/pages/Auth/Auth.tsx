@@ -34,6 +34,9 @@ function AuthPage(): JSX.Element {
   };
   const handleToLogin = (): void => {
     dispatch(setAuthStatus(true));
+    navigate('/profile');
+  };
+  const handlerReg = (): void => {
     navigate('/registration');
   };
   return (
@@ -86,7 +89,11 @@ function AuthPage(): JSX.Element {
                 </ButtonForm>
               }
             />
-            <ButtonForm classNames={style.authorization_button} type="submit">
+            <ButtonForm
+              handlerLogin={handleToLogin}
+              classNames={style.authorization_button}
+              type="submit"
+            >
               LogIn
             </ButtonForm>
           </form>
@@ -94,7 +101,7 @@ function AuthPage(): JSX.Element {
         <div className={style.registration}>
           <h2 className={style.title}>Registartion</h2>
           <ButtonForm
-            handlerLogin={handleToLogin}
+            handlerLogin={handlerReg}
             classNames={style.registration_button}
           >
             SignUp
