@@ -16,11 +16,11 @@ function RegistrationPage(): JSX.Element {
 function RegistrationPageLogin(): JSX.Element {
   const navigate = useNavigate();
   const handleToLogin = (): void => {
-    navigate('/profile');
+    navigate('/login');
   };
   return (
     <div className={style.authorization}>
-      <h2 className={style.title}>Login</h2>
+      <h2 className={style.title}>Registration</h2>
       <ButtonForm
         handlerLogin={handleToLogin}
         classNames={style.authorization_button}
@@ -34,7 +34,7 @@ function RegistrationPageLogin(): JSX.Element {
 function RegistrationPageRegister(): JSX.Element {
   return (
     <div className={style.registration}>
-      <h2 className={style.title}>Registartion</h2>
+      <h2 className={style.title}>Registration</h2>
       <form action="" className={style.registration_form}>
         <Input
           type="text"

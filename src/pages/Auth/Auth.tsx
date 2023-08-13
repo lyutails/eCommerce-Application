@@ -4,29 +4,36 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
+import iconError from '../../../public/assets/icon/error.svg';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 // import { checkEmail } from '../Auth/verify';
 // import { ChangeEventHandler } from 'react';
-
-const clue = {
-  invalidEmail:
-    'Please enter a valid email address (for example: name@example.com)',
-  shortPassword: 'Password must be at least 8 characters long',
-  uppercasePassword:
-    'Password must contain at least one uppercase letter (A-Z)',
-  lowercasePassword:
-    'Password must contain at least one lowercase letter (a-z)',
-  digitPassword: 'Password must contain at least one digit (0-9)',
-  specialPassword:
-    'Password must contain at least one special character (e.g., !@#$%^&*)',
-  requiredField: 'Required field.',
-};
+import {
+  handlePasswordInput,
+  handleСreationReg,
+  loginHandler,
+  passwordErrors,
+  passwordHandler,
+} from './verify';
+import { useState } from 'react';
+import { IPasswordErrors } from '../../types/interfaces';
+import { showPassword } from './listeners';
 
 function AuthPage(): JSX.Element {
   // const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  // let passwordСheck = false;
+
   // для навигации
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+
+  //состояние ошибки
+  const [loginError, setLoginError] = useState('');
+  // const [passwordError, setPasswordError] = useState({});
+  const arr = [];
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleСreationAuth = (e: Event): void => {
@@ -34,8 +41,20 @@ function AuthPage(): JSX.Element {
   };
   const handleToLogin = (): void => {
     dispatch(setAuthStatus(true));
+    navigate('/profile');
+  };
+  const handlerReg = (): void => {
     navigate('/registration');
   };
+  const tooltipText = passwordErrors.map((text: string, i: number) => (
+    <p
+      key={'text_' + i}
+      className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
+    >
+      <img className={style.tooltip_error} src={iconError} alt="Error icon" />
+      {text}
+    </p>
+  ));
   return (
     <div className={style.login}>
       <div className={style.login_wrapper}>
@@ -43,9 +62,8 @@ function AuthPage(): JSX.Element {
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
             <Input
-              // func={(event: ChangeEventHandler<HTMLInputElement>): void =>
-              //   checkEmail(event)
-              // }
+              func={(e): void => loginHandler(e, setLogin)}
+              clue={loginError}
               type="email"
               placeholder="E-mail"
               classWrapper={style.email}
@@ -62,6 +80,10 @@ function AuthPage(): JSX.Element {
               }
             />
             <Input
+              func={(e): void => passwordHandler(e, setPassword)}
+              clue={
+                'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
+              }
               type="password"
               placeholder="Password"
               classWrapper={style.password}
@@ -77,7 +99,10 @@ function AuthPage(): JSX.Element {
                 </div>
               }
               childrenAfter={
-                <ButtonForm classNames={style.password_eye}>
+                <ButtonForm
+                  handlerLogin={(e): void => showPassword(e)}
+                  classNames={style.password_eye}
+                >
                   <img
                     className={style.label_img_icon}
                     src={iconEye}
@@ -85,16 +110,29 @@ function AuthPage(): JSX.Element {
                   />
                 </ButtonForm>
               }
+              tooltip={
+                <div
+                  data-tooltip="Всплывающая подсказка"
+                  className={style.password_tooltip}
+                >
+                  {tooltipText}
+                </div>
+              }
             />
-            <ButtonForm classNames={style.authorization_button} type="submit">
+            <ButtonForm
+              handlerLogin={(event): void =>
+                handleСreationReg(event, setLoginError, login, password)
+              classNames={style.authorization_button}
+              type="submit"
+            >
               LogIn
             </ButtonForm>
           </form>
         </div>
         <div className={style.registration}>
-          <h2 className={style.title}>Registartion</h2>
+          <h2 className={style.title}>Registration</h2>
           <ButtonForm
-            handlerLogin={handleToLogin}
+            handlerLogin={handlerReg}
             classNames={style.registration_button}
           >
             SignUp
@@ -105,80 +143,3 @@ function AuthPage(): JSX.Element {
   );
 }
 export default AuthPage;
-
-// const dispatch = useDispatch();
-// const [login, setLogin] = useState('');
-// const [password, setPassword] = useState('');
-// //состояние ошибки
-// const [loginError, setLoginError] = useState('');
-// const [passwordError, setPasswordError] = useState('');
-// //для навигации
-// // const navigate = useNavigate();
-// // для проверки состояний
-// let loginСheck = false;
-// let passwordСheck = false;
-
-// // чтобы значения из инпута попадали в логин и пароль
-// const loginHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-//   setLogin((e.target as HTMLInputElement).value);
-// };
-
-// const passwordHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-//   setPassword((e.target as HTMLInputElement).value);
-// };
-
-// const handeleСreationReg = (
-//   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-// ): void => {
-//   e.preventDefault();
-//   //валидация для логина
-//   if (login === '') {
-//     setLoginError('Поле не должно быть пустым');
-//     loginСheck = false;
-//   } else if (login.length < 4) {
-//     setLoginError('Логин должен содержать не менее 4-х символов');
-//     loginСheck = false;
-//   } else {
-//     setLoginError('');
-//     loginСheck = true;
-//   }
-//   //валидация для пароля
-//   if (password === '') {
-//     setPasswordError('Поле не должно быть пустым');
-//     passwordСheck = false;
-//   } else if (password.length < 4) {
-//     setPasswordError('Логин должен содержать не менее 4-х символов');
-//     passwordСheck = false;
-//   } else {
-//     setPasswordError('');
-//     passwordСheck = true;
-//   }
-//   console.log(loginСheck, passwordСheck);
-//   console.log(login, password);
-//   // проверка общего состояния и если все хорошо переход на Вход
-//   if (loginСheck === true && passwordСheck === true) {
-//     dispatch(setAuthStatus(true));
-//     navigate('/');
-//   }
-// };
-// return (
-//   <div>
-//     <form action="">
-//       <input type="email" onChange={(event): void => loginHandler(event)} />
-//       <span className={style.red}>{loginError}</span>
-//       <input
-//         type="password"
-//         onChange={(event): void => passwordHandler(event)}
-//       />
-//       <span className={style.red}>{passwordError}</span>
-//       <button onClick={(event): void => handeleСreationReg(event)}>
-//         Click
-//       </button>
-//     </form>
-//   </div>
-// );
-
-// //  {
-// //   login,
-// //   password,
-// // }

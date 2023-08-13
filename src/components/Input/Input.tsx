@@ -12,6 +12,8 @@ interface IInputProps {
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
   func?: ChangeEventHandler<HTMLInputElement>;
+  clue?: string;
+  tooltip?: ReactNode;
 }
 
 function Input(props: IInputProps): JSX.Element {
@@ -28,9 +30,8 @@ function Input(props: IInputProps): JSX.Element {
         />
         {props.childrenAfter}
       </div>
-      <span className={`${style.wrapper_clue} ${props.classClue}`}>
-        Please enter a valid email address (for example: name@example.com)
-      </span>
+      {props.tooltip}
+      <p className={`${style.wrapper_clue} ${props.classClue}`}>{props.clue}</p>
     </div>
   );
 }

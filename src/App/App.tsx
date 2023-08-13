@@ -26,7 +26,7 @@ function App(): JSX.Element {
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/basket" element={<BasketPage />} />
           <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:cateogry" element={<Category />} />
+          <Route path="/catalog/:category" element={<Category />} />
           <Route path="/category/:category/:id" element={<Card />} />
           <Route
             path="/profile"

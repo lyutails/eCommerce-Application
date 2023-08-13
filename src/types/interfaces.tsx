@@ -62,5 +62,21 @@ export interface IRootState {
   };
 }
 export interface ICategoryState {
-  category: string[];
+  category: {
+    category: string[];
+  };
+}
+
+export interface IPasswordErrors {
+  empty: IPasswordErrorsFields;
+  uppercase: IPasswordErrorsFields;
+  lowercase: IPasswordErrorsFields;
+  short: IPasswordErrorsFields;
+  whitespace: IPasswordErrorsFields;
+  digit: IPasswordErrorsFields;
+}
+
+export interface IPasswordErrorsFields {
+  text: string;
+  isError: boolean;
 }
