@@ -22,26 +22,32 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path="/customize" element={<CustomizePage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/basket" element={<BasketPage />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:category" element={<Category />} />
-          <Route path="/category/:category/:id" element={<Card />} />
-          <Route
-            path="/profile"
-            element={
-              isAuth ? <ProfilePage /> : <Navigate to={'/login'} replace />
-            }
-          />
-          <Route
-            path="/registration"
-            element={
-              isAuth ? <Navigate to={'/login'} replace /> : <RegistrationPage />
-            }
-          />
-          <Route path="/login" element={<AuthPage />} />
+          <Route path="customize" element={<CustomizePage />} />
+          <Route path="about-us" element={<AboutUsPage />} />
+          <Route path="basket" element={<BasketPage />} />
+          <Route path="catalog" element={<Catalog />} />
+          <Route path="catalog/:category" element={<Category />} />
+          <Route path="category/:category/:id" element={<Card />} />
           <Route path="*" element={<NotFoundPage />} />
+          {isAuth ? (
+            <>
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/login" element={<Navigate to={'/'} replace />} />
+              <Route
+                path="/registration"
+                element={<Navigate to={'/'} replace />}
+              />
+            </>
+          ) : (
+            <>
+              <Route
+                path="/profile"
+                element={<Navigate to={'/login'} replace />}
+              />
+              <Route path="/registration" element={<RegistrationPage />} />
+              <Route path="/login" element={<AuthPage />} />
+            </>
+          )}
         </Route>
       </Routes>
     </section>
