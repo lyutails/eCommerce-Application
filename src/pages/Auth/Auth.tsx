@@ -4,20 +4,21 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
-import iconError from '../../../public/assets/icon/error.svg';
+// import iconError from '../../../public/assets/icon/error.svg';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 // import { checkEmail } from '../Auth/verify';
 // import { ChangeEventHandler } from 'react';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
-import { IPasswordErrors } from '../../types/interfaces';
+// import { IPasswordErrors } from '../../types/interfaces';
 import { showPassword } from '../listeners';
 import { loginHandler, passwordHandler } from '../verification';
+import { IRootState } from '../../types/interfaces';
 
 function AuthPage(): JSX.Element {
-  // const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   // let passwordСheck = false;
 
   // для навигации
@@ -28,7 +29,6 @@ function AuthPage(): JSX.Element {
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
 
-  console.log(passwordError);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -111,7 +111,9 @@ function AuthPage(): JSX.Element {
                   login,
                   password,
                   navigate,
-                  setPasswordError
+                  setPasswordError,
+                  isAuth,
+                  dispatch
                 )
               }
               classNames={style.authorization_button}

@@ -126,7 +126,7 @@ function RegistrationPage(): JSX.Element {
             type="date"
             placeholder="Date of birth *"
             max={'2010-01-01'}
-            value={'2010-01-01'}
+            value={'2010-01-15'}
             classWrapper={style.birth}
             classClue={style.birth_clue}
             classInput={style.birth_input}
