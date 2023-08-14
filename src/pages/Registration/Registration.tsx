@@ -16,6 +16,8 @@ import {
   streetShipHandler,
 } from '../verification';
 import { handleСreationReg } from './verify-registration';
+import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
+import { getMinUserAge } from '../../components/Input/getMinUserAge';
 
 function RegistrationPage(): JSX.Element {
   const navigate = useNavigate();
@@ -122,14 +124,13 @@ function RegistrationPage(): JSX.Element {
             //   </div>
             // }
           />
-          <Input
-            type="date"
-            placeholder="Date of birth *"
-            max={'2010-01-01'}
-            value={'2010-01-15'}
+          <InputBirthDateMask
+            type="text"
+            placeholder="dd.mm.yyyy *"
             classWrapper={style.birth}
             classClue={style.birth_clue}
             classInput={style.birth_input}
+            // "Enter Date of birth in forman dd.mm.yyyy *" - under input
           />
           <h3 className={style.registration_title}>Address</h3>
           <div className={style.shipping}>

@@ -10,7 +10,7 @@ import style from './_main.module.scss';
 function Main(): JSX.Element {
   getCustomer('TashaOneMore@example.com');
   const createCustomerMeData: IMyCustomerDraft = {
-    email: 'lalala4@gmail.com',
+    email: 'lalala6@gmail.com',
     firstName: 'lalala',
     lastName: 'lala lala',
     password: 'q49tjg3q4',
@@ -23,12 +23,12 @@ function Main(): JSX.Element {
     building: '3452',
     apartment: '351',
   };
-  const loginCustomerMeData: IMyCustomerLoginDraft = {
-    email: 'lalala444@gmail.com',
-    password: 'q49tjg3q4',
-  };
+  // const loginCustomerMeData: IMyCustomerLoginDraft = {
+  //   email: 'lalala444@gmail.com',
+  //   password: 'q49tjg3q4',
+  // };
   // createCustomerMe(createCustomerMeData);
-  loginCustomer(loginCustomerMeData);
+  // loginCustomer(loginCustomerMeData);
   return (
     <div className={style.main}>
       <div className={style.main_wrapper}>
