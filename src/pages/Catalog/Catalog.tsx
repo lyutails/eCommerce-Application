@@ -30,7 +30,7 @@ function Catalog(): JSX.Element {
                   className={style.catalog_category}
                   key={category}
                 >
-                  add Sloth pic here staring at / choosing {category}
+                  {category}
                 </Link>
               );
             })}

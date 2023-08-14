@@ -121,7 +121,8 @@ function AuthPage(): JSX.Element {
             />
             <ButtonForm
               handlerLogin={(event): void =>
-                handleСreationReg(event, setLoginError, login, password)}
+                handleСreationReg(event, setLoginError, login, password)
+              }
               classNames={style.authorization_button}
               type="submit"
             >
