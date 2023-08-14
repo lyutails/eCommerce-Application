@@ -20,7 +20,7 @@ interface IInputProps {
   max?: string;
 }
 
-// "Enter Date of birth in forman dd.mm.yyyy *" - under input
+// "Enter Date of birth in forman dd.mm.yyyy *" - smth like this under input
 
 function InputBirthDateMask(props: IInputProps): JSX.Element {
   const ref = useRef(null);

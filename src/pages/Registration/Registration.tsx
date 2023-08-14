@@ -130,7 +130,7 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.birth}
             classClue={style.birth_clue}
             classInput={style.birth_input}
-            // "Enter Date of birth in forman dd.mm.yyyy *" - under input
+            // "Enter Date of birth in forman dd.mm.yyyy *" - smth like this under input
           />
           <h3 className={style.registration_title}>Address</h3>
           <div className={style.shipping}>
