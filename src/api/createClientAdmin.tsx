@@ -1,9 +1,7 @@
 import { PROJECT_KEY } from '../constants';
 import { ctpClient } from './adminBuilder';
 import {
-  ApiRoot,
   ClientResponse,
-  ProductPagedQueryResponse,
   Project,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
@@ -25,13 +23,3 @@ export const getProject = async (): Promise<ClientResponse<Project>> => {
 
 // Retrieve Project information and output the result to the log
 getProject().then(console.log).catch(console.error);
-
-console.log(apiRoot.products());
-
-export const getAllProducts = async (): Promise<
-  ClientResponse<ProductPagedQueryResponse>
-> => {
-  const products = await apiRoot.products().get().execute();
-  console.log(products);
-  return products;
-};

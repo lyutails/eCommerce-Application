@@ -14,6 +14,8 @@ interface IInputProps {
   func?: ChangeEventHandler<HTMLInputElement>;
   clue?: string;
   tooltip?: ReactNode;
+  value?: string;
+  max?: string;
 }
 
 function Input(props: IInputProps): JSX.Element {
@@ -22,6 +24,8 @@ function Input(props: IInputProps): JSX.Element {
       <div className={style.wrapper_label}>
         {props.childrenBefore}
         <input
+          value={props.value}
+          max={props.max}
           onChange={props.func}
           className={`${style.wrapper_input} ${props.classInput}`}
           type={props.type}

@@ -1,6 +1,5 @@
 import {
   ClientResponse,
-  CustomerPagedQueryResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
@@ -39,20 +38,66 @@ export async function createCustomer(
   }
 }
 
-// const emailUser = 'TashaOneMore@example.com';
+export interface IMyCustomerDraft {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  streetName: string;
+  streetNumber: string;
+  postalCode: string;
+  city: string;
+  state: string;
+  country: string;
+  building: string;
+  apartment: string;
+}
 
-export async function getCustomer(
-  emailUser: string
-): Promise<ClientResponse<CustomerPagedQueryResponse>> {
+export async function createCustomerMe(
+  data: IMyCustomerDraft
+): Promise<ClientResponse<CustomerSignInResult>> {
   try {
-    const customer = await apiRoot.customers().get().execute();
-    const customersArray = customer.body.results;
-    const customersEmailsArray = customersArray.filter(
-      (email) => email.email === emailUser
-    );
-    console.log(customersEmailsArray);
+    const customer = await apiRoot
+      .me()
+      .signup()
+      .post({
+        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    console.log(customer);
     return customer;
   } catch {
-    throw new Error('cannot get a customer');
+    throw new Error('cannot create a me customer');
+    // logic from api here if error
+  }
+}
+
+export interface IMyCustomerLoginDraft {
+  email: string;
+  password: string;
+}
+
+export async function loginCustomer(
+  data: IMyCustomerLoginDraft
+): Promise<ClientResponse<CustomerSignInResult>> {
+  try {
+    const customer = await apiRoot
+      .me()
+      .login()
+      .post({
+        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    console.log(customer);
+    return customer;
+  } catch {
+    throw new Error('cannot login a me customer');
+    // logic from api here if error
   }
 }

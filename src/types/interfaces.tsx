@@ -65,13 +65,17 @@ export interface ICategoryState {
   category: string[];
 }
 
+export enum PasswordSmth {
+  empty = 'empty',
+  uppercase = 'uppercase',
+  lowercase = 'lowercase',
+  short = 'short',
+  whitespace = 'whitespace',
+  digit = 'digit',
+}
+
 export interface IPasswordErrors {
-  empty: IPasswordErrorsFields;
-  uppercase: IPasswordErrorsFields;
-  lowercase: IPasswordErrorsFields;
-  short: IPasswordErrorsFields;
-  whitespace: IPasswordErrorsFields;
-  digit: IPasswordErrorsFields;
+  [key: string]: IPasswordErrorsFields;
 }
 
 export interface IPasswordErrorsFields {
