@@ -4,25 +4,21 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icon/email.svg';
 import iconPassword from '../../../public/assets/icon/password.svg';
 import iconEye from '../../../public/assets/icon/eye.svg';
-import iconError from '../../../public/assets/icon/error.svg';
+// import iconError from '../../../public/assets/icon/error.svg';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 // import { checkEmail } from '../Auth/verify';
 // import { ChangeEventHandler } from 'react';
-import {
-  handlePasswordInput,
-  handleСreationReg,
-  loginHandler,
-  passwordErrors,
-  passwordHandler,
-} from './verify';
+import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
-import { IPasswordErrors } from '../../types/interfaces';
-import { showPassword } from './listeners';
+// import { IPasswordErrors } from '../../types/interfaces';
+import { showPassword } from '../listeners';
+import { loginHandler, passwordHandler } from '../verification';
+import { IRootState } from '../../types/interfaces';
 
 function AuthPage(): JSX.Element {
-  // const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   // let passwordСheck = false;
 
   // для навигации
@@ -31,30 +27,24 @@ function AuthPage(): JSX.Element {
 
   //состояние ошибки
   const [loginError, setLoginError] = useState('');
-  // const [passwordError, setPasswordError] = useState({});
-  const arr = [];
+  const [passwordError, setPasswordError] = useState({});
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleСreationAuth = (e: Event): void => {
-    console.log(e);
-  };
-  const handleToLogin = (): void => {
-    dispatch(setAuthStatus(true));
-    navigate('/profile');
-  };
+
   const handlerReg = (): void => {
+    dispatch(setAuthStatus(false));
     navigate('/registration');
   };
-  const tooltipText = passwordErrors.map((text: string, i: number) => (
-    <p
-      key={'text_' + i}
-      className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-    >
-      <img className={style.tooltip_error} src={iconError} alt="Error icon" />
-      {text}
-    </p>
-  ));
+  // const tooltipText = passwordErrors.map((text: string, i: number) => (
+  //   <p
+  //     key={'text_' + i}
+  //     className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
+  //   >
+  //     <img className={style.tooltip_error} src={iconError} alt="Error icon" />
+  //     {text}
+  //   </p>
+  // ));
   return (
     <div className={style.login}>
       <div className={style.login_wrapper}>
@@ -82,7 +72,9 @@ function AuthPage(): JSX.Element {
             <Input
               func={(e): void => passwordHandler(e, setPassword)}
               clue={
-                'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
+                typeof passwordError === 'string'
+                  ? passwordError
+                  : 'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
               }
               type="password"
               placeholder="Password"
@@ -110,18 +102,19 @@ function AuthPage(): JSX.Element {
                   />
                 </ButtonForm>
               }
-              tooltip={
-                <div
-                  data-tooltip="Всплывающая подсказка"
-                  className={style.password_tooltip}
-                >
-                  {tooltipText}
-                </div>
-              }
             />
             <ButtonForm
               handlerLogin={(event): void =>
-                handleСreationReg(event, setLoginError, login, password)
+                handleСreationAuth(
+                  event,
+                  setLoginError,
+                  login,
+                  password,
+                  navigate,
+                  setPasswordError,
+                  isAuth,
+                  dispatch
+                )
               }
               classNames={style.authorization_button}
               type="submit"
