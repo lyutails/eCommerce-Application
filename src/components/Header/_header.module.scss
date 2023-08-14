@@ -81,6 +81,11 @@ $footer-background-color: #041426;
   }
 }
 
+.active{
+  cursor: default;
+  filter: drop-shadow(0 0 5px $glow-green) drop-shadow(0 0 10px $glow-green);
+}
+
 @media screen and (min-width: (768px)) and (max-width: (1199.98px)) {
   html {
     font-size: 8px;

@@ -1,7 +1,7 @@
 import '../../style/variables.scss';
 import style from './_header.module.scss';
 import { logo } from './logo';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const cartCounter = 0;
 const walletCost = 0;
@@ -10,29 +10,31 @@ function Header(): JSX.Element {
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
-        <Link className={style.logo} to="/">
+        <NavLink className={style.logo} to="/">
           {logo}
-        </Link>
+        </NavLink>
         <div className={style.header_categories}>
           <ul className={style.list}>
             <li className={style.main}>
-              <Link to="/">Main</Link>
+              <NavLink to="/">Main</NavLink>
             </li>
             <li className={style.customize}>
-              <Link to="/catalog">Catalog</Link>
+              <NavLink to="/catalog">Catalog</NavLink>
             </li>
             <li className={style.customize}>
-              <Link to="/customize">Customize</Link>
+              <NavLink to="/customize">Customize</NavLink>
             </li>
             <li className={style.aboutus}>
-              <Link to="/about-us">About Us</Link>
+              <NavLink to="/about-us">About Us</NavLink>
             </li>
-            <li className={style.cart}>
-              <span className={style.cart_counter}>{`${cartCounter}`}</span>
+            <li>
+              <NavLink className={style.cart} to="/basket">
+                <span className={style.cart_counter}>{`${cartCounter}`}</span>
+              </NavLink>
             </li>
             <li className={style.sum}>{`${walletCost}`}$</li>
             <li className={style.login}>
-              <Link to="/profile">LogIn</Link>
+              <NavLink to="/profile">LogIn</NavLink>
             </li>
           </ul>
         </div>
