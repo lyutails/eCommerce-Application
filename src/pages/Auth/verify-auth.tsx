@@ -16,17 +16,22 @@ export const handleСreationAuth = (
   navigator: NavigateFunction,
   setErrorPassword: React.Dispatch<React.SetStateAction<string>>,
   isAuth: boolean,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
+  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
-  loginСheck = handleLoginInput(loginField, setErrorLogin, loginСheck);
+  loginСheck = handleLoginInput(
+    loginField,
+    setErrorLogin,
+    loginСheck,
+    setCheckmarkLogin
+  );
   const passwordErr = handlePasswordInput(passwordField);
   Object.keys(passwordErr).map((key): void => {
     if (passwordErr[key].isError === true) {
       setErrorPassword(clue.invalidPassword);
       passwordСheck = false;
     } else {
-      setErrorPassword('Completed');
       passwordСheck = true;
     }
   });

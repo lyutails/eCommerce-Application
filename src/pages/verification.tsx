@@ -4,7 +4,8 @@ import { ChangeEvent } from 'react';
 const REGEXP = {
   // eslint-disable-next-line no-useless-escape
   mail: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
-  zip: /^\d{5}(-\d{4})?$/,
+  postalUSA: /^\d{5}(?:-\d{4})?$/,
+  postalCanada: /^[A-Za-z]\d[A-Za-z]( \d[A-Za-z]\d)?$/,
   phone:
     /^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$/,
   password: /[^\w\d]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))/,
@@ -12,7 +13,10 @@ const REGEXP = {
   uppercasePassword: /.*[A-Z].*/g,
   lowercasePassword: /.*[a-z].*/g,
   whitespacePassword: /.*\s.*/g,
-  character: /^[a-zA-Z]+$/g,
+  fistname: /^[a-zA-Z]+$/g,
+  lastname: /^[a-zA-Z]+$/g,
+  street: /^[a-zA-Z]+$/g,
+  city: /^[a-zA-Z]+$/g,
 };
 
 export const clue = {
@@ -32,9 +36,12 @@ export const clue = {
   requiredField: 'This is required field',
   character:
     'Must contain at least one character and no special characters or numbers',
+  postal:
+    'Must follow the format for the country (e.g., 12345 or A1B 2C3 for the U.S. and Canada, respectively)',
+  country: 'Please, choose USA or Canada',
 };
 
-export const loginHandler = (
+export const inputHandler = (
   e: ChangeEvent<HTMLInputElement>,
   func: React.Dispatch<React.SetStateAction<string>>
 ): void => {
@@ -44,27 +51,23 @@ export const loginHandler = (
 export const handleLoginInput = (
   loginField: string,
   setErrorLogin: React.Dispatch<React.SetStateAction<string>>,
-  loginСheck: boolean
+  loginСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (loginField === '') {
-    console.log(loginField);
     setErrorLogin(clue.requiredField);
     loginСheck = false;
+    setCheckmark(false);
   } else if (!REGEXP.mail.test(loginField)) {
     setErrorLogin(clue.invalidEmail);
     loginСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorLogin('Completed');
+    console.log('fuck');
+    setCheckmark(true);
     loginСheck = true;
   }
   return loginСheck;
-};
-
-export const passwordHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
 };
 
 export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
@@ -116,152 +119,241 @@ export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
   return passwordErr;
 };
 
-export const firstnameHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
 export const handleFirstnameInput = (
   firstnameField: string,
   setErrorFirstname: React.Dispatch<React.SetStateAction<string>>,
-  firstnameСheck: boolean
+  firstnameСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (firstnameField === '') {
     setErrorFirstname(clue.requiredField);
     firstnameСheck = false;
-  } else if (!REGEXP.character.test(firstnameField)) {
+    setCheckmark(false);
+  } else if (!REGEXP.fistname.test(firstnameField)) {
     setErrorFirstname(clue.character);
     firstnameСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorFirstname('Completed');
+    setCheckmark(true);
     firstnameСheck = true;
   }
   return firstnameСheck;
 };
 
-export const lastnameHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
 export const handleLastnameInput = (
   lastnameField: string,
   setErrorLastname: React.Dispatch<React.SetStateAction<string>>,
-  lastnameСheck: boolean
+  lastnameСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (lastnameField === '') {
     setErrorLastname(clue.requiredField);
     lastnameСheck = false;
-  } else if (!REGEXP.character.test(lastnameField)) {
+    setCheckmark(false);
+  } else if (!REGEXP.lastname.test(lastnameField)) {
     setErrorLastname(clue.character);
     lastnameСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorLastname('Completed');
+    setCheckmark(true);
     lastnameСheck = true;
   }
   return lastnameСheck;
 };
 
-export const streetShipHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
 export const handleStreetShipInput = (
   streetShipField: string,
   setErrorStreetShip: React.Dispatch<React.SetStateAction<string>>,
-  streetShipСheck: boolean
+  streetShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (streetShipField === '') {
     setErrorStreetShip(clue.requiredField);
     streetShipСheck = false;
-  } else if (!REGEXP.character.test(streetShipField)) {
+    setCheckmark(false);
+  } else if (!REGEXP.street.test(streetShipField)) {
     setErrorStreetShip(clue.character);
     streetShipСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorStreetShip('Completed');
+    setCheckmark(true);
     streetShipСheck = true;
   }
   return streetShipСheck;
 };
 
-export const cityShipHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
 export const handleCityShipInput = (
   cityShipField: string,
   setErrorCityShip: React.Dispatch<React.SetStateAction<string>>,
-  cityShipСheck: boolean
+  cityShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (cityShipField === '') {
     setErrorCityShip(clue.requiredField);
     cityShipСheck = false;
-  } else if (!REGEXP.character.test(cityShipField)) {
+    setCheckmark(false);
+  } else if (!REGEXP.city.test(cityShipField)) {
     setErrorCityShip(clue.character);
     cityShipСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorCityShip('Completed');
+    setCheckmark(true);
     cityShipСheck = true;
   }
   return cityShipСheck;
 };
 
-export const postalShipHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
 export const handlePostalShipInput = (
   postalShipField: string,
   setErrorPostalShip: React.Dispatch<React.SetStateAction<string>>,
-  postalShipСheck: boolean
+  postalShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (postalShipField === '') {
     setErrorPostalShip(clue.requiredField);
     postalShipСheck = false;
-  } else if (!REGEXP.character.test(postalShipField)) {
+    setCheckmark(false);
+  } else if (
+    !REGEXP.postalUSA.test(postalShipField) &&
+    !REGEXP.postalCanada.test(postalShipField)
+  ) {
     setErrorPostalShip(clue.character);
     postalShipСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorPostalShip('Completed');
+    setCheckmark(true);
     postalShipСheck = true;
   }
   return postalShipСheck;
 };
 
-export const countryShipHandler = (
-  e: ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<string>>
-): void => {
-  func((e.target as HTMLInputElement).value);
-};
-
-export const handlCountryShipInput = (
+export const handleCountryShipInput = (
   countryShipField: string,
   setErrorCountryShip: React.Dispatch<React.SetStateAction<string>>,
-  countryShipСheck: boolean
+  countryShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
   if (countryShipField === '') {
     setErrorCountryShip(clue.requiredField);
     countryShipСheck = false;
-  } else if (!REGEXP.character.test(countryShipField)) {
-    setErrorCountryShip(clue.character);
+    setCheckmark(false);
+  } else if (
+    countryShipField.toLowerCase() !== 'canada' &&
+    countryShipField.toLowerCase() !== 'usa'
+  ) {
+    setErrorCountryShip(clue.country);
     countryShipСheck = false;
+    setCheckmark(false);
   } else {
-    setErrorCountryShip('Completed');
+    setCheckmark(true);
     countryShipСheck = true;
   }
   return countryShipСheck;
+};
+
+export const handleBirthdayInput = (
+  birthdayField: string,
+  setErrorBirthday: React.Dispatch<React.SetStateAction<string>>,
+  birthdayСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  if (birthdayField === '') {
+    setErrorBirthday(clue.requiredField);
+    birthdayСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    birthdayСheck = true;
+  }
+  return birthdayСheck;
+};
+
+export const handleStreetBillInput = (
+  streetBillField: string,
+  setErrorStreetBill: React.Dispatch<React.SetStateAction<string>>,
+  streetBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  if (streetBillField === '') {
+    setErrorStreetBill(clue.requiredField);
+    streetBillСheck = false;
+    setCheckmark(false);
+  } else if (!REGEXP.street.test(streetBillField)) {
+    setErrorStreetBill(clue.character);
+    streetBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    streetBillСheck = true;
+  }
+  return streetBillСheck;
+};
+
+export const handleCityBillInput = (
+  cityBillField: string,
+  setErrorCityBill: React.Dispatch<React.SetStateAction<string>>,
+  cityBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  if (cityBillField === '') {
+    setErrorCityBill(clue.requiredField);
+    cityBillСheck = false;
+    setCheckmark(false);
+  } else if (!REGEXP.city.test(cityBillField)) {
+    setErrorCityBill(clue.character);
+    cityBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    cityBillСheck = true;
+  }
+  return cityBillСheck;
+};
+
+export const handlePostalBillInput = (
+  postalBillField: string,
+  setErrorPostalBill: React.Dispatch<React.SetStateAction<string>>,
+  postalBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  if (postalBillField === '') {
+    setErrorPostalBill(clue.requiredField);
+    postalBillСheck = false;
+    setCheckmark(false);
+  } else if (
+    !REGEXP.postalUSA.test(postalBillField) ||
+    !REGEXP.postalCanada.test(postalBillField)
+  ) {
+    setErrorPostalBill(clue.character);
+    postalBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    postalBillСheck = true;
+  }
+  return postalBillСheck;
+};
+
+export const handleCountryBillInput = (
+  countryBillField: string,
+  setErrorCountryBill: React.Dispatch<React.SetStateAction<string>>,
+  countryBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  if (countryBillField === '') {
+    setErrorCountryBill(clue.requiredField);
+    countryBillСheck = false;
+    setCheckmark(false);
+  } else if (
+    countryBillField.toLowerCase() !== 'canada' &&
+    countryBillField.toLowerCase() !== 'usa'
+  ) {
+    setErrorCountryBill(clue.country);
+    countryBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    countryBillСheck = true;
+  }
+  return countryBillСheck;
 };

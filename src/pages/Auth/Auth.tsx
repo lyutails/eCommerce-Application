@@ -14,7 +14,7 @@ import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
 // import { IPasswordErrors } from '../../types/interfaces';
 import { showPassword } from '../showPassword';
-import { loginHandler, passwordHandler } from '../verification';
+import { inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 
 function AuthPage(): JSX.Element {
@@ -28,6 +28,8 @@ function AuthPage(): JSX.Element {
   //состояние ошибки
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
+  const [checkmarkLogin, setCheckmarkLogin] = useState(false);
+  const [checkmarkPassword, setCheckmarkPassword] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,7 +54,7 @@ function AuthPage(): JSX.Element {
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
             <Input
-              func={(e): void => loginHandler(e, setLogin)}
+              func={(e): void => inputHandler(e, setLogin)}
               clue={loginError}
               type="email"
               placeholder="E-mail"
@@ -70,7 +72,7 @@ function AuthPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => passwordHandler(e, setPassword)}
+              func={(e): void => inputHandler(e, setPassword)}
               clue={
                 typeof passwordError === 'string'
                   ? passwordError
@@ -113,7 +115,8 @@ function AuthPage(): JSX.Element {
                   navigate,
                   setPasswordError,
                   isAuth,
-                  dispatch
+                  dispatch,
+                  setCheckmarkLogin
                 )
               }
               classNames={style.authorization_button}
