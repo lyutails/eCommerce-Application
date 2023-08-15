@@ -1,7 +1,7 @@
 import '../../style/variables.scss';
 import style from './_header.module.scss';
 import { logo } from './logo';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const cartCounter = 0;
 const walletCost = 0;
@@ -16,25 +16,29 @@ function Header(): JSX.Element {
         <div className={style.header_categories}>
           <ul className={style.header_menu}>
             <li className={style.header_menu_item}>
-              <Link to="/">Main</Link>
+              <NavLink className={style.header_menu_link} to="/">Main</NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <Link to="/catalog">Catalog</Link>
+              <NavLink className={style.header_menu_link} to="/catalog">Catalog</NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <Link to="/customize">Customize</Link>
+              <NavLink className={style.header_menu_link} to="/customize">Customize</NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <Link to="/about-us">About Us</Link>
+              <NavLink className={style.header_menu_link} to="/about-us">About Us</NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <Link to="/cart" className={style.header_cart}>
-                <span className={style.header_cart_counter}>{`${cartCounter}`}</span>
-              </Link>
+              <NavLink className={`${style.header_menu_link} ${style.header_cart}`} to="/cart">
+                <span
+                  className={style.header_cart_counter}
+                >{`${cartCounter}`}</span>
+              </NavLink>
             </li>
-            <li className={`${style.header_menu_item} ${style.sum}`}>{`${walletCost}`}$</li>
+            <li className={`${style.header_menu_item} ${style.sum}`}>
+              {`${walletCost}`}$
+            </li>
             <li className={style.header_menu_item}>
-              <Link to="/profile">LogIn</Link>
+              <NavLink className={style.header_menu_link} to="/profile">LogIn</NavLink>
             </li>
           </ul>
         </div>

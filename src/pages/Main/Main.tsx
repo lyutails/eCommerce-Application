@@ -7,7 +7,7 @@ import {
 import { getCustomer } from '../../api/getCustomer';
 import style from './_main.module.scss';
 
-function Main(): JSX.Element {
+function MainPage(): JSX.Element {
   getCustomer('TashaOneMore@example.com');
   const createCustomerMeData: IMyCustomerDraft = {
     email: 'lalala6@gmail.com',
@@ -54,4 +54,4 @@ function Main(): JSX.Element {
     </div>
   );
 }
-export default Main;
+export default MainPage;

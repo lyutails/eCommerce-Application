@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import style from '../NotFound/_not-found.module.scss';
 
-function NotFound(): JSX.Element {
+function NotFoundPage(): JSX.Element {
   const navigate = useNavigate();
   const goBack = (): void => navigate(-1);
   const handleNotFound = (): void => {
@@ -19,4 +19,4 @@ function NotFound(): JSX.Element {
     </section>
   );
 }
-export default NotFound;
+export default NotFoundPage;
