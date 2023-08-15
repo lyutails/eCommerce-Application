@@ -1,19 +1,19 @@
 import style from './_app.module.scss';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import AuthPage from '../pages/Auth/Auth';
-import RegistrationPage from '../pages/Registration/Registration';
-import NotFoundPage from '../pages/NotFound/NotFound';
+import Auth from '../pages/Auth/Auth';
+import Registration from '../pages/Registration/Registration';
+import NotFound from '../pages/NotFound/NotFound';
 import Main from '../pages/Main/Main';
-import AboutUsPage from '../pages/AboutUs/AboutUs';
-import BasketPage from '../pages/Basket/Basket';
-import CustomizePage from '../pages/Customize/Customize';
-import ProfilePage from '../pages/Profile/Profile';
+import AboutUs from '../pages/AboutUs/AboutUs';
+import Customize from '../pages/Customize/Customize';
+import Profile from '../pages/Profile/Profile';
 import { IRootState } from '../types/interfaces';
 import Catalog from '../pages/Catalog/Catalog';
-import Card from '../components/Card/Card';
 import { Layout } from '../components/Layout/Layout';
 import Category from '../pages/Category/Category';
+import Product from '../components/Product/Product';
+import Cart from '../pages/Cart/Cart';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -22,26 +22,26 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Main />} />
-          <Route path="/customize" element={<CustomizePage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/basket" element={<BasketPage />} />
+          <Route path="/customize" element={<Customize />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/:category" element={<Category />} />
-          <Route path="/category/:category/:id" element={<Card />} />
+          <Route path="/category/:category/:id" element={<Product />} />
           <Route
             path="/profile"
             element={
-              isAuth ? <ProfilePage /> : <Navigate to={'/login'} replace />
+              isAuth ? <Profile /> : <Navigate to={'/login'} replace />
             }
           />
           <Route
             path="/registration"
             element={
-              isAuth ? <Navigate to={'/login'} replace /> : <RegistrationPage />
+              isAuth ? <Navigate to={'/login'} replace /> : <Registration />
             }
           />
-          <Route path="/login" element={<AuthPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </section>

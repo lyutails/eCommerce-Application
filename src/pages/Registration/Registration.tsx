@@ -1,9 +1,9 @@
 import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEye from '../../../public/assets/icon/eye.svg';
+import iconEye from '../../../public/assets/icons/eye.svg';
 import { useNavigate } from 'react-router-dom';
-import { checkboxHandler, showPassword } from '../listeners';
+import { showPassword } from '../showPassword';
 import { useState } from 'react';
 import {
   cityShipHandler,
@@ -17,7 +17,7 @@ import {
 } from '../verification';
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
-import { getMinUserAge } from '../../components/Input/getMinUserAge';
+import { handleCheckbox } from '../../utils/handleCheckbox';
 
 function RegistrationPage(): JSX.Element {
   const navigate = useNavigate();
@@ -130,7 +130,7 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.birth}
             classClue={style.birth_clue}
             classInput={style.birth_input}
-            // "Enter Date of birth in forman dd.mm.yyyy *" - smth like this under input
+            // Enter Date of birth in forman dd.mm.yyyy NB! your age should be equal or more than 13 to register *
           />
           <h3 className={style.registration_title}>Address</h3>
           <div className={style.shipping}>
@@ -172,7 +172,7 @@ function RegistrationPage(): JSX.Element {
               classInput={style.country_input}
             />
             <input
-              onChange={(e): void => checkboxHandler(e, setCheckedInput)}
+              onChange={(e): void => handleCheckbox(e, setCheckedInput)}
               className={style.checkbox_input}
               id="address"
               name="address"

@@ -1,9 +1,9 @@
 import Input from '../../components/Input/Input';
 import style from '../Auth/_auth.module.scss';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEmail from '../../../public/assets/icon/email.svg';
-import iconPassword from '../../../public/assets/icon/password.svg';
-import iconEye from '../../../public/assets/icon/eye.svg';
+import iconEmail from '../../../public/assets/icons/email.svg';
+import iconPassword from '../../../public/assets/icons/password.svg';
+import iconEye from '../../../public/assets/icons/eye.svg';
 // import iconError from '../../../public/assets/icon/error.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
 // import { IPasswordErrors } from '../../types/interfaces';
-import { showPassword } from '../listeners';
+import { showPassword } from '../showPassword';
 import { loginHandler, passwordHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 

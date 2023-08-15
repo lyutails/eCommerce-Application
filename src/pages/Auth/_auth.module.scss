@@ -4,7 +4,6 @@ body {
   background-color: black;
 }
 
-
 .title {
   font-size: 2.5rem;
   font-weight: 500;
@@ -103,7 +102,7 @@ body {
     font-size: 1.2rem;
     color: white;
 
-    background-image: url('../../../public/assets/icon/alert.svg');
+    background-image: url('../../../public/assets/icons/alert.svg');
     background-repeat: no-repeat;
     background-position: top 3px left 2px;
     background-size: 15px 15px;
@@ -120,49 +119,47 @@ body {
     top: 0;
     left: 0;
     transform: translateY(20%);
-  
+
     display: flex;
     display: none;
     flex-direction: column;
-  
+
     width: 80%;
     padding: 20px;
-  
+
     font-family: Arial, sans-serif;
     font-size: 1.4rem;
     color: black;
-  
+
     background-color: white;
     border-radius: 6px;
 
-  
     &::before {
-    content: "";
-  
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: rotate(45deg);
-  
-    width: 12px;
-    height: 12px;
-  
-    background-color: white;
+      content: '';
+
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: rotate(45deg);
+
+      width: 12px;
+      height: 12px;
+
+      background-color: white;
     }
-  
+
     &_text {
       display: flex;
       align-items: center;
       margin-bottom: 10px;
     }
-  
+
     &_error {
       width: 15px;
       height: 15px;
       margin-right: 10px;
     }
   }
-  
 }
 
 // .tooltip {
@@ -211,5 +208,3 @@ body {
 //     margin-right: 10px;
 //   }
 // }
-
-
