@@ -6,14 +6,14 @@ import RegistrationPage from '../pages/Registration/Registration';
 import NotFoundPage from '../pages/NotFound/NotFound';
 import Main from '../pages/Main/Main';
 import AboutUsPage from '../pages/AboutUs/AboutUs';
-import BasketPage from '../pages/Basket/Basket';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
 import { IRootState } from '../types/interfaces';
-import Catalog from '../pages/Catalog/Catalog';
-import Card from '../components/Card/Card';
 import { Layout } from '../components/Layout/Layout';
-import Category from '../pages/Category/Category';
+import CartPage from '../pages/Cart/Cart';
+import CatalogPage from '../pages/Catalog/Catalog';
+import CategoryPage from '../pages/Category/Category';
+import ProductPage from '../pages/Product/Product';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -24,10 +24,10 @@ function App(): JSX.Element {
           <Route index element={<Main />} />
           <Route path="customize" element={<CustomizePage />} />
           <Route path="about-us" element={<AboutUsPage />} />
-          <Route path="basket" element={<BasketPage />} />
-          <Route path="catalog" element={<Catalog />} />
-          <Route path="catalog/:category" element={<Category />} />
-          <Route path="category/:category/:id" element={<Card />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="catalog" element={<CatalogPage />} />
+          <Route path="catalog/:category" element={<CategoryPage />} />
+          <Route path="category/:category/:id" element={<ProductPage />} />
           <Route path="*" element={<NotFoundPage />} />
           {isAuth ? (
             <>

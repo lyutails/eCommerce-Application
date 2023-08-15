@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { GetCategories } from '../../api/getCategories';
 // import { createCustomer } from '../../api/createCustomer';
 
-function Catalog(): JSX.Element {
+function CatalogPage(): JSX.Element {
   // let category;
   // const category = useSelector((state: ICategoryState) => state.category);
   const [allCategories, setAllCategories] = useState<string[]>([]);
@@ -52,7 +52,7 @@ function Catalog(): JSX.Element {
     </div>
   );
 }
-export default Catalog;
+export default CatalogPage;
 
 // <div className={style.main_arrow + ' ' + style.left}></div>
 // <div className={`${style.main_arrow} ${style.left}`}></div>

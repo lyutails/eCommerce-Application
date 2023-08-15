@@ -20,7 +20,7 @@ interface IInputProps {
   max?: string;
 }
 
-// "Enter Date of birth in forman dd.mm.yyyy *" - smth like this under input
+// Enter Date of birth in forman dd.mm.yyyy NB! your age should be equal or more than 13 to register *
 
 function InputBirthDateMask(props: IInputProps): JSX.Element {
   const ref = useRef(null);

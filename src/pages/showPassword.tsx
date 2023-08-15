@@ -1,5 +1,5 @@
-import iconCloseEye from '../../public/assets/icon/eye-close.svg';
-import iconEye from '../../public/assets/icon/eye.svg';
+import iconCloseEye from '../../public/assets/icons/eye-close.svg';
+import iconEye from '../../public/assets/icons/eye.svg';
 
 export const showPassword = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -14,11 +14,4 @@ export const showPassword = (
     input.type = 'password';
     image.src = iconEye;
   }
-};
-
-export const checkboxHandler = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  func: React.Dispatch<React.SetStateAction<boolean>>
-): void => {
-  func(e.target.checked);
 };
