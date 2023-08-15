@@ -17,7 +17,8 @@ export const handleСreationAuth = (
   setErrorPassword: React.Dispatch<React.SetStateAction<string>>,
   isAuth: boolean,
   dispatch: Dispatch<AnyAction>,
-  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>
+  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
+  setPasswordFlagError: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   loginСheck = handleLoginInput(
@@ -31,8 +32,10 @@ export const handleСreationAuth = (
     if (passwordErr[key].isError === true) {
       setErrorPassword(clue.invalidPassword);
       passwordСheck = false;
+      setPasswordFlagError(true);
     } else {
       passwordСheck = true;
+      setPasswordFlagError(false);
     }
   });
   console.log(passwordСheck, loginСheck);

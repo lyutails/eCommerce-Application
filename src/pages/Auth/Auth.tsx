@@ -29,7 +29,8 @@ function AuthPage(): JSX.Element {
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
-  const [checkmarkPassword, setCheckmarkPassword] = useState(false);
+
+  const [passwordFlagError, setPasswordFlagError] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,11 +56,15 @@ function AuthPage(): JSX.Element {
           <form action="" className={style.authorization_form}>
             <Input
               func={(e): void => inputHandler(e, setLogin)}
-              clue={loginError}
+              clue={loginError ? loginError : 'This is required field'}
               type="email"
               placeholder="E-mail"
               classWrapper={style.email}
-              classClue={style.email_clue}
+              classClue={
+                loginError
+                  ? `${style.email_clue} ${style.error}`
+                  : style.email_clue
+              }
               classInput={style.email_input}
               childrenBefore={
                 <div className={style.wrapper_img}>
@@ -81,7 +86,11 @@ function AuthPage(): JSX.Element {
               type="password"
               placeholder="Password"
               classWrapper={style.password}
-              classClue={style.password_clue}
+              classClue={
+                passwordFlagError
+                  ? `${style.password_clue} ${style.password_error}`
+                  : `${style.password_clue} ${style.password_valid}`
+              }
               classInput={style.password_input}
               childrenBefore={
                 <div className={style.wrapper_img}>
@@ -116,7 +125,8 @@ function AuthPage(): JSX.Element {
                   setPasswordError,
                   isAuth,
                   dispatch,
-                  setCheckmarkLogin
+                  setCheckmarkLogin,
+                  setPasswordFlagError
                 )
               }
               classNames={style.authorization_button}
