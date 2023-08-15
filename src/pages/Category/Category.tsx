@@ -1,4 +1,4 @@
-import style from '../AboutUs/_about-us.module.scss';
+import style from '../Category/_category.module.scss';
 
 function CategoryPage(): JSX.Element {
   return (
