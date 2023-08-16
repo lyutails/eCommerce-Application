@@ -53,7 +53,6 @@ export type AuthAdmin = {
 };
 
 export const tokenAdmin = await authClient.clientCredentialsFlow();
-// console.log(tokenAdmin);
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
@@ -67,3 +66,20 @@ export const ctpClient = new ClientBuilder()
   .withHttpMiddleware(httpMiddlewareOptions)
   .withLoggerMiddleware()
   .build();
+
+export const customerToken = async (
+  username: string,
+  password: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+  const customer = await authClient.customerPasswordFlow(
+    {
+      username,
+      password,
+    },
+    {
+      disableRefreshToken: false,
+    }
+  );
+  return customer;
+};

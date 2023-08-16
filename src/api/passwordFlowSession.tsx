@@ -8,6 +8,7 @@ import {
   Client,
   ClientBuilder,
   PasswordAuthMiddlewareOptions,
+  TokenCache,
 } from '@commercetools/sdk-client-v2';
 import { Dispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
@@ -15,11 +16,14 @@ import { AnyAction } from 'redux';
 import { PROJECT_KEY } from '../constants';
 import { httpMiddlewareOptions } from './clientBuilder';
 import { NavigateFunction } from 'react-router-dom';
+// import MyTokenCache from './tockenCache';
 
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
 }
+
+// const tokenCache = new MyTokenCache();
 
 const authMiddlewareOptionsForPasswordFlow = (
   username: string,
@@ -45,6 +49,7 @@ const authMiddlewareOptionsForPasswordFlow = (
     scopes: [
       'manage_customers:tycteam manage_my_quotes:tycteam view_categories:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam view_discount_codes:tycteam manage_my_business_units:tycteam',
     ],
+    // tokenCache: tokenCache,
     fetch,
   };
   return options;
@@ -63,7 +68,7 @@ export const loginCustomerThroughMe = async (
   request: IMyCustomerLoginDraft,
   dispatch: Dispatch<AnyAction>,
   navigator: NavigateFunction
-): Promise<void> => {
+): Promise<ClientResponse<CustomerSignInResult> | undefined> => {
   const apiRoot = createApiBuilderFromCtpClient(
     loginUserCTPClient(request.email, request.password),
     'https://auth.us-central1.gcp.commercetools.com/'
@@ -83,44 +88,12 @@ export const loginCustomerThroughMe = async (
       .execute();
     dispatch(setAuthStatus(true));
     navigator('/');
-    // return customer;
+    return customer;
   } catch {
     // throw new Error(
     //   `Sorry, the customer with ${request.email} email doesn't exist!`
     // );
     console.log(
-      `Sorry, the customer with ${request.email} email doesn't exist!`
-    );
-  }
-};
-
-export const signupCustomerThroughMe = async (
-  request: IMyCustomerLoginDraft,
-  dispatch: Dispatch<AnyAction>,
-  navigator: NavigateFunction
-): Promise<ClientResponse<CustomerSignInResult>> => {
-  const apiRoot = createApiBuilderFromCtpClient(
-    loginUserCTPClient(request.email, request.password),
-    'https://auth.us-central1.gcp.commercetools.com/'
-  ).withProjectKey({
-    projectKey: PROJECT_KEY,
-  });
-  try {
-    const data = await apiRoot
-      .me()
-      .login()
-      .post({
-        body: request,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .execute();
-    dispatch(setAuthStatus(true));
-    navigator('/');
-    return data;
-  } catch {
-    throw new Error(
       `Sorry, the customer with ${request.email} email doesn't exist!`
     );
   }
