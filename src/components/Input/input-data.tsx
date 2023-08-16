@@ -1,7 +1,7 @@
 import { IInputFields } from '../../types/interfaces';
-import iconEmail from '../../../public/assets/icon/email.svg';
-import iconPassword from '../../../public/assets/icon/password.svg';
-import iconEye from '../../../public/assets/icon/eye.svg';
+import iconEmail from '../../../public/assets/icons/email.svg';
+import iconPassword from '../../../public/assets/icons/password.svg';
+import iconEye from '../../../public/assets/icons/eye.svg';
 
 const inputFields: IInputFields = {
   email: {

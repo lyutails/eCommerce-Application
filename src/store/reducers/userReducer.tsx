@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const language = localStorage.getItem('isAuth');
+let isAuth;
+language && language === 'true' ? (isAuth = true) : (isAuth = false);
 const userReducer = createSlice({
   name: 'user',
   initialState: {
@@ -8,7 +10,7 @@ const userReducer = createSlice({
       password: '',
       email: '',
     },
-    isAuth: false,
+    isAuth,
   },
   reducers: {
     createUser(state, action) {
