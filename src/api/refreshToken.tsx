@@ -67,15 +67,6 @@ export const refreshTokenSession = async (
   });
   try {
     const customer = apiRoot.customers().get().execute();
-    // .login()
-    // .post({
-    //   body: request,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    // .execute();
-
     return customer;
   } catch {
     throw new Error('fkehvnl;kr./');

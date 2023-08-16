@@ -3,10 +3,7 @@ import { setAuthStatus } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import {
-  loginCustomerThroughMe,
-  signupCustomerThroughMe,
-} from '../../api/passwordFlowSession';
+import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
 
 // eslint-disable-next-line prefer-const
 let loginСheck = false;
