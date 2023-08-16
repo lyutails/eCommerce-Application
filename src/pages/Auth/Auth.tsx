@@ -34,7 +34,7 @@ function AuthPage(): JSX.Element {
     navigate('/registration');
   };
   return (
-    <div className={style.login}>
+    <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
         <div className={style.authorization}>
           <h2 className={style.title}>Login</h2>

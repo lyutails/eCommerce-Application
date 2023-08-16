@@ -19,16 +19,6 @@ import { refreshTokenSession } from '../api/refreshToken';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const data = {
-    email: 'johnIanaTestAddress@example.com',
-    password: 'snmthjs',
-  };
-  // {
-  //   "email": "ianatestAPI@example.com",
-  //   "firstName": "Лфенф",
-  //   "lastName": "ывапаувас",
-  //   "password": "fshHJKL2365"
-  // }
   return (
     <section className={style.app}>
       <Routes>
