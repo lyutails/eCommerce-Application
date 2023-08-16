@@ -16,6 +16,8 @@ import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { loginCustomerThroughMe } from '../api/passwordFlowSession';
 import { refreshTokenSession } from '../api/refreshToken';
+import { customerToken } from '../api/adminBuilder';
+import { useEffect, useState } from 'react';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -29,6 +31,15 @@ function App(): JSX.Element {
   //   "lastName": "ывапаувас",
   //   "password": "fshHJKL2365"
   // }
+  const [customerTokens, setCustomerTokens] = useState<string[]>([]);
+  useEffect(() => {
+    customerToken(data.email, data.password).then((response) => {
+      console.log(response, 'response');
+      setCustomerTokens([response.access_token, response.refreshToken]);
+    });
+  }, [data.email, data.password]);
+
+  console.log(customerTokens, 'testtest');
   return (
     <section className={style.app}>
       <Routes>
