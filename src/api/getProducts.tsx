@@ -4,7 +4,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
 
-let image = '';
+const image = '';
 
 export async function getProducts(): Promise<
   ClientResponse<ProductPagedQueryResponse>
