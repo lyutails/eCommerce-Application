@@ -8,24 +8,18 @@ import iconEye from '../../../public/assets/icons/eye.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
-// import { checkEmail } from '../Auth/verify';
-// import { ChangeEventHandler } from 'react';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
-// import { IPasswordErrors } from '../../types/interfaces';
 import { showPassword } from '../showPassword';
 import { inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  // let passwordСheck = false;
 
-  // для навигации
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  //состояние ошибки
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
@@ -39,15 +33,6 @@ function AuthPage(): JSX.Element {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
-  // const tooltipText = passwordErrors.map((text: string, i: number) => (
-  //   <p
-  //     key={'text_' + i}
-  //     className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-  //   >
-  //     <img className={style.tooltip_error} src={iconError} alt="Error icon" />
-  //     {text}
-  //   </p>
-  // ));
   return (
     <div className={style.login}>
       <div className={style.login_wrapper}>

@@ -54,6 +54,7 @@ export const handleLoginInput = (
   loginСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.mail.lastIndex = 0;
   if (loginField === '') {
     setErrorLogin(clue.requiredField);
     loginСheck = false;
@@ -63,7 +64,6 @@ export const handleLoginInput = (
     loginСheck = false;
     setCheckmark(false);
   } else {
-    console.log('fuck');
     setCheckmark(true);
     loginСheck = true;
   }
@@ -71,7 +71,10 @@ export const handleLoginInput = (
 };
 
 export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
-  //валидация для пароля
+  REGEXP.uppercasePassword.lastIndex = 0;
+  REGEXP.lowercasePassword.lastIndex = 0;
+  REGEXP.digitPassword.lastIndex = 0;
+  REGEXP.whitespacePassword.lastIndex = 0;
   function isEmpty(): boolean {
     return passwordField === '';
   }
@@ -125,6 +128,7 @@ export const handleFirstnameInput = (
   firstnameСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.fistname.lastIndex = 0;
   if (firstnameField === '') {
     setErrorFirstname(clue.requiredField);
     firstnameСheck = false;
@@ -146,6 +150,7 @@ export const handleLastnameInput = (
   lastnameСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.lastname.lastIndex = 0;
   if (lastnameField === '') {
     setErrorLastname(clue.requiredField);
     lastnameСheck = false;
@@ -167,6 +172,7 @@ export const handleStreetShipInput = (
   streetShipСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.street.lastIndex = 0;
   if (streetShipField === '') {
     setErrorStreetShip(clue.requiredField);
     streetShipСheck = false;
@@ -188,6 +194,7 @@ export const handleCityShipInput = (
   cityShipСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.city.lastIndex = 0;
   if (cityShipField === '') {
     setErrorCityShip(clue.requiredField);
     cityShipСheck = false;
@@ -209,6 +216,8 @@ export const handlePostalShipInput = (
   postalShipСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.postalUSA.lastIndex = 0;
+  REGEXP.postalCanada.lastIndex = 0;
   if (postalShipField === '') {
     setErrorPostalShip(clue.requiredField);
     postalShipСheck = false;
@@ -274,6 +283,7 @@ export const handleStreetBillInput = (
   streetBillСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.street.lastIndex = 0;
   if (streetBillField === '') {
     setErrorStreetBill(clue.requiredField);
     streetBillСheck = false;
@@ -295,6 +305,7 @@ export const handleCityBillInput = (
   cityBillСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.city.lastIndex = 0;
   if (cityBillField === '') {
     setErrorCityBill(clue.requiredField);
     cityBillСheck = false;
@@ -316,6 +327,8 @@ export const handlePostalBillInput = (
   postalBillСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
+  REGEXP.postalUSA.lastIndex = 0;
+  REGEXP.postalCanada.lastIndex = 0;
   if (postalBillField === '') {
     setErrorPostalBill(clue.requiredField);
     postalBillСheck = false;

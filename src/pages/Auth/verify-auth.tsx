@@ -3,6 +3,10 @@ import { setAuthStatus } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
+import {
+  loginCustomerThroughMe,
+  signupCustomerThroughMe,
+} from '../../api/passwordFlowSession';
 
 // eslint-disable-next-line prefer-const
 let loginСheck = false;
@@ -38,10 +42,12 @@ export const handleСreationAuth = (
       setPasswordFlagError(false);
     }
   });
-  console.log(passwordСheck, loginСheck);
+  const request = {
+    email: loginField,
+    password: passwordField,
+  };
   if (loginСheck === true && passwordСheck === true) {
-    dispatch(setAuthStatus(true));
-    console.log(isAuth);
-    navigator('/');
+    loginCustomerThroughMe(request, dispatch, navigator);
+    console.log(isAuth, 'testAPI');
   }
 };

@@ -15,7 +15,7 @@ export async function getCustomer(
     const customersEmailsArray = customersArray.filter(
       (email) => email.email === emailUser
     );
-    console.log(customersEmailsArray);
+    // console.log(customersEmailsArray);
     return customers;
   } catch {
     throw new Error('cannot get a customer');

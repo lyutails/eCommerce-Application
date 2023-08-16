@@ -6,7 +6,6 @@ export const showPassword = (
 ): void => {
   const image = e.target as HTMLImageElement;
   const input = image.parentNode?.previousSibling as HTMLInputElement;
-  console.log();
   if (image.src === iconEye) {
     input.type = 'text';
     image.src = iconCloseEye;
