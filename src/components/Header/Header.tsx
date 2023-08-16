@@ -2,11 +2,14 @@ import '../../style/variables.scss';
 import style from './_header.module.scss';
 import { logo } from './logo';
 import { Link, NavLink } from 'react-router-dom';
+import { IRootState } from '../../types/interfaces';
+import { useSelector } from 'react-redux';
 
 const cartCounter = 0;
 const walletCost = 0;
 
 function Header(): JSX.Element {
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
@@ -16,19 +19,30 @@ function Header(): JSX.Element {
         <div className={style.header_categories}>
           <ul className={style.header_menu}>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/">Main</NavLink>
+              <NavLink className={style.header_menu_link} to="/">
+                Main
+              </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/catalog">Catalog</NavLink>
+              <NavLink className={style.header_menu_link} to="/catalog">
+                Catalog
+              </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/customize">Customize</NavLink>
+              <NavLink className={style.header_menu_link} to="/customize">
+                Customize
+              </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/about-us">About Us</NavLink>
+              <NavLink className={style.header_menu_link} to="/about-us">
+                About Us
+              </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={`${style.header_menu_link} ${style.header_cart}`} to="/cart">
+              <NavLink
+                className={`${style.header_menu_link} ${style.header_cart}`}
+                to="/cart"
+              >
                 <span
                   className={style.header_cart_counter}
                 >{`${cartCounter}`}</span>
@@ -38,7 +52,9 @@ function Header(): JSX.Element {
               {`${walletCost}`}$
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/profile">LogIn</NavLink>
+              <NavLink className={style.header_menu_link} to="/profile">
+                {isAuth ? 'Profile' : 'LogIn'}
+              </NavLink>
             </li>
           </ul>
         </div>

@@ -16,6 +16,8 @@ interface IInputProps {
   tooltip?: ReactNode;
   value?: string;
   max?: string;
+  onfocus?: ChangeEventHandler<HTMLInputElement>;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 function Input(props: IInputProps): JSX.Element {
@@ -24,6 +26,8 @@ function Input(props: IInputProps): JSX.Element {
       <div className={style.wrapper_label}>
         {props.childrenBefore}
         <input
+          onBlur={props.onblur}
+          onFocus={props.onfocus}
           value={props.value}
           max={props.max}
           onChange={props.func}
@@ -35,7 +39,9 @@ function Input(props: IInputProps): JSX.Element {
         {props.childrenAfter}
       </div>
       {props.tooltip}
-      <p className={`${style.wrapper_clue} ${props.classClue}`}>{props.clue}</p>
+      <div className={`${style.wrapper_clue} ${props.classClue}`}>
+        {props.clue}
+      </div>
     </div>
   );
 }

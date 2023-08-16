@@ -22,4 +22,4 @@ export const getProject = async (): Promise<ClientResponse<Project>> => {
 };
 
 // Retrieve Project information and output the result to the log
-getProject().then(console.log).catch(console.error);
+// getProject().then(console.log).catch(console.error);

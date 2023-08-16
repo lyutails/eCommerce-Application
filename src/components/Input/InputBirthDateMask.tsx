@@ -31,21 +31,13 @@ function InputBirthDateMask(props: IInputProps): JSX.Element {
       <div className={style.wrapper_label}>
         {props.childrenBefore}
         <IMaskInput
+          onChange={props.func}
           className={`${style.wrapper_input} ${props.classInput}`}
           mask={Date}
           radix="."
           unmask={true}
           ref={ref}
-          inputRef={inputRef} // access to nested input
-          // DO NOT USE onChange TO HANDLE CHANGES!
-          // USE onAccept INSTEAD
-          // onAccept={
-            // depending on prop above first argument is
-            // `value` if `unmask=false`,
-            // `unmaskedValue` if `unmask=true`,
-            // `typedValue` if `unmask='typed'`
-            // (value, mask) => console.log(value)
-          // }
+          inputRef={inputRef}
           placeholder={props.placeholder}
           type={props.type}
           max={getMinUserAge()}

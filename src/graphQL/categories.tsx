@@ -9,7 +9,7 @@ export const Categories = (): JSX.Element => {
       target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
     },
   });
-  console.log(data, 'lalala');
+  // console.log(data, 'lalala');
   return (
     <div className={style.main_categories}>
       {data.map((category: string) => {
@@ -22,4 +22,4 @@ export const Categories = (): JSX.Element => {
     </div>
   );
 };
-console.log('lalala');
+// console.log('lalala');

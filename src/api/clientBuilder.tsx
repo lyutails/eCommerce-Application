@@ -5,7 +5,10 @@
 // const clientSecret = 'q1b9hUuYCXvrBbjNQXX4vsIHbudzTSyD';
 
 import {
+  Client,
   ClientBuilder,
+  PasswordAuthMiddlewareOptions,
+  TokenCache,
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
@@ -32,7 +35,6 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   scopes: [
     'manage_customers:tycteam manage_my_quotes:tycteam view_categories:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam manage_my_quote_requests:tycteam create_anonymous_token:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam manage_my_orders:tycteam view_discount_codes:tycteam manage_my_business_units:tycteam',
   ],
-
   fetch,
 };
 
@@ -62,7 +64,7 @@ export const tokenCustomer = await authClient.clientCredentialsFlow();
 // console.log(tokenCustomer);
 
 // Configure httpMiddlewareOptions
-const httpMiddlewareOptions: HttpMiddlewareOptions = {
+export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: 'https://api.us-central1.gcp.commercetools.com',
   fetch,
 };

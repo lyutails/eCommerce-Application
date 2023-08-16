@@ -2,7 +2,7 @@
 import { NavigateFunction } from 'react-router-dom';
 import {
   clue,
-  handlCountryShipInput,
+  handleCountryShipInput,
   handleCityShipInput,
   handleFirstnameInput,
   handleLastnameInput,
@@ -10,6 +10,7 @@ import {
   handlePasswordInput,
   handlePostalShipInput,
   handleStreetShipInput,
+  handleBirthdayInput,
 } from '../verification';
 
 let loginСheck = false;
@@ -20,6 +21,7 @@ let streetShipСheck = false;
 let cityShipСheck = false;
 let postalShipСheck = false;
 let countryShipСheck = false;
+let birthdayСheck = false;
 
 export const handleСreationReg = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -30,6 +32,7 @@ export const handleСreationReg = (
   setErrorCityShip: React.Dispatch<React.SetStateAction<string>>,
   setErrorPostalShip: React.Dispatch<React.SetStateAction<string>>,
   setErrorCountryShip: React.Dispatch<React.SetStateAction<string>>,
+  setErrorBirthday: React.Dispatch<React.SetStateAction<string>>,
   loginField: string,
   passwordField: string,
   fistnameField: string,
@@ -38,32 +41,87 @@ export const handleСreationReg = (
   cityShipField: string,
   postalShipField: string,
   countryShipField: string,
+  birthdayField: string,
   navigator: NavigateFunction,
-  setErrorPassword: React.Dispatch<React.SetStateAction<string>>
+  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkFirstname: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkLastname: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkStreetShip: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkCityShip: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkPostalShip: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkCountryShip: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkBirthday: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
-  handleLoginInput(loginField, setErrorLogin, loginСheck);
-  // const passwordErr = handlePasswordInput(passwordField);
-  // Object.keys(passwordErr).map((key): void => {
-  //   if (passwordErr[key].isError === true) {
-  //     setErrorPassword(clue.invalidPassword);
-  //     passwordСheck = false;
-  //   } else {
-  //     setErrorPassword('Completed');
-  //     passwordСheck = true;
-  //   }
-  // });
-  handleFirstnameInput(fistnameField, setErrorFirstname, firstnameСheck);
-  handleLastnameInput(lastnameField, setErrorLastname, lastnameСheck);
-  handleStreetShipInput(streetShipField, setErrorStreetShip, streetShipСheck);
-  handleCityShipInput(cityShipField, setErrorCityShip, cityShipСheck);
-  handlePostalShipInput(postalShipField, setErrorPostalShip, postalShipСheck);
-  handlCountryShipInput(
+  firstnameСheck = handleFirstnameInput(
+    fistnameField,
+    setErrorFirstname,
+    firstnameСheck,
+    setCheckmarkFirstname
+  );
+  lastnameСheck = handleLastnameInput(
+    lastnameField,
+    setErrorLastname,
+    lastnameСheck,
+    setCheckmarkLastname
+  );
+  streetShipСheck = handleStreetShipInput(
+    streetShipField,
+    setErrorStreetShip,
+    streetShipСheck,
+    setCheckmarkStreetShip
+  );
+  cityShipСheck = handleCityShipInput(
+    cityShipField,
+    setErrorCityShip,
+    cityShipСheck,
+    setCheckmarkCityShip
+  );
+  postalShipСheck = handlePostalShipInput(
+    postalShipField,
+    setErrorPostalShip,
+    postalShipСheck,
+    setCheckmarkPostalShip
+  );
+  countryShipСheck = handleCountryShipInput(
     countryShipField,
     setErrorCountryShip,
-    countryShipСheck
+    countryShipСheck,
+    setCheckmarkCountryShip
   );
-  if (loginСheck === true && passwordСheck === true) {
+  loginСheck = handleLoginInput(
+    loginField,
+    setErrorLogin,
+    loginСheck,
+    setCheckmarkLogin
+  );
+  const passwordErr = handlePasswordInput(passwordField);
+  Object.keys(passwordErr).every((key): void => {
+    if (passwordErr[key].isError === true) {
+      passwordСheck = false;
+    } else {
+      setCheckmarkPassword(true);
+      passwordСheck = true;
+    }
+  });
+  birthdayСheck = handleBirthdayInput(
+    birthdayField,
+    setErrorBirthday,
+    birthdayСheck,
+    setCheckmarkBirthday
+  );
+  if (
+    loginСheck === true &&
+    passwordСheck === true &&
+    firstnameСheck === true &&
+    lastnameСheck === true &&
+    streetShipСheck === true &&
+    cityShipСheck === true &&
+    postalShipСheck === true &&
+    countryShipСheck === true &&
+    birthdayСheck === true
+  ) {
     navigator('/');
   }
 };

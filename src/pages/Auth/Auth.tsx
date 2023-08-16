@@ -8,26 +8,23 @@ import iconEye from '../../../public/assets/icons/eye.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
-// import { checkEmail } from '../Auth/verify';
-// import { ChangeEventHandler } from 'react';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
-// import { IPasswordErrors } from '../../types/interfaces';
 import { showPassword } from '../showPassword';
-import { loginHandler, passwordHandler } from '../verification';
+import { inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  // let passwordСheck = false;
 
-  // для навигации
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
-  //состояние ошибки
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
+  const [checkmarkLogin, setCheckmarkLogin] = useState(false);
+
+  const [passwordFlagError, setPasswordFlagError] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,15 +33,6 @@ function AuthPage(): JSX.Element {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
-  // const tooltipText = passwordErrors.map((text: string, i: number) => (
-  //   <p
-  //     key={'text_' + i}
-  //     className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-  //   >
-  //     <img className={style.tooltip_error} src={iconError} alt="Error icon" />
-  //     {text}
-  //   </p>
-  // ));
   return (
     <div className={style.login}>
       <div className={style.login_wrapper}>
@@ -52,12 +40,16 @@ function AuthPage(): JSX.Element {
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
             <Input
-              func={(e): void => loginHandler(e, setLogin)}
-              clue={loginError}
+              func={(e): void => inputHandler(e, setLogin)}
+              clue={loginError ? loginError : 'This is required field'}
               type="email"
               placeholder="E-mail"
               classWrapper={style.email}
-              classClue={style.email_clue}
+              classClue={
+                loginError
+                  ? `${style.email_clue} ${style.error}`
+                  : style.email_clue
+              }
               classInput={style.email_input}
               childrenBefore={
                 <div className={style.wrapper_img}>
@@ -70,7 +62,7 @@ function AuthPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => passwordHandler(e, setPassword)}
+              func={(e): void => inputHandler(e, setPassword)}
               clue={
                 typeof passwordError === 'string'
                   ? passwordError
@@ -79,7 +71,11 @@ function AuthPage(): JSX.Element {
               type="password"
               placeholder="Password"
               classWrapper={style.password}
-              classClue={style.password_clue}
+              classClue={
+                passwordFlagError
+                  ? `${style.password_clue} ${style.password_error}`
+                  : `${style.password_clue} ${style.password_valid}`
+              }
               classInput={style.password_input}
               childrenBefore={
                 <div className={style.wrapper_img}>
@@ -113,7 +109,9 @@ function AuthPage(): JSX.Element {
                   navigate,
                   setPasswordError,
                   isAuth,
-                  dispatch
+                  dispatch,
+                  setCheckmarkLogin,
+                  setPasswordFlagError
                 )
               }
               classNames={style.authorization_button}

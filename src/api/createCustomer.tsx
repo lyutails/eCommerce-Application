@@ -67,7 +67,7 @@ export async function createCustomerMe(
         },
       })
       .execute();
-    console.log(customer);
+    // console.log(customer);
     return customer;
   } catch {
     throw new Error('cannot create a me customer');
@@ -94,10 +94,60 @@ export async function loginCustomer(
         },
       })
       .execute();
-    console.log(customer);
+    // console.log(customer);
     return customer;
   } catch {
     throw new Error('cannot login a me customer');
     // logic from api here if error
   }
 }
+
+const customerOne = {
+  email: 'johnIanaTestAddress@example.com',
+  firstName: 'Iana',
+  lastName: 'Belousova',
+  password: 'snmthjs',
+  addresses: [
+    {
+      streetName: 'Hhdjlzld',
+      streetNumber: '45',
+      postalCode: '30100',
+      city: 'hbcbjisne',
+      country: 'usa',
+    },
+    {
+      streetName: 'PPPPPPPP',
+      streetNumber: '45',
+      postalCode: '30100',
+      city: 'PPPPPPP',
+      country: 'canada',
+    },
+  ],
+  defaultShippingAddress: 0,
+  defaultBillingAddress: 1,
+};
+
+// {
+//   "email": "johnIanaTestAddress@example.com",
+//   "firstName": "Iana",
+//   "lastName": "Belousova",
+//   "password": "snmthjs",
+//   "addresses": [
+//     {
+//       "streetName": "Hhdjlzld",
+//       "streetNumber": "45",
+//       "postalCode": "30100",
+//       "city": "hbcbjisne",
+//       "country": "usa"
+//     },
+//     {
+//       "streetName": "PPPPPPPP",
+//       "streetNumber": "45",
+//       "postalCode": "30100",
+//       "city": "PPPPPPP",
+//       "country": "canada"
+//     }
+//   ],
+//   "defaultShippingAddress": 0,
+//   "defaultBillingAddress": 1
+// }
