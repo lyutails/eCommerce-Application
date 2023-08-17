@@ -60,7 +60,7 @@ export type AuthAdmin = {
   scope: string;
 };
 
-export const tokenCustomer = await authClient.clientCredentialsFlow();
+export const tokenCustomer = authClient.clientCredentialsFlow();
 // console.log(tokenCustomer);
 
 // Configure httpMiddlewareOptions

@@ -18,14 +18,14 @@ const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
 ): RefreshAuthMiddlewareOptions => {
   if (typeof process.env.CLIENT_ID !== 'string') {
-    throw new Error('no client id found');
+    throw new Error('no client id found refresh token flow');
   }
   if (typeof process.env.CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throw new Error('no client id found refresh token flow');
   }
 
   if (typeof MyTokenCache !== 'string') {
-    throw new Error('no client id found');
+    throw new Error('no client id found refresh token flow');
   }
   const options: RefreshAuthMiddlewareOptions = {
     host: 'https://auth.europe-west1.gcp.commercetools.com',
