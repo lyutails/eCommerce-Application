@@ -67,7 +67,7 @@ export const ctpClient = new ClientBuilder()
   .withLoggerMiddleware()
   .build();
 
-export const customerToken = async (
+export const getCustomerToken = async (
   username: string,
   password: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,5 +81,13 @@ export const customerToken = async (
       disableRefreshToken: false,
     }
   );
+  return customer;
+};
+
+export const refreshTokenFlow = async (
+  token: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+  const customer = await authClient.refreshTokenFlow(token);
   return customer;
 };

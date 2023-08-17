@@ -16,7 +16,7 @@ import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { loginCustomerThroughMe } from '../api/passwordFlowSession';
 import { refreshTokenSession } from '../api/refreshToken';
-import { customerToken } from '../api/adminBuilder';
+import { getCustomerToken, refreshTokenFlow } from '../api/adminBuilder';
 import { useEffect, useState } from 'react';
 
 function App(): JSX.Element {
@@ -33,13 +33,18 @@ function App(): JSX.Element {
   // }
   const [customerTokens, setCustomerTokens] = useState<string[]>([]);
   useEffect(() => {
-    customerToken(data.email, data.password).then((response) => {
-      console.log(response, 'response');
-      setCustomerTokens([response.access_token, response.refreshToken]);
+    getCustomerToken(data.email, data.password).then((response) => {
+      // console.log(response, 'response');
+      setCustomerTokens([response.access_token, response.refresh_token]);
     });
   }, [data.email, data.password]);
 
-  console.log(customerTokens, 'testtest');
+  // console.log(customerTokens, 'testtest');
+  // console.log(refreshTokenFlow(customerTokens[1]), 'lalalal');
+  // console.log(
+  //   refreshTokenFlow('9MYlnodRwdRD4fwXGzxUJ2gTZ9ZzKlKDylFZa7FsJPA'),
+  //   'lрпрпрпрпрпр'
+  // );
   return (
     <section className={style.app}>
       <Routes>

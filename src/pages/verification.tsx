@@ -5,7 +5,9 @@ const REGEXP = {
   // eslint-disable-next-line no-useless-escape
   mail: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
   postalUSA: /^\d{5}(?:-\d{4})?$/,
-  postalCanada: /^[A-Za-z]\d[A-Za-z]( \d[A-Za-z]\d)?$/,
+  postalCanada: /^[a-zA-Z][0-9][a-zA-Z](\s?[0-9][a-zA-Z][0-9])?$/,
+  postalBillUSA: /^\d{5}(?:-\d{4})?$/,
+  postalBillCanada: /^[a-zA-Z][0-9][a-zA-Z](\s?[0-9][a-zA-Z][0-9])?$/,
   phone:
     /^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$/,
   password: /[^\w\d]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))/,
@@ -15,8 +17,8 @@ const REGEXP = {
   whitespacePassword: /.*\s.*/g,
   fistname: /^[a-zA-Z]+$/g,
   lastname: /^[a-zA-Z]+$/g,
-  street: /^[a-zA-Z]+$/g,
-  city: /^[a-zA-Z]+$/g,
+  street: /^[A-Za-z\s]+$/g,
+  city: /^[A-Za-z\s]+$/g,
 };
 
 export const clue = {
@@ -327,15 +329,15 @@ export const handlePostalBillInput = (
   postalBillСheck: boolean,
   setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): boolean => {
-  REGEXP.postalUSA.lastIndex = 0;
-  REGEXP.postalCanada.lastIndex = 0;
+  REGEXP.postalBillUSA.lastIndex = 0;
+  REGEXP.postalBillCanada.lastIndex = 0;
   if (postalBillField === '') {
     setErrorPostalBill(clue.requiredField);
     postalBillСheck = false;
     setCheckmark(false);
   } else if (
-    !REGEXP.postalUSA.test(postalBillField) ||
-    !REGEXP.postalCanada.test(postalBillField)
+    !REGEXP.postalBillUSA.test(postalBillField) &&
+    !REGEXP.postalBillCanada.test(postalBillField)
   ) {
     setErrorPostalBill(clue.character);
     postalBillСheck = false;

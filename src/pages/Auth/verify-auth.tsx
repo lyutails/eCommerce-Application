@@ -1,9 +1,13 @@
-import { setAuthStatus } from '../../store/reducers/userReducer';
+import {
+  createCustomerId,
+  setAuthStatus,
+} from '../../store/reducers/userReducer';
 // import { input } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
+import { getCustomerToken } from '../../api/adminBuilder';
 
 // eslint-disable-next-line prefer-const
 let loginСheck = false;
@@ -44,7 +48,20 @@ export const handleСreationAuth = (
     password: passwordField,
   };
   if (loginСheck === true && passwordСheck === true) {
-    loginCustomerThroughMe(request, dispatch, navigator);
-    console.log(isAuth, 'testAPI');
+    loginCustomerThroughMe(request, dispatch, navigator)
+      .then((response) => {
+        if (response) {
+          localStorage.setItem('customerId', response.body.customer.id);
+          dispatch(createCustomerId(response.body.customer.id));
+        }
+      })
+      .then(() => {
+        const token = getCustomerToken(loginField, passwordField);
+        return token;
+      })
+      .then((response) => {
+        localStorage.setItem('refreshToken', response.refresh_token);
+      });
+    // console.log(isAuth, 'testAPI');
   }
 };
