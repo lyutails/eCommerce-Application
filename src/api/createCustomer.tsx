@@ -57,9 +57,9 @@ export async function createCustomerMe(
   data: IMyCustomerDraft,
   dispatch: Dispatch<AnyAction>,
   navigator: NavigateFunction
-): Promise<void> {
+): Promise<ClientResponse<CustomerSignInResult> | undefined> {
   try {
-    await apiRoot
+    const customer = await apiRoot
       .me()
       .signup()
       .post({
@@ -70,9 +70,9 @@ export async function createCustomerMe(
       })
       .execute();
     loginCustomerThroughMe(data, dispatch, navigator);
-    // console.log('you are registr');
+    return customer;
   } catch {
-    // console.log('cannot create customer');
+    console.log('cannot create customer');
     // logic from api here if error
   }
 }

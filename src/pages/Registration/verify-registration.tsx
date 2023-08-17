@@ -18,6 +18,8 @@ import {
   handleCountryBillInput,
 } from '../verification';
 import { AnyAction, Dispatch } from 'redux';
+import { createCustomerId } from '../../store/reducers/userReducer';
+import { getCustomerToken } from '../../api/adminBuilder';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -236,7 +238,20 @@ export const handleСreationReg = (
       countryShipСheck === true &&
       birthdayСheck === true
     ) {
-      createCustomerMe(dataShip, dispatch, navigator);
+      createCustomerMe(dataShip, dispatch, navigator)
+        .then((response) => {
+          if (response) {
+            localStorage.setItem('customerId', response.body.customer.id);
+            dispatch(createCustomerId(response.body.customer.id));
+          }
+        })
+        .then(() => {
+          const token = getCustomerToken(loginField, passwordField);
+          return token;
+        })
+        .then((response) => {
+          localStorage.setItem('refreshToken', response.refresh_token);
+        });
       // navigator('/');
     }
   }

@@ -14,10 +14,9 @@ import CartPage from '../pages/Cart/Cart';
 import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
-import { loginCustomerThroughMe } from '../api/passwordFlowSession';
-import { refreshTokenSession } from '../api/refreshToken';
-import { getCustomerToken, refreshTokenFlow } from '../api/adminBuilder';
-import { useEffect, useState } from 'react';
+import { revoke } from '@commercetools/sdk-auth';
+import { apiRootAnonymous } from '../api/anonzmousFlow';
+import { refreshTokenFlow } from '../api/adminBuilder';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -25,19 +24,16 @@ function App(): JSX.Element {
     email: 'johnIanaTestAddress@example.com',
     password: 'snmthjs',
   };
+  // console.log(
+  //   refreshTokenFlow('tycteam:y92e3bWIBd3O4-T5vokVTiYq7L2O1Aa3qp7Ht5sX_FI'),
+  //   'hdsjfgvk,'
+  // );
   // {
   //   "email": "ianatestAPI@example.com",
   //   "firstName": "Лфенф",
   //   "lastName": "ывапаувас",
   //   "password": "fshHJKL2365"
   // }
-  const [customerTokens, setCustomerTokens] = useState<string[]>([]);
-  useEffect(() => {
-    getCustomerToken(data.email, data.password).then((response) => {
-      // console.log(response, 'response');
-      setCustomerTokens([response.access_token, response.refresh_token]);
-    });
-  }, [data.email, data.password]);
 
   // console.log(customerTokens, 'testtest');
   // console.log(refreshTokenFlow(customerTokens[1]), 'lalalal');
