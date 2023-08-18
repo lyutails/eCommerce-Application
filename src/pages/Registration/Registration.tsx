@@ -96,7 +96,6 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
-  console.log(fistnameError);
   return (
     <div className={style.login}>
       <div className={style.authorization}>
