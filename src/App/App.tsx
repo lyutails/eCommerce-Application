@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
 import RegistrationPage from '../pages/Registration/Registration';
 import NotFoundPage from '../pages/NotFound/NotFound';
-import Main from '../pages/Main/Main';
 import AboutUsPage from '../pages/AboutUs/AboutUs';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
@@ -17,8 +16,9 @@ import ProductPage from '../pages/Product/Product';
 import { revoke } from '@commercetools/sdk-auth';
 import { apiRootAnonymous } from '../api/anonzmousFlow';
 import { refreshTokenFlow } from '../api/adminBuilder';
-import { customerToken } from '../api/adminBuilder';
+// import { customerToken } from '../api/adminBuilder';
 import { useEffect, useState } from 'react';
+import MainPage from '../pages/Main/Main';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -47,7 +47,7 @@ function App(): JSX.Element {
     <section className={style.app}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main />} />
+          <Route index element={<MainPage />} />
           <Route path="customize" element={<CustomizePage />} />
           <Route path="about-us" element={<AboutUsPage />} />
           <Route path="cart" element={<CartPage />} />
