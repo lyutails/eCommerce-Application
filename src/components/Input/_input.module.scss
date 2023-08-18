@@ -60,3 +60,11 @@
         height: 100%;
     }
 }
+
+.password {
+    &_eye {
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+      }
+}

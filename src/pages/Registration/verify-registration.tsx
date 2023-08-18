@@ -98,7 +98,8 @@ export const handleСreationReg = (
   setCheckmarkBuildingBill: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkApartmentShip: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkBuildingShip: React.Dispatch<React.SetStateAction<boolean>>,
-  checkedBill: boolean
+  checkedBill: boolean,
+  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -256,6 +257,25 @@ export const handleСreationReg = (
     defaultShippingAddress: 0,
     defaultBillingAddress: 0,
   };
+  console.log(
+    loginСheck,
+    passwordСheck,
+    firstnameСheck,
+    lastnameСheck,
+    streetShipСheck,
+    cityShipСheck,
+    postalShipСheck,
+    countryShipСheck,
+    birthdayСheck,
+    streetBillСheck,
+    cityBillСheck,
+    postalBillСheck,
+    countryBillСheck,
+    buildingBillСheck,
+    buildingShipСheck,
+    apartmentBillСheck,
+    apartmentShipСheck
+  );
   if (checkedBill) {
     if (
       loginСheck === true &&
@@ -289,6 +309,13 @@ export const handleСreationReg = (
         })
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
+        })
+        .catch((error) => {
+          if (error) {
+            setErrorLogin('Invalid email or password');
+            setCheckmarkLogin(false);
+            setInvalidCredentials(true);
+          }
         });
     }
   } else {
@@ -302,9 +329,7 @@ export const handleСreationReg = (
       postalShipСheck === true &&
       countryShipСheck === true &&
       birthdayСheck === true &&
-      buildingBillСheck === true &&
       buildingShipСheck === true &&
-      apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
       createCustomerMe(dataShip, dispatch, navigator)
@@ -320,6 +345,13 @@ export const handleСreationReg = (
         })
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
+        })
+        .catch((error) => {
+          if (error) {
+            setErrorLogin('Invalid email or password');
+            setCheckmarkLogin(false);
+            setInvalidCredentials(true);
+          }
         });
     }
   }

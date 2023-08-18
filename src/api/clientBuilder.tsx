@@ -53,14 +53,14 @@ const authClient = new SdkAuth({
   fetch,
 });
 
-export type AuthAdmin = {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  scope: string;
-};
+// export type AuthAdmin = {
+//   access_token: string;
+//   token_type: string;
+//   expires_in: number;
+//   scope: string;
+// };
 
-export const tokenCustomer = authClient.clientCredentialsFlow();
+// export const tokenCustomer = await authClient.clientCredentialsFlow();
 // console.log(tokenCustomer);
 
 // Configure httpMiddlewareOptions

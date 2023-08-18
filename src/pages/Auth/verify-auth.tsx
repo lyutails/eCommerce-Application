@@ -24,7 +24,8 @@ export const handleСreationAuth = (
   isAuth: boolean,
   dispatch: Dispatch<AnyAction>,
   setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
-  setPasswordFlagError: React.Dispatch<React.SetStateAction<boolean>>
+  setPasswordFlagError: React.Dispatch<React.SetStateAction<boolean>>,
+  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   loginСheck = handleLoginInput(
@@ -61,14 +62,12 @@ export const handleСreationAuth = (
         return token;
       })
       .then((response) => {
-        // myTokemCache.set({
-        //   token: '',
-        //   expirationTime: 0,
-        //   refreshToken: response.refresh_token,
-        // });
-        // console.log(response.refresh_token, 'testtoken');
         localStorage.setItem('refreshToken', response.refresh_token);
+      })
+      .catch((error) => {
+        if (error) {
+          setInvalidCredentials(true);
+        }
       });
-    // console.log(isAuth, 'testAPI');
   }
 };

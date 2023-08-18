@@ -22,7 +22,7 @@ function ProfilePage(): JSX.Element {
   const checkRefreshToken = (): void => {
     dispatch(setAuthStatus(false));
     navigate('/login');
-    // localStorage.removeItem('customerId');
+    localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
   };
   console.log(myTokemCache.get(), 'testclass');
@@ -39,14 +39,16 @@ function ProfilePage(): JSX.Element {
       )
       .catch(() => {
         checkRefreshToken();
-        // localStorage.removeItem('refreshToken');
+        localStorage.removeItem('refreshToken');
       });
   }
   dispatch(createCustomerId(localId));
   const customerId = useSelector((state: IRootState) => state.user.customerId);
 
   const handleLogOut = (): void => {
-    localStorage.setItem('isAuth', 'false');
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('isAuth');
     dispatch(setAuthStatus(false));
     navigate('/');
   };
