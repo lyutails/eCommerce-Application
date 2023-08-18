@@ -3,15 +3,9 @@ import {
   Client,
   ClientBuilder,
   RefreshAuthMiddlewareOptions,
-  TokenCache,
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
-import {
-  ClientRequest,
-  ClientResponse,
-  createApiBuilderFromCtpClient,
-  CustomerPagedQueryResponse,
-} from '@commercetools/platform-sdk';
+import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
@@ -31,10 +25,6 @@ const authMiddlewareOptionsForRefreshTokenFlow = (
       clientSecret: process.env.ADMIN_CLIENT_SECRET,
     },
     refreshToken: refreshToken,
-    // tokenCache: MyTokenCache,
-    // scopes: [
-    //   'manage_customers:tycteam manage_my_quotes:tycteam view_categories:tycteam view_customer_groups:tycteam manage_my_profile:tycteam manage_customer_groups:tycteam manage_my_payments:tycteam create_anonymous_token:tycteam view_published_products:tycteam manage_my_shopping_lists:tycteam view_discount_codes:tycteam manage_my_business_units:tycteam anonymous_id:1b78b195-1221-4949-be5b-55e969fa9b52 manage_my_quote_requests:tycteam view_customers:tycteam manage_my_orders:tycteam',
-    // ],
     fetch,
   };
 

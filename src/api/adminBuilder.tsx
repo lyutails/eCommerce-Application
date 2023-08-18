@@ -9,11 +9,6 @@ import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
 import { apiRoot } from './createClient';
 import { myTokemCache } from './tockenCache';
-// import {
-//   ApiRoot,
-//   Project,
-//   createApiBuilderFromCtpClient,
-// } from '@commercetools/platform-sdk';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
   throw new Error('no client id found');
@@ -47,14 +42,14 @@ const authClient = new SdkAuth({
   fetch,
 });
 
-export type AuthAdmin = {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  scope: string;
-};
+// export type AuthAdmin = {
+//   access_token: string;
+//   token_type: string;
+//   expires_in: number;
+//   scope: string;
+// };
 
-export const tokenAdmin = await authClient.clientCredentialsFlow();
+// export const tokenAdmin = await authClient.clientCredentialsFlow();
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {

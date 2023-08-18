@@ -14,35 +14,15 @@ import CartPage from '../pages/Cart/Cart';
 import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
-import { revoke } from '@commercetools/sdk-auth';
-import { apiRootAnonymous } from '../api/anonzmousFlow';
-import { refreshTokenFlow } from '../api/adminBuilder';
-import { checkCustomerEmail } from '../api/checkCustomerEmail';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const data = {
-    email: 'johnIanaTestAddress@example.com',
-    password: 'snmthjs',
-  };
-  // console.log(checkCustomerEmail('рророро@example.com'));
-  // console.log(
-  //   refreshTokenFlow('tycteam:y92e3bWIBd3O4-T5vokVTiYq7L2O1Aa3qp7Ht5sX_FI'),
-  //   'hdsjfgvk,'
-  // );
   // {
   //   "email": "ianatestAPI@example.com",
   //   "firstName": "Лфенф",
   //   "lastName": "ывапаувас",
   //   "password": "fshHJKL2365"
   // }
-
-  // console.log(customerTokens, 'testtest');
-  // console.log(refreshTokenFlow(customerTokens[1]), 'lalalal');
-  // console.log(
-  //   refreshTokenFlow('9MYlnodRwdRD4fwXGzxUJ2gTZ9ZzKlKDylFZa7FsJPA'),
-  //   'lрпрпрпрпрпр'
-  // );
   return (
     <section className={style.app}>
       <Routes>
