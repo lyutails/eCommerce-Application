@@ -16,6 +16,7 @@ import ProductPage from '../pages/Product/Product';
 import { revoke } from '@commercetools/sdk-auth';
 import { apiRootAnonymous } from '../api/anonzmousFlow';
 import { refreshTokenFlow } from '../api/adminBuilder';
+import { checkCustomerEmail } from '../api/checkCustomerEmail';
 // import { customerToken } from '../api/adminBuilder';
 import { useEffect, useState } from 'react';
 import MainPage from '../pages/Main/Main';
@@ -26,6 +27,7 @@ function App(): JSX.Element {
     email: 'johnIanaTestAddress@example.com',
     password: 'snmthjs',
   };
+  // console.log(checkCustomerEmail('рророро@example.com'));
   // console.log(
   //   refreshTokenFlow('tycteam:y92e3bWIBd3O4-T5vokVTiYq7L2O1Aa3qp7Ht5sX_FI'),
   //   'hdsjfgvk,'

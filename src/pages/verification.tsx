@@ -19,7 +19,7 @@ const REGEXP = {
   lastname: /^[a-zA-Z]+$/g,
   street: /^[A-Za-z\s]+$/g,
   city: /^[A-Za-z\s]+$/g,
-  building: /.*\d.*/g,
+  building: /^(\d+)(\/\w|\w)?$/,
   apartment: /.*\d.*/g,
 };
 
@@ -44,8 +44,8 @@ export const clue = {
     'Must follow the format for the country (e.g., 12345 or A1B 2C3 for the U.S. and Canada, respectively)',
   countryShip: 'Please select the USA or Canada shipping country',
   countryBill: 'Please select the USA or Canada billing country',
-  building: '',
-  apartment: '',
+  building: 'Building number should be in format: 333, 333a, 333/1, 333/a',
+  apartment: 'Apartment number must contain only digit',
 };
 
 export const inputHandler = (
@@ -71,6 +71,7 @@ export const handleLoginInput = (
     loginСheck = false;
     setCheckmark(false);
   } else {
+    setErrorLogin('');
     setCheckmark(true);
     loginСheck = true;
   }
@@ -145,6 +146,7 @@ export const handleFirstnameInput = (
     firstnameСheck = false;
     setCheckmark(false);
   } else {
+    setErrorFirstname('');
     setCheckmark(true);
     firstnameСheck = true;
   }
@@ -167,6 +169,7 @@ export const handleLastnameInput = (
     lastnameСheck = false;
     setCheckmark(false);
   } else {
+    setErrorLastname('');
     setCheckmark(true);
     lastnameСheck = true;
   }
@@ -189,6 +192,7 @@ export const handleStreetShipInput = (
     streetShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorStreetShip('');
     setCheckmark(true);
     streetShipСheck = true;
   }
@@ -211,6 +215,7 @@ export const handleCityShipInput = (
     cityShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorCityShip('');
     setCheckmark(true);
     cityShipСheck = true;
   }
@@ -237,6 +242,7 @@ export const handlePostalShipInput = (
     postalShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorPostalShip('');
     setCheckmark(true);
     postalShipСheck = true;
   }
@@ -261,6 +267,7 @@ export const handleCountryShipInput = (
     countryShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorCountryShip('');
     setCheckmark(true);
     countryShipСheck = true;
   }
@@ -278,6 +285,7 @@ export const handleBirthdayInput = (
     birthdayСheck = false;
     setCheckmark(false);
   } else {
+    setErrorBirthday('');
     setCheckmark(true);
     birthdayСheck = true;
   }
@@ -300,6 +308,7 @@ export const handleStreetBillInput = (
     streetBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorStreetBill('');
     setCheckmark(true);
     streetBillСheck = true;
   }
@@ -322,6 +331,7 @@ export const handleCityBillInput = (
     cityBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorCityBill('');
     setCheckmark(true);
     cityBillСheck = true;
   }
@@ -348,6 +358,7 @@ export const handlePostalBillInput = (
     postalBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorPostalBill('');
     setCheckmark(true);
     postalBillСheck = true;
   }
@@ -372,6 +383,7 @@ export const handleCountryBillInput = (
     countryBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorCountryBill('');
     setCheckmark(true);
     countryBillСheck = true;
   }
@@ -394,6 +406,7 @@ export const handleBuildingBillInput = (
     buildingBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorbuildingBill('');
     setCheckmark(true);
     buildingBillСheck = true;
   }
@@ -408,6 +421,7 @@ export const handleApartmentBillInput = (
 ): boolean => {
   REGEXP.apartment.lastIndex = 0;
   if (apartmentBillField === '') {
+    setErrorApartmentBill('');
     setCheckmark(true);
     apartmentBillСheck = true;
   } else if (!REGEXP.apartment.test(apartmentBillField)) {
@@ -415,6 +429,7 @@ export const handleApartmentBillInput = (
     apartmentBillСheck = false;
     setCheckmark(false);
   } else {
+    setErrorApartmentBill('');
     setCheckmark(true);
     apartmentBillСheck = true;
   }
@@ -437,6 +452,7 @@ export const handleBuildingShipInput = (
     buildingShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorbuildingShip('');
     setCheckmark(true);
     buildingShipСheck = true;
   }
@@ -451,6 +467,7 @@ export const handleApartmentShipInput = (
 ): boolean => {
   REGEXP.apartment.lastIndex = 0;
   if (apartmentShipField === '') {
+    setErrorApartmentShip('');
     setCheckmark(true);
     apartmentShipСheck = true;
   } else if (!REGEXP.apartment.test(apartmentShipField)) {
@@ -458,6 +475,7 @@ export const handleApartmentShipInput = (
     apartmentShipСheck = false;
     setCheckmark(false);
   } else {
+    setErrorApartmentShip('');
     setCheckmark(true);
     apartmentShipСheck = true;
   }

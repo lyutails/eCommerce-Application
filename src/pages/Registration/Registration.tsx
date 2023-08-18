@@ -118,8 +118,8 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.firstname}
             classClue={
               fistnameError
-                ? `${style.firstname_clue} ${style.error}`
-                : style.firstname_clue
+                ? `${style.completed} ${style.error}`
+                : style.uncompleted
             }
             classInput={style.firstname_input}
             childrenBefore={
@@ -146,8 +146,8 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.lastname}
             classClue={
               lastnameError
-                ? `${style.lastname_clue} ${style.error}`
-                : style.lastname_clue
+                ? `${style.completed} ${style.error}`
+                : style.uncompleted
             }
             classInput={style.lastname_input}
             childrenBefore={
@@ -174,8 +174,8 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.email}
             classClue={
               loginError
-                ? `${style.email_clue} ${style.error}`
-                : style.email_clue
+                ? `${style.completed} ${style.error}`
+                : style.uncompleted
             }
             classInput={style.email_input}
             childrenBefore={
@@ -220,7 +220,9 @@ function RegistrationPage(): JSX.Element {
             classClue={
               passwordFocus
                 ? `${style.password_clue} ${style.hide}`
-                : `${style.password_clue} ${style.visible}`
+                : passwordError
+                ? `${style.password_clue} ${style.visible} ${style.error}`
+                : `${style.password_clue}`
             }
             classInput={style.password_input}
             childrenAfter={
@@ -263,8 +265,8 @@ function RegistrationPage(): JSX.Element {
             classWrapper={style.birth}
             classClue={
               birthdayError
-                ? `${style.birth_clue} ${style.error}`
-                : style.birth_clue
+                ? `${style.completed} ${style.error}`
+                : style.uncompleted
             }
             classInput={style.birth_input}
             childrenBefore={
@@ -296,8 +298,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.street}
               classClue={
                 streetShipError
-                  ? `${style.street_clue} ${style.error}`
-                  : style.street_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.street_input}
               childrenBefore={
@@ -323,8 +325,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.building}
               classClue={
                 buildingShipError
-                  ? `${style.building_clue} ${style.error}`
-                  : style.building_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.building_input}
               clue={
@@ -353,8 +355,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.apartment}
               classClue={
                 apartmentShipError
-                  ? `${style.apartment_clue} ${style.error}`
-                  : style.apartment_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.apartment_input}
               clue={
@@ -386,8 +388,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.city}
               classClue={
                 cityShipError
-                  ? `${style.city_clue} ${style.error}`
-                  : style.city_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.city_input}
               childrenBefore={
@@ -416,8 +418,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.postal}
               classClue={
                 postalShipError
-                  ? `${style.postal_clue} ${style.error}`
-                  : style.postal_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.postal_input}
               childrenBefore={
@@ -446,8 +448,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.country}
               classClue={
                 countryShipError
-                  ? `${style.country_clue} ${style.error}`
-                  : style.country_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.country_input}
               childrenBefore={
@@ -493,8 +495,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.street}
               classClue={
                 streetBillError
-                  ? `${style.street_clue} ${style.error}`
-                  : style.street_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.street_input}
               clue={
@@ -523,8 +525,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.building}
               classClue={
                 buildingBillError
-                  ? `${style.building_clue} ${style.error}`
-                  : style.building_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.building_input}
               clue={
@@ -553,8 +555,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.apartment}
               classClue={
                 apartmentBillError
-                  ? `${style.apartment_clue} ${style.error}`
-                  : style.apartment_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.apartment_input}
               clue={
@@ -585,8 +587,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.city}
               classClue={
                 cityBillError
-                  ? `${style.city_clue} ${style.error}`
-                  : style.city_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.city_input}
               clue={cityBillError ? cityBillError : 'This is required field'}
@@ -613,8 +615,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.postal}
               classClue={
                 postalBillError
-                  ? `${style.postal_clue} ${style.error}`
-                  : style.postal_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.postal_input}
               clue={
@@ -643,8 +645,8 @@ function RegistrationPage(): JSX.Element {
               classWrapper={style.country}
               classClue={
                 countryBillError
-                  ? `${style.country_clue} ${style.error}`
-                  : style.country_clue
+                  ? `${style.completed} ${style.error}`
+                  : style.uncompleted
               }
               classInput={style.country_input}
               clue={
