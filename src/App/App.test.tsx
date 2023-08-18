@@ -19,22 +19,22 @@ describe('App component', () => {
     const mainComponent = screen.getByTestId('main-component');
     expect(mainComponent).toBeInTheDocument();
   });
-  // test('renders Auth component when user is not authenticated', () => {
-  //   (useSelector as jest.Mock).mockReturnValue(false);
-  //   render(
-  //     <MemoryRouter>
-  //       <App />
-  //     </MemoryRouter>
-  //   );
-  //   const authComponent = screen.getByTestId('auth-component');
-  //   expect(authComponent).toBeInTheDocument();
-  // });
+  test('renders Auth component when user is not authenticated', () => {
+    (useSelector as jest.Mock).mockReturnValue(false);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    const authComponent = screen.getByTestId('auth-component');
+    expect(authComponent).toBeInTheDocument();
+  });
 });
-// import { render } from '@testing-library/react';
-// import App from './App';
+/* import { render } from '@testing-library/react';
+import App from './App';
 
-// test('renders app title', () => {
-//   const { getByText } = render(<App />);
-//   const titleElement = getByText(/Hello!/i);
-//   expect(titleElement).toBeInTheDocument;
-// });
+test('renders app title', () => {
+  const { getByText } = render(<App />);
+  const titleElement = getByText(/Hello!/i);
+  expect(titleElement).toBeInTheDocument;
+}); */

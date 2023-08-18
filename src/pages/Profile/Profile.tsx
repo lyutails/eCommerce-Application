@@ -66,7 +66,7 @@ function ProfilePage(): JSX.Element {
 }
 export default ProfilePage;
 
-//   "email": "ianatestAPI@example.com",
-//   "firstName": "Лфенф",
-//   "lastName": "ывапаувас",
-//   "password": "fshHJKL2365"
+/*   "email": "ianatestAPI@example.com",
+  "firstName": "Лфенф",
+  "lastName": "ывапаувас",
+  "password": "fshHJKL2365" */

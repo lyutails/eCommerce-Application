@@ -2,9 +2,6 @@
 
 @import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
 
-$font-color-title: #e6ff2d;
-$background-color-category: rgb(217 46 255 / 20%);
-$background-color-customize: rgb(31 255 210 / 15%);
 
 .main {
   display: flex;
@@ -27,8 +24,6 @@ $background-color-customize: rgb(31 255 210 / 15%);
 
   &_wrapper {
     display: flex;
-
-    // flex: 1 1 auto;
     flex-direction: column;
     justify-content: space-between;
 
@@ -218,7 +213,7 @@ $background-color-customize: rgb(31 255 210 / 15%);
   }
 }
 
-@media screen and (width >= 320px) and (width <= 767.98px) {
+@media screen and (width <= 320px) and (width <= 767.98px) {
   html {
     font-size: 6px;
   }

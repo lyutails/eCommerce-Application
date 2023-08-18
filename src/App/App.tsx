@@ -17,12 +17,6 @@ import ProductPage from '../pages/Product/Product';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  // {
-  //   "email": "ianatestAPI@example.com",
-  //   "firstName": "Лфенф",
-  //   "lastName": "ывапаувас",
-  //   "password": "fshHJKL2365"
-  // }
   return (
     <section className={style.app}>
       <Routes>

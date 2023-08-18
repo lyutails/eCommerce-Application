@@ -1,3 +1,4 @@
+import { BaseAddress } from '@commercetools/platform-sdk';
 import { ReactNode } from 'react';
 
 export interface ICustomerFields {
@@ -73,4 +74,18 @@ export interface IPasswordErrors {
 export interface IPasswordErrorsFields {
   text: string;
   isError: boolean;
+}
+export interface IMyCustomerDraft {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  dateOfBirth: string;
+  addresses: BaseAddress[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
+}
+export interface IMyCustomerLoginDraft {
+  email: string;
+  password: string;
 }
