@@ -58,6 +58,7 @@ export interface IButtonCustomFields {
 
 export interface IRootState {
   user: {
+    customerId: string;
     isAuth: boolean;
   };
 }

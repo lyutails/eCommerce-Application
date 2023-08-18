@@ -1,22 +1,27 @@
 import {
   ClientResponse,
+  Customer,
   CustomerPagedQueryResponse,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClientAdmin';
 
 // const emailUser = 'TashaOneMore@example.com';
 
-export async function getCustomer(
-  emailUser: string
-): Promise<ClientResponse<CustomerPagedQueryResponse>> {
+export async function getCustomerById(customerId: {
+  ID: string;
+}): Promise<ClientResponse<Customer>> {
   try {
-    const customers = await apiRoot.customers().get().execute();
-    const customersArray = customers.body.results;
-    const customersEmailsArray = customersArray.filter(
-      (email) => email.email === emailUser
-    );
+    const customer = await apiRoot
+      .customers()
+      .withId(customerId)
+      .get()
+      .execute();
+    // const customersArray = customers.body.results;
+    // const customersEmailsArray = customersArray.filter(
+    //   (email) => email.email === emailUser
+    // );
     // console.log(customersEmailsArray);
-    return customers;
+    return customer;
   } catch {
     throw new Error('cannot get a customer');
   }

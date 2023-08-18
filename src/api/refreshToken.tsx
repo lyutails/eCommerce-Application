@@ -17,6 +17,12 @@ import MyTokenCache from './tockenCache';
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
 ): RefreshAuthMiddlewareOptions => {
+
+  if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
+    throw new Error('no client id found');
+  }
+  if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
+    throw new Error('no client id found');
   if (typeof process.env.CLIENT_ID !== 'string') {
     throw new Error('no client id found refresh token flow');
   }
@@ -31,8 +37,8 @@ const authMiddlewareOptionsForRefreshTokenFlow = (
     host: 'https://auth.europe-west1.gcp.commercetools.com',
     projectKey: PROJECT_KEY,
     credentials: {
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
+      clientId: process.env.ADMIN_CLIENT_ID,
+      clientSecret: process.env.ADMIN_CLIENT_SECRET,
     },
     refreshToken: refreshToken,
     // tokenCache: MyTokenCache,
@@ -56,19 +62,11 @@ export function refreshUserCTPClient(refreshToken: string): Client {
   return ctpClient;
 }
 
-export const refreshTokenSession = async (
-  token: string
-): Promise<ClientResponse<CustomerPagedQueryResponse>> => {
+export const refreshTokenSession = async (token: string): Promise<void> => {
   const apiRoot = createApiBuilderFromCtpClient(
     refreshUserCTPClient(token),
     'https://auth.us-central1.gcp.commercetools.com/'
   ).withProjectKey({
     projectKey: PROJECT_KEY,
   });
-  try {
-    const customer = apiRoot.customers().get().execute();
-    return customer;
-  } catch {
-    throw new Error('fkehvnl;kr./');
-  }
 };

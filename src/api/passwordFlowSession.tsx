@@ -87,14 +87,15 @@ export const loginCustomerThroughMe = async (
       })
       .execute();
     dispatch(setAuthStatus(true));
+    localStorage.setItem('isAuth', 'true');
     navigator('/');
     return customer;
   } catch {
-    // throw new Error(
-    //   `Sorry, the customer with ${request.email} email doesn't exist!`
-    // );
-    console.log(
+    throw new Error(
       `Sorry, the customer with ${request.email} email doesn't exist!`
     );
+    // console.log(
+    //   `Sorry, the customer with ${request.email} email doesn't exist!`
+    // );
   }
 };

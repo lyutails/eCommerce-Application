@@ -12,9 +12,11 @@ import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { hideTooltip, showTooltip } from '../showTooltip';
+import { useDispatch } from 'react-redux';
 
 function RegistrationPage(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleToLogin = (): void => {
     navigate('/login');
   };
@@ -28,6 +30,10 @@ function RegistrationPage(): JSX.Element {
   const [cityShip, setCityShip] = useState('');
   const [postalShip, setPostalShip] = useState('');
   const [countryShip, setCountryShip] = useState('');
+  const [streetBill, setStreetBill] = useState('');
+  const [cityBill, setCityBill] = useState('');
+  const [postalBill, setPostalBill] = useState('');
+  const [countryBill, setCountryBill] = useState('');
   const [birthday, setBirthday] = useState('');
 
   const [loginError, setLoginError] = useState('');
@@ -37,6 +43,10 @@ function RegistrationPage(): JSX.Element {
   const [cityShipError, setCityShipError] = useState('');
   const [postalShipError, setPostalShipError] = useState('');
   const [countryShipError, setCountryShipError] = useState('');
+  const [streetBillError, setStreetBillError] = useState('');
+  const [cityBillError, setCityBillError] = useState('');
+  const [postalBillError, setPostalBillError] = useState('');
+  const [countryBillError, setCountryBillError] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
 
   const [passwordFocus, setPasswordFocus] = useState(false);
@@ -49,6 +59,10 @@ function RegistrationPage(): JSX.Element {
   const [checkmarkCityShip, setCheckmarkCityShip] = useState(false);
   const [checkmarkPostalShip, setCheckmarkPostalShip] = useState(false);
   const [checkmarkCountryShip, setCheckmarkCountryShip] = useState(false);
+  const [checkmarkStreetBill, setCheckmarkStreetBill] = useState(false);
+  const [checkmarkCityBill, setCheckmarkCityBill] = useState(false);
+  const [checkmarkPostalBill, setCheckmarkPostalBill] = useState(false);
+  const [checkmarkCountryBill, setCheckmarkCountryBill] = useState(false);
   const [checkmarkBirthday, setCheckmarkBirthday] = useState(false);
 
   const passwordErrorTexts = handlePasswordInput(password);
@@ -396,32 +410,122 @@ function RegistrationPage(): JSX.Element {
           >
             <h4>Billing address</h4>
             <Input
+              func={(e): void => inputHandler(e, setStreetBill)}
               type="text"
               placeholder="Street *"
               classWrapper={style.street}
-              classClue={style.street_clue}
+              classClue={
+                streetBillError
+                  ? `${style.street_clue} ${style.error}`
+                  : style.street_clue
+              }
               classInput={style.street_input}
+              clue={
+                streetBillError ? streetBillError : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkStreetBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
             />
             <Input
+              func={(e): void => inputHandler(e, setCityBill)}
               type="text"
               placeholder="City *"
               classWrapper={style.city}
-              classClue={style.city_clue}
+              classClue={
+                cityBillError
+                  ? `${style.city_clue} ${style.error}`
+                  : style.city_clue
+              }
               classInput={style.city_input}
+              clue={cityBillError ? cityBillError : 'This is required field'}
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkCityBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
             />
             <Input
+              func={(e): void => inputHandler(e, setPostalBill)}
               type="text"
               placeholder="Postal *"
               classWrapper={style.postal}
-              classClue={style.postal_clue}
+              classClue={
+                postalBillError
+                  ? `${style.postal_clue} ${style.error}`
+                  : style.postal_clue
+              }
               classInput={style.postal_input}
+              clue={
+                postalBillError ? postalBillError : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkPostalBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
             />
             <Input
+              func={(e): void => inputHandler(e, setCountryBill)}
               type="text"
               placeholder="Country *"
               classWrapper={style.country}
-              classClue={style.country_clue}
+              classClue={
+                countryBillError
+                  ? `${style.country_clue} ${style.error}`
+                  : style.country_clue
+              }
               classInput={style.country_input}
+              clue={
+                countryBillError ? countryBillError : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkCountryBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
             />
           </div>
           <ButtonForm
@@ -435,6 +539,10 @@ function RegistrationPage(): JSX.Element {
                 setCityShipError,
                 setPostalShipError,
                 setCountryShipError,
+                setStreetBillError,
+                setCityBillError,
+                setPostalBillError,
+                setCountryBillError,
                 setBirthdayError,
                 login,
                 password,
@@ -444,8 +552,13 @@ function RegistrationPage(): JSX.Element {
                 cityShip,
                 postalShip,
                 countryShip,
+                streetBill,
+                cityBill,
+                postalBill,
+                countryBill,
                 birthday,
                 navigate,
+                dispatch,
                 setCheckmarkLogin,
                 setCheckmarkPassword,
                 setCheckmarkFirstname,
@@ -454,7 +567,12 @@ function RegistrationPage(): JSX.Element {
                 setCheckmarkCityShip,
                 setCheckmarkPostalShip,
                 setCheckmarkCountryShip,
-                setCheckmarkBirthday
+                setCheckmarkStreetBill,
+                setCheckmarkCityBill,
+                setCheckmarkPostalBill,
+                setCheckmarkCountryBill,
+                setCheckmarkBirthday,
+                checkedInput
               )
             }
             classNames={style.registration_button}
