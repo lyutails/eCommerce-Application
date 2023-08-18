@@ -31,6 +31,7 @@ $footer-background-color: #041426;
     justify-content: space-between;
 
     width: 100%;
+    padding-left: unset;
 
     list-style: none;
   }
@@ -45,7 +46,7 @@ $footer-background-color: #041426;
       margin-right: 10px;
     }
 
-    &:hover:not(.sum) {
+    &:not(.sum):hover {
       cursor: pointer;
       filter: drop-shadow(0 0 5px $glow-green) drop-shadow(0 0 10px $glow-green);
     }
@@ -126,7 +127,7 @@ $footer-background-color: #041426;
   }
 
   .header_categories {
-    width: 70%;
+    width: 80%;
   }
 }
 

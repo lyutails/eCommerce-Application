@@ -15,7 +15,7 @@ export const Categories = (): JSX.Element => {
       {data.map((category: string) => {
         return (
           <div className={style.main_category} key={category}>
-            add Sloth pic here staring at / choosing {category}
+            {category}
           </div>
         );
       })}
