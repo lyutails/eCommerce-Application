@@ -4,7 +4,7 @@ import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icons/email.svg';
 import iconPassword from '../../../public/assets/icons/password.svg';
 import iconEye from '../../../public/assets/icons/eye.svg';
-// import iconError from '../../../public/assets/icon/error.svg';
+import iconError from '../../../public/assets/icons/error.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { showPassword } from '../showPassword';
 import { inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
+import InputPassword from '../../components/Input/inputPassword';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -25,6 +26,7 @@ function AuthPage(): JSX.Element {
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
 
   const [passwordFlagError, setPasswordFlagError] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,6 +39,20 @@ function AuthPage(): JSX.Element {
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
         <div className={style.authorization}>
+          <div
+            className={
+              invalidCredentials
+                ? `${style.visible} ${style.invalid}`
+                : `${style.hidden} ${style.invalid}`
+            }
+          >
+            <img
+              className={style.invalid_error}
+              src={iconError}
+              alt="Error icon"
+            />
+            Invalid email or password
+          </div>
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
             <Input
@@ -61,15 +77,13 @@ function AuthPage(): JSX.Element {
                 </div>
               }
             />
-            <Input
+            <InputPassword
               func={(e): void => inputHandler(e, setPassword)}
               clue={
                 typeof passwordError === 'string'
                   ? passwordError
                   : 'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
               }
-              type="password"
-              placeholder="Password"
               classWrapper={style.password}
               classClue={
                 passwordFlagError
@@ -77,30 +91,9 @@ function AuthPage(): JSX.Element {
                   : `${style.password_clue} ${style.password_valid}`
               }
               classInput={style.password_input}
-              childrenBefore={
-                <div className={style.wrapper_img}>
-                  <img
-                    className={style.wrapper_img_icon}
-                    src={iconPassword}
-                    alt="Icon"
-                  />
-                </div>
-              }
-              childrenAfter={
-                <ButtonForm
-                  handlerLogin={(e): void => showPassword(e)}
-                  classNames={style.password_eye}
-                >
-                  <img
-                    className={style.label_img_icon}
-                    src={iconEye}
-                    alt="Icon"
-                  />
-                </ButtonForm>
-              }
             />
             <ButtonForm
-              handlerLogin={(event): void =>
+              onClick={(event): void =>
                 handleСreationAuth(
                   event,
                   setLoginError,
@@ -111,7 +104,8 @@ function AuthPage(): JSX.Element {
                   isAuth,
                   dispatch,
                   setCheckmarkLogin,
-                  setPasswordFlagError
+                  setPasswordFlagError,
+                  setInvalidCredentials
                 )
               }
               classNames={style.authorization_button}
@@ -124,7 +118,7 @@ function AuthPage(): JSX.Element {
         <div className={style.registration}>
           <h2 className={style.title}>Registration</h2>
           <ButtonForm
-            handlerLogin={handlerReg}
+            onClick={handlerReg}
             classNames={style.registration_button}
           >
             SignUp

@@ -118,12 +118,6 @@ body {
     background-image: url('../../../public/assets/icons/error.svg');
   }
 
-  &_eye {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-  }
-
 }
 
 .email {
@@ -137,4 +131,34 @@ body {
 .error {
   color: red;
   visibility: visible;
+}
+
+.label_img_icon {
+  pointer-events: none;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.invalid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+  padding: 10px 0 10px 20px;
+
+  font-size: 2rem;
+  color: red;
+
+  visibility: visible;
+
+  &_error {
+    margin-right: 10px;
+  }
 }

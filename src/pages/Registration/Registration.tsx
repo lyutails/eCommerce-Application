@@ -13,6 +13,7 @@ import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { hideTooltip, showTooltip } from '../showTooltip';
 import { useDispatch } from 'react-redux';
+import InputPassword from '../../components/Input/inputPassword';
 
 function RegistrationPage(): JSX.Element {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ function RegistrationPage(): JSX.Element {
   const [apartmentBillError, setErrorApartmentBill] = useState('');
   const [buildingBillError, setErrorBuildingBill] = useState('');
   const [buildingShipError, setErrorBuildingShip] = useState('');
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const [passwordFocus, setPasswordFocus] = useState(false);
 
@@ -101,7 +103,7 @@ function RegistrationPage(): JSX.Element {
       <div className={style.authorization}>
         <h2 className={style.title}>LogIn</h2>
         <ButtonForm
-          handlerLogin={handleToLogin}
+          onClick={handleToLogin}
           classNames={style.authorization_button}
         >
           LogIn
@@ -194,11 +196,10 @@ function RegistrationPage(): JSX.Element {
               </div>
             }
           />
-          <Input
+          <InputPassword
             onblur={(): void => hideTooltip(setPasswordFocus)}
             onfocus={(): void => showTooltip(setPasswordFocus)}
             func={(e): void => inputHandler(e, setPassword)}
-            type="password"
             clue={
               passwordError
                 ? 'Please enter valid password'
@@ -215,7 +216,6 @@ function RegistrationPage(): JSX.Element {
                 {passwordErrorElements}
               </div>
             }
-            placeholder="Password *"
             classWrapper={style.password}
             classClue={
               passwordFocus
@@ -225,33 +225,6 @@ function RegistrationPage(): JSX.Element {
                 : `${style.password_clue}`
             }
             classInput={style.password_input}
-            childrenAfter={
-              <ButtonForm
-                handlerLogin={(e): void => showPassword(e)}
-                classNames={style.password_eye}
-              >
-                <img
-                  className={style.label_img_icon}
-                  src={iconEye}
-                  alt="Icon"
-                />
-              </ButtonForm>
-            }
-            childrenBefore={
-              <div
-                className={
-                  checkmarkPassword
-                    ? `${style.wrapper_img} ${style.completed}`
-                    : `${style.wrapper_img} ${style.uncompleted}`
-                }
-              >
-                <img
-                  className={style.wrapper_img_icon}
-                  src={iconCheckmark}
-                  alt="Icon"
-                />
-              </div>
-            }
           />
           <InputBirthDateMask
             func={(e): void => inputHandler(e, setBirthday)}
@@ -670,7 +643,7 @@ function RegistrationPage(): JSX.Element {
             />
           </div>
           <ButtonForm
-            handlerLogin={(event): void =>
+            onClick={(event): void =>
               handleСreationReg(
                 event,
                 setLoginError,
@@ -726,7 +699,8 @@ function RegistrationPage(): JSX.Element {
                 setCheckmarkBuildingBill,
                 setCheckmarkApartmentShip,
                 setCheckmarkBuildingShip,
-                checkedInput
+                checkedInput,
+                setInvalidCredentials
               )
             }
             classNames={style.registration_button}
