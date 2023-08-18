@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const isDev = mode === 'development';
@@ -22,15 +21,6 @@ const plugins = [
   new StylelintPlugin({ fix: true }),
 
   new Dotenv(),
-
-  new CopyPlugin({
-    patterns: [
-      {
-        from: path.resolve(__dirname, "public", "_redirects"),
-        to: path.resolve(__dirname, "dist"),
-      },
-    ],
-  }),
 ];
 
 module.exports = {
@@ -118,7 +108,6 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
     assetModuleFilename: 'public/[name].[ext][query]',
     clean: true,
   },

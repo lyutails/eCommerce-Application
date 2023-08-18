@@ -1,0 +1,11 @@
+query FetchCategories {
+  categories {
+    offset
+    count
+    total
+    results {
+      id
+      key
+    }
+  }
+}
