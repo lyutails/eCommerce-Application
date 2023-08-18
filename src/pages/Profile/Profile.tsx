@@ -9,6 +9,7 @@ import { IRootState } from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
 import { useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
+import { myTokemCache } from '../../api/tockenCache';
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
@@ -21,9 +22,10 @@ function ProfilePage(): JSX.Element {
   const checkRefreshToken = (): void => {
     dispatch(setAuthStatus(false));
     navigate('/login');
-    localStorage.removeItem('customerId');
+    // localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
   };
+  console.log(myTokemCache.get(), 'testclass');
 
   if (!refreshToken) {
     checkRefreshToken();
@@ -37,7 +39,7 @@ function ProfilePage(): JSX.Element {
       )
       .catch(() => {
         checkRefreshToken();
-        localStorage.removeItem('refreshToken');
+        // localStorage.removeItem('refreshToken');
       });
   }
   dispatch(createCustomerId(localId));

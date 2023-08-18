@@ -12,7 +12,6 @@ import {
   createApiBuilderFromCtpClient,
   CustomerPagedQueryResponse,
 } from '@commercetools/platform-sdk';
-import MyTokenCache from './tockenCache';
 
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
@@ -24,9 +23,6 @@ const authMiddlewareOptionsForRefreshTokenFlow = (
     throw new Error('no client id found');
   }
 
-  if (typeof MyTokenCache !== 'string') {
-    throw new Error('no client id found');
-  }
   const options: RefreshAuthMiddlewareOptions = {
     host: 'https://auth.europe-west1.gcp.commercetools.com',
     projectKey: PROJECT_KEY,

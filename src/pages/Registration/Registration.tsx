@@ -35,8 +35,13 @@ function RegistrationPage(): JSX.Element {
   const [postalBill, setPostalBill] = useState('');
   const [countryBill, setCountryBill] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [buildingBill, setBuildingBill] = useState('');
+  const [buildingShip, setBuildingShip] = useState('');
+  const [apartmentBill, setApartmentBill] = useState('');
+  const [apartmentShip, setApartmentShip] = useState('');
 
   const [loginError, setLoginError] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
   const [fistnameError, setFistnameError] = useState('');
   const [lastnameError, setLastnameError] = useState('');
   const [streetShipError, setStreetShipError] = useState('');
@@ -48,6 +53,10 @@ function RegistrationPage(): JSX.Element {
   const [postalBillError, setPostalBillError] = useState('');
   const [countryBillError, setCountryBillError] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
+  const [apartmentShipError, setErrorApartmentShip] = useState('');
+  const [apartmentBillError, setErrorApartmentBill] = useState('');
+  const [buildingBillError, setErrorBuildingBill] = useState('');
+  const [buildingShipError, setErrorBuildingShip] = useState('');
 
   const [passwordFocus, setPasswordFocus] = useState(false);
 
@@ -64,6 +73,10 @@ function RegistrationPage(): JSX.Element {
   const [checkmarkPostalBill, setCheckmarkPostalBill] = useState(false);
   const [checkmarkCountryBill, setCheckmarkCountryBill] = useState(false);
   const [checkmarkBirthday, setCheckmarkBirthday] = useState(false);
+  const [checkmarkBuildingBill, setCheckmarkBuildingBill] = useState(false);
+  const [checkmarkBuildingShip, setCheckmarkBuildingShip] = useState(false);
+  const [checkmarkApartmentBill, setCheckmarkApartmentBill] = useState(false);
+  const [checkmarkApartmentShip, setCheckmarkApartmentShip] = useState(false);
 
   const passwordErrorTexts = handlePasswordInput(password);
   const passwordErrorElements = Object.keys(passwordErrorTexts).map(
@@ -187,7 +200,9 @@ function RegistrationPage(): JSX.Element {
             func={(e): void => inputHandler(e, setPassword)}
             type="password"
             clue={
-              'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
+              passwordError
+                ? 'Please enter valid password'
+                : 'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
             }
             tooltip={
               <div
@@ -289,6 +304,68 @@ function RegistrationPage(): JSX.Element {
                 <div
                   className={
                     checkmarkStreetShip
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
+            />
+            <Input
+              func={(e): void => inputHandler(e, setBuildingShip)}
+              type="text"
+              placeholder="Building *"
+              classWrapper={style.building}
+              classClue={
+                buildingShipError
+                  ? `${style.building_clue} ${style.error}`
+                  : style.building_clue
+              }
+              classInput={style.building_input}
+              clue={
+                buildingShipError ? buildingShipError : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkBuildingShip
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
+            />
+            <Input
+              func={(e): void => inputHandler(e, setApartmentShip)}
+              type="text"
+              placeholder="Apartment"
+              classWrapper={style.apartment}
+              classClue={
+                apartmentShipError
+                  ? `${style.apartment_clue} ${style.error}`
+                  : style.apartment_clue
+              }
+              classInput={style.apartment_input}
+              clue={
+                apartmentShipError
+                  ? apartmentShipError
+                  : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkApartmentShip
                       ? `${style.wrapper_img} ${style.completed}`
                       : `${style.wrapper_img} ${style.uncompleted}`
                   }
@@ -440,6 +517,68 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
+              func={(e): void => inputHandler(e, setBuildingBill)}
+              type="text"
+              placeholder="Building *"
+              classWrapper={style.building}
+              classClue={
+                buildingBillError
+                  ? `${style.building_clue} ${style.error}`
+                  : style.building_clue
+              }
+              classInput={style.building_input}
+              clue={
+                buildingBillError ? buildingBillError : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkBuildingBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
+            />
+            <Input
+              func={(e): void => inputHandler(e, setApartmentBill)}
+              type="text"
+              placeholder="Apartment"
+              classWrapper={style.apartment}
+              classClue={
+                apartmentBillError
+                  ? `${style.apartment_clue} ${style.error}`
+                  : style.apartment_clue
+              }
+              classInput={style.apartment_input}
+              clue={
+                apartmentBillError
+                  ? apartmentBillError
+                  : 'This is required field'
+              }
+              childrenBefore={
+                <div
+                  className={
+                    checkmarkApartmentBill
+                      ? `${style.wrapper_img} ${style.completed}`
+                      : `${style.wrapper_img} ${style.uncompleted}`
+                  }
+                >
+                  <img
+                    className={style.wrapper_img_icon}
+                    src={iconCheckmark}
+                    alt="Icon"
+                  />
+                </div>
+              }
+            />
+            <Input
               func={(e): void => inputHandler(e, setCityBill)}
               type="text"
               placeholder="City *"
@@ -533,6 +672,7 @@ function RegistrationPage(): JSX.Element {
               handleСreationReg(
                 event,
                 setLoginError,
+                setPasswordError,
                 setFistnameError,
                 setLastnameError,
                 setStreetShipError,
@@ -544,6 +684,10 @@ function RegistrationPage(): JSX.Element {
                 setPostalBillError,
                 setCountryBillError,
                 setBirthdayError,
+                setErrorApartmentBill,
+                setErrorBuildingBill,
+                setErrorApartmentShip,
+                setErrorBuildingShip,
                 login,
                 password,
                 fistname,
@@ -557,6 +701,10 @@ function RegistrationPage(): JSX.Element {
                 postalBill,
                 countryBill,
                 birthday,
+                apartmentBill,
+                buildingBill,
+                apartmentShip,
+                buildingShip,
                 navigate,
                 dispatch,
                 setCheckmarkLogin,
@@ -572,6 +720,10 @@ function RegistrationPage(): JSX.Element {
                 setCheckmarkPostalBill,
                 setCheckmarkCountryBill,
                 setCheckmarkBirthday,
+                setCheckmarkApartmentBill,
+                setCheckmarkBuildingBill,
+                setCheckmarkApartmentShip,
+                setCheckmarkBuildingShip,
                 checkedInput
               )
             }

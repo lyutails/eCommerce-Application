@@ -19,6 +19,8 @@ const REGEXP = {
   lastname: /^[a-zA-Z]+$/g,
   street: /^[A-Za-z\s]+$/g,
   city: /^[A-Za-z\s]+$/g,
+  building: /.*\d.*/g,
+  apartment: /.*\d.*/g,
 };
 
 export const clue = {
@@ -40,14 +42,17 @@ export const clue = {
     'Must contain at least one character and no special characters or numbers',
   postal:
     'Must follow the format for the country (e.g., 12345 or A1B 2C3 for the U.S. and Canada, respectively)',
-  country: 'Please, choose USA or Canada',
+  countryShip: 'Please select the USA or Canada shipping country',
+  countryBill: 'Please select the USA or Canada billing country',
+  building: '',
+  apartment: '',
 };
 
 export const inputHandler = (
   e: ChangeEvent<HTMLInputElement>,
   func: React.Dispatch<React.SetStateAction<string>>
 ): void => {
-  func((e.target as HTMLInputElement).value);
+  func((e.target as HTMLInputElement).value.trim());
 };
 
 export const handleLoginInput = (
@@ -228,7 +233,7 @@ export const handlePostalShipInput = (
     !REGEXP.postalUSA.test(postalShipField) &&
     !REGEXP.postalCanada.test(postalShipField)
   ) {
-    setErrorPostalShip(clue.character);
+    setErrorPostalShip(clue.postal);
     postalShipСheck = false;
     setCheckmark(false);
   } else {
@@ -252,7 +257,7 @@ export const handleCountryShipInput = (
     countryShipField.toLowerCase() !== 'canada' &&
     countryShipField.toLowerCase() !== 'usa'
   ) {
-    setErrorCountryShip(clue.country);
+    setErrorCountryShip(clue.countryShip);
     countryShipСheck = false;
     setCheckmark(false);
   } else {
@@ -339,7 +344,7 @@ export const handlePostalBillInput = (
     !REGEXP.postalBillUSA.test(postalBillField) &&
     !REGEXP.postalBillCanada.test(postalBillField)
   ) {
-    setErrorPostalBill(clue.character);
+    setErrorPostalBill(clue.postal);
     postalBillСheck = false;
     setCheckmark(false);
   } else {
@@ -363,7 +368,7 @@ export const handleCountryBillInput = (
     countryBillField.toLowerCase() !== 'canada' &&
     countryBillField.toLowerCase() !== 'usa'
   ) {
-    setErrorCountryBill(clue.country);
+    setErrorCountryBill(clue.countryBill);
     countryBillСheck = false;
     setCheckmark(false);
   } else {
@@ -371,4 +376,90 @@ export const handleCountryBillInput = (
     countryBillСheck = true;
   }
   return countryBillСheck;
+};
+
+export const handleBuildingBillInput = (
+  buildingBillField: string,
+  setErrorbuildingBill: React.Dispatch<React.SetStateAction<string>>,
+  buildingBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  REGEXP.building.lastIndex = 0;
+  if (buildingBillField === '') {
+    setErrorbuildingBill(clue.requiredField);
+    buildingBillСheck = false;
+    setCheckmark(false);
+  } else if (!REGEXP.building.test(buildingBillField)) {
+    setErrorbuildingBill(clue.building);
+    buildingBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    buildingBillСheck = true;
+  }
+  return buildingBillСheck;
+};
+
+export const handleApartmentBillInput = (
+  apartmentBillField: string,
+  setErrorApartmentBill: React.Dispatch<React.SetStateAction<string>>,
+  apartmentBillСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  REGEXP.apartment.lastIndex = 0;
+  if (apartmentBillField === '') {
+    setCheckmark(true);
+    apartmentBillСheck = true;
+  } else if (!REGEXP.apartment.test(apartmentBillField)) {
+    setErrorApartmentBill(clue.apartment);
+    apartmentBillСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    apartmentBillСheck = true;
+  }
+  return apartmentBillСheck;
+};
+
+export const handleBuildingShipInput = (
+  buildingShipField: string,
+  setErrorbuildingShip: React.Dispatch<React.SetStateAction<string>>,
+  buildingShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  REGEXP.building.lastIndex = 0;
+  if (buildingShipField === '') {
+    setErrorbuildingShip(clue.requiredField);
+    buildingShipСheck = false;
+    setCheckmark(false);
+  } else if (!REGEXP.building.test(buildingShipField)) {
+    setErrorbuildingShip(clue.building);
+    buildingShipСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    buildingShipСheck = true;
+  }
+  return buildingShipСheck;
+};
+
+export const handleApartmentShipInput = (
+  apartmentShipField: string,
+  setErrorApartmentShip: React.Dispatch<React.SetStateAction<string>>,
+  apartmentShipСheck: boolean,
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+): boolean => {
+  REGEXP.apartment.lastIndex = 0;
+  if (apartmentShipField === '') {
+    setCheckmark(true);
+    apartmentShipСheck = true;
+  } else if (!REGEXP.apartment.test(apartmentShipField)) {
+    setErrorApartmentShip(clue.apartment);
+    apartmentShipСheck = false;
+    setCheckmark(false);
+  } else {
+    setCheckmark(true);
+    apartmentShipСheck = true;
+  }
+  return apartmentShipСheck;
 };

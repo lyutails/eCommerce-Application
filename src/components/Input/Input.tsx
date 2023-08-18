@@ -34,7 +34,7 @@ function Input(props: IInputProps): JSX.Element {
           className={`${style.wrapper_input} ${props.classInput}`}
           type={props.type}
           placeholder={props.placeholder}
-          required
+          // required
         />
         {props.childrenAfter}
       </div>

@@ -8,6 +8,7 @@ import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
 import { apiRoot } from './createClient';
+import { myTokemCache } from './tockenCache';
 // import {
 //   ApiRoot,
 //   Project,
@@ -81,7 +82,7 @@ export const getCustomerToken = async (
     {
       disableRefreshToken: false,
     }
-  ).r;
+  );
   return customer;
 };
 
