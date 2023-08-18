@@ -5,7 +5,6 @@ import {
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { revoke } from '@commercetools/sdk-auth';
 
 if (typeof process.env.CLIENT_ID !== 'string') {
   throw new Error('no client id found');

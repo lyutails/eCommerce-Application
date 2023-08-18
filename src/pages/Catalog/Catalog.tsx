@@ -2,18 +2,14 @@ import { Link } from 'react-router-dom';
 import style from './_catalog.module.scss';
 import { useEffect, useState } from 'react';
 import { GetCategories } from '../../api/getCategories';
-// import { createCustomer } from '../../api/createCustomer';
 
 function CatalogPage(): JSX.Element {
-  // let category;
-  // const category = useSelector((state: ICategoryState) => state.category);
+  /* const category = useSelector((state: ICategoryState) => state.category); */
   const [allCategories, setAllCategories] = useState<string[]>([]);
   useEffect(() => {
     GetCategories().then((response) => {
-      // category = response;
       setAllCategories(response);
     });
-    // return response;
   }, []);
   return (
     <div className={style.catalog}>
@@ -53,23 +49,3 @@ function CatalogPage(): JSX.Element {
   );
 }
 export default CatalogPage;
-
-// <div className={style.main_arrow + ' ' + style.left}></div>
-// <div className={`${style.main_arrow} ${style.left}`}></div>
-
-//   {menuList.map((item, index) => {
-//     const {id, idx, img, name, description, price, weight} = item;
-//     return(
-//         <Link to = {`/products/${id}`} key= {index}>
-//         <Card
-//             idx = {idx}
-//             id={id}
-//             img={img}
-//             name ={name}
-//             description ={description}
-//             price ={price}
-//             weight ={weight}
-//         />
-//         </Link>
-//     );
-// })}

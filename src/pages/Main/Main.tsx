@@ -1,34 +1,6 @@
-// import {
-//   IMyCustomerDraft,
-//   IMyCustomerLoginDraft,
-//   createCustomerMe,
-//   loginCustomer,
-// } from '../../api/createCustomer';
-// import { getCustomer } from '../../api/getCustomer';
 import style from './_main.module.scss';
 
 function MainPage(): JSX.Element {
-  // getCustomer('TashaOneMore@example.com');
-  // const createCustomerMeData: IMyCustomerDraft = {
-  //   email: 'lalala6@gmail.com',
-  //   firstName: 'lalala',
-  //   lastName: 'lala lala',
-  //   password: 'q49tjg3q4',
-  //   streetName: 'justStreet',
-  //   streetNumber: '353',
-  //   postalCode: '464623',
-  //   city: 'NY',
-  //   state: 'NY',
-  //   country: 'USA',
-  //   building: '3452',
-  //   apartment: '351',
-  // };
-  // const loginCustomerMeData: IMyCustomerLoginDraft = {
-  //   email: 'lalala444@gmail.com',
-  //   password: 'q49tjg3q4',
-  // };
-  // createCustomerMe(createCustomerMeData);
-  // loginCustomer(loginCustomerMeData);
   return (
     <div className={style.main} data-testid="main-component">
       <div className={style.main_wrapper}>
