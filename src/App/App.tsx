@@ -17,6 +17,8 @@ import ProductPage from '../pages/Product/Product';
 import { revoke } from '@commercetools/sdk-auth';
 import { apiRootAnonymous } from '../api/anonzmousFlow';
 import { refreshTokenFlow } from '../api/adminBuilder';
+import { customerToken } from '../api/adminBuilder';
+import { useEffect, useState } from 'react';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);

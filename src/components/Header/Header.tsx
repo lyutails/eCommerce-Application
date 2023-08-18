@@ -39,11 +39,6 @@ function Header(): JSX.Element {
               </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/profile">
-                {isAuth ? 'Profile' : 'LogIn'}
-              </NavLink>
-            </li>
-            <li className={style.header_menu_item}>
               <NavLink
                 className={`${style.header_menu_link} ${style.header_cart}`}
                 to="/cart"
@@ -55,6 +50,11 @@ function Header(): JSX.Element {
             </li>
             <li className={`${style.header_menu_item} ${style.sum}`}>
               {`${walletCost}`}$
+            </li>
+            <li className={style.header_menu_item}>
+              <NavLink className={style.header_menu_link} to="/profile">
+                {isAuth ? 'Profile' : 'LogIn'}
+              </NavLink>
             </li>
           </ul>
         </div>
