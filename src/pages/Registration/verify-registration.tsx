@@ -16,6 +16,10 @@ import {
   handleCityBillInput,
   handlePostalBillInput,
   handleCountryBillInput,
+  handleBuildingBillInput,
+  handleBuildingShipInput,
+  handleApartmentBillInput,
+  handleApartmentShipInput,
 } from '../verification';
 import { AnyAction, Dispatch } from 'redux';
 import { createCustomerId } from '../../store/reducers/userReducer';
@@ -34,10 +38,15 @@ let streetBillСheck = false;
 let cityBillСheck = false;
 let postalBillСheck = false;
 let countryBillСheck = false;
+let buildingBillСheck = false;
+let buildingShipСheck = false;
+let apartmentBillСheck = false;
+let apartmentShipСheck = false;
 
 export const handleСreationReg = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   setErrorLogin: React.Dispatch<React.SetStateAction<string>>,
+  setErrorPassword: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorFirstname: React.Dispatch<React.SetStateAction<string>>,
   setErrorLastname: React.Dispatch<React.SetStateAction<string>>,
   setErrorStreetShip: React.Dispatch<React.SetStateAction<string>>,
@@ -49,6 +58,10 @@ export const handleСreationReg = (
   setErrorPostalBill: React.Dispatch<React.SetStateAction<string>>,
   setErrorCountryBill: React.Dispatch<React.SetStateAction<string>>,
   setErrorBirthday: React.Dispatch<React.SetStateAction<string>>,
+  setErrorApartmentBill: React.Dispatch<React.SetStateAction<string>>,
+  setErrorBuildingBill: React.Dispatch<React.SetStateAction<string>>,
+  setErrorApartmentShip: React.Dispatch<React.SetStateAction<string>>,
+  setErrorBuildingShip: React.Dispatch<React.SetStateAction<string>>,
   loginField: string,
   passwordField: string,
   fistnameField: string,
@@ -62,6 +75,10 @@ export const handleСreationReg = (
   postalBillField: string,
   countryBillField: string,
   birthdayField: string,
+  apartmentBillField: string,
+  buildingBillField: string,
+  apartmentShipField: string,
+  buildingShipField: string,
   navigator: NavigateFunction,
   dispatch: Dispatch<AnyAction>,
   setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
@@ -77,6 +94,10 @@ export const handleСreationReg = (
   setCheckmarkPostalBill: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkCountryBill: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkBirthday: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkApartmentBill: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkBuildingBill: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkApartmentShip: React.Dispatch<React.SetStateAction<boolean>>,
+  setCheckmarkBuildingShip: React.Dispatch<React.SetStateAction<boolean>>,
   checkedBill: boolean
 ): void => {
   e.preventDefault();
@@ -146,16 +167,41 @@ export const handleСreationReg = (
     countryBillСheck,
     setCheckmarkCountryBill
   );
+  buildingBillСheck = handleBuildingBillInput(
+    buildingBillField,
+    setErrorBuildingBill,
+    buildingBillСheck,
+    setCheckmarkBuildingBill
+  );
+  buildingShipСheck = handleBuildingShipInput(
+    buildingShipField,
+    setErrorBuildingShip,
+    buildingShipСheck,
+    setCheckmarkBuildingShip
+  );
+  apartmentBillСheck = handleApartmentBillInput(
+    apartmentBillField,
+    setErrorApartmentBill,
+    apartmentBillСheck,
+    setCheckmarkApartmentBill
+  );
+  apartmentShipСheck = handleApartmentShipInput(
+    apartmentShipField,
+    setErrorApartmentShip,
+    apartmentShipСheck,
+    setCheckmarkApartmentShip
+  );
   const passwordErr = handlePasswordInput(passwordField);
   Object.keys(passwordErr).every((key): void => {
     if (passwordErr[key].isError === true) {
       passwordСheck = false;
+      setErrorPassword(true);
     } else {
       setCheckmarkPassword(true);
       passwordСheck = true;
+      setErrorPassword(false);
     }
   });
-  // console.log(postalBillField);
   birthdayСheck = handleBirthdayInput(
     birthdayField,
     setErrorBirthday,
@@ -173,14 +219,16 @@ export const handleСreationReg = (
     addresses: [
       {
         streetName: streetShipField,
-        streetNumber: '45',
+        building: buildingShipField,
+        apartment: apartmentShipField,
         postalCode: postalShipField,
         city: cityShipField,
         country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
       },
       {
         streetName: streetBillField,
-        streetNumber: '45',
+        building: buildingBillField,
+        apartment: apartmentBillField,
         postalCode: postalBillField,
         city: postalBillField,
         country: countryBillField.toLowerCase() === 'usa' ? 'US' : 'CA',
@@ -198,7 +246,8 @@ export const handleСreationReg = (
     addresses: [
       {
         streetName: streetShipField,
-        streetNumber: '45',
+        building: buildingShipField,
+        apartment: apartmentShipField,
         postalCode: postalShipField,
         city: cityShipField,
         country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
@@ -221,10 +270,26 @@ export const handleСreationReg = (
       streetBillСheck === true &&
       cityBillСheck === true &&
       postalBillСheck === true &&
-      countryBillСheck === true
+      countryBillСheck === true &&
+      buildingBillСheck === true &&
+      buildingShipСheck === true &&
+      apartmentBillСheck === true &&
+      apartmentShipСheck === true
     ) {
-      createCustomerMe(dataBill, dispatch, navigator);
-      // navigator('/');
+      createCustomerMe(dataBill, dispatch, navigator)
+        .then((response) => {
+          if (response) {
+            localStorage.setItem('customerId', response.body.customer.id);
+            dispatch(createCustomerId(response.body.customer.id));
+          }
+        })
+        .then(() => {
+          const token = getCustomerToken(loginField, passwordField);
+          return token;
+        })
+        .then((response) => {
+          localStorage.setItem('refreshToken', response.refresh_token);
+        });
     }
   } else {
     if (
@@ -236,7 +301,11 @@ export const handleСreationReg = (
       cityShipСheck === true &&
       postalShipСheck === true &&
       countryShipСheck === true &&
-      birthdayСheck === true
+      birthdayСheck === true &&
+      buildingBillСheck === true &&
+      buildingShipСheck === true &&
+      apartmentBillСheck === true &&
+      apartmentShipСheck === true
     ) {
       createCustomerMe(dataShip, dispatch, navigator)
         .then((response) => {
@@ -252,7 +321,6 @@ export const handleСreationReg = (
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
         });
-      // navigator('/');
     }
   }
 };

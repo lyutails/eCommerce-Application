@@ -41,7 +41,7 @@ function InputBirthDateMask(props: IInputProps): JSX.Element {
           placeholder={props.placeholder}
           type={props.type}
           max={getMinUserAge()}
-          required
+          // required
         />
         {props.childrenAfter}
       </div>

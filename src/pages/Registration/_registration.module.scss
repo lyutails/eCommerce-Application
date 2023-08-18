@@ -160,8 +160,13 @@ body {
 }
 
 .error {
+    margin: 0;
+    padding: 0;
+
     color: red;
+
     visibility: visible;
+    background-image: none;
 }
 
 .tooltip_error {

@@ -8,6 +8,7 @@ import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
 import { getCustomerToken } from '../../api/adminBuilder';
+import { myTokemCache } from '../../api/tockenCache';
 
 // eslint-disable-next-line prefer-const
 let loginСheck = false;
@@ -60,6 +61,12 @@ export const handleСreationAuth = (
         return token;
       })
       .then((response) => {
+        // myTokemCache.set({
+        //   token: '',
+        //   expirationTime: 0,
+        //   refreshToken: response.refresh_token,
+        // });
+        // console.log(response.refresh_token, 'testtoken');
         localStorage.setItem('refreshToken', response.refresh_token);
       });
     // console.log(isAuth, 'testAPI');

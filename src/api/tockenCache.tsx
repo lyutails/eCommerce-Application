@@ -15,7 +15,7 @@ class MyTokenCache implements TokenCache {
     this.TokenStore = {
       token: '',
       expirationTime: 0,
-      refreshToken: 'string | undefined',
+      refreshToken: 'string',
     };
   }
   get(tokenCacheOptions?: TokenCacheOptions): {
@@ -31,4 +31,4 @@ class MyTokenCache implements TokenCache {
   }
 }
 
-export default MyTokenCache;
+export const myTokemCache = new MyTokenCache();

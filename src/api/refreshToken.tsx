@@ -12,7 +12,6 @@ import {
   createApiBuilderFromCtpClient,
   CustomerPagedQueryResponse,
 } from '@commercetools/platform-sdk';
-import MyTokenCache from './tockenCache';
 
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
@@ -27,10 +26,6 @@ const authMiddlewareOptionsForRefreshTokenFlow = (
     throw new Error('no client id found refresh token flow');
   }
   if (typeof process.env.CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found refresh token flow');
-  }
-
-  if (typeof MyTokenCache !== 'string') {
     throw new Error('no client id found refresh token flow');
   }
   const options: RefreshAuthMiddlewareOptions = {
