@@ -266,25 +266,6 @@ export const handleСreationReg = (
     shippingAddresses: [0],
     billingAddresses: [0],
   };
-  console.log(
-    loginСheck,
-    passwordСheck,
-    firstnameСheck,
-    lastnameСheck,
-    streetShipСheck,
-    cityShipСheck,
-    postalShipСheck,
-    countryShipСheck,
-    birthdayСheck,
-    streetBillСheck,
-    cityBillСheck,
-    postalBillСheck,
-    countryBillСheck,
-    buildingBillСheck,
-    buildingShipСheck,
-    apartmentBillСheck,
-    apartmentShipСheck
-  );
   if (checkedBill) {
     if (
       loginСheck === true &&

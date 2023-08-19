@@ -3,8 +3,8 @@ import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   handlePasswordInput,
   inputHandler,
@@ -14,10 +14,12 @@ import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { hideTooltip, showTooltip } from '../showTooltip';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
+import { IRootState } from '../../types/interfaces';
 
 function RegistrationPage(): JSX.Element {
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleToLogin = (): void => {
@@ -102,8 +104,14 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
-  // const hglug = /^(?=.*\d)[a-zA-Z0-9]*(?:\/[a-zA-Z0-9]*)?$/;
-  // console.log(hglug.test('301/f'));
+  useEffect(() => {
+    console.log(isAuth);
+    if (isAuth === true) {
+      setTimeout(() => {
+        return <Navigate to={'/'} />;
+      }, 10000);
+    }
+  }, [isAuth]);
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -439,7 +447,7 @@ function RegistrationPage(): JSX.Element {
                       : style.country_select
                   }
                 >
-                  <option disabled selected className={style.country_head}>
+                  <option value="" className={style.country_head}>
                     Please, select the country
                   </option>
                   <option value="usa">USA</option>
@@ -649,7 +657,7 @@ function RegistrationPage(): JSX.Element {
                       : style.country_select
                   }
                 >
-                  <option disabled selected className={style.country_head}>
+                  <option value="" className={style.country_head}>
                     Please, select the country
                   </option>
                   <option value="usa">USA</option>
@@ -738,12 +746,20 @@ function RegistrationPage(): JSX.Element {
           </ButtonForm>
         </form>
       </div>
-      <div className={style.modal}>
+      <div
+        className={
+          isAuth === true
+            ? `${style.modal_visible} ${style.modal}`
+            : style.modal
+        }
+      >
         Dear user,
         <br /> your Profile was successfully created,
         <br /> we&apos;re glad you joined us
       </div>
-      <div className={style.overlay}></div>
+      <div
+        className={isAuth === true ? `${style.overlay_visible}` : style.overlay}
+      ></div>
     </div>
   );
 }

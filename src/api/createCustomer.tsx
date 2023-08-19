@@ -23,37 +23,6 @@ export interface ICustomerFields {
   apartment: string;
 }
 
-// export async function createCustomer(
-//   data: ICustomerFields
-// ): Promise<ClientResponse<CustomerSignInResult>> {
-//   try {
-//     const customer = await apiRoot
-//       .customers()
-//       .post({
-//         body: data,
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       })
-//       .execute();
-//     return customer;
-//   } catch {
-//     throw new Error('cannot create a customer');
-//   }
-// }
-
-export interface IMyCustomerDraft {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  dateOfBirth: string;
-  addresses: BaseAddress[];
-  defaultShippingAddress?: number | undefined;
-  shippingAddresses: number[];
-  defaultBillingAddress?: number | undefined;
-  billingAddresses: number[];
-}
 export async function createCustomerMe(
   data: IMyCustomerDraft,
   dispatch: Dispatch<AnyAction>,
@@ -74,7 +43,6 @@ export async function createCustomerMe(
     return customer;
   } catch {
     console.log('cannot create customer');
-    /* logic from api here if error */
   }
 }
 
