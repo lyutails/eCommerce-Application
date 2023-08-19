@@ -17,9 +17,9 @@ const REGEXP = {
   whitespacePassword: /.*\s.*/g,
   fistname: /^[a-zA-Z]+$/g,
   lastname: /^[a-zA-Z]+$/g,
-  street: /^[A-Za-z\s]+$/g,
+  street: /^[0-9\sA-Za-z]+$/,
   city: /^[A-Za-z\s]+$/g,
-  building: /^(\d+)(\/\w|\w)?$/,
+  building: /^(?=.*\d)[a-zA-Z0-9]*(?:\/[a-zA-Z0-9]*)?$/,
   apartment: /.*\d.*/g,
 };
 
@@ -40,8 +40,8 @@ export const clue = {
   requiredField: 'This is required field',
   character:
     'Must contain at least one character and no special characters or numbers',
-  postal:
-    'Must follow the format for the country (e.g., 12345 or A1B 2C3 for the U.S. and Canada, respectively)',
+  postalUsa: 'Must follow the format for the USA 12345',
+  postalCanada: 'Must follow the format for Canada A1B 2C3',
   countryShip: 'Please select the USA or Canada shipping country',
   countryBill: 'Please select the USA or Canada billing country',
   building: 'Building number should be in format: 333, 333a, 333/1, 333/a',
@@ -53,6 +53,13 @@ export const inputHandler = (
   func: React.Dispatch<React.SetStateAction<string>>
 ): void => {
   func((e.target as HTMLInputElement).value.trim());
+};
+
+export const selectHandler = (
+  e: React.ChangeEvent<HTMLSelectElement>,
+  func: React.Dispatch<React.SetStateAction<string>>
+): void => {
+  func((e.target as HTMLSelectElement).value.trim());
 };
 
 export const handleLoginInput = (
@@ -226,7 +233,8 @@ export const handlePostalShipInput = (
   postalShipField: string,
   setErrorPostalShip: React.Dispatch<React.SetStateAction<string>>,
   postalShipСheck: boolean,
-  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>,
+  countryShipField: string
 ): boolean => {
   REGEXP.postalUSA.lastIndex = 0;
   REGEXP.postalCanada.lastIndex = 0;
@@ -235,10 +243,17 @@ export const handlePostalShipInput = (
     postalShipСheck = false;
     setCheckmark(false);
   } else if (
-    !REGEXP.postalUSA.test(postalShipField) &&
-    !REGEXP.postalCanada.test(postalShipField)
+    countryShipField === 'usa' &&
+    !REGEXP.postalUSA.test(postalShipField)
   ) {
-    setErrorPostalShip(clue.postal);
+    setErrorPostalShip(clue.postalUsa);
+    postalShipСheck = false;
+    setCheckmark(false);
+  } else if (
+    countryShipField === 'canada' &&
+    !REGEXP.postalBillCanada.test(postalShipField)
+  ) {
+    setErrorPostalShip(clue.postalCanada);
     postalShipСheck = false;
     setCheckmark(false);
   } else {
@@ -257,13 +272,6 @@ export const handleCountryShipInput = (
 ): boolean => {
   if (countryShipField === '') {
     setErrorCountryShip(clue.requiredField);
-    countryShipСheck = false;
-    setCheckmark(false);
-  } else if (
-    countryShipField.toLowerCase() !== 'canada' &&
-    countryShipField.toLowerCase() !== 'usa'
-  ) {
-    setErrorCountryShip(clue.countryShip);
     countryShipСheck = false;
     setCheckmark(false);
   } else {
@@ -342,7 +350,8 @@ export const handlePostalBillInput = (
   postalBillField: string,
   setErrorPostalBill: React.Dispatch<React.SetStateAction<string>>,
   postalBillСheck: boolean,
-  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
+  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>,
+  countryBillField: string
 ): boolean => {
   REGEXP.postalBillUSA.lastIndex = 0;
   REGEXP.postalBillCanada.lastIndex = 0;
@@ -351,10 +360,17 @@ export const handlePostalBillInput = (
     postalBillСheck = false;
     setCheckmark(false);
   } else if (
-    !REGEXP.postalBillUSA.test(postalBillField) &&
+    countryBillField === 'usa' &&
+    !REGEXP.postalUSA.test(postalBillField)
+  ) {
+    setErrorPostalBill(clue.postalUsa);
+    postalBillСheck = false;
+    setCheckmark(false);
+  } else if (
+    countryBillField === 'canada' &&
     !REGEXP.postalBillCanada.test(postalBillField)
   ) {
-    setErrorPostalBill(clue.postal);
+    setErrorPostalBill(clue.postalCanada);
     postalBillСheck = false;
     setCheckmark(false);
   } else {
@@ -373,13 +389,6 @@ export const handleCountryBillInput = (
 ): boolean => {
   if (countryBillField === '') {
     setErrorCountryBill(clue.requiredField);
-    countryBillСheck = false;
-    setCheckmark(false);
-  } else if (
-    countryBillField.toLowerCase() !== 'canada' &&
-    countryBillField.toLowerCase() !== 'usa'
-  ) {
-    setErrorCountryBill(clue.countryBill);
     countryBillСheck = false;
     setCheckmark(false);
   } else {
