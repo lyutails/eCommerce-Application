@@ -104,14 +104,14 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
-  useEffect(() => {
-    console.log(isAuth);
-    if (isAuth === true) {
-      setTimeout(() => {
-        return <Navigate to={'/'} />;
-      }, 10000);
-    }
-  }, [isAuth]);
+  // useEffect(() => {
+  //   console.log(isAuth);
+  //   if (isAuth === true) {
+  //     setTimeout(() => {
+  //       return <Navigate to={'/'} />;
+  //     }, 10000);
+  //   }
+  // }, [isAuth]);
   return (
     <div className={style.login}>
       <div className={style.authorization}>
