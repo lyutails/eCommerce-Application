@@ -2,7 +2,6 @@
 
 @import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
 
-
 .main {
   display: flex;
   flex: 1 1 auto;
@@ -11,7 +10,7 @@
   width: 100%;
 
   background-color: $background-color-primary-one;
-  background-image: url('../../../public/assets/backgrounds/cyberpunk_02.png');
+  background-image: url('../../../public/assets/backgrounds/cyberpunk_02_02.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: difference;
@@ -79,13 +78,13 @@
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 0.15;
+    aspect-ratio: 1 / 0.2;
     width: 100%;
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
 
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
 
     background-color: $background-color-customize;
@@ -96,6 +95,80 @@
       0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
+
+    &.customize {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+
+  &_offers_wrapper {
+    overflow: hidden;
+    aspect-ratio: 1 / 0.25;
+    width: 100%;
+  }
+
+  &_offers {
+    display: flex;
+    flex-direction: row;
+
+    aspect-ratio: 1 / 0.05;
+    width: 400%;
+    min-height: 80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &_offer {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+    width: 100%;
+
+    font-size: 3rem;
+    text-align: center;
+
+    background-color: $background-color-customize;
+    filter: drop-shadow(0 0 8px $glow-green);
+
+    // box-shadow:
+    //   0 0 10px $glow-green,
+    //   0 0 10px $glow-green;
+    border: solid 2px rgb(44 255 181);
+    border-radius: 10px;
+
+    -webkit-text-stroke: 1px;
+  }
+
+  &_sloth_left {
+    resize: both;
+
+    transform: scaleX(-1);
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/congrats.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  &_sloth_right {
+    resize: both;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/good.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
   }
 
   &_slider {
@@ -109,12 +182,14 @@
   }
 
   &_slide {
+    resize: both;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 20%;
+    width: 80%;
     max-width: 200px;
 
     font-size: 2rem;
@@ -122,12 +197,42 @@
     text-align: center;
 
     background-color: $background-color-category;
+    background-repeat: no-repeat;
+    background-size: contain;
     border-radius: 10px;
     box-shadow:
       0 0 5px $glow-violet,
       0 0 10px $glow-violet;
 
     -webkit-text-stroke: 1px;
+
+    &.one {
+      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-bug.png');
+    }
+
+    &.two {
+      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-deadline.png');
+    }
+
+    &.three {
+      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-git.png');
+    }
+
+    &.four {
+      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-slothorian.png');
+    }
+  }
+
+  &_offer_pic {
+    display: inline-block;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/love.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
   }
 
   &_arrow {
