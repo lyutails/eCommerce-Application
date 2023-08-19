@@ -104,16 +104,30 @@
     }
   }
 
+  &_offers_wrapper {
+    overflow: hidden;
+    aspect-ratio: 1 / 0.25;
+    width: 100%;
+  }
+
   &_offers {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
 
-    aspect-ratio: 1 / 0.2;
-    width: 100%;
+    aspect-ratio: 1 / 0.05;
+    width: 400%;
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+
+  &_offer {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
 
     font-size: 3rem;
     text-align: center;
@@ -204,13 +218,6 @@
     &.four {
       background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-slothorian.png');
     }
-  }
-
-  &_offer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
   }
 
   &_offer_pic {
