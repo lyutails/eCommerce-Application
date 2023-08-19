@@ -2,18 +2,17 @@ import Input from '../../components/Input/Input';
 import style from '../Auth/_auth.module.scss';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icons/email.svg';
-import iconPassword from '../../../public/assets/icons/password.svg';
-import iconEye from '../../../public/assets/icons/eye.svg';
+import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
-import { showPassword } from '../showPassword';
-import { inputHandler } from '../verification';
+import { handlePasswordInput, inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
+import { hideTooltip, showTooltip } from '../showTooltip';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -24,6 +23,7 @@ function AuthPage(): JSX.Element {
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState({});
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [passwordFlagError, setPasswordFlagError] = useState(false);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
@@ -35,6 +35,24 @@ function AuthPage(): JSX.Element {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
+  const passwordErrorTexts = handlePasswordInput(password);
+  const passwordErrorElements = Object.keys(passwordErrorTexts).map(
+    (key, i) => {
+      return (
+        <p
+          key={`tooltip_${i}`}
+          className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
+        >
+          <img
+            className={style.tooltip_error}
+            src={passwordErrorTexts[key].isError ? iconError : iconCheckmark}
+            alt="Error icon"
+          />
+          {passwordErrorTexts[key].text}
+        </p>
+      );
+    }
+  );
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
@@ -78,6 +96,8 @@ function AuthPage(): JSX.Element {
               }
             />
             <InputPassword
+              onblur={(): void => hideTooltip(setPasswordFocus)}
+              onfocus={(): void => showTooltip(setPasswordFocus)}
               func={(e): void => inputHandler(e, setPassword)}
               clue={
                 typeof passwordError === 'string'
@@ -86,11 +106,24 @@ function AuthPage(): JSX.Element {
               }
               classWrapper={style.password}
               classClue={
-                passwordFlagError
-                  ? `${style.password_clue} ${style.password_error}`
+                passwordFocus
+                  ? `${style.password_clue} ${style.unshown}`
+                  : passwordFlagError
+                  ? `${style.password_clue} ${style.shown} ${style.password_error}`
                   : `${style.password_clue} ${style.password_valid}`
               }
               classInput={style.password_input}
+              tooltip={
+                <div
+                  className={
+                    passwordFocus
+                      ? `${style.shown} ${style.password_tooltip}`
+                      : `${style.unshown} ${style.tooltip}`
+                  }
+                >
+                  {passwordErrorElements}
+                </div>
+              }
             />
             <ButtonForm
               onClick={(event): void =>
