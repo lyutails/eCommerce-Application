@@ -108,7 +108,8 @@ function RegistrationPage(): JSX.Element {
     console.log(isAuth);
     if (isAuth === true) {
       setTimeout(() => {
-        return <Navigate to={'/'} />;
+        console.log(isAuth);
+        // return <Navigate to={'/'} />;
       }, 10000);
     }
   }, [isAuth]);
@@ -758,7 +759,11 @@ function RegistrationPage(): JSX.Element {
         <br /> we&apos;re glad you joined us
       </div>
       <div
-        className={isAuth === true ? `${style.overlay_visible}` : style.overlay}
+        className={
+          isAuth === true
+            ? `${style.overlay_visible} ${style.overlay}`
+            : style.overlay
+        }
       ></div>
     </div>
   );

@@ -39,7 +39,7 @@ function Header(): JSX.Element {
               </NavLink>
             </li>
             <li className={style.header_menu_item}>
-              <NavLink className={style.header_menu_link} to="/login">
+              <NavLink className={style.header_menu_link} to="/profile">
                 {isAuth ? 'Profile' : 'LogIn'}
               </NavLink>
             </li>
