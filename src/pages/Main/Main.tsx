@@ -10,7 +10,7 @@ function MainPage(): JSX.Element {
         <div className={style.main_offers_wrapper}>
         <div className={style.main_offers}>
           <div className={style.main_offer}>
-            'RSSchool' is infinitely working discount code giving you 20% OFF
+            'RSSchool' is infinitely working DISCOUNT code giving you 20% OFF
             per one purchase per one day
             <span className={style.main_offer_pic}></span>
           </div>
