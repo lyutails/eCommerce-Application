@@ -127,6 +127,7 @@
     align-items: center;
     justify-content: space-between;
 
+    box-sizing: border-box;
     width: 100%;
 
     font-size: 3rem;
@@ -134,10 +135,12 @@
 
     background-color: $background-color-customize;
     filter: drop-shadow(0 0 8px $glow-green);
+
+    // box-shadow:
+    //   0 0 10px $glow-green,
+    //   0 0 10px $glow-green;
+    border: solid 2px rgb(44 255 181);
     border-radius: 10px;
-    box-shadow:
-      0 0 10px $glow-green,
-      0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
   }
