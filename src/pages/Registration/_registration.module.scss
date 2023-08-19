@@ -221,7 +221,7 @@ body {
   // filter: drop-shadow(0 0 2px $glow-green);
   border-radius: 10px;
 
-  &.visible {
+  &_visible {
     display: unset;
   }
 }
@@ -238,7 +238,7 @@ body {
 
   background-color: $overlay;
 
-  &.visible {
+  &_visible {
     display: unset;
   }
 }
