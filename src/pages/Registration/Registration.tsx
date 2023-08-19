@@ -1,12 +1,10 @@
 import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEye from '../../../public/assets/icons/eye.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { useNavigate } from 'react-router-dom';
-import { showPassword } from '../showPassword';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { handlePasswordInput, inputHandler } from '../verification';
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
@@ -713,7 +711,7 @@ function RegistrationPage(): JSX.Element {
       <div className={style.modal}>
         Dear user,
         <br /> your Profile was successfully created,
-        <br /> we're glad you joined us
+        <br /> we&apos;re glad you joined us
       </div>
       <div className={style.overlay}></div>
     </div>

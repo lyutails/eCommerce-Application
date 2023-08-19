@@ -8,25 +8,25 @@ function MainPage(): JSX.Element {
           <h1 className={style.main_title}>Awesome RSSchool Merch here</h1>
         </div>
         <div className={style.main_offers_wrapper}>
-        <div className={style.main_offers}>
-          <div className={style.main_offer}>
-            'RSSchool' is infinitely working DISCOUNT code giving you 20% OFF
-            per one purchase per one day
-            <span className={style.main_offer_pic}></span>
+          <div className={style.main_offers}>
+            <div className={style.main_offer}>
+              &apos;RSSchool&apos; is infinitely working DISCOUNT code giving
+              per one purchase per one day
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              HOT SALES 80% OFF on all white t-shirts
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              2 = 1 two t-shirts with the same art by price of one
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              get the gift with every second purchase - sticker pack, mug or cap
+              <span className={style.main_offer_pic}></span>
+            </div>
           </div>
-          <div className={style.main_offer}>
-            HOT SALES 80% OFF on all white t-shirts
-            <span className={style.main_offer_pic}></span>
-          </div>
-          <div className={style.main_offer}>
-            2 = 1 two t-shirts with the same art by price of one
-            <span className={style.main_offer_pic}></span>
-          </div>
-          <div className={style.main_offer}>
-            get the gift with every second purchase - sticker pack, mug or cap
-            <span className={style.main_offer_pic}></span>
-          </div>
-        </div>
         </div>
         <div className={`${style.main_advertisment} ${style.customize}`}>
           <div className={style.main_sloth_left}></div>
