@@ -82,7 +82,10 @@ export const loginCustomerThroughMe = async (
       .execute();
     dispatch(setAuthStatus(true));
     localStorage.setItem('isAuth', 'true');
-    navigator('/');
+    // тут должны быть прописаны 2 класса включающие модалку .visible
+    setTimeout(() => {
+      navigator('/');
+    }, 2000);
     return customer;
   } catch (error) {
     console.log(error);
