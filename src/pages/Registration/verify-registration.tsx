@@ -24,6 +24,7 @@ import {
 import { AnyAction, Dispatch } from 'redux';
 import { createCustomerId } from '../../store/reducers/userReducer';
 import { getCustomerToken } from '../../api/adminBuilder';
+import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -101,7 +102,8 @@ export const handleСreationReg = (
   checkedBill: boolean,
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
   checkedShipping: boolean,
-  checkedBilling: boolean
+  checkedBilling: boolean,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -286,7 +288,7 @@ export const handleСreationReg = (
       apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataBill, dispatch, navigator)
+      createCustomerMe(dataBill, setSuccessfulMessage)
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
@@ -322,7 +324,7 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataShip, dispatch, navigator)
+      createCustomerMe(dataShip, setSuccessfulMessage)
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);

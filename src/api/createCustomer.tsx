@@ -6,7 +6,10 @@ import {
 import { NavigateFunction } from 'react-router-dom';
 import { AnyAction, Dispatch } from 'redux';
 import { apiRoot } from './createClient';
-import { loginCustomerThroughMe } from './passwordFlowSession';
+import {
+  loginCustomerThroughMe,
+  loginCustomerThroughReg,
+} from './passwordFlowSession';
 
 export interface ICustomerFields {
   email: string;
@@ -25,8 +28,7 @@ export interface ICustomerFields {
 
 export async function createCustomerMe(
   data: IMyCustomerDraft,
-  dispatch: Dispatch<AnyAction>,
-  navigator: NavigateFunction
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<ClientResponse<CustomerSignInResult> | undefined> {
   try {
     const customer = await apiRoot
@@ -39,7 +41,7 @@ export async function createCustomerMe(
         },
       })
       .execute();
-    loginCustomerThroughMe(data, dispatch, navigator);
+    loginCustomerThroughReg(data, setSuccessfulMessage);
     return customer;
   } catch {
     console.log('cannot create customer');

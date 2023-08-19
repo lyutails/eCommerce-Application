@@ -17,6 +17,7 @@ import { hideTooltip, showTooltip } from '../showTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
 import { IRootState } from '../../types/interfaces';
+import { setAuthStatus } from '../../store/reducers/userReducer';
 
 function RegistrationPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -65,6 +66,7 @@ function RegistrationPage(): JSX.Element {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   const [passwordFocus, setPasswordFocus] = useState(false);
+  const [successfulMessage, setSuccessfulMessage] = useState(false);
 
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
   const [checkmarkPassword, setCheckmarkPassword] = useState(false);
@@ -106,13 +108,14 @@ function RegistrationPage(): JSX.Element {
   );
   useEffect(() => {
     console.log(isAuth);
-    if (isAuth === true) {
+    if (successfulMessage === true) {
       setTimeout(() => {
-        console.log(isAuth);
-        // return <Navigate to={'/'} />;
-      }, 10000);
+        dispatch(setAuthStatus(true));
+        localStorage.setItem('isAuth', 'true');
+        return navigate('/');
+      }, 3000);
     }
-  }, [isAuth]);
+  }, [dispatch, isAuth, navigate, successfulMessage]);
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -737,7 +740,8 @@ function RegistrationPage(): JSX.Element {
                 checkedInput,
                 setInvalidCredentials,
                 checkedShipping,
-                checkedBilling
+                checkedBilling,
+                setSuccessfulMessage
               )
             }
             classNames={style.registration_button}
@@ -749,7 +753,7 @@ function RegistrationPage(): JSX.Element {
       </div>
       <div
         className={
-          isAuth === true
+          successfulMessage === true
             ? `${style.modal_visible} ${style.modal}`
             : style.modal
         }
@@ -760,8 +764,8 @@ function RegistrationPage(): JSX.Element {
       </div>
       <div
         className={
-          isAuth === true
-            ? `${style.overlay_visible} ${style.overlay}`
+          successfulMessage === true
+            ? `${style.overlay_visible}`
             : style.overlay
         }
       ></div>
