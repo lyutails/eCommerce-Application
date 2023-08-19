@@ -224,7 +224,7 @@ function RegistrationPage(): JSX.Element {
                 className={
                   passwordFocus
                     ? `${style.visible} ${style.password_tooltip}`
-                    : `${style.hide} ${style.tooltip}`
+                    : `${style.hide} ${style.password_tooltip}`
                 }
               >
                 {passwordErrorElements}
