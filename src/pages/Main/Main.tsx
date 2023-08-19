@@ -5,21 +5,38 @@ function MainPage(): JSX.Element {
     <div className={style.main} data-testid="main-component">
       <div className={style.main_wrapper}>
         <div className={style.main_categories_block}>
-          <h1 className={style.main_title}>
-            Awesome RSSchool Merch Categories
-          </h1>
+          <h1 className={style.main_title}>Awesome RSSchool Merch here</h1>
         </div>
-        <div className={style.main_advertisment}>discounts promotions</div>
-        <div className={style.main_advertisment}>
-          or pick and customize your own with RSSchool cool merch... paste sloth
-          pic here... your advertisment can be here ^^
+        <div className={style.main_offers}>
+          <div className={style.main_offer}>
+            'RSSchool' is infinitely working discount code giving you 20% OFF
+            per one purchase per one day
+            <span className={style.main_offer_pic}></span>
+          </div>
+          {/* <div className={style.main_offer}>
+            <span className={style.main_offer_pic}></span>
+            HOT SALES 80% OFF on all white t-shirts
+          </div>
+          <div className={style.main_offer}>
+            <span className={style.main_offer_pic}></span>2 = 1 two t-shirts
+            with the same art by price of one
+          </div>
+          <div className={style.main_offer}>
+            <span className={style.main_offer_pic}></span>get the gift with
+            every second purchase - sticker pack, mug or cap
+          </div> */}
+        </div>
+        <div className={`${style.main_advertisment} ${style.customize}`}>
+          <div className={style.main_sloth_left}></div>
+          your advertisment can be here ^^
+          <div className={style.main_sloth_right}></div>
         </div>
         <div className={style.main_slider}>
           <div className={`${style.main_arrow} ${style.left}`}></div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
+          <div className={`${style.main_slide} ${style.one}`}></div>
+          <div className={`${style.main_slide} ${style.two}`}></div>
+          <div className={`${style.main_slide} ${style.three}`}></div>
+          <div className={`${style.main_slide} ${style.four}`}></div>
           <div className={`${style.main_arrow} ${style.right}`}></div>
         </div>
       </div>

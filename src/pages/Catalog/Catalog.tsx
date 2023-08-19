@@ -33,8 +33,7 @@ function CatalogPage(): JSX.Element {
           </div>
         </div>
         <div className={style.catalog_advertisment}>
-          or pick and customize your own with RSSchool cool merch... paste sloth
-          pic here... your advertisment can be here ^^
+          your advertisment can be here ^^
         </div>
         <div className={style.catalog_slider}>
           <div className={`${style.catalog_arrow} ${style.left}`}></div>
