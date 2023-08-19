@@ -1,6 +1,5 @@
 @import 'https://fonts.googleapis.com/css2?family=Roboto&display=swap';
 
-
 @font-face {
   font-family: Cyberpank;
   src:
@@ -14,4 +13,11 @@
   src:
     url('../../public/fonts/kingslay.ttf') format(truetype),
     url('../../public/fonts/kingslay.woff') format(woff);
+}
+
+@font-face {
+  font-family: "No Signal";
+  src:
+    url('../../public/fonts/no-signal.ttf') format(truetype),
+    url('../../public/fonts/no-signal.woff') format(woff);
 }

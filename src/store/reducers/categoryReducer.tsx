@@ -11,7 +11,7 @@ const categoryReducer = createSlice({
   initialState,
   reducers: {
     createCategory(state, action) {
-      state.category = [...state.category, ...action.payload];
+      state.category = action.payload;
     },
   },
 });

@@ -1,5 +1,5 @@
+import { IMyCustomerDraft } from '../types/interfaces';
 import {
-  BaseAddress,
   ClientResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
@@ -54,7 +54,6 @@ export interface IMyCustomerDraft {
   defaultBillingAddress?: number | undefined;
   billingAddresses: number[];
 }
-
 export async function createCustomerMe(
   data: IMyCustomerDraft,
   dispatch: Dispatch<AnyAction>,
@@ -75,38 +74,11 @@ export async function createCustomerMe(
     return customer;
   } catch {
     console.log('cannot create customer');
-    // logic from api here if error
+    /* logic from api here if error */
   }
 }
 
-export interface IMyCustomerLoginDraft {
-  email: string;
-  password: string;
-}
-
-// export async function loginCustomer(
-//   data: IMyCustomerLoginDraft
-// ): Promise<ClientResponse<CustomerSignInResult>> {
-//   try {
-//     const customer = await apiRoot
-//       .me()
-//       .login()
-//       .post({
-//         body: data,
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//       })
-//       .execute();
-//     // console.log(customer);
-//     return customer;
-//   } catch {
-//     throw new Error('cannot login a me customer');
-//     // logic from api here if error
-//   }
-// }
-
-const customerOne = {
+export const customerOne = {
   email: 'johnIanaTestAddress@example.com',
   firstName: 'Iana',
   lastName: 'Belousova',
@@ -128,28 +100,3 @@ const customerOne = {
     },
   ],
 };
-
-// {
-//   "email": "johnIanaTestAddress@example.com",
-//   "firstName": "Iana",
-//   "lastName": "Belousova",
-//   "password": "snmthjs",
-//   "addresses": [
-//     {
-//       "streetName": "Hhdjlzld",
-//       "streetNumber": "45",
-//       "postalCode": "30100",
-//       "city": "hbcbjisne",
-//       "country": "usa"
-//     },
-//     {
-//       "streetName": "PPPPPPPP",
-//       "streetNumber": "45",
-//       "postalCode": "30100",
-//       "city": "PPPPPPP",
-//       "country": "canada"
-//     }
-//   ],
-//   "defaultShippingAddress": 0,
-//   "defaultBillingAddress": 1
-// }

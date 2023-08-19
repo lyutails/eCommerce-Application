@@ -738,6 +738,12 @@ function RegistrationPage(): JSX.Element {
           </ButtonForm>
         </form>
       </div>
+      <div className={style.modal}>
+        Dear user,
+        <br /> your Profile was successfully created,
+        <br /> we&apos;re glad you joined us
+      </div>
+      <div className={style.overlay}></div>
     </div>
   );
 }

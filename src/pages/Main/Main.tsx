@@ -1,53 +1,44 @@
-// import {
-//   IMyCustomerDraft,
-//   IMyCustomerLoginDraft,
-//   createCustomerMe,
-//   loginCustomer,
-// } from '../../api/createCustomer';
-// import { getCustomer } from '../../api/getCustomer';
 import style from './_main.module.scss';
 
 function MainPage(): JSX.Element {
-  // getCustomer('TashaOneMore@example.com');
-  // const createCustomerMeData: IMyCustomerDraft = {
-  //   email: 'lalala6@gmail.com',
-  //   firstName: 'lalala',
-  //   lastName: 'lala lala',
-  //   password: 'q49tjg3q4',
-  //   streetName: 'justStreet',
-  //   streetNumber: '353',
-  //   postalCode: '464623',
-  //   city: 'NY',
-  //   state: 'NY',
-  //   country: 'USA',
-  //   building: '3452',
-  //   apartment: '351',
-  // };
-  // const loginCustomerMeData: IMyCustomerLoginDraft = {
-  //   email: 'lalala444@gmail.com',
-  //   password: 'q49tjg3q4',
-  // };
-  // createCustomerMe(createCustomerMeData);
-  // loginCustomer(loginCustomerMeData);
   return (
     <div className={style.main} data-testid="main-component">
       <div className={style.main_wrapper}>
         <div className={style.main_categories_block}>
-          <h1 className={style.main_title}>
-            Awesome RSSchool Merch Categories
-          </h1>
+          <h1 className={style.main_title}>Awesome RSSchool Merch here</h1>
         </div>
-        <div className={style.main_advertisment}>discounts promotions</div>
-        <div className={style.main_advertisment}>
-          or pick and customize your own with RSSchool cool merch... paste sloth
-          pic here... your advertisment can be here ^^
+        <div className={style.main_offers_wrapper}>
+          <div className={style.main_offers}>
+            <div className={style.main_offer}>
+              &apos;RSSchool&apos; is infinitely working DISCOUNT code giving
+              per one purchase per one day
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              HOT SALES 80% OFF on all white t-shirts
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              2 = 1 two t-shirts with the same art by price of one
+              <span className={style.main_offer_pic}></span>
+            </div>
+            <div className={style.main_offer}>
+              get the gift with every second purchase - sticker pack, mug or cap
+              <span className={style.main_offer_pic}></span>
+            </div>
+          </div>
+        </div>
+        <div className={`${style.main_advertisment} ${style.customize}`}>
+          <div className={style.main_sloth_left}></div>
+          your advertisment can be here ^^
+          <div className={style.main_sloth_right}></div>
         </div>
         <div className={style.main_slider}>
           <div className={`${style.main_arrow} ${style.left}`}></div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
-          <div className={style.main_slide}>slider product</div>
+          <div className={`${style.main_slide} ${style.one}`}></div>
+          <div className={`${style.main_slide} ${style.two}`}></div>
+          <div className={`${style.main_slide} ${style.three}`}></div>
+          <div className={`${style.main_slide} ${style.four}`}></div>
           <div className={`${style.main_arrow} ${style.right}`}></div>
         </div>
       </div>

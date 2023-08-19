@@ -1,10 +1,86 @@
-.container{
+@import '../../style/variables';
+
+.container {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
 
-  .title{
-    font-size: 50px;
+  background-color: $background-color-primary-one;
+  background-image: url('../../../public/assets/backgrounds/rolalune_a_cyberpunk-style_small_mexican_city_by_the_sea_fish_a_b4fd7d4b-07e0-4a22-95ae-83e33ecd7f8f.png');
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: cover;
+  background-blend-mode: difference;
+
+  .title {
+    font-size: 30rem;
+    color: #c0efae;
+    animation: glitch 1s linear infinite;
   }
 
+  @keyframes glitch {
+    2%,
+    64% {
+      transform: translate(2px, 0) skew(0deg);
+    }
+
+    4%,
+    60% {
+      transform: translate(-2px, 0) skew(0deg);
+    }
+
+    62% {
+      transform: translate(0, 0) skew(5deg);
+    }
+  }
+
+  .title::before,
+  .title::after {
+    content: attr(title);
+    position: absolute;
+    left: 0;
+  }
+
+  .title::before {
+    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    animation: glitch-top 1s linear infinite;
+  }
+
+  @keyframes glitch-top {
+    2%,
+    64% {
+      transform: translate(2px, -2px);
+    }
+
+    4%,
+    60% {
+      transform: translate(-2px, 2px);
+    }
+
+    62% {
+      transform: translate(13px, -1px) skew(-13deg);
+    }
+  }
+
+  .title::after {
+    clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+    animation: glitch-bottom 1.5s linear infinite;
+  }
+
+  @keyframes glitch-bottom {
+    2%,
+    64% {
+      transform: translate(-2px, 0);
+    }
+
+    4%,
+    60% {
+      transform: translate(-2px, 0);
+    }
+
+    62% {
+      transform: translate(-22px, 5px) skew(21deg);
+    }
+  }
 }

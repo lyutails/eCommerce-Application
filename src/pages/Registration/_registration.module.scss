@@ -1,181 +1,182 @@
 @import '../../style/variables';
 
 body {
-    background-color: black;
+  background-color: black;
 }
 
 .title {
-    font-size: 2.5rem;
-    font-weight: 500;
-    color: white;
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: white;
 }
 
 .login {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 
-    width: 30%;
-    min-width: 50rem;
-    margin: 0 auto;
-    padding: 5rem;
+  width: 30%;
+  min-width: 50rem;
+  margin: 0 auto;
+  padding: 5rem;
 }
 
 .authorization {
-    &_button {
-        cursor: pointer;
+  &_button {
+    cursor: pointer;
 
-        width: 100%;
-        height: 5rem;
-        padding: 1rem 2rem;
+    width: 100%;
+    height: 5rem;
+    padding: 1rem 2rem;
 
-        font-size: 2rem;
-        color: white;
+    font-size: 2rem;
+    color: white;
 
-        background-color: transparent;
-        border: 2px solid $border-default;
+    background-color: transparent;
+    border: 2px solid $border-default;
 
-        transition: border ease-in-out 0.2s;
-    }
+    transition: border ease-in-out 0.2s;
+  }
 
-    &_button:focus {
-        border: 2px solid $border-focus;
-    }
+  &_button:focus {
+    border: 2px solid $border-focus;
+  }
 
-    &_button:hover {
-        border: 2px solid $border-hover;
-    }
+  &_button:hover {
+    border: 2px solid $border-hover;
+  }
 
-    &_button:active {
-        border: 2px solid $border-active;
-    }
+  &_button:active {
+    border: 2px solid $border-active;
+  }
 }
 
 .registration {
-    &_form {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
+  &_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 
-    &_button {
-        cursor: pointer;
+  &_button {
+    cursor: pointer;
 
-        width: 100%;
-        height: 5rem;
-        padding: 1rem 2rem;
+    width: 100%;
+    height: 5rem;
+    padding: 1rem 2rem;
 
-        font-size: 2rem;
-        color: white;
+    font-size: 2rem;
+    color: white;
 
-        background-color: $button-default;
-        border: none;
+    background-color: $button-default;
+    border: none;
 
-        transition: background-color ease-in-out 0.2s;
-    }
+    transition: background-color ease-in-out 0.2s;
+  }
 
-    &_button:focus {
-        background-color: $button-focus;
-    }
+  &_button:focus {
+    background-color: $button-focus;
+  }
 
-    &_button:hover {
-        background-color: $button-hover;
-    }
+  &_button:hover {
+    background-color: $button-hover;
+  }
 
-    &_button:active {
-        background-color: $button-active;
-    }
+  &_button:active {
+    background-color: $button-active;
+  }
 }
 
 .password_eye {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
 }
 
 .checkbox {
-    display: flex;
-    align-items: center;
-    margin-bottom: 4rem;
-    font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+  font-size: 1.5rem;
 }
 
 .checkbox_input {
-    position: absolute;
-    z-index: -1;
+  position: absolute;
+  z-index: -1;
 
-    width: 2rem;
-    height: 2rem;
-    margin-right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
 
-    opacity: 0;
+  opacity: 0;
 }
 
 .checkbox + .checkbox_input {
-    user-select: none;
-    display: inline-flex;
-    align-items: center;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .checkbox::before {
-    content: '';
+  content: '';
 
-    display: inline-block;
-    flex-grow: 0;
-    flex-shrink: 0;
+  display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
 
-    width: 2rem;
-    height: 2rem;
-    margin-right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
 
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 50% 50%;
-    border: 1px solid #adb5bd;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
+  border: 1px solid #adb5bd;
 }
 
 .checkbox_input:checked ~ .checkbox::before {
-    background-image: url('../../../public/assets/icons/checkmark.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 1.5rem 1.5rem;
+  background-image: url('../../../public/assets/icons/checkmark.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1.5rem 1.5rem;
 }
 
 .visible {
-    display: block;
+  display: block;
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
-.birth_clue, .password_clue {
-    padding: 5px 0 5px 20px;
+.birth_clue,
+.password_clue {
+  padding: 5px 0 5px 20px;
 
-    color: white;
+  color: white;
 
-    visibility: visible;
-    background-image: url('../../../public/assets/icons/alert.svg');
-    background-repeat: no-repeat;
-    background-position: top 3px left 2px;
-    background-size: 15px 15px;
+  visibility: visible;
+  background-image: url('../../../public/assets/icons/alert.svg');
+  background-repeat: no-repeat;
+  background-position: top 3px left 2px;
+  background-size: 15px 15px;
 }
 
 .error {
-    margin: 0;
-    padding: 0;
-    color: red;
+  margin: 0;
+  padding: 0;
+  color: red;
 
-    // visibility: visible;
-    background-image: none;
+  // visibility: visible;
+  background-image: none;
 }
 
 .tooltip_error {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .tooltip_text {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
 }
 
 .completed {
@@ -183,7 +184,63 @@ body {
 }
 
 .uncompleted {
-    visibility: hidden;
+  visibility: hidden;
+}
+
+.modal {
+  resize: both;
+
+  position: absolute;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1 / 0.5;
+  width: 80vw;
+  min-width: 300px;
+  max-width: 1200px;
+  padding: 0 8vw;
+
+  font-family: "No Signal", cursive;
+  font-size: 3rem;
+  color: $font-color-primary-one;
+  text-align: center;
+  text-shadow: 0 0 5px $modal-color, 0 0 10px $modal-color, 0 0 20px $modal-color;
+
+  background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+
+  // filter: drop-shadow(0 0 2px $glow-green);
+  border-radius: 10px;
+
+  &.visible {
+    display: unset;
+  }
+}
+
+.overlay {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+
+  display: none;
+
+  width: 100vw;
+  height: 100%;
+
+  background-color: $overlay;
+
+  &.visible {
+    display: unset;
+  }
 }
 
 .country {

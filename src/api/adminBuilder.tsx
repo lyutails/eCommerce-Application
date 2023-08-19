@@ -2,13 +2,10 @@ import {
   ClientBuilder,
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
-  // ClientResponse,
 } from '@commercetools/sdk-client-v2';
 import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
-import { apiRoot } from './createClient';
-import { myTokemCache } from './tockenCache';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
   throw new Error('no client id found');
@@ -18,7 +15,7 @@ if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
   throw new Error('no client id found');
 }
 
-// Configure authMiddlewareOptions
+/* Configure authMiddlewareOptions */
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
   projectKey: PROJECT_KEY,
@@ -42,22 +39,15 @@ const authClient = new SdkAuth({
   fetch,
 });
 
-// export type AuthAdmin = {
-//   access_token: string;
-//   token_type: string;
-//   expires_in: number;
-//   scope: string;
-// };
+/* export const tokenAdmin =  authClient.clientCredentialsFlow(); */
 
-// export const tokenAdmin = await authClient.clientCredentialsFlow();
-
-// Configure httpMiddlewareOptions
+/* Configure httpMiddlewareOptions */
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: 'https://api.us-central1.gcp.commercetools.com',
   fetch,
 };
 
-// Export the ClientBuilder
+/* Export the ClientBuilder */
 export const ctpClient = new ClientBuilder()
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
@@ -67,7 +57,7 @@ export const ctpClient = new ClientBuilder()
 export const getCustomerToken = async (
   username: string,
   password: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 ): Promise<any> => {
   const customer = await authClient.customerPasswordFlow(
     {
@@ -83,7 +73,7 @@ export const getCustomerToken = async (
 
 export const refreshTokenFlow = async (
   token: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 ): Promise<any> => {
   const customer = await authClient.refreshTokenFlow(token);
   return customer;
