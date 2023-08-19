@@ -1,13 +1,15 @@
 import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEye from '../../../public/assets/icons/eye.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { useNavigate } from 'react-router-dom';
-import { showPassword } from '../showPassword';
-import { ReactNode, useState } from 'react';
-import { handlePasswordInput, inputHandler } from '../verification';
+import { useState } from 'react';
+import {
+  handlePasswordInput,
+  inputHandler,
+  selectHandler,
+} from '../verification';
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
@@ -80,6 +82,8 @@ function RegistrationPage(): JSX.Element {
   const [checkmarkApartmentBill, setCheckmarkApartmentBill] = useState(false);
   const [checkmarkApartmentShip, setCheckmarkApartmentShip] = useState(false);
 
+  const [checkedShipping, setCheckedShipping] = useState(false);
+  const [checkedBilling, setCheckedBilling] = useState(false);
   const passwordErrorTexts = handlePasswordInput(password);
   const passwordErrorElements = Object.keys(passwordErrorTexts).map(
     (key, i) => {
@@ -98,6 +102,8 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
+  // const hglug = /^(?=.*\d)[a-zA-Z0-9]*(?:\/[a-zA-Z0-9]*)?$/;
+  // console.log(hglug.test('301/f'));
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -260,7 +266,19 @@ function RegistrationPage(): JSX.Element {
           />
           <h3 className={style.registration_title}>Address</h3>
           <div className={style.shipping}>
-            <h4>Shipping address</h4>
+            <div className={style.address}>
+              <h4 className={style.address_title}>Shipping address</h4>
+              <input
+                onChange={(e): void => handleCheckbox(e, setCheckedShipping)}
+                className={style.address_input}
+                id="default-shipping"
+                name="address"
+                type="checkbox"
+              />
+              <label htmlFor="default-shipping" className={style.address_label}>
+                Set like default shipping address
+              </label>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setStreetShip)}
               type="text"
@@ -411,36 +429,34 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <Input
-              func={(e): void => inputHandler(e, setCountryShip)}
-              type="text"
-              clue={
-                countryShipError ? countryShipError : 'This is required field'
-              }
-              placeholder="Country *"
-              classWrapper={style.country}
-              classClue={
-                countryShipError
-                  ? `${style.completed} ${style.error}`
-                  : style.uncompleted
-              }
-              classInput={style.country_input}
-              childrenBefore={
-                <div
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryShip)}
                   className={
                     checkmarkCountryShip
-                      ? `${style.wrapper_img} ${style.completed}`
-                      : `${style.wrapper_img} ${style.uncompleted}`
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
                   }
                 >
-                  <img
-                    className={style.wrapper_img_icon}
-                    src={iconCheckmark}
-                    alt="Icon"
-                  />
-                </div>
-              }
-            />
+                  <option disabled selected className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryShipError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryShipError ? countryShipError : 'This is required field'}
+              </div>
+            </div>
+
             <input
               onChange={(e): void => handleCheckbox(e, setCheckedInput)}
               className={style.checkbox_input}
@@ -460,7 +476,19 @@ function RegistrationPage(): JSX.Element {
                 : `${style.hide} ${style.billing}`
             }
           >
-            <h4>Billing address</h4>
+            <div className={style.address}>
+              <h4 className={style.address_title}>Billing address</h4>
+              <input
+                onChange={(e): void => handleCheckbox(e, setCheckedBilling)}
+                className={style.address_input}
+                id="default-billing"
+                name="address"
+                type="checkbox"
+              />
+              <label htmlFor="default-billing" className={style.address_label}>
+                Set like default billing address
+              </label>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setStreetBill)}
               type="text"
@@ -611,37 +639,35 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <Input
-              func={(e): void => inputHandler(e, setCountryBill)}
-              type="text"
-              placeholder="Country *"
-              classWrapper={style.country}
-              classClue={
-                countryBillError
-                  ? `${style.completed} ${style.error}`
-                  : style.uncompleted
-              }
-              classInput={style.country_input}
-              clue={
-                countryBillError ? countryBillError : 'This is required field'
-              }
-              childrenBefore={
-                <div
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryBill)}
                   className={
                     checkmarkCountryBill
-                      ? `${style.wrapper_img} ${style.completed}`
-                      : `${style.wrapper_img} ${style.uncompleted}`
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
                   }
                 >
-                  <img
-                    className={style.wrapper_img_icon}
-                    src={iconCheckmark}
-                    alt="Icon"
-                  />
-                </div>
-              }
-            />
+                  <option disabled selected className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryBillError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryBillError ? countryBillError : 'This is required field'}
+              </div>
+            </div>
           </div>
+
           <ButtonForm
             onClick={(event): void =>
               handleСreationReg(
@@ -700,7 +726,9 @@ function RegistrationPage(): JSX.Element {
                 setCheckmarkApartmentShip,
                 setCheckmarkBuildingShip,
                 checkedInput,
-                setInvalidCredentials
+                setInvalidCredentials,
+                checkedShipping,
+                checkedBilling
               )
             }
             classNames={style.registration_button}

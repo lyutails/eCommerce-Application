@@ -49,8 +49,10 @@ export interface IMyCustomerDraft {
   password: string;
   dateOfBirth: string;
   addresses: BaseAddress[];
-  defaultShippingAddress?: number;
-  defaultBillingAddress?: number;
+  defaultShippingAddress?: number | undefined;
+  shippingAddresses: number[];
+  defaultBillingAddress?: number | undefined;
+  billingAddresses: number[];
 }
 
 export async function createCustomerMe(
@@ -125,8 +127,6 @@ const customerOne = {
       country: 'canada',
     },
   ],
-  defaultShippingAddress: 0,
-  defaultBillingAddress: 1,
 };
 
 // {

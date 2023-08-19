@@ -99,7 +99,9 @@ export const handleСreationReg = (
   setCheckmarkApartmentShip: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkBuildingShip: React.Dispatch<React.SetStateAction<boolean>>,
   checkedBill: boolean,
-  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
+  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
+  checkedShipping: boolean,
+  checkedBilling: boolean
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -130,7 +132,8 @@ export const handleСreationReg = (
     postalShipField,
     setErrorPostalShip,
     postalShipСheck,
-    setCheckmarkPostalShip
+    setCheckmarkPostalShip,
+    countryShipField
   );
   countryShipСheck = handleCountryShipInput(
     countryShipField,
@@ -160,7 +163,8 @@ export const handleСreationReg = (
     postalBillField,
     setErrorPostalBill,
     postalBillСheck,
-    setCheckmarkPostalBill
+    setCheckmarkPostalBill,
+    countryBillField
   );
   countryBillСheck = handleCountryBillInput(
     countryBillField,
@@ -211,6 +215,7 @@ export const handleСreationReg = (
   );
   let parts = birthdayField.split('.');
   let newBirthday = parts[2] + '-' + parts[1] + '-' + parts[0];
+
   const dataBill = {
     email: loginField,
     firstName: fistnameField,
@@ -224,7 +229,7 @@ export const handleСreationReg = (
         apartment: apartmentShipField,
         postalCode: postalShipField,
         city: cityShipField,
-        country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
+        country: countryShipField === 'usa' ? 'US' : 'CA',
       },
       {
         streetName: streetBillField,
@@ -232,12 +237,15 @@ export const handleСreationReg = (
         apartment: apartmentBillField,
         postalCode: postalBillField,
         city: postalBillField,
-        country: countryBillField.toLowerCase() === 'usa' ? 'US' : 'CA',
+        country: countryBillField === 'usa' ? 'US' : 'CA',
       },
     ],
-    defaultShippingAddress: 0,
-    defaultBillingAddress: 1,
+    defaultShippingAddress: checkedShipping ? 0 : undefined,
+    shippingAddresses: [0],
+    defaultBillingAddress: checkedBilling ? 1 : undefined,
+    billingAddresses: [1],
   };
+
   const dataShip = {
     email: loginField,
     firstName: fistnameField,
@@ -254,8 +262,9 @@ export const handleСreationReg = (
         country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
       },
     ],
-    defaultShippingAddress: 0,
-    defaultBillingAddress: 0,
+    defaultShippingAddress: checkedShipping ? 0 : undefined,
+    shippingAddresses: [0],
+    billingAddresses: [0],
   };
   console.log(
     loginСheck,
