@@ -185,6 +185,104 @@ body {
   visibility: hidden;
 }
 
+.country {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+
+  &_wrapper {
+    display: flex;
+    aspect-ratio: 1 / 0.1;
+    background-color: white;
+    border: 2px solid $border-default;
+  }
+
+  &_select {
+    cursor: pointer;
+
+    width: 100%;
+    padding: 0 55px;
+
+    font-size: 1.8rem;
+
+    border: none;
+  }
+
+  &_select option:disabled {
+    color: grey;
+  }
+
+  &_select:focus {
+    outline: none;
+  }
+}
+
+.approved {
+  background-image: url('../../../public/assets/icons/checkmark.svg');
+  background-repeat: no-repeat;
+  background-position: left 20px center;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  &_label {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+  }
+
+  &_title {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  &_input {
+    position: absolute;
+    z-index: -1;
+
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+
+    opacity: 0;
+  }
+
+  &_label + &_input {
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &_label::before {
+    content: '';
+
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    border: 1px solid #adb5bd;
+  }
+
+  &_input:checked ~ &_label::before {
+    background-image: url('../../../public/assets/icons/checkmark.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 1.5rem 1.5rem;
+  }
+}
+
 .modal {
   resize: both;
 
@@ -194,7 +292,6 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  display: flex;
   display: none;
   align-items: center;
   justify-content: center;
@@ -205,11 +302,14 @@ body {
   max-width: 1200px;
   padding: 0 8vw;
 
-  font-family: "No Signal", cursive;
+  font-family: 'No Signal', cursive;
   font-size: 3rem;
   color: $font-color-primary-one;
   text-align: center;
-  text-shadow: 0 0 5px $modal-color, 0 0 10px $modal-color, 0 0 20px $modal-color;
+  text-shadow:
+    0 0 5px $modal-color,
+    0 0 10px $modal-color,
+    0 0 20px $modal-color;
 
   background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
   background-repeat: no-repeat;
@@ -220,7 +320,7 @@ body {
   border-radius: 10px;
 
   &_visible {
-    display: unset;
+    display: flex;
   }
 }
 
@@ -237,111 +337,6 @@ body {
   background-color: $overlay;
 
   &_visible {
-    display: unset;
+    display: flex;
   }
 }
-
-.country {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 20px;
-
-    
-
-    &_wrapper {
-        display: flex;aspect-ratio: 1 / 0.1;
-        background-color: white;
-    border: 2px solid $border-default;
-    }
-
-    
-
-    &_select {
-        cursor: pointer;
-
-        width: 100%;
-        padding: 0 55px;
-
-        font-size: 1.8rem;
-        
-border: none;
-}
-
-    &_select option:disabled {
-        color: grey;
-    }
-
-    &_select:focus{
-        outline: none
-    };
-
-    
-}
-
-.approved {
-        background-image: url('../../../public/assets/icons/checkmark.svg');    
-        background-repeat: no-repeat;
-        background-position: left 20px center;
-        
-    }
-
-.address {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-
-    &_label {
-    display: flex;
-    align-items: center;
-    font-size: 1.5rem;
-}
-
-&_title {
-    margin: 0;
-    font-size: 2rem;
-}
-
-&_input {
-    position: absolute;
-    z-index: -1;
-
-    width: 2rem;
-    height: 2rem;
-    margin-right: 1rem;
-
-    opacity: 0;
-}
-
-&_label + &_input {
-    user-select: none;
-    display: inline-flex;
-    align-items: center;
-}
-
-&_label::before {
-    content: '';
-
-    display: inline-block;
-    flex-grow: 0;
-    flex-shrink: 0;
-
-    width: 2rem;
-    height: 2rem;
-    margin-right: 0.5rem;
-
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 50% 50%;
-    border: 1px solid #adb5bd;
-}
-
-&_input:checked ~ &_label::before {
-    background-image: url('../../../public/assets/icons/checkmark.svg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 1.5rem 1.5rem;
-}
-}
-
