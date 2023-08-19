@@ -83,6 +83,7 @@
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 0 1vw;
 
     font-size: 3rem;
     text-align: center;
@@ -122,6 +123,7 @@
   }
 
   &_offer {
+    contain: content;
     display: inline-block;
     display: flex;
     align-items: center;
@@ -129,18 +131,18 @@
 
     box-sizing: border-box;
     width: 100%;
+    padding: 0 1vw;
 
     font-size: 3rem;
     text-align: center;
 
     background-color: $background-color-customize;
     filter: drop-shadow(0 0 8px $glow-green);
-
-    // box-shadow:
-    //   0 0 10px $glow-green,
-    //   0 0 10px $glow-green;
     border: solid 2px rgb(44 255 181);
     border-radius: 10px;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
   }
