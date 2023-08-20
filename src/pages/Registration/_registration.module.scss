@@ -283,60 +283,72 @@ body {
   }
 }
 
-.modal {
-  resize: both;
-
-  position: absolute;
-  z-index: 100;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  aspect-ratio: 1 / 0.5;
-  width: 80vw;
-  min-width: 300px;
-  max-width: 1200px;
-  padding: 0 8vw;
-
-  font-family: 'No Signal', cursive;
-  font-size: 3rem;
-  color: $font-color-primary-one;
-  text-align: center;
-  text-shadow:
-    0 0 5px $modal-color,
-    0 0 10px $modal-color,
-    0 0 20px $modal-color;
-
-  background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-
-  // filter: drop-shadow(0 0 2px $glow-green);
-  border-radius: 10px;
-
-  &_visible {
-    display: flex;
-  }
-}
-
 .overlay {
   position: fixed;
-  z-index: 50;
+  z-index: 1;
   inset: 0;
 
-  display: none;
+  overflow: hidden;
+  display: block;
 
-  width: 100vw;
-  height: 100%;
+  max-width: 100vw;
+  margin: 0;
 
+  visibility: visible;
+  opacity: 1;
   background-color: $overlay;
 
-  &_visible {
+  transition: 1s;
+
+  .modal {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 2;
+    width: 80vw;
+    min-width: 300px;
+    max-width: 1200px;
+    margin-right: -50%;
+    padding: 0 8vw;
+
+    font-family: 'No Signal', cursive;
+    font-size: 3rem;
+    color: $font-color-primary-one;
+    text-align: center;
+    text-shadow:
+      0 0 5px $modal-color,
+      0 0 10px $modal-color,
+      0 0 20px $modal-color;
+
+    background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+
+    // filter: drop-shadow(0 0 2px $glow-green);
+    border-radius: 10px;
+
+    transition: 2s;
+
+    &_visible {
+      animation: open-modal 2s forwards;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes open-modal {
+      from {
+        top: -100%;
+      }
+
+      to {
+        top: 50%;
+      }
+    }
   }
 }
