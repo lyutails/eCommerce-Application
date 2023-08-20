@@ -4,6 +4,7 @@ import { logo } from './logo';
 import { Link, NavLink } from 'react-router-dom';
 import { IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 function Header(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -27,6 +28,13 @@ function Header(): JSX.Element {
     '/cart',
     'walletCost',
   ];
+  const [activeBurger, SetActiveBurger] = useState(false);
+  const handleToBurger = (): void => {
+    SetActiveBurger(false);
+  };
+  const handleToBurgerOff = (): void => {
+    SetActiveBurger(true);
+  };
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
@@ -34,11 +42,18 @@ function Header(): JSX.Element {
           {logo}
         </Link>
         <nav className={style.header_categories}>
-          <ul className={style.header_menu}>
+          <ul
+            className={
+              activeBurger
+                ? `${style.header_menu}`
+                : `${style.header_menu} ${style.header_menu_active}`
+            }
+          >
             {nameRouteHeader.map((item, index) =>
               item === 'Profile' ? (
                 <li className={style.header_menu_item} key={item}>
                   <NavLink
+                    onClick={handleToBurgerOff}
                     className={style.header_menu_link}
                     to={parhRouteHeader[index]}
                   >
@@ -48,6 +63,7 @@ function Header(): JSX.Element {
               ) : item === 'Cart' ? (
                 <li className={style.header_menu_item} key={item}>
                   <NavLink
+                    onClick={handleToBurgerOff}
                     className={`${style.header_menu_link} ${style.header_cart}`}
                     to={parhRouteHeader[index]}
                   >
@@ -67,6 +83,7 @@ function Header(): JSX.Element {
               ) : (
                 <li className={style.header_menu_item} key={item}>
                   <NavLink
+                    onClick={handleToBurgerOff}
                     className={style.header_menu_link}
                     to={parhRouteHeader[index]}
                   >
@@ -77,11 +94,17 @@ function Header(): JSX.Element {
             )}
           </ul>
         </nav>
-        <div className={style.menu_hidden}></div>
-        <div className={style.burger_menu}>
+        <div
+          onClick={handleToBurger}
+          className={
+            activeBurger
+              ? `${style.burger_menu}`
+              : `${style.burger_menu} ${style.burger_menu_active}`
+          }
+        >
           <img
             className={style.burger_menu_img}
-            src="./assets/burger/burger_icon_green_01.svg"
+            src="./assets/burger/burger_icon_green_little.svg"
             alt="icon"
           />
         </div>
@@ -91,36 +114,3 @@ function Header(): JSX.Element {
 }
 
 export default Header;
-
-{
-  /* <header class="header-container">
-  <nav class="header-menu menu">
-    <ul class="menu-list">
-      <li class="menu-list_item">
-        <a class="item-link item-link-active" href="#">
-          About the shelter
-        </a>
-      </li>
-      <li class="menu-list_item">
-        <a class="item-link" href="./pages/OurPets.html">
-          Our pets
-        </a>
-      </li>
-      <li class="menu-list_item">
-        <a class="item-link" href="#help">
-          Help the shelter
-        </a>
-      </li>
-      <li class="menu-list_item">
-        <a class="item-link" href="#Contacts">
-          Contacts
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <div class="menu-hidden"></div>
-  <div class="burger-menu-block">
-    <span class="burger-menu"></span>
-  </div>
-</header>; */
-}
