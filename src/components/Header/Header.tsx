@@ -14,18 +14,18 @@ function Header(): JSX.Element {
     'Catalog',
     'Customize',
     'About Us',
+    'Profile',
     'Cart',
     'walletCost',
-    'Profile',
   ];
   const parhRouteHeader = [
     '/',
     '/catalog',
     '/customize',
     '/about-us',
+    '/profile',
     '/cart',
     'walletCost',
-    '/profile',
   ];
   return (
     <div className={style.header}>
@@ -33,7 +33,7 @@ function Header(): JSX.Element {
         <Link className={style.logo} to="/">
           {logo}
         </Link>
-        <div className={style.header_categories}>
+        <nav className={style.header_categories}>
           <ul className={style.header_menu}>
             {nameRouteHeader.map((item, index) =>
               item === 'Profile' ? (
@@ -51,13 +51,17 @@ function Header(): JSX.Element {
                     className={`${style.header_menu_link} ${style.header_cart}`}
                     to={parhRouteHeader[index]}
                   >
+                    <span className={style.header_cart_name}>Card</span>
                     <span className={style.header_cart_counter}>
                       {cartCounter}
                     </span>
                   </NavLink>
                 </li>
               ) : item === 'walletCost' ? (
-                <li className={`${style.header_menu_item} ${style.sum}`}>
+                <li
+                  className={`${style.header_menu_item} ${style.sum}`}
+                  key={item}
+                >
                   {`${walletCost}`}$
                 </li>
               ) : (
@@ -72,6 +76,14 @@ function Header(): JSX.Element {
               )
             )}
           </ul>
+        </nav>
+        <div className={style.menu_hidden}></div>
+        <div className={style.burger_menu}>
+          <img
+            className={style.burger_menu_img}
+            src="./assets/burger/burger_icon_green_01.svg"
+            alt="icon"
+          />
         </div>
       </div>
     </div>
@@ -79,3 +91,36 @@ function Header(): JSX.Element {
 }
 
 export default Header;
+
+{
+  /* <header class="header-container">
+  <nav class="header-menu menu">
+    <ul class="menu-list">
+      <li class="menu-list_item">
+        <a class="item-link item-link-active" href="#">
+          About the shelter
+        </a>
+      </li>
+      <li class="menu-list_item">
+        <a class="item-link" href="./pages/OurPets.html">
+          Our pets
+        </a>
+      </li>
+      <li class="menu-list_item">
+        <a class="item-link" href="#help">
+          Help the shelter
+        </a>
+      </li>
+      <li class="menu-list_item">
+        <a class="item-link" href="#Contacts">
+          Contacts
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div class="menu-hidden"></div>
+  <div class="burger-menu-block">
+    <span class="burger-menu"></span>
+  </div>
+</header>; */
+}
