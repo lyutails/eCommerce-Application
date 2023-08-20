@@ -3,7 +3,7 @@ import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   handlePasswordInput,
@@ -64,6 +64,7 @@ function RegistrationPage(): JSX.Element {
   const [buildingBillError, setErrorBuildingBill] = useState('');
   const [buildingShipError, setErrorBuildingShip] = useState('');
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
 
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [successfulMessage, setSuccessfulMessage] = useState(false);
@@ -106,14 +107,25 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
+  const createModal = (): JSX.Element => {
+    return (
+      <div className={`${style.overlay}`}>
+        <div className={`${style.modal_visible} ${style.modal}`}>
+          Dear user,
+          <br /> your Profile was successfully created,
+          <br /> we&apos;re glad you joined us
+        </div>
+      </div>
+    );
+  };
   useEffect(() => {
-    console.log(isAuth);
     if (successfulMessage === true) {
+      setModal(createModal());
       setTimeout(() => {
         dispatch(setAuthStatus(true));
         localStorage.setItem('isAuth', 'true');
-        return navigate('/');
-      }, 3000);
+        navigate('/');
+      }, 5000);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
   return (
@@ -751,24 +763,7 @@ function RegistrationPage(): JSX.Element {
           </ButtonForm>
         </form>
       </div>
-      <div
-        className={
-          successfulMessage === true
-            ? `${style.modal_visible} ${style.modal}`
-            : style.modal
-        }
-      >
-        Dear user,
-        <br /> your Profile was successfully created,
-        <br /> we&apos;re glad you joined us
-      </div>
-      <div
-        className={
-          successfulMessage === true
-            ? `${style.overlay_visible}`
-            : style.overlay
-        }
-      ></div>
+      <div>{modal}</div>
     </div>
   );
 }
