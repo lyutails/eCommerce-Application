@@ -47,3 +47,8 @@ a {
     color: $font-color-primary-one;
   }
 }
+
+.active {
+  cursor: default;
+  filter: drop-shadow(0 0 5px $glow-green) drop-shadow(0 0 10px $glow-green);
+}
