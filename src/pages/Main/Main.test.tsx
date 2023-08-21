@@ -44,9 +44,7 @@ describe('App component', () => {
       </MemoryRouter>
     );
     const prevButton = screen.getByTestId('prev');
-    const slideText = getByText(
-      'HOT SALES 80% OFF on all white t-shirts'
-    ); /* Можно заменить текст на текст одного из слайдов */
+    const slideText = getByText('HOT SALES 80% OFF on all white t-shirts');
     fireEvent.click(prevButton);
     expect(slideText).toBeInTheDocument;
   });
@@ -60,7 +58,7 @@ describe('App component', () => {
     const nextButton = screen.getByTestId('next');
     const slideText = getByText(
       '2 = 1 !!! two t-shirts with the same art by price of one'
-    ); //* Можно заменить текст на текст одного из слайдов */
+    );
     fireEvent.click(nextButton);
 
     expect(slideText).toBeInTheDocument;
