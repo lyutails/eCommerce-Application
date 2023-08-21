@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import style from './_main.module.scss';
-import { IRootState } from '../../types/interfaces';
-import { useSelector } from 'react-redux';
 import {
   Children,
   MutableRefObject,
@@ -21,7 +19,6 @@ export const mainPageOffersSlides = [
 ];
 
 function MainPage(): JSX.Element {
-  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
@@ -125,8 +122,8 @@ function MainPage(): JSX.Element {
         <div className={style.main_top}>
           <h1 className={style.main_title}>Awesome RSSchool Merch here</h1>
           <div className={style.main_profile_buttons}>
-            <Link className={style.main_menu_link} to="/profile">
-              {isAuth ? 'Profile' : 'LogIn'}
+            <Link className={style.main_menu_link} to="/login">
+              LogIn
             </Link>
             <Link className={style.main_menu_link} to="/registration">
               Registration

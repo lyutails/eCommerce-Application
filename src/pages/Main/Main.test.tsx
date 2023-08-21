@@ -1,33 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { useSelector } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import MainPage from './Main';
 
-jest.mock('react-redux', () => ({
-  useSelector: jest.fn(),
-}));
-describe('App component', () => {
-  beforeEach(() => {
-    (useSelector as jest.Mock).mockClear();
-  });
-
-  test('renders Main component with IsAuth = false', () => {
-    (useSelector as jest.Mock).mockReturnValue({
-      isAuth: false,
-    });
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>
-    );
-    const mainComponent = screen.getByTestId('main-component');
-    expect(mainComponent).toBeInTheDocument;
-  });
-
-  test('renders Main component with IsAuth = true', () => {
-    (useSelector as jest.Mock).mockReturnValue({
-      isAuth: true,
-    });
+describe('Main component', () => {
+  test('renders Main component', () => {
     render(
       <MemoryRouter>
         <MainPage />
