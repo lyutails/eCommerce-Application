@@ -12,8 +12,13 @@ function NotFoundPage(): JSX.Element {
       <div>
         <h1 className={style.title}>404</h1>
         <div className={style.bottom}>
-          <p>You have lost your way</p>
-          <button onClick={handleNotFound}>go back</button>
+          <p className={style.text}>
+            You have lost your way - the page you are looking for is not found
+            out there
+          </p>
+          <button onClick={handleNotFound} className={style.button}>
+            go back
+          </button>
         </div>
       </div>
     </section>

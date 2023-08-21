@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import {
   Children,
   MutableRefObject,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -22,31 +23,35 @@ export const mainPageOffersSlides = [
 function MainPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
 
-  const actionHandler = (mode: string): void => {
-    containerRef.current.style.transitionDuration = '400ms';
-    if (mode === 'prev') {
-      if (current <= 1) {
-        setTranslateX(0);
-        setCurrent(mainPageOffersSlides.length);
-      } else {
-        setTranslateX(containerRef.current.clientWidth * (current - 1));
-        setCurrent((prev) => --prev);
+  const actionHandler = useCallback(
+    (mode: string): void => {
+      containerRef.current.style.transitionDuration = '400ms';
+      if (mode === 'prev') {
+        if (current <= 1) {
+          setTranslateX(0);
+          setCurrent(mainPageOffersSlides.length);
+        } else {
+          setTranslateX(containerRef.current.clientWidth * (current - 1));
+          setCurrent((prev) => --prev);
+        }
+      } else if (mode === 'next') {
+        if (current >= mainPageOffersSlides.length) {
+          setTranslateX(
+            containerRef.current.clientWidth * (mainPageOffersSlides.length + 1)
+          );
+          setCurrent(1);
+        } else {
+          setTranslateX(containerRef.current.clientWidth * (current + 1));
+          setCurrent((prev) => ++prev);
+        }
       }
-    } else if (mode === 'next') {
-      if (current >= mainPageOffersSlides.length) {
-        setTranslateX(
-          containerRef.current.clientWidth * (mainPageOffersSlides.length + 1)
-        );
-        setCurrent(1);
-      } else {
-        setTranslateX(containerRef.current.clientWidth * (current + 1));
-        setCurrent((prev) => ++prev);
-      }
-    }
-  };
+    },
+    [current]
+  );
 
   useEffect(() => {
     const transitionEnd = (): void => {
@@ -97,7 +102,22 @@ function MainPage(): JSX.Element {
     if (containerRef.current) {
       setTranslateX(containerRef.current.clientWidth * current);
     }
-  }, [current]);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
+
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = window.setInterval(() => {
+      actionHandler('next');
+    }, 3000);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [actionHandler]);
 
   return (
     <div className={style.main} data-testid="main-component">
@@ -115,7 +135,6 @@ function MainPage(): JSX.Element {
         </div>
         <div className={style.main_offers_slider}>
           <button
-            data-testid="prev"
             onClick={(): void => actionHandler('prev')}
             className={`${style.main_offers_arrow} ${style.left}`}
           ></button>
@@ -129,18 +148,20 @@ function MainPage(): JSX.Element {
             </div>
           </div>
           <button
-            data-testid="next"
             onClick={(): void => actionHandler('next')}
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
         </div>
-        <div className={`${style.main_advertisment} ${style.customize}`}>
-          <div className={style.main_sloth_left}></div>
-          <div className={style.main_advertisment_text}>
-            or pick and customize your own with RSSchool cool merch
+        <Link to="/customize">
+          <div className={`${style.main_advertisment} ${style.customize}`}>
+            <div className={style.main_sloth_left}></div>
+            <div className={style.main_advertisment_text}>
+              Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by your
+              own with RSSchool amazing merch... have fun \o/
+            </div>
+            <div className={style.main_sloth_right}></div>
           </div>
-          <div className={style.main_sloth_right}></div>
-        </div>
+        </Link>
         <div className={style.main_slider}>
           <div className={`${style.main_arrow} ${style.left}`}></div>
           <div className={style.main_slide}>
