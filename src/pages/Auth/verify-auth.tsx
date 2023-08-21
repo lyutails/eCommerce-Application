@@ -1,16 +1,11 @@
-import {
-  createCustomerId,
-  setAuthStatus,
-} from '../../store/reducers/userReducer';
-// import { input } from '../../store/reducers/userReducer';
+import { createCustomerId } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
 import { getCustomerToken } from '../../api/adminBuilder';
-import { myTokemCache } from '../../api/tockenCache';
-
-// eslint-disable-next-line prefer-const
+/* 
+eslint-disable-next-line prefer-const */
 let loginСheck = false;
 let passwordСheck = false;
 

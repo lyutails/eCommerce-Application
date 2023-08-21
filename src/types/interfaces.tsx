@@ -1,5 +1,5 @@
 import { BaseAddress } from '@commercetools/platform-sdk';
-import { ReactNode } from 'react';
+import { ChangeEventHandler, ReactNode } from 'react';
 
 export interface ICustomerFields {
   email: string;
@@ -43,6 +43,55 @@ export interface IInputCustomFields {
   placeholder: string;
   img1: string;
   img2?: string;
+}
+
+export interface IInputProps {
+  type: string;
+  classInput: string;
+  classClue: string;
+  classWrapper: string;
+  placeholder: string;
+  childrenBefore?: ReactNode;
+  childrenAfter?: ReactNode;
+  func?: ChangeEventHandler<HTMLInputElement>;
+  clue?: string;
+  tooltip?: ReactNode;
+  value?: string;
+  max?: string;
+  onfocus?: ChangeEventHandler<HTMLInputElement>;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
+}
+
+export interface IInputPropsPassword {
+  type?: string;
+  classInput: string;
+  classClue: string;
+  classWrapper: string;
+  placeholder?: string;
+  childrenBefore?: ReactNode;
+  childrenAfter?: ReactNode;
+  func?: ChangeEventHandler<HTMLInputElement>;
+  clue?: string;
+  tooltip?: ReactNode;
+  value?: string;
+  max?: string;
+  onfocus?: ChangeEventHandler<HTMLInputElement>;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
+}
+
+export interface IInputPropsMask {
+  type: string;
+  classInput: string;
+  classClue: string;
+  classWrapper: string;
+  placeholder: string;
+  childrenBefore?: ReactNode;
+  childrenAfter?: ReactNode;
+  func?: ChangeEventHandler<HTMLInputElement>;
+  clue?: string;
+  tooltip?: ReactNode;
+  value?: string;
+  max?: string;
 }
 
 export interface IButtonFields {

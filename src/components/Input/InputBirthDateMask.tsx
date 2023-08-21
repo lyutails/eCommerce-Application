@@ -1,28 +1,12 @@
 import { IMaskInput } from 'react-imask';
 import style from '../Input/_input.module.scss';
-import { ChangeEventHandler, ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 import { getMinUserAge } from './getMinUserAge';
+import { IInputPropsMask } from '../../types/interfaces';
 
-// import { clue } from '../Input/input-data';
+/* Enter Date of birth in forman dd.mm.yyyy NB! your age should be equal or more than 13 to register * */
 
-interface IInputProps {
-  type: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
-  placeholder: string;
-  childrenBefore?: ReactNode;
-  childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-}
-
-// Enter Date of birth in forman dd.mm.yyyy NB! your age should be equal or more than 13 to register *
-
-function InputBirthDateMask(props: IInputProps): JSX.Element {
+function InputBirthDateMask(props: IInputPropsMask): JSX.Element {
   const ref = useRef(null);
   const inputRef = useRef(null);
 
@@ -41,7 +25,7 @@ function InputBirthDateMask(props: IInputProps): JSX.Element {
           placeholder={props.placeholder}
           type={props.type}
           max={getMinUserAge()}
-          // required
+          /* required */
         />
         {props.childrenAfter}
       </div>
