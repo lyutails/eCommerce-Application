@@ -443,7 +443,7 @@
   }
 }
 
-@media screen and (width: (500px)) and (width: (767.98px)) {
+@media screen and (min-width: (500px)) and (max-width: (767.98px)) {
   .main_offer_text {
     padding-bottom: 20px;
     font-size: 2rem;
@@ -455,7 +455,7 @@
   }
 }
 
-@media screen and (width: (320px)) and (width: (499.98px)) {
+@media screen and (min-width: (320px)) and (max-width: (499.98px)) {
   .main_offer_text {
     padding-bottom: 20px;
     font-size: 1.5rem;
