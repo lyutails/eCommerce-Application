@@ -12,7 +12,7 @@ function CatalogPage(): JSX.Element {
     });
   }, []);
   return (
-    <div className={style.catalog}>
+    <div className={style.catalog} data-testid="catalog-component">
       <div className={style.catalog_wrapper}>
         <div className={style.catalog_categories_block}>
           <h1 className={style.catalog_title}>

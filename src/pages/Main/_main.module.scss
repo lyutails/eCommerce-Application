@@ -123,7 +123,7 @@
 
   &_advertisment_text {
     width: 30%;
-    font-size: 3rem;
+    font-size: 3.6rem;
     text-align: center;
     text-shadow:
       0 0 5px $glow-green,
@@ -142,8 +142,11 @@
 
   &_offers_wrapper {
     overflow: hidden;
+
     aspect-ratio: 1 / 0.25;
     width: 90vw;
+    min-height: 80px;
+    margin-top: 20px;
   }
 
   &_offers {
@@ -153,8 +156,6 @@
     aspect-ratio: 1 / 0.035;
     width: 600%;
     min-height: 80px;
-    margin-top: 20px;
-    margin-bottom: 20px;
   }
 
   &_offer {
@@ -421,6 +422,16 @@
       width: 24%;
       max-width: 250px;
     }
+
+    &_offer_text {
+      padding-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    &_advertisment_text {
+      width: 40%;
+      font-size: 2.8rem;
+    }
   }
 }
 
@@ -454,6 +465,16 @@
 
     &_profile_buttons {
       width: 80%;
+    }
+
+    &_offer_text {
+      padding-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    &_advertisment_text {
+      width: 40%;
+      font-size: 2.2rem;
     }
   }
 }

@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import style from './_main.module.scss';
-import { IRootState } from '@/types/interfaces';
+import { IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
-import { Children, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  Children,
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export const mainPageOffersSlides = [
   'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day',
@@ -13,11 +21,11 @@ export const mainPageOffersSlides = [
 
 function MainPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const containerRef = useRef<any>();
+  const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
 
-  const actionHandler = (mode: string) => {
+  const actionHandler = (mode: string): void => {
     containerRef.current.style.transitionDuration = '400ms';
     if (mode === 'prev') {
       if (current <= 1) {
@@ -29,7 +37,9 @@ function MainPage(): JSX.Element {
       }
     } else if (mode === 'next') {
       if (current >= mainPageOffersSlides.length) {
-        setTranslateX(containerRef.current.clientWidth * (mainPageOffersSlides.length + 1));
+        setTranslateX(
+          containerRef.current.clientWidth * (mainPageOffersSlides.length + 1)
+        );
         setCurrent(1);
       } else {
         setTranslateX(containerRef.current.clientWidth * (current + 1));
@@ -39,25 +49,25 @@ function MainPage(): JSX.Element {
   };
 
   useEffect(() => {
-    const transitionEnd = () => {
+    const transitionEnd = (): void => {
       if (current <= 1) {
         containerRef.current.style.transitionDuration = '0ms';
-        setTranslateX(containerRef.current.clientWidth * current)
+        setTranslateX(containerRef.current.clientWidth * current);
       }
-      if ((current: number) => mainPageOffersSlides.length) {
+      if (current >= mainPageOffersSlides.length) {
         containerRef.current.style.transitionDuration = '0ms';
-        setTranslateX(containerRef.current.clientWidth * current)
+        setTranslateX(containerRef.current.clientWidth * current);
       }
-    }
+    };
     document.addEventListener('transitionend', transitionEnd);
     return () => {
       document.removeEventListener('transitionend', transitionEnd);
-    }
-  }, [current, mainPageOffersSlides])
+    };
+  }, [current]);
 
   const offerSlides = useMemo(() => {
     if (mainPageOffersSlides.length > 1) {
-      let items = Children.map(mainPageOffersSlides, (child, index) => (
+      const items = Children.map(mainPageOffersSlides, (child, index) => (
         <div className={style.main_offer}>
           <div className={style.main_offer_text} key={index}>
             {child}
@@ -81,7 +91,7 @@ function MainPage(): JSX.Element {
     }
 
     return <div className={style.main_offer}>{mainPageOffersSlides[0]}</div>;
-  }, [mainPageOffersSlides]);
+  }, []);
 
   useLayoutEffect(() => {
     if (containerRef.current) {
@@ -105,7 +115,7 @@ function MainPage(): JSX.Element {
         </div>
         <div className={style.main_offers_slider}>
           <button
-            onClick={() => actionHandler('prev')}
+            onClick={(): void => actionHandler('prev')}
             className={`${style.main_offers_arrow} ${style.left}`}
           ></button>
           <div className={style.main_offers_wrapper}>
@@ -118,7 +128,7 @@ function MainPage(): JSX.Element {
             </div>
           </div>
           <button
-            onClick={() => actionHandler('next')}
+            onClick={(): void => actionHandler('next')}
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
         </div>
