@@ -9,6 +9,7 @@ export enum PasswordSmth {
 
 export enum ParhRoute {
   MainPage = '/',
+  Main = '/main',
   CustomizePage = 'customize',
   AboutUsPage = 'about-us',
   CartPage = 'cart',
