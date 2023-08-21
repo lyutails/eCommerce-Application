@@ -37,7 +37,7 @@ export function refreshUserCTPClient(refreshToken: string): Client {
       authMiddlewareOptionsForRefreshTokenFlow(refreshToken)
     )
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware()
+    /* .withLoggerMiddleware() */
     .build();
   return ctpClient;
 }

@@ -349,7 +349,7 @@ $footer-background-color: #041426;
           }
         }
 
-        .header_menu_active{
+        .header_menu_active {
           right: 0.1%;
         }
       }
@@ -374,6 +374,9 @@ $footer-background-color: #041426;
         right: 10px;
         transform: rotate(0deg);
 
+        background: transparent;
+        border: none;
+
         transition: 2s;
 
         &_img {
@@ -382,7 +385,7 @@ $footer-background-color: #041426;
 
         &:hover {
           filter: drop-shadow(0 0 5px $glow-green)
-          drop-shadow(0 0 10px $glow-green);
+            drop-shadow(0 0 10px $glow-green);
         }
       }
 
@@ -480,7 +483,7 @@ $footer-background-color: #041426;
           }
         }
 
-        .header_menu_active{
+        .header_menu_active {
           right: 0.1%;
         }
       }
@@ -505,6 +508,9 @@ $footer-background-color: #041426;
         right: 10px;
         transform: rotate(0deg);
 
+        background: transparent;
+        border: none;
+
         transition: 2s;
 
         &_img {
@@ -513,7 +519,7 @@ $footer-background-color: #041426;
 
         &:hover {
           filter: drop-shadow(0 0 5px $glow-green)
-          drop-shadow(0 0 10px $glow-green);
+            drop-shadow(0 0 10px $glow-green);
         }
       }
 
