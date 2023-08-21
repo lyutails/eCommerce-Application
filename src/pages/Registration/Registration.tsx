@@ -125,7 +125,7 @@ function RegistrationPage(): JSX.Element {
         dispatch(setAuthStatus(true));
         localStorage.setItem('isAuth', 'true');
         navigate('/');
-      }, 5000);
+      }, 5300);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
   return (
