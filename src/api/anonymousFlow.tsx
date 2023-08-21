@@ -30,7 +30,7 @@ const options: AnonymousAuthMiddlewareOptions = {
 const anonymousClient = new ClientBuilder()
   .withAnonymousSessionFlow(options)
   .withHttpMiddleware(httpMiddlewareOptions)
-  .withLoggerMiddleware()
+  /* .withLoggerMiddleware() */
   .build();
 
 export const apiRootAnonymous = createApiBuilderFromCtpClient(

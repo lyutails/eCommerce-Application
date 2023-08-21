@@ -15,16 +15,25 @@ function ProfilePage(): JSX.Element {
   const dispatch = useDispatch();
   const [lastname, setLastname] = useState('');
   const [firstname, setFirstname] = useState('');
-
+  const customerId = useSelector((state: IRootState) => state.user.customerId);
   const localId = localStorage.getItem('customerId');
   const refreshToken = localStorage.getItem('refreshToken');
-  const checkRefreshToken = (): void => {
-    dispatch(setAuthStatus(false));
-    navigate('/login');
+
+  const handleLogOut = (): void => {
     localStorage.removeItem('customerId');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
+    dispatch(setAuthStatus(false));
+    navigate('/');
   };
+
   useEffect(() => {
+    const checkRefreshToken = (): void => {
+      dispatch(setAuthStatus(false));
+      navigate('/login');
+      localStorage.removeItem('customerId');
+      localStorage.removeItem('isAuth');
+    };
     if (!refreshToken) {
       checkRefreshToken();
     } else {
@@ -40,17 +49,8 @@ function ProfilePage(): JSX.Element {
           localStorage.removeItem('refreshToken');
         });
     }
-  }, []);
+  }, [customerId, dispatch, navigate, refreshToken]);
   dispatch(createCustomerId(localId));
-  const customerId = useSelector((state: IRootState) => state.user.customerId);
-
-  const handleLogOut = (): void => {
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('isAuth');
-    dispatch(setAuthStatus(false));
-    navigate('/');
-  };
 
   return (
     <div className={style.profile} data-testid="profile-component">
