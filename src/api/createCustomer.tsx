@@ -3,28 +3,8 @@ import {
   ClientResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
-import { NavigateFunction } from 'react-router-dom';
-import { AnyAction, Dispatch } from 'redux';
 import { apiRoot } from './createClient';
-import {
-  loginCustomerThroughMe,
-  loginCustomerThroughReg,
-} from './passwordFlowSession';
-
-export interface ICustomerFields {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  streetName: string;
-  streetNumber: string;
-  postalCode: string;
-  city: string;
-  state: string;
-  country: string;
-  building: string;
-  apartment: string;
-}
+import { loginCustomerThroughReg } from './passwordFlowSession';
 
 export async function createCustomerMe(
   data: IMyCustomerDraft,

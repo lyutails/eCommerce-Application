@@ -15,11 +15,11 @@
   background-size: cover;
   background-blend-mode: difference;
 
-  // background-blend-mode: luminosity;
+  /* background-blend-mode: luminosity;
 
-  // background-blend-mode: soft-light;
+  background-blend-mode: soft-light;
 
-  // background-blend-mode: hard-light;
+  background-blend-mode: hard-light; */
 
   &_wrapper {
     display: flex;
@@ -66,9 +66,7 @@
   &_menu_link {
     width: 40%;
 
-    font-family:
-      "No Signal",
-      cursive;
+    font-family: 'No Signal', cursive;
     font-size: 2rem;
     text-align: center;
     text-shadow:
@@ -108,7 +106,7 @@
     background-repeat: no-repeat;
     background-size: contain;
 
-    // filter: drop-shadow(0 0 2px $glow-green);
+    /* filter: drop-shadow(0 0 2px $glow-green); */
     border-radius: 10px;
 
     -webkit-text-stroke: 1px;
@@ -172,7 +170,7 @@
     background-repeat: no-repeat;
     background-size: contain;
 
-    // filter: drop-shadow(0 0 8px $glow-green);
+    /* filter: drop-shadow(0 0 8px $glow-green); */
     border-radius: 10px;
 
     -webkit-text-stroke: 1px;
@@ -203,7 +201,7 @@
   }
 
   &_offers_arrows {
-    // position: absolute;
+    /*  position: absolute; */
 
     display: flex;
     flex-direction: row;
@@ -305,16 +303,16 @@
     background-position: center center;
     background-size: contain;
 
-    // filter: drop-shadow(0 0 10px $glow-green);
+    /* filter: drop-shadow(0 0 10px $glow-green);
 
-    // mask-composite: destination-out;
-    // mask-composite: exclude;
+    mask-composite: destination-out;
+    mask-composite: exclude;
 
-    // mask-image:
-    // url('../../../public/ui-kit/square_02_01.svg') center/contain no-repeat,
-    //   linear-gradient(
-    //     #fff 0 0
-    //   );
+    mask-image:
+    url('../../../public/ui-kit/square_02_01.svg') center/contain no-repeat,
+      linear-gradient(
+        #fff 0 0
+      ); */
     -webkit-text-stroke: 1px;
   }
 
@@ -322,7 +320,7 @@
     aspect-ratio: 1 / 1.1;
     width: 70%;
 
-    // align-self: flex-end;
+    /*  align-self: flex-end; */
     margin-top: 10%;
 
     background-repeat: no-repeat;

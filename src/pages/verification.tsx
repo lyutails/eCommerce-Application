@@ -2,7 +2,7 @@ import { IPasswordErrors } from '../types/interfaces';
 import { ChangeEvent } from 'react';
 
 const REGEXP = {
-  // eslint-disable-next-line no-useless-escape
+  /* eslint-disable-next-line no-useless-escape */
   mail: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
   postalUSA: /^\d{5}(?:-\d{4})?$/,
   postalCanada: /^[a-zA-Z][0-9][a-zA-Z](\s?[0-9][a-zA-Z][0-9])?$/,

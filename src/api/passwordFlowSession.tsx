@@ -14,11 +14,7 @@ import { AnyAction } from 'redux';
 import { PROJECT_KEY } from '../constants';
 import { httpMiddlewareOptions } from './clientBuilder';
 import { NavigateFunction } from 'react-router-dom';
-
-export interface IMyCustomerLoginDraft {
-  email: string;
-  password: string;
-}
+import { IMyCustomerLoginDraft } from '../types/interfaces';
 
 const authMiddlewareOptionsForPasswordFlow = (
   username: string,

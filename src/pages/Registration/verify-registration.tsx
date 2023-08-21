@@ -2,7 +2,6 @@
 import { createCustomerMe } from '../../api/createCustomer';
 import { NavigateFunction } from 'react-router-dom';
 import {
-  clue,
   handleCountryShipInput,
   handleCityShipInput,
   handleFirstnameInput,
