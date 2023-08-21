@@ -23,6 +23,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path={ParhRoute.MainPage} element={<Layout />}>
           <Route index element={<MainPage />} />
+          <Route path={ParhRoute.Main} element={<MainPage />} />
           <Route path={ParhRoute.CustomizePage} element={<CustomizePage />} />
           <Route path={ParhRoute.AboutUsPage} element={<AboutUsPage />} />
           <Route path={ParhRoute.CartPage} element={<CartPage />} />
