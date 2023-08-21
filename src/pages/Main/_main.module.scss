@@ -66,9 +66,7 @@
   &_menu_link {
     width: 40%;
 
-    font-family:
-      "No Signal",
-      cursive;
+    font-family: 'No Signal', cursive;
     font-size: 2rem;
     text-align: center;
     text-shadow:
@@ -97,12 +95,12 @@
     align-items: center;
     justify-content: space-around;
 
-    aspect-ratio: 1 / 0.4;
+    aspect-ratio: 1 / 0.36;
     width: 100%;
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 0 2vw;
+    padding: 10px 4vw 0;
 
     background-image: url('../../../public/ui-kit/main_advertisment.svg');
     background-repeat: no-repeat;
@@ -122,7 +120,7 @@
   }
 
   &_advertisment_text {
-    width: 30%;
+    width: 50%;
     font-size: 3.6rem;
     text-align: center;
     text-shadow:
@@ -181,6 +179,7 @@
 
   &_offer_text {
     width: 60%;
+    padding-left: 1vw;
     font-size: 3rem;
     text-shadow:
       0 0 5px $glow-green,
@@ -217,7 +216,7 @@
 
   &_offers_arrow {
     aspect-ratio: 1 / 0.5;
-    width: 4vw;
+    width: 6vw;
     max-width: 50px;
 
     background-color: transparent;
@@ -229,7 +228,7 @@
     transition: all 0.2s ease-in-out;
 
     &.left {
-      transform: translate(-2vw, 0%);
+      transform: translate(-3vw, 0%);
       background-image: url('../../../public/ui-kit/arrow_01_green_left.svg');
 
       &:hover {
@@ -239,7 +238,7 @@
     }
 
     &.right {
-      transform: translate(2vw, 0%);
+      transform: translate(3vw, 0%);
       background-image: url('../../../public/ui-kit/arrow_01_green_right.svg');
 
       &:hover {
@@ -294,7 +293,7 @@
 
     aspect-ratio: 1 / 1;
     width: 24%;
-    min-width: 100px;
+    min-width: 60px;
     max-width: 400px;
 
     font-size: 2rem;
@@ -357,6 +356,7 @@
     width: 4vw;
     max-width: 50px;
 
+    visibility: hidden;
     background-repeat: no-repeat;
     background-size: contain;
 
@@ -411,7 +411,6 @@
 
   .main {
     &_advertisment {
-      aspect-ratio: 1 / 0.4;
       width: 100%;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -425,13 +424,27 @@
 
     &_offer_text {
       padding-bottom: 20px;
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
 
     &_advertisment_text {
-      width: 40%;
+      width: 50%;
       font-size: 2.8rem;
     }
+  }
+}
+
+@media screen and (width >= 500px) and (width <= 767.98px) {
+  .main_advertisment_text {
+    width: 50%;
+    font-size: 2.2rem;
+  }
+}
+
+@media screen and (width >= 320px) and (width <= 499.98px) {
+  .main_advertisment_text {
+    width: 50%;
+    font-size: 1.6rem;
   }
 }
 
@@ -447,7 +460,6 @@
     }
 
     &_advertisment {
-      aspect-ratio: 1 / 0.4;
       width: 100%;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -470,11 +482,6 @@
     &_offer_text {
       padding-bottom: 20px;
       font-size: 1.5rem;
-    }
-
-    &_advertisment_text {
-      width: 40%;
-      font-size: 2.2rem;
     }
   }
 }
