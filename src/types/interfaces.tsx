@@ -75,6 +75,7 @@ export interface IPasswordErrorsFields {
   text: string;
   isError: boolean;
 }
+
 export interface IMyCustomerDraft {
   email: string;
   firstName: string;
@@ -82,9 +83,12 @@ export interface IMyCustomerDraft {
   password: string;
   dateOfBirth: string;
   addresses: BaseAddress[];
-  defaultShippingAddress?: number;
-  defaultBillingAddress?: number;
+  defaultShippingAddress?: number | undefined;
+  shippingAddresses: number[];
+  defaultBillingAddress?: number | undefined;
+  billingAddresses: number[];
 }
+
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;

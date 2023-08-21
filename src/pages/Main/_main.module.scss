@@ -403,7 +403,7 @@
   }
 }
 
-@media screen and (width >= 768px) and (width <= 1399.98px) {
+@media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
   html {
     font-size: 8px;
   }

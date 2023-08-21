@@ -14,38 +14,45 @@ import CartPage from '../pages/Cart/Cart';
 import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
+import { ParhRoute } from '../types/enums';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   return (
     <section className={style.app}>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path={ParhRoute.MainPage} element={<Layout />}>
           <Route index element={<MainPage />} />
-          <Route path="customize" element={<CustomizePage />} />
-          <Route path="about-us" element={<AboutUsPage />} />
-          <Route path="cart" element={<CartPage />} />
-          <Route path="catalog" element={<CatalogPage />} />
-          <Route path="catalog/:category" element={<CategoryPage />} />
-          <Route path="category/:category/:id" element={<ProductPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path={ParhRoute.CustomizePage} element={<CustomizePage />} />
+          <Route path={ParhRoute.AboutUsPage} element={<AboutUsPage />} />
+          <Route path={ParhRoute.CartPage} element={<CartPage />} />
+          <Route path={ParhRoute.CatalogPage} element={<CatalogPage />} />
+          <Route path={ParhRoute.CategoryPage} element={<CategoryPage />} />
+          <Route path={ParhRoute.ProductPage} element={<ProductPage />} />
+          <Route path={ParhRoute.NotFoundPage} element={<NotFoundPage />} />
           {isAuth ? (
             <>
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/login" element={<Navigate to={'/'} replace />} />
+              <Route path={ParhRoute.ProfilePage} element={<ProfilePage />} />
               <Route
-                path="/registration"
-                element={<Navigate to={'/'} replace />}
+                path={ParhRoute.AuthPage}
+                element={<Navigate to={ParhRoute.MainPage} replace />}
+              />
+              <Route
+                path={ParhRoute.RegistrationPage}
+                element={<Navigate to={ParhRoute.MainPage} replace />}
               />
             </>
           ) : (
             <>
               <Route
-                path="/profile"
-                element={<Navigate to={'/login'} replace />}
+                path={ParhRoute.ProfilePage}
+                element={<Navigate to={ParhRoute.AuthPage} replace />}
               />
-              <Route path="/registration" element={<RegistrationPage />} />
-              <Route path="/login" element={<AuthPage />} />
+              <Route
+                path={ParhRoute.RegistrationPage}
+                element={<RegistrationPage />}
+              />
+              <Route path={ParhRoute.AuthPage} element={<AuthPage />} />
             </>
           )}
         </Route>

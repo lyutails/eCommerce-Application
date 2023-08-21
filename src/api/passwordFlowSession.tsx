@@ -82,7 +82,34 @@ export const loginCustomerThroughMe = async (
       .execute();
     dispatch(setAuthStatus(true));
     localStorage.setItem('isAuth', 'true');
-    navigator('/');
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const loginCustomerThroughReg = async (
+  request: IMyCustomerLoginDraft,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
+): Promise<ClientResponse<CustomerSignInResult> | undefined> => {
+  const apiRoot = createApiBuilderFromCtpClient(
+    loginUserCTPClient(request.email, request.password),
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRoot
+      .me()
+      .login()
+      .post({
+        body: request,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    setSuccessfulMessage(true);
     return customer;
   } catch (error) {
     console.log(error);

@@ -156,9 +156,25 @@ body {
   font-size: 2rem;
   color: red;
 
-  visibility: visible;
-
   &_error {
     margin-right: 10px;
   }
+}
+
+.shown {
+  display: block;
+}
+
+.unshown {
+  display: none;
+}
+
+.tooltip_error {
+  margin-right: 10px;
+}
+
+.tooltip_text {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
 }

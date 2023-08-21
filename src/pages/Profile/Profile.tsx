@@ -9,7 +9,6 @@ import { IRootState } from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
 import { useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
-import { myTokemCache } from '../../api/tockenCache';
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
@@ -25,23 +24,23 @@ function ProfilePage(): JSX.Element {
     localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
   };
-  console.log(myTokemCache.get(), 'testclass');
-
-  if (!refreshToken) {
-    checkRefreshToken();
-  } else {
-    refreshTokenFlow(refreshToken)
-      .then(() =>
-        getCustomerById({ ID: customerId }).then((response) => {
-          response.body.firstName && setFirstname(response.body.firstName);
-          response.body.lastName && setLastname(response.body.lastName);
-        })
-      )
-      .catch(() => {
-        checkRefreshToken();
-        localStorage.removeItem('refreshToken');
-      });
-  }
+  useEffect(() => {
+    if (!refreshToken) {
+      checkRefreshToken();
+    } else {
+      refreshTokenFlow(refreshToken)
+        .then(() =>
+          getCustomerById({ ID: customerId }).then((response) => {
+            response.body.firstName && setFirstname(response.body.firstName);
+            response.body.lastName && setLastname(response.body.lastName);
+          })
+        )
+        .catch(() => {
+          checkRefreshToken();
+          localStorage.removeItem('refreshToken');
+        });
+    }
+  }, []);
   dispatch(createCustomerId(localId));
   const customerId = useSelector((state: IRootState) => state.user.customerId);
 
@@ -54,7 +53,7 @@ function ProfilePage(): JSX.Element {
   };
 
   return (
-    <div className={style.profile}>
+    <div className={style.profile} data-testid="profile-component">
       <h2 className={style.title}>
         Hello, {firstname} {lastname}
       </h2>

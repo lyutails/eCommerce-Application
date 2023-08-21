@@ -1,21 +1,26 @@
 import style from '../Registration/_registration.module.scss';
 import Input from '../../components/Input/Input';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
-import iconEye from '../../../public/assets/icons/eye.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { useNavigate } from 'react-router-dom';
-import { showPassword } from '../showPassword';
-import { ReactNode, useState } from 'react';
-import { handlePasswordInput, inputHandler } from '../verification';
+import { useEffect, useState } from 'react';
+import {
+  handlePasswordInput,
+  inputHandler,
+  selectHandler,
+} from '../verification';
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { hideTooltip, showTooltip } from '../showTooltip';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
+import { IRootState } from '../../types/interfaces';
+import { setAuthStatus } from '../../store/reducers/userReducer';
 
 function RegistrationPage(): JSX.Element {
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleToLogin = (): void => {
@@ -59,8 +64,10 @@ function RegistrationPage(): JSX.Element {
   const [buildingBillError, setErrorBuildingBill] = useState('');
   const [buildingShipError, setErrorBuildingShip] = useState('');
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
 
   const [passwordFocus, setPasswordFocus] = useState(false);
+  const [successfulMessage, setSuccessfulMessage] = useState(false);
 
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
   const [checkmarkPassword, setCheckmarkPassword] = useState(false);
@@ -80,6 +87,8 @@ function RegistrationPage(): JSX.Element {
   const [checkmarkApartmentBill, setCheckmarkApartmentBill] = useState(false);
   const [checkmarkApartmentShip, setCheckmarkApartmentShip] = useState(false);
 
+  const [checkedShipping, setCheckedShipping] = useState(false);
+  const [checkedBilling, setCheckedBilling] = useState(false);
   const passwordErrorTexts = handlePasswordInput(password);
   const passwordErrorElements = Object.keys(passwordErrorTexts).map(
     (key, i) => {
@@ -98,6 +107,27 @@ function RegistrationPage(): JSX.Element {
       );
     }
   );
+  const createModal = (): JSX.Element => {
+    return (
+      <div className={`${style.overlay}`}>
+        <div className={`${style.modal_visible} ${style.modal}`}>
+          Dear user,
+          <br /> your Profile was successfully created,
+          <br /> we&apos;re glad you joined us
+        </div>
+      </div>
+    );
+  };
+  useEffect(() => {
+    if (successfulMessage === true) {
+      setModal(createModal());
+      setTimeout(() => {
+        dispatch(setAuthStatus(true));
+        localStorage.setItem('isAuth', 'true');
+        navigate('/');
+      }, 3000);
+    }
+  }, [dispatch, isAuth, navigate, successfulMessage]);
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -210,7 +240,7 @@ function RegistrationPage(): JSX.Element {
                 className={
                   passwordFocus
                     ? `${style.visible} ${style.password_tooltip}`
-                    : `${style.hide} ${style.tooltip}`
+                    : `${style.hide} ${style.password_tooltip}`
                 }
               >
                 {passwordErrorElements}
@@ -260,7 +290,19 @@ function RegistrationPage(): JSX.Element {
           />
           <h3 className={style.registration_title}>Address</h3>
           <div className={style.shipping}>
-            <h4>Shipping address</h4>
+            <div className={style.address}>
+              <h4 className={style.address_title}>Shipping address</h4>
+              <input
+                onChange={(e): void => handleCheckbox(e, setCheckedShipping)}
+                className={style.address_input}
+                id="default-shipping"
+                name="address"
+                type="checkbox"
+              />
+              <label htmlFor="default-shipping" className={style.address_label}>
+                Set like default shipping address
+              </label>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setStreetShip)}
               type="text"
@@ -411,36 +453,34 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <Input
-              func={(e): void => inputHandler(e, setCountryShip)}
-              type="text"
-              clue={
-                countryShipError ? countryShipError : 'This is required field'
-              }
-              placeholder="Country *"
-              classWrapper={style.country}
-              classClue={
-                countryShipError
-                  ? `${style.completed} ${style.error}`
-                  : style.uncompleted
-              }
-              classInput={style.country_input}
-              childrenBefore={
-                <div
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryShip)}
                   className={
                     checkmarkCountryShip
-                      ? `${style.wrapper_img} ${style.completed}`
-                      : `${style.wrapper_img} ${style.uncompleted}`
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
                   }
                 >
-                  <img
-                    className={style.wrapper_img_icon}
-                    src={iconCheckmark}
-                    alt="Icon"
-                  />
-                </div>
-              }
-            />
+                  <option value="" className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryShipError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryShipError ? countryShipError : 'This is required field'}
+              </div>
+            </div>
+
             <input
               onChange={(e): void => handleCheckbox(e, setCheckedInput)}
               className={style.checkbox_input}
@@ -460,7 +500,19 @@ function RegistrationPage(): JSX.Element {
                 : `${style.hide} ${style.billing}`
             }
           >
-            <h4>Billing address</h4>
+            <div className={style.address}>
+              <h4 className={style.address_title}>Billing address</h4>
+              <input
+                onChange={(e): void => handleCheckbox(e, setCheckedBilling)}
+                className={style.address_input}
+                id="default-billing"
+                name="address"
+                type="checkbox"
+              />
+              <label htmlFor="default-billing" className={style.address_label}>
+                Set like default billing address
+              </label>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setStreetBill)}
               type="text"
@@ -611,37 +663,35 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <Input
-              func={(e): void => inputHandler(e, setCountryBill)}
-              type="text"
-              placeholder="Country *"
-              classWrapper={style.country}
-              classClue={
-                countryBillError
-                  ? `${style.completed} ${style.error}`
-                  : style.uncompleted
-              }
-              classInput={style.country_input}
-              clue={
-                countryBillError ? countryBillError : 'This is required field'
-              }
-              childrenBefore={
-                <div
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryBill)}
                   className={
                     checkmarkCountryBill
-                      ? `${style.wrapper_img} ${style.completed}`
-                      : `${style.wrapper_img} ${style.uncompleted}`
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
                   }
                 >
-                  <img
-                    className={style.wrapper_img_icon}
-                    src={iconCheckmark}
-                    alt="Icon"
-                  />
-                </div>
-              }
-            />
+                  <option value="" className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryBillError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryBillError ? countryBillError : 'This is required field'}
+              </div>
+            </div>
           </div>
+
           <ButtonForm
             onClick={(event): void =>
               handleСreationReg(
@@ -700,7 +750,10 @@ function RegistrationPage(): JSX.Element {
                 setCheckmarkApartmentShip,
                 setCheckmarkBuildingShip,
                 checkedInput,
-                setInvalidCredentials
+                setInvalidCredentials,
+                checkedShipping,
+                checkedBilling,
+                setSuccessfulMessage
               )
             }
             classNames={style.registration_button}
@@ -710,10 +763,7 @@ function RegistrationPage(): JSX.Element {
           </ButtonForm>
         </form>
       </div>
-      <div className={style.modal}>
-        Dear user,<br /> your Profile was successfully created,<br /> we're glad you joined us
-      </div>
-      <div className={style.overlay}></div>
+      <div>{modal}</div>
     </div>
   );
 }

@@ -24,6 +24,7 @@ import {
 import { AnyAction, Dispatch } from 'redux';
 import { createCustomerId } from '../../store/reducers/userReducer';
 import { getCustomerToken } from '../../api/adminBuilder';
+import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -99,7 +100,10 @@ export const handleСreationReg = (
   setCheckmarkApartmentShip: React.Dispatch<React.SetStateAction<boolean>>,
   setCheckmarkBuildingShip: React.Dispatch<React.SetStateAction<boolean>>,
   checkedBill: boolean,
-  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
+  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
+  checkedShipping: boolean,
+  checkedBilling: boolean,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -130,7 +134,8 @@ export const handleСreationReg = (
     postalShipField,
     setErrorPostalShip,
     postalShipСheck,
-    setCheckmarkPostalShip
+    setCheckmarkPostalShip,
+    countryShipField
   );
   countryShipСheck = handleCountryShipInput(
     countryShipField,
@@ -160,7 +165,8 @@ export const handleСreationReg = (
     postalBillField,
     setErrorPostalBill,
     postalBillСheck,
-    setCheckmarkPostalBill
+    setCheckmarkPostalBill,
+    countryBillField
   );
   countryBillСheck = handleCountryBillInput(
     countryBillField,
@@ -211,6 +217,7 @@ export const handleСreationReg = (
   );
   let parts = birthdayField.split('.');
   let newBirthday = parts[2] + '-' + parts[1] + '-' + parts[0];
+
   const dataBill = {
     email: loginField,
     firstName: fistnameField,
@@ -224,7 +231,7 @@ export const handleСreationReg = (
         apartment: apartmentShipField,
         postalCode: postalShipField,
         city: cityShipField,
-        country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
+        country: countryShipField === 'usa' ? 'US' : 'CA',
       },
       {
         streetName: streetBillField,
@@ -232,12 +239,15 @@ export const handleСreationReg = (
         apartment: apartmentBillField,
         postalCode: postalBillField,
         city: postalBillField,
-        country: countryBillField.toLowerCase() === 'usa' ? 'US' : 'CA',
+        country: countryBillField === 'usa' ? 'US' : 'CA',
       },
     ],
-    defaultShippingAddress: 0,
-    defaultBillingAddress: 1,
+    defaultShippingAddress: checkedShipping ? 0 : undefined,
+    shippingAddresses: [0],
+    defaultBillingAddress: checkedBilling ? 1 : undefined,
+    billingAddresses: [1],
   };
+
   const dataShip = {
     email: loginField,
     firstName: fistnameField,
@@ -254,28 +264,10 @@ export const handleСreationReg = (
         country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
       },
     ],
-    defaultShippingAddress: 0,
-    defaultBillingAddress: 0,
+    defaultShippingAddress: checkedShipping ? 0 : undefined,
+    shippingAddresses: [0],
+    billingAddresses: [0],
   };
-  console.log(
-    loginСheck,
-    passwordСheck,
-    firstnameСheck,
-    lastnameСheck,
-    streetShipСheck,
-    cityShipСheck,
-    postalShipСheck,
-    countryShipСheck,
-    birthdayСheck,
-    streetBillСheck,
-    cityBillСheck,
-    postalBillСheck,
-    countryBillСheck,
-    buildingBillСheck,
-    buildingShipСheck,
-    apartmentBillСheck,
-    apartmentShipСheck
-  );
   if (checkedBill) {
     if (
       loginСheck === true &&
@@ -296,7 +288,7 @@ export const handleСreationReg = (
       apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataBill, dispatch, navigator)
+      createCustomerMe(dataBill, setSuccessfulMessage)
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
@@ -332,7 +324,7 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataShip, dispatch, navigator)
+      createCustomerMe(dataShip, setSuccessfulMessage)
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
