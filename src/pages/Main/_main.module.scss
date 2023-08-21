@@ -31,69 +31,85 @@
     margin: 0 auto;
   }
 
+  &_top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &_title {
     flex: 0 1 auto;
 
     margin-bottom: 20px;
 
     font-family: Cyberpank, cursive;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: $font-color-title;
   }
 
-  &_categories {
+  &_profile_buttons {
     display: flex;
-    flex-flow: row wrap;
-    row-gap: 2vh;
-    justify-content: space-between;
-
-    width: 100%;
-  }
-
-  &_category {
-    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 
-    aspect-ratio: 1 / 1.2;
-    width: 23%;
-    max-width: 400px;
+    aspect-ratio: 1 / 0.28;
+    width: 40%;
+    max-width: 600px;
 
+    background-image: url('../../../public/ui-kit/main_profile_buttons.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_menu_link {
+    width: 40%;
+
+    font-family:
+      "No Signal",
+      cursive;
     font-size: 2rem;
-    color: $font-color-title;
     text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
 
-    background-color: $background-color-category;
-    border-radius: 10px;
-    box-shadow: 0 0 10px $glow-violet;
+    transition: all 0.2s ease-in-out;
 
-    animation-name: category-border-shine-anim;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+    &:hover {
+      cursor: pointer;
+      text-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green,
+        0 0 20px $glow-green,
+        0 0 10px $glow-green,
+        0 0 15px $glow-green,
+        0 0 25px $glow-green;
+    }
   }
 
   &_advertisment {
+    resize: both;
+
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 
-    aspect-ratio: 1 / 0.2;
+    aspect-ratio: 1 / 0.4;
     width: 100%;
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding: 0 1vw;
+    padding: 0 2vw;
 
-    font-size: 3rem;
-    text-align: center;
+    background-image: url('../../../public/ui-kit/main_advertisment.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
 
-    background-color: $background-color-customize;
-    filter: drop-shadow(0 0 8px $glow-green);
+    // filter: drop-shadow(0 0 2px $glow-green);
     border-radius: 10px;
-    box-shadow:
-      0 0 10px $glow-green,
-      0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
 
@@ -105,18 +121,37 @@
     }
   }
 
+  &_advertisment_text {
+    width: 30%;
+    font-size: 3rem;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_offers_slider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
   &_offers_wrapper {
     overflow: hidden;
     aspect-ratio: 1 / 0.25;
-    width: 100%;
+    width: 90vw;
   }
 
   &_offers {
     display: flex;
     flex-direction: row;
 
-    aspect-ratio: 1 / 0.05;
-    width: 400%;
+    aspect-ratio: 1 / 0.035;
+    width: 600%;
     min-height: 80px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -124,27 +159,93 @@
 
   &_offer {
     contain: content;
-    display: inline-block;
     display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    padding-left: 2vw;
+
+    text-align: center;
+
+    background-image: url('../../../public/ui-kit/main_offer_slide_green.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    // filter: drop-shadow(0 0 8px $glow-green);
+    border-radius: 10px;
+
+    -webkit-text-stroke: 1px;
+  }
+
+  &_offer_text {
+    width: 60%;
+    font-size: 3rem;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green,
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_offer_pic {
+    display: inline-block;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/love.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  &_offers_arrows {
+    // position: absolute;
+
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0 1vw;
+    width: 90vw;
+    height: 2vw;
+  }
 
-    font-size: 3rem;
-    text-align: center;
+  &_offers_arrow {
+    aspect-ratio: 1 / 0.5;
+    width: 4vw;
+    max-width: 50px;
 
-    background-color: $background-color-customize;
-    filter: drop-shadow(0 0 8px $glow-green);
-    border: solid 2px rgb(44 255 181);
-    border-radius: 10px;
-    box-shadow:
-      0 0 10px $glow-green,
-      0 0 10px $glow-green;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    outline: none;
 
-    -webkit-text-stroke: 1px;
+    transition: all 0.2s ease-in-out;
+
+    &.left {
+      transform: translate(-2vw, 0%);
+      background-image: url('../../../public/ui-kit/arrow_01_green_left.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/ui-kit/arrow_01_left.svg');
+      }
+    }
+
+    &.right {
+      transform: translate(2vw, 0%);
+      background-image: url('../../../public/ui-kit/arrow_01_green_right.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/ui-kit/arrow_01_right.svg');
+      }
+    }
   }
 
   &_sloth_left {
@@ -191,22 +292,43 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 80%;
-    max-width: 200px;
+    width: 24%;
+    min-width: 100px;
+    max-width: 400px;
 
     font-size: 2rem;
     color: $font-color-primary-one;
     text-align: center;
 
-    background-color: $background-color-category;
+    background-image: url('../../../public/ui-kit/square_02_02.svg');
     background-repeat: no-repeat;
+    background-position: center center;
     background-size: contain;
-    border-radius: 10px;
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
 
+    // filter: drop-shadow(0 0 10px $glow-green);
+
+    // mask-composite: destination-out;
+    // mask-composite: exclude;
+
+    // mask-image:
+    // url('../../../public/ui-kit/square_02_01.svg') center/contain no-repeat,
+    //   linear-gradient(
+    //     #fff 0 0
+    //   );
     -webkit-text-stroke: 1px;
+  }
+
+  &_slide_pic {
+    aspect-ratio: 1 / 1.1;
+    width: 70%;
+
+    // align-self: flex-end;
+    margin-top: 10%;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    filter: drop-shadow(0 0 5px $glow-green);
 
     &.one {
       background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-bug.png');
@@ -223,18 +345,6 @@
     &.four {
       background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-slothorian.png');
     }
-  }
-
-  &_offer_pic {
-    display: inline-block;
-
-    aspect-ratio: 1 / 1;
-    width: 20%;
-
-    background-image: url('../../../public/assets/sloth-pics/love.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
   }
 
   &_arrow {
@@ -299,14 +409,8 @@
   }
 
   .main {
-    &_category {
-      aspect-ratio: 1 / 0.6;
-      width: 48%;
-      max-width: unset;
-    }
-
     &_advertisment {
-      aspect-ratio: 1 / 0.2;
+      aspect-ratio: 1 / 0.4;
       width: 100%;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -314,30 +418,21 @@
 
     &_slide {
       aspect-ratio: 1 / 1;
-      width: 20%;
+      width: 24%;
       max-width: 250px;
     }
   }
 }
 
-@media screen and (width <= 320px) and (width <= 767.98px) {
+@media screen and (width >= 320px) and (width <= 767.98px) {
   html {
     font-size: 6px;
   }
 
   .main {
     &_title {
+      font-size: 3.5rem;
       text-align: center;
-    }
-
-    &_categories {
-      row-gap: 20px;
-    }
-
-    &_category {
-      aspect-ratio: 1 / 0.4;
-      width: 100%;
-      max-width: unset;
     }
 
     &_advertisment {
@@ -349,8 +444,16 @@
 
     &_slide {
       aspect-ratio: 1 / 1;
-      width: 20%;
+      width: 24%;
       max-width: 250px;
+    }
+
+    &_top {
+      flex-direction: column;
+    }
+
+    &_profile_buttons {
+      width: 80%;
     }
   }
 }
