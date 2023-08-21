@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
 
 function Header(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -30,10 +31,10 @@ function Header(): JSX.Element {
   ];
   const [activeBurger, SetActiveBurger] = useState(false);
   const handleToBurger = (): void => {
-    SetActiveBurger(false);
+    SetActiveBurger(true);
   };
   const handleToBurgerOff = (): void => {
-    SetActiveBurger(true);
+    SetActiveBurger(false);
   };
   return (
     <div className={style.header}>
@@ -43,10 +44,12 @@ function Header(): JSX.Element {
         </Link>
         <nav className={style.header_categories}>
           <ul
+            onClick={handleToBurgerOff}
+            aria-hidden="true"
             className={
               activeBurger
-                ? `${style.header_menu}`
-                : `${style.header_menu} ${style.header_menu_active}`
+                ? `${style.header_menu} ${style.header_menu_active}`
+                : `${style.header_menu} `
             }
           >
             {nameRouteHeader.map((item, index) =>
@@ -67,7 +70,7 @@ function Header(): JSX.Element {
                     className={`${style.header_menu_link} ${style.header_cart}`}
                     to={parhRouteHeader[index]}
                   >
-                    <span className={style.header_cart_name}>Card</span>
+                    <span className={style.header_cart_name}>Cart</span>
                     <span className={style.header_cart_counter}>
                       {cartCounter}
                     </span>
@@ -94,20 +97,16 @@ function Header(): JSX.Element {
             )}
           </ul>
         </nav>
-        <div
+        <button
           onClick={handleToBurger}
           className={
             activeBurger
-              ? `${style.burger_menu}`
-              : `${style.burger_menu} ${style.burger_menu_active}`
+              ? `${style.burger_menu} ${style.burger_menu_active}`
+              : `${style.burger_menu} `
           }
         >
-          <img
-            className={style.burger_menu_img}
-            src="./assets/burger/burger_icon_green_little.svg"
-            alt="icon"
-          />
-        </div>
+          <img className={style.burger_menu_img} src={iconBurger} alt="icon" />
+        </button>
       </div>
     </div>
   );

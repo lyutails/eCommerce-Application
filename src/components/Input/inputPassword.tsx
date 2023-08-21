@@ -1,30 +1,12 @@
 import style from '../Input/_input.module.scss';
-import { ChangeEventHandler, ReactNode, useState } from 'react';
+import { useState } from 'react';
 import ButtonForm from '../shared/ButtonForm/Button';
 import iconPassword from '../../../public/assets/icons/password.svg';
 import iconEye from '../../../public/assets/icons/eye.svg';
 import iconEyeClose from '../../../public/assets/icons/eye-close.svg';
+import { IInputPropsPassword } from '../../types/interfaces';
 
-// import { clue } from '../Input/input-data';
-
-interface IInputProps {
-  type?: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
-  placeholder?: string;
-  childrenBefore?: ReactNode;
-  childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-  onfocus?: ChangeEventHandler<HTMLInputElement>;
-  onblur?: ChangeEventHandler<HTMLInputElement>;
-}
-
-function InputPassword(props: IInputProps): JSX.Element {
+function InputPassword(props: IInputPropsPassword): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
   return (
     <div className={`${style.wrapper} ${props.classWrapper}`}>

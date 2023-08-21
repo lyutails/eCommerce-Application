@@ -1,24 +1,5 @@
 import style from '../Input/_input.module.scss';
-import { ChangeEventHandler, ReactNode } from 'react';
-
-// import { clue } from '../Input/input-data';
-
-interface IInputProps {
-  type: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
-  placeholder: string;
-  childrenBefore?: ReactNode;
-  childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-  onfocus?: ChangeEventHandler<HTMLInputElement>;
-  onblur?: ChangeEventHandler<HTMLInputElement>;
-}
+import { IInputProps } from '../../types/interfaces';
 
 function Input(props: IInputProps): JSX.Element {
   return (

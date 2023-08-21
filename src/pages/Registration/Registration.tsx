@@ -423,6 +423,33 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryShip)}
+                  className={
+                    checkmarkCountryShip
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
+                  }
+                >
+                  <option value="" className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryShipError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryShipError ? countryShipError : 'This is required field'}
+              </div>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setPostalShip)}
               type="text"
@@ -453,34 +480,6 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <div className={style.country}>
-              <div className={style.country_wrapper}>
-                <select
-                  onChange={(e): void => selectHandler(e, setCountryShip)}
-                  className={
-                    checkmarkCountryShip
-                      ? `${style.country_select} ${style.approved}`
-                      : style.country_select
-                  }
-                >
-                  <option value="" className={style.country_head}>
-                    Please, select the country
-                  </option>
-                  <option value="usa">USA</option>
-                  <option value="canada">Canada</option>
-                </select>
-              </div>
-              <div
-                className={
-                  countryShipError
-                    ? `${style.completed} ${style.error}`
-                    : style.uncompleted
-                }
-              >
-                {countryShipError ? countryShipError : 'This is required field'}
-              </div>
-            </div>
-
             <input
               onChange={(e): void => handleCheckbox(e, setCheckedInput)}
               className={style.checkbox_input}
@@ -633,6 +632,33 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
+            <div className={style.country}>
+              <div className={style.country_wrapper}>
+                <select
+                  onChange={(e): void => selectHandler(e, setCountryBill)}
+                  className={
+                    checkmarkCountryBill
+                      ? `${style.country_select} ${style.approved}`
+                      : style.country_select
+                  }
+                >
+                  <option value="" className={style.country_head}>
+                    Please, select the country
+                  </option>
+                  <option value="usa">USA</option>
+                  <option value="canada">Canada</option>
+                </select>
+              </div>
+              <div
+                className={
+                  countryBillError
+                    ? `${style.completed} ${style.error}`
+                    : style.uncompleted
+                }
+              >
+                {countryBillError ? countryBillError : 'This is required field'}
+              </div>
+            </div>
             <Input
               func={(e): void => inputHandler(e, setPostalBill)}
               type="text"
@@ -663,33 +689,6 @@ function RegistrationPage(): JSX.Element {
                 </div>
               }
             />
-            <div className={style.country}>
-              <div className={style.country_wrapper}>
-                <select
-                  onChange={(e): void => selectHandler(e, setCountryBill)}
-                  className={
-                    checkmarkCountryBill
-                      ? `${style.country_select} ${style.approved}`
-                      : style.country_select
-                  }
-                >
-                  <option value="" className={style.country_head}>
-                    Please, select the country
-                  </option>
-                  <option value="usa">USA</option>
-                  <option value="canada">Canada</option>
-                </select>
-              </div>
-              <div
-                className={
-                  countryBillError
-                    ? `${style.completed} ${style.error}`
-                    : style.uncompleted
-                }
-              >
-                {countryBillError ? countryBillError : 'This is required field'}
-              </div>
-            </div>
           </div>
 
           <ButtonForm
