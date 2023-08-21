@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '\\.(css|scss)$': 'identity-obj-proxy',
+    '\\.(svg)$': 'identity-obj-proxy',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   transform: {

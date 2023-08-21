@@ -3,20 +3,34 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const isDev = mode === 'development';
 
+const Dotenv = require('dotenv-webpack');
+
 const plugins = [
   new HtmlWebpackPlugin({
     template: path.resolve(__dirname, 'src/index.html'),
-    favicon: path.resolve(__dirname, 'public/favicon/favicon.ico'),
+    favicon: path.resolve(__dirname, 'public/favicon/trinity.ico'),
   }),
   new MiniCssExtractPlugin({
     filename: '[name].css',
   }),
   new ESLintPlugin({ extensions: ['.ts'] }),
   new StylelintPlugin({ fix: true }),
+
+  new Dotenv(),
+
+  new CopyPlugin({
+    patterns: [
+      {
+        from: path.resolve(__dirname, "public", "_redirects"),
+        to: path.resolve(__dirname, "dist"),
+      },
+    ],
+  }),
 ];
 
 module.exports = {
@@ -34,6 +48,11 @@ module.exports = {
   devtool: isDev ? 'inline-cheap-module-source-map' : false,
   module: {
     rules: [
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+      },
       {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
@@ -84,7 +103,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ttf?|woff?)$/,
+        test: /\.(ttf?|woff?|woff2?)$/,
         type: 'asset/resource',
         generator: {
           filename: 'fonts/[name].[ext]',
@@ -99,6 +118,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     assetModuleFilename: 'public/[name].[ext][query]',
     clean: true,
   },

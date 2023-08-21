@@ -1,36 +1,63 @@
-// import { tokenCustomer } from '../../src/api/clientBuilder';
-// import { tokenAdmin } from '../../src/api/adminBuilder';
-// import { apiRoot, getAllCustomers, getAllProducts } from '../api/createClient';
-// import { apiRoot } from '../../src/api/createClientAdmin';
 import style from './_app.module.scss';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setImage } from '../store/counterSlice';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import AuthPage from '../pages/Auth/Auth';
+import RegistrationPage from '../pages/Registration/Registration';
+import NotFoundPage from '../pages/NotFound/NotFound';
+import MainPage from '../pages/Main/Main';
+import AboutUsPage from '../pages/AboutUs/AboutUs';
+import CustomizePage from '../pages/Customize/Customize';
+import ProfilePage from '../pages/Profile/Profile';
+import { IRootState } from '../types/interfaces';
+import { Layout } from '../components/Layout/Layout';
+import CartPage from '../pages/Cart/Cart';
+import CatalogPage from '../pages/Catalog/Catalog';
+import CategoryPage from '../pages/Category/Category';
+import ProductPage from '../pages/Product/Product';
+import { ParhRoute } from '../types/enums';
 
 function App(): JSX.Element {
-  // console.log(apiRoot.products().get());
-  // console.log(getAllProducts);
-  // const dispatch = useDispatch();
-  // const url = getAllProducts(dispatch(setImage));
-  // const image = useSelector(state => state.);
-  /* console.log(
-    url.then((response) => {
-      return response.body.results[0].masterData.current.variants[0].images;
-    })
-  ); */
-  // url?.length ? console.log(url[0].url) : console.log('error');
-  // console.log(getAllCustomers());
-  // console.log(apiRoot.productProjections().get());
-  // console.log(apiRoot.customers().get());
-  // console.log(apiRoot.categories().get());
-  // console.log(tokenAdmin);
-  // console.log(tokenCustomer);
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   return (
-    <div>
-      <h1 className={style.title}>Hello!</h1>
-      <div className="pics">
-        <div className="pic"></div>
-      </div>
-    </div>
+    <section className={style.app}>
+      <Routes>
+        <Route path={ParhRoute.MainPage} element={<Layout />}>
+          <Route index element={<MainPage />} />
+          <Route path={ParhRoute.CustomizePage} element={<CustomizePage />} />
+          <Route path={ParhRoute.AboutUsPage} element={<AboutUsPage />} />
+          <Route path={ParhRoute.CartPage} element={<CartPage />} />
+          <Route path={ParhRoute.CatalogPage} element={<CatalogPage />} />
+          <Route path={ParhRoute.CategoryPage} element={<CategoryPage />} />
+          <Route path={ParhRoute.ProductPage} element={<ProductPage />} />
+          <Route path={ParhRoute.NotFoundPage} element={<NotFoundPage />} />
+          {isAuth ? (
+            <>
+              <Route path={ParhRoute.ProfilePage} element={<ProfilePage />} />
+              <Route
+                path={ParhRoute.AuthPage}
+                element={<Navigate to={ParhRoute.MainPage} replace />}
+              />
+              <Route
+                path={ParhRoute.RegistrationPage}
+                element={<Navigate to={ParhRoute.MainPage} replace />}
+              />
+            </>
+          ) : (
+            <>
+              <Route
+                path={ParhRoute.ProfilePage}
+                element={<Navigate to={ParhRoute.AuthPage} replace />}
+              />
+              <Route
+                path={ParhRoute.RegistrationPage}
+                element={<RegistrationPage />}
+              />
+              <Route path={ParhRoute.AuthPage} element={<AuthPage />} />
+            </>
+          )}
+        </Route>
+      </Routes>
+    </section>
   );
 }
 export default App;

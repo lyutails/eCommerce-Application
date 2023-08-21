@@ -1,15 +1,5 @@
-@import '../style/variables';
-
-.title {
-  font-family: 'Dancing Script', cursive;
-}
-
-.pics {
-  width: 90vw;
-  background-color: $background-color-one;
-}
-
-.pic {
-  aspect-ratio: 1 / 1;
-  width: 20%;
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

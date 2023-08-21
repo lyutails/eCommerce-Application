@@ -1,0 +1,180 @@
+@import '../../style/variables';
+
+body {
+  background-color: black;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: white;
+}
+
+.login {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+
+  &_wrapper {
+    aspect-ratio: 1 / 1;
+    width: 40%;
+    min-width: 280px;
+    max-width: 600px;
+  }
+}
+
+.authorization {
+  &_form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &_button {
+    cursor: pointer;
+
+    aspect-ratio: 1 / 0.1;
+    width: 100%;
+    max-height: 60px;
+    padding: 10px 20px;
+
+    font-size: 2rem;
+    color: white;
+
+    background-color: $button-default;
+    border: none;
+
+    transition: background-color ease-in-out 0.2s;
+  }
+
+  &_button:focus {
+    background-color: $button-focus;
+  }
+
+  &_button:hover {
+    background-color: $button-hover;
+  }
+
+  &_button:active {
+    background-color: $button-active;
+  }
+}
+
+.registration {
+  &_button {
+    cursor: pointer;
+
+    aspect-ratio: 1 / 0.1;
+    width: 100%;
+    max-height: 60px;
+    padding: 10px 20px;
+
+    font-size: 2rem;
+    color: white;
+
+    background-color: transparent;
+    border: 2px solid $border-default;
+
+    transition: border ease-in-out 0.2s;
+  }
+
+  &_button:focus {
+    border: 2px solid $border-focus;
+  }
+
+  &_button:hover {
+    border: 2px solid $border-hover;
+  }
+
+  &_button:active {
+    border: 2px solid $border-active;
+  }
+}
+
+.password {
+  position: relative;
+
+  &_clue {
+    margin: 0;
+    padding: 5px 0 5px 20px;
+
+    font-size: 1.2rem;
+    color: white;
+
+    visibility: visible;
+    background-repeat: no-repeat;
+    background-position: top 3px left 2px;
+    background-size: 15px 15px
+  }
+
+  &_valid {
+    background-image: url('../../../public/assets/icons/alert.svg');
+    ;
+  }
+
+  &_error {
+    color: red;
+    background-image: url('../../../public/assets/icons/error.svg');
+  }
+
+}
+
+.email {
+  &_clue {
+    margin: 0;
+    font-size: 1.2rem;
+    color: red;
+}
+}
+
+.error {
+  color: red;
+  visibility: visible;
+}
+
+.label_img_icon {
+  pointer-events: none;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.invalid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+  padding: 10px 0 10px 20px;
+
+  font-size: 2rem;
+  color: red;
+
+  &_error {
+    margin-right: 10px;
+  }
+}
+
+.shown {
+  display: block;
+}
+
+.unshown {
+  display: none;
+}
+
+.tooltip_error {
+  margin-right: 10px;
+}
+
+.tooltip_text {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}

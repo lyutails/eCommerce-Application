@@ -1,0 +1,242 @@
+@import '../../style/variables';
+
+@import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
+
+.catalog {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  width: 100%;
+
+  background-color: $background-color-primary-one;
+  background-image: url('../../../public/assets/backgrounds/cyberpunk_02.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: difference;
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 90vw;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  &_title {
+    flex: 0 1 auto;
+
+    margin-bottom: 20px;
+
+    font-family: Cyberpank, cursive;
+    font-size: 2rem;
+    color: $font-color-title;
+  }
+
+  &_categories {
+    display: flex;
+    flex-flow: row wrap;
+    row-gap: 2vh;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &_category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1.2;
+    width: 23%;
+    max-width: 400px;
+
+    font-size: 2rem;
+    color: $font-color-title;
+    text-align: center;
+
+    background-color: $background-color-category;
+    border-radius: 10px;
+    box-shadow: 0 0 10px $glow-violet;
+
+    animation-name: category-border-shine-anim;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  &_advertisment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 0.15;
+    width: 100%;
+    min-height: 80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    font-size: 2rem;
+    text-align: center;
+
+    background-color: $background-color-customize;
+    filter: drop-shadow(0 0 8px $glow-green);
+    border-radius: 10px;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 10px $glow-green;
+
+    -webkit-text-stroke: 1px;
+  }
+
+  &_slider {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 90vw;
+    margin-bottom: 20px;
+  }
+
+  &_slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+    max-width: 200px;
+
+    font-size: 2rem;
+    color: $font-color-primary-one;
+    text-align: center;
+
+    background-color: $background-color-category;
+    border-radius: 10px;
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+
+    -webkit-text-stroke: 1px;
+  }
+
+  &_arrow {
+    position: absolute;
+
+    display: inline-block;
+
+    aspect-ratio: 1 / 1;
+    width: 4vw;
+    max-width: 50px;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    transition: all 0.2s ease-in-out;
+
+    &.left {
+      transform: translate(-50px, 0);
+      background-image: url('../../../public/assets/icons/arrow_left.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/assets/icons/arrow_left_hover.svg');
+      }
+    }
+
+    &.right {
+      transform: translate(90vw, 0);
+      background-image: url('../../../public/assets/icons/arrow_right.svg');
+
+      &:hover {
+        cursor: pointer;
+        background-image: url('../../../public/assets/icons/arrow_right_hover.svg');
+      }
+    }
+  }
+}
+
+@keyframes category-border-shine-anim {
+  0% {
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+  }
+
+  50% {
+    box-shadow:
+      0 0 10px $glow-violet,
+      0 0 15px $glow-violet;
+  }
+
+  100% {
+    box-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+  }
+}
+
+@media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
+  html {
+    font-size: 8px;
+  }
+
+  .main {
+    &_category {
+      aspect-ratio: 1 / 0.6;
+      width: 48%;
+      max-width: unset;
+    }
+
+    &_advertisment {
+      aspect-ratio: 1 / 0.2;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    &_slide {
+      aspect-ratio: 1 / 1;
+      width: 20%;
+      max-width: 250px;
+    }
+  }
+}
+
+@media screen and (min-width: (320px)) and (max-width: (767.98px)) {
+  html {
+    font-size: 6px;
+  }
+
+  .main {
+    &_title {
+      text-align: center;
+    }
+
+    &_categories {
+      row-gap: 20px;
+    }
+
+    &_category {
+      aspect-ratio: 1 / 0.4;
+      width: 100%;
+      max-width: unset;
+    }
+
+    &_advertisment {
+      aspect-ratio: 1 / 0.4;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    &_slide {
+      aspect-ratio: 1 / 1;
+      width: 20%;
+      max-width: 250px;
+    }
+  }
+}
