@@ -2,10 +2,6 @@
 
 @import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
 
-$font-color-title: #e6ff2d;
-$background-color-category: rgb(217 46 255 / 20%);
-$background-color-customize: rgb(31 255 210 / 15%);
-
 .catalog {
   display: flex;
   flex: 1 1 auto;
@@ -18,12 +14,6 @@ $background-color-customize: rgb(31 255 210 / 15%);
   background-repeat: no-repeat;
   background-size: cover;
   background-blend-mode: difference;
-
-  /*  background-blend-mode: luminosity;
-
-  background-blend-mode: soft-light;
-
-  background-blend-mode: hard-light; */
 
   &_wrapper {
     display: flex;

@@ -135,6 +135,7 @@ function MainPage(): JSX.Element {
         </div>
         <div className={style.main_offers_slider}>
           <button
+            data-testid="prev"
             onClick={(): void => actionHandler('prev')}
             className={`${style.main_offers_arrow} ${style.left}`}
           ></button>
@@ -148,6 +149,7 @@ function MainPage(): JSX.Element {
             </div>
           </div>
           <button
+            data-testid="next"
             onClick={(): void => actionHandler('next')}
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
