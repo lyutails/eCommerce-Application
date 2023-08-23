@@ -322,9 +322,9 @@ body {
     color: $font-color-primary-one;
     text-align: center;
     text-shadow:
-      0 0 5px $modal-color,
-      0 0 10px $modal-color,
-      0 0 20px $modal-color;
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
 
     background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
     background-repeat: no-repeat;

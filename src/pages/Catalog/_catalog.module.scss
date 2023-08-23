@@ -57,7 +57,7 @@
     color: $font-color-title;
     text-align: center;
 
-    background-color: $background-color-category;
+    background-color: $glow-green;
     border-radius: 10px;
     box-shadow: 0 0 10px $glow-violet;
 
@@ -81,7 +81,7 @@
     font-size: 2rem;
     text-align: center;
 
-    background-color: $background-color-customize;
+    background-color: $glow-green;
     filter: drop-shadow(0 0 8px $glow-green);
     border-radius: 10px;
     box-shadow:
@@ -114,7 +114,7 @@
     color: $font-color-primary-one;
     text-align: center;
 
-    background-color: $background-color-category;
+    background-color: $glow-green;
     border-radius: 10px;
     box-shadow:
       0 0 5px $glow-violet,
