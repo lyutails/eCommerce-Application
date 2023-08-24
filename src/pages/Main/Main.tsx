@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { getProducts } from '../../api/getProducts';
 
 export const mainPageOffersSlides = [
   'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day',
@@ -19,6 +20,15 @@ export const mainPageOffersSlides = [
 ];
 
 function MainPage(): JSX.Element {
+  // const [allProducts, setAllProducts] = useState<string[]>([]);
+  // useEffect(() => {
+  //   getProducts()
+  //     .then((response) => {
+  //       setAllProducts(response);
+  //     })
+  //     .then((response) => console.log(response.length));
+  // }, []);
+  console.log(getProducts());
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
