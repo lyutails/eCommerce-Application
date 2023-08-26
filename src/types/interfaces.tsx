@@ -64,9 +64,9 @@ export interface IInputProps {
 
 export interface IInputPropsPassword {
   type?: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
+  classInput?: string;
+  classClue?: string;
+  classWrapper?: string;
   placeholder?: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
@@ -77,6 +77,8 @@ export interface IInputPropsPassword {
   max?: string;
   onfocus?: ChangeEventHandler<HTMLInputElement>;
   onblur?: ChangeEventHandler<HTMLInputElement>;
+  passwordError: boolean;
+  setPasswordField: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface IInputPropsMask {

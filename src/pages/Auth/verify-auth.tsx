@@ -15,11 +15,10 @@ export const handleСreationAuth = (
   loginField: string,
   passwordField: string,
   navigator: NavigateFunction,
-  setErrorPassword: React.Dispatch<React.SetStateAction<string>>,
+  setErrorPassword: React.Dispatch<React.SetStateAction<boolean>>,
   isAuth: boolean,
   dispatch: Dispatch<AnyAction>,
   setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
-  setPasswordFlagError: React.Dispatch<React.SetStateAction<boolean>>,
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
@@ -30,14 +29,13 @@ export const handleСreationAuth = (
     setCheckmarkLogin
   );
   const passwordErr = handlePasswordInput(passwordField);
-  Object.keys(passwordErr).map((key): void => {
+  Object.keys(passwordErr).every((key): void => {
     if (passwordErr[key].isError === true) {
-      setErrorPassword(clue.invalidPassword);
       passwordСheck = false;
-      setPasswordFlagError(true);
+      setErrorPassword(true);
     } else {
       passwordСheck = true;
-      setPasswordFlagError(false);
+      setErrorPassword(false);
     }
   });
   const request = {

@@ -1,7 +1,7 @@
 @import '../../style/variables';
 
 body {
-  background-color: black;
+  background-color: $background-color-primary-one;
 }
 
 .title {
@@ -147,8 +147,7 @@ body {
   display: none;
 }
 
-.birth_clue,
-.password_clue {
+.birth_clue {
   padding: 5px 0 5px 20px;
 
   color: white;

@@ -227,34 +227,8 @@ function RegistrationPage(): JSX.Element {
             }
           />
           <InputPassword
-            onblur={(): void => hideTooltip(setPasswordFocus)}
-            onfocus={(): void => showTooltip(setPasswordFocus)}
-            func={(e): void => inputHandler(e, setPassword)}
-            clue={
-              passwordError
-                ? 'Please enter valid password'
-                : 'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'
-            }
-            tooltip={
-              <div
-                className={
-                  passwordFocus
-                    ? `${style.visible} ${style.password_tooltip}`
-                    : `${style.hide} ${style.password_tooltip}`
-                }
-              >
-                {passwordErrorElements}
-              </div>
-            }
-            classWrapper={style.password}
-            classClue={
-              passwordFocus
-                ? `${style.password_clue} ${style.hide}`
-                : passwordError
-                ? `${style.password_clue} ${style.visible} ${style.error}`
-                : `${style.password_clue}`
-            }
-            classInput={style.password_input}
+            passwordError={passwordError}
+            setPasswordField={setPassword}
           />
           <InputBirthDateMask
             func={(e): void => inputHandler(e, setBirthday)}

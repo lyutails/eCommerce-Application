@@ -67,4 +67,41 @@
     background-color: transparent;
     border: none;
   }
+
+  &_clue {
+    padding: 5px 0 5px 20px;
+
+  color: white;
+
+  visibility: visible;
+  background-image: url('../../../public/assets/icons/alert.svg');
+  background-repeat: no-repeat;
+  background-position: top 3px left 2px;
+  background-size: 15px 15px;
+  }
+}
+
+.shown {
+  display: block;
+}
+
+.unshown {
+  display: none;
+}
+
+.tooltip_error {
+  margin-right: 10px;
+}
+
+.tooltip_text {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.error {
+  margin: 0;
+  padding: 0;
+  color: red;
+  background-image: none;
 }
