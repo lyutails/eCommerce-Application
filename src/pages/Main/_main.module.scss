@@ -360,26 +360,6 @@
   }
 }
 
-@keyframes category-border-shine-anim {
-  0% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
-  }
-
-  50% {
-    box-shadow:
-      0 0 10px $glow-violet,
-      0 0 15px $glow-violet;
-  }
-
-  100% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
-  }
-}
-
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
   html {
     font-size: 8px;

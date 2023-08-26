@@ -9,13 +9,15 @@ export async function getProducts(): Promise<ProductProjection[]> {
 
     const productsProjection = await apiRoot
       .productProjections()
-      .search()
-      .get()
+      .get({
+        // queryArgs: { where: `categories(id="${categoryId}")` },
+      })
       .execute();
 
     const totalProductsAmount = productsProjection.body.results.length;
     const totalProductsCount = productsProjection.body.results;
 
+    console.log(totalProductsCount);
     return totalProductsCount;
   } catch {
     throw new Error('no products found');
