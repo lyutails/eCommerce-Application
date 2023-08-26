@@ -9,8 +9,9 @@ export async function getProducts(): Promise<ProductProjection[]> {
 
     const productsProjection = await apiRoot
       .productProjections()
-      .search()
-      .get()
+      .get({
+        // queryArgs: { where: `categories(id="${categoryId}")` },
+      })
       .execute();
 
     const totalProductsAmount = productsProjection.body.results.length;
