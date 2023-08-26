@@ -17,6 +17,7 @@ export async function getProducts(): Promise<ProductProjection[]> {
     const totalProductsAmount = productsProjection.body.results.length;
     const totalProductsCount = productsProjection.body.results;
 
+    console.log(totalProductsCount);
     return totalProductsCount;
   } catch {
     throw new Error('no products found');

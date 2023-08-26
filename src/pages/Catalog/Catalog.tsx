@@ -5,6 +5,9 @@ import {
   GetCategories,
   GetCategory,
   GetParentCategory,
+  getSubCategory,
+  getSubtreeCategory,
+  returnProductsByCategoryKey,
 } from '../../api/getCategories';
 import { Category, ClientResponse } from '@commercetools/platform-sdk';
 
@@ -35,7 +38,6 @@ function CatalogPage(): JSX.Element {
       setAllCategories(onlyWithoutAncestors);
     });
   }, []);
-  console.log(allCategories);
   return (
     <div className={style.catalog} data-testid="catalog-component">
       <div className={style.catalog_wrapper}>
@@ -45,14 +47,11 @@ function CatalogPage(): JSX.Element {
           </h1>
           <div className={style.catalog_categories}>
             {allCategories.map((category) => {
-              const id = category.id;
-              console.log(id);
-              console.log(category);
               return (
                 <Link
                   to={category.name['en-US']}
                   className={style.catalog_category}
-                  key={id}
+                  key={category.name['en-US']}
                 >
                   {category.name['en-US']}
                 </Link>
