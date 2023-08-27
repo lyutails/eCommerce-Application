@@ -11,11 +11,6 @@
 
   background-color: $background-color-primary-one;
 
-  // background-image: url('../../../public/assets/backgrounds/cyberpunk_02_02.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-blend-mode: difference;
-
   &_wrapper {
     display: flex;
     flex-direction: column;
@@ -93,8 +88,8 @@
     aspect-ratio: 1 / 0.36;
     width: 100%;
     min-height: 80px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     padding: 10px 4vw 0;
 
     background-image: url('../../../public/ui-kit/main_advertisment.svg');
@@ -270,7 +265,7 @@
     justify-content: space-between;
 
     width: 90vw;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
 
   &_slide {

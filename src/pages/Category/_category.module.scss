@@ -1,10 +1,27 @@
-.container{
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
+@import '../../style/variables';
 
-  .title{
+.category {
+  &_wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $background-color-primary-one;
+  }
+
+  &_title {
+    font-family: 'No Signal', cursive;
     font-size: 50px;
+    color: $font-color-title;
+  }
+
+  &_button {
+    aspect-ratio: 1 / 0.2;
+    width: 20%;
+    min-width: 100px;
+    max-width: 200px;
+
+    background-color: $background-color-primary-five;
   }
 }

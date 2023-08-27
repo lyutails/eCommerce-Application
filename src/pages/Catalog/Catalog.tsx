@@ -1,15 +1,8 @@
 import { Link } from 'react-router-dom';
 import style from './_catalog.module.scss';
 import { useEffect, useState } from 'react';
-import {
-  GetCategories,
-  GetCategory,
-  GetParentCategory,
-  getSubCategory,
-  getSubtreeCategory,
-  returnProductsByCategoryKey,
-} from '../../api/getCategories';
-import { Category, ClientResponse } from '@commercetools/platform-sdk';
+import { GetParentCategory } from '../../api/getCategories';
+import { Category } from '@commercetools/platform-sdk';
 
 function CatalogPage(): JSX.Element {
   /* const category = useSelector((state: ICategoryState) => state.category); */
@@ -53,7 +46,9 @@ function CatalogPage(): JSX.Element {
                   className={style.catalog_category}
                   key={category.name['en-US']}
                 >
-                  {category.name['en-US']}
+                  <div className={style.catalog_category_title}>
+                    {category.name['en-US']}
+                  </div>
                 </Link>
               );
             })}
