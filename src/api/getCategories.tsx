@@ -116,11 +116,3 @@ export async function getSubtreeCategory(
 //           expand: ['parent']
 //         }
 //       })
-
-// const returnProductByKey = (productKey: string) => {
-//   return apiRoot
-//     .products()
-//     .withKey({ key: productKey })
-//     .get()
-//     .execute();
-// };

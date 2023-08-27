@@ -1,0 +1,30 @@
+@import '../../style/variables';
+
+.card {
+  &_wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    width: 60%;
+  }
+
+  &_card {
+    display: flex;
+    flex-direction: column;
+
+    aspect-ratio: 1 / 1;
+    width: 18%;
+
+    background-color: $background-color-primary-five;
+  }
+
+  &_pic {
+    aspect-ratio: 1 / 1;
+    width: 80%;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  &_name {
+    color: $font-color-primary-one;
+  }
+}
