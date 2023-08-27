@@ -11,7 +11,7 @@ function Input(props: IInputProps): JSX.Element {
           onFocus={props.onfocus}
           value={props.value}
           max={props.max}
-          onChange={props.func}
+          onChange={props.onChange}
           className={`${style.wrapper_input} ${props.classInput}`}
           type={props.type}
           placeholder={props.placeholder}

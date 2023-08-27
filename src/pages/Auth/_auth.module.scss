@@ -1,7 +1,7 @@
 @import '../../style/variables';
 
 body {
-  background-color: black;
+  background-color: $background-color-primary-one;
 }
 
 .title {
@@ -90,34 +90,21 @@ body {
   &_button:active {
     border: 2px solid $border-active;
   }
+
+  
 }
 
 .password {
-  position: relative;
-
-  &_clue {
-    margin: 0;
-    padding: 5px 0 5px 20px;
-
-    font-size: 1.2rem;
-    color: white;
-
-    visibility: visible;
-    background-repeat: no-repeat;
-    background-position: top 3px left 2px;
-    background-size: 15px 15px
-  }
-
-  &_valid {
-    background-image: url('../../../public/assets/icons/alert.svg');
-    ;
-  }
+  &_color {
+  color: white;
+  background-image: url('../../../public/assets/icons/alert.svg');
+}
 
   &_error {
+    padding-left: 0;
+    font-size: 1.2rem;
     color: red;
-    background-image: url('../../../public/assets/icons/error.svg');
   }
-
 }
 
 .email {

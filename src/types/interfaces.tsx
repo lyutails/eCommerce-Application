@@ -53,7 +53,7 @@ export interface IInputProps {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;
@@ -63,20 +63,13 @@ export interface IInputProps {
 }
 
 export interface IInputPropsPassword {
-  type?: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
-  placeholder?: string;
-  childrenBefore?: ReactNode;
-  childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-  onfocus?: ChangeEventHandler<HTMLInputElement>;
-  onblur?: ChangeEventHandler<HTMLInputElement>;
+  placeholder: string;
+  passwordError: boolean;
+  setPasswordField: React.Dispatch<React.SetStateAction<string>>;
+  passwordField?: string;
+  clueColor: string;
+  clueError: string;
+  tooltipColor?: string;
 }
 
 export interface IInputPropsMask {

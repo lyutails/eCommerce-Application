@@ -28,7 +28,7 @@ function MainPage(): JSX.Element {
   //     })
   //     .then((response) => console.log(response.length));
   // }, []);
-  console.log(getProducts());
+  // console.log(getProducts());
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);

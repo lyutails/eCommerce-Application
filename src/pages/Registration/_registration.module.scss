@@ -1,7 +1,7 @@
 @import '../../style/variables';
 
 body {
-  background-color: black;
+  background-color: $background-color-primary-one;
 }
 
 .title {
@@ -147,8 +147,7 @@ body {
   display: none;
 }
 
-.birth_clue,
-.password_clue {
+.birth_clue {
   padding: 5px 0 5px 20px;
 
   color: white;
@@ -163,7 +162,10 @@ body {
 .error {
   margin: 0;
   padding: 0;
+
+  font-size: 1.2rem;
   color: red;
+
   background-image: none;
 }
 
@@ -350,3 +352,19 @@ body {
     }
   }
 }
+
+
+.password{
+&_color {
+  color: white;
+  background-image: url('../../../public/assets/icons/alert.svg');
+}
+
+&_error {
+  padding-left: 0;
+  font-size: 1.2rem;
+  color: red;
+}
+}
+
+
