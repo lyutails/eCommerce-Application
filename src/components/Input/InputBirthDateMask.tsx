@@ -4,8 +4,6 @@ import { useRef } from 'react';
 import { getMinUserAge } from './getMinUserAge';
 import { IInputPropsMask } from '../../types/interfaces';
 
-/* Enter Date of birth in forman dd.mm.yyyy NB! your age should be equal or more than 13 to register * */
-
 function InputBirthDateMask(props: IInputPropsMask): JSX.Element {
   const ref = useRef(null);
   const inputRef = useRef(null);
@@ -25,7 +23,7 @@ function InputBirthDateMask(props: IInputPropsMask): JSX.Element {
           placeholder={props.placeholder}
           type={props.type}
           max={getMinUserAge()}
-          /* required */
+          value={props.value}
         />
         {props.childrenAfter}
       </div>

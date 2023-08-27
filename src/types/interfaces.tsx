@@ -53,7 +53,7 @@ export interface IInputProps {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;

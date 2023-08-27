@@ -45,7 +45,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         </label>
       </div>
       <Input
-        func={props.setStreetField}
+        onChange={props.setStreetField}
         type="text"
         clue={props.streetError ? props.streetError : 'This is required field'}
         placeholder="Street *"
@@ -73,7 +73,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        func={props.setBuildingField}
+        onChange={props.setBuildingField}
         type="text"
         placeholder="Building *"
         classWrapper={style.building}
@@ -103,7 +103,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        func={props.setApartmentField}
+        onChange={props.setApartmentField}
         type="text"
         placeholder="Apartment"
         classWrapper={style.apartment}
@@ -133,7 +133,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        func={props.setCityField}
+        onChange={props.setCityField}
         type="text"
         clue={props.cityError ? props.cityError : 'This is required field'}
         placeholder="City *"
@@ -188,7 +188,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         </div>
       </div>
       <Input
-        func={props.setPostalField}
+        onChange={props.setPostalField}
         type="text"
         clue={props.postalError ? props.postalError : 'This is required field'}
         placeholder="Postal *"

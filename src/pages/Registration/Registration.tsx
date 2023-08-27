@@ -142,7 +142,7 @@ function RegistrationPage(): JSX.Element {
         <h2 className={style.title}>Registration</h2>
         <form action="" className={style.registration_form}>
           <Input
-            func={(e): void => inputHandler(e, setFistname)}
+            onChange={(e): void => inputHandler(e, setFistname)}
             type="text"
             clue={fistnameError ? fistnameError : 'This is required field'}
             placeholder="First name *"
@@ -170,7 +170,7 @@ function RegistrationPage(): JSX.Element {
             }
           />
           <Input
-            func={(e): void => inputHandler(e, setLastname)}
+            onChange={(e): void => inputHandler(e, setLastname)}
             type="text"
             clue={lastnameError ? lastnameError : 'This is required field'}
             placeholder="Last name *"
@@ -198,7 +198,7 @@ function RegistrationPage(): JSX.Element {
             }
           />
           <Input
-            func={(e): void => inputHandler(e, setLogin)}
+            onChange={(e): void => inputHandler(e, setLogin)}
             type="email"
             clue={loginError ? loginError : 'This is required field'}
             placeholder="E-mail *"
@@ -281,7 +281,7 @@ function RegistrationPage(): JSX.Element {
               </label>
             </div>
             <Input
-              func={(e): void => inputHandler(e, setStreetShip)}
+              onChange={(e): void => inputHandler(e, setStreetShip)}
               type="text"
               clue={
                 streetShipError ? streetShipError : 'This is required field'
@@ -311,7 +311,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setBuildingShip)}
+              onChange={(e): void => inputHandler(e, setBuildingShip)}
               type="text"
               placeholder="Building *"
               classWrapper={style.building}
@@ -341,7 +341,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setApartmentShip)}
+              onChange={(e): void => inputHandler(e, setApartmentShip)}
               type="text"
               placeholder="Apartment"
               classWrapper={style.apartment}
@@ -373,7 +373,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setCityShip)}
+              onChange={(e): void => inputHandler(e, setCityShip)}
               type="text"
               clue={cityShipError ? cityShipError : 'This is required field'}
               placeholder="City *"
@@ -428,7 +428,7 @@ function RegistrationPage(): JSX.Element {
               </div>
             </div>
             <Input
-              func={(e): void => inputHandler(e, setPostalShip)}
+              onChange={(e): void => inputHandler(e, setPostalShip)}
               type="text"
               clue={
                 postalShipError ? postalShipError : 'This is required field'
@@ -490,7 +490,7 @@ function RegistrationPage(): JSX.Element {
               </label>
             </div>
             <Input
-              func={(e): void => inputHandler(e, setStreetBill)}
+              onChange={(e): void => inputHandler(e, setStreetBill)}
               type="text"
               placeholder="Street *"
               classWrapper={style.street}
@@ -520,7 +520,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setBuildingBill)}
+              onChange={(e): void => inputHandler(e, setBuildingBill)}
               type="text"
               placeholder="Building *"
               classWrapper={style.building}
@@ -550,7 +550,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setApartmentBill)}
+              onChange={(e): void => inputHandler(e, setApartmentBill)}
               type="text"
               placeholder="Apartment"
               classWrapper={style.apartment}
@@ -582,7 +582,7 @@ function RegistrationPage(): JSX.Element {
               }
             />
             <Input
-              func={(e): void => inputHandler(e, setCityBill)}
+              onChange={(e): void => inputHandler(e, setCityBill)}
               type="text"
               placeholder="City *"
               classWrapper={style.city}
@@ -637,7 +637,7 @@ function RegistrationPage(): JSX.Element {
               </div>
             </div>
             <Input
-              func={(e): void => inputHandler(e, setPostalBill)}
+              onChange={(e): void => inputHandler(e, setPostalBill)}
               type="text"
               placeholder="Postal *"
               classWrapper={style.postal}

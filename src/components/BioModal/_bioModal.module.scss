@@ -12,7 +12,7 @@
 
     background-color: white;
 
-    &_password {
+    &_bio {
         width: 60%;
       min-width: 200px;
     }
@@ -59,11 +59,6 @@
       color: black;
     }
 
-    &_color {
-      display: none;
-      color: black;
-    }
-
     &_close {
       cursor: pointer;
 
@@ -75,20 +70,4 @@
       border: none;
     }
 
-}
-
-.password_new_color {
-      color: black;
-      background-image: url('../../../public/assets/icons/alert-black.svg');
-    }
-
-.password_error {
-  margin: 0;
-  padding: 0;
-  color: red;
-  background-image: none;
-}
-
-.tooltip_color {
-  color: black;
 }

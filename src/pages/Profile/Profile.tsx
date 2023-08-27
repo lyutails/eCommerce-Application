@@ -12,6 +12,8 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import UpdateIcon from '../../../public/assets/icons/update.svg';
 import PasswordModal from '../../components/PasswordModal/PasswordModal';
+import EmailModal from '../../components/EmailModal/EmailModal';
+import BioModal from '../../components/BioModal/BioModal';
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ function ProfilePage(): JSX.Element {
   const [birthday, setBirthday] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [version, setVersion] = useState(1);
   const [clickedPersonal, setClickedPersonal] = useState(true);
   const [clickedAddress, setClickedAddress] = useState(false);
   const [clickedBioUpdate, setClickedBioUpdate] = useState(false);
@@ -51,15 +54,16 @@ function ProfilePage(): JSX.Element {
       checkRefreshToken();
     } else {
       refreshTokenFlow(refreshToken)
-        .then(() =>
+        .then((response) => {
           getCustomerById({ ID: customerId }).then((response) => {
             response.body.firstName && setFirstname(response.body.firstName);
             response.body.lastName && setLastname(response.body.lastName);
             response.body.dateOfBirth && setBirthday(response.body.dateOfBirth);
             response.body.email && setEmail(response.body.email);
             response.body.password && setPassword(response.body.password);
-          })
-        )
+            response.body.version && setVersion(response.body.version);
+          });
+        })
         .catch(() => {
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
@@ -213,6 +217,26 @@ function ProfilePage(): JSX.Element {
             : `${style.profile_modal} ${style.hidden}`
         }
       >
+        <BioModal
+          token={refreshToken ? refreshToken : ''}
+          version={version}
+          firstnameField={firstname}
+          lastnameField={lastname}
+          birthdayField={birthday}
+          onClick={(): void => {
+            setClickedBioUpdate(false);
+            setShowModal(false);
+          }}
+          modalClass={clickedBioUpdate ? style.visible : style.hidden}
+        />
+        <EmailModal
+          emailField={email}
+          onClick={(): void => {
+            setClickedEmailUpdate(false);
+            setShowModal(false);
+          }}
+          modalClass={clickedEmailUpdate ? style.visible : style.hidden}
+        />
         <PasswordModal
           onClick={(): void => {
             setClickedPasswordUpdate(false);

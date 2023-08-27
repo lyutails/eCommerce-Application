@@ -55,7 +55,7 @@ function AuthPage(): JSX.Element {
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
             <Input
-              func={(e): void => inputHandler(e, setLogin)}
+              onChange={(e): void => inputHandler(e, setLogin)}
               clue={loginError ? loginError : 'This is required field'}
               type="email"
               placeholder="E-mail"

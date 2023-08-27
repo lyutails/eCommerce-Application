@@ -7,18 +7,6 @@ import CloseIcon from '../../../public/assets/icons/close.svg';
 export interface IPasswordModalProps {
   modalClass: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-  //   classClue: string;
-  //   classWrapper: string;
-  //   placeholder: string;
-  //   childrenBefore?: ReactNode;
-  //   childrenAfter?: ReactNode;
-  //   func?: ChangeEventHandler<HTMLInputElement>;
-  //   clue?: string;
-  //   tooltip?: ReactNode;
-  //   value?: string;
-  //   max?: string;
-  //   onfocus?: ChangeEventHandler<HTMLInputElement>;
-  //   onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 function PasswordModal(props: IPasswordModalProps): JSX.Element {
