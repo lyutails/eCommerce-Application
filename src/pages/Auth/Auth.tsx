@@ -34,24 +34,6 @@ function AuthPage(): JSX.Element {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
-  // const passwordErrorTexts = handlePasswordInput(password);
-  // const passwordErrorElements = Object.keys(passwordErrorTexts).map(
-  //   (key, i) => {
-  //     return (
-  //       <p
-  //         key={`tooltip_${i}`}
-  //         className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-  //       >
-  //         <img
-  //           className={style.tooltip_error}
-  //           src={passwordErrorTexts[key].isError ? iconError : iconCheckmark}
-  //           alt="Error icon"
-  //         />
-  //         {passwordErrorTexts[key].text}
-  //       </p>
-  //     );
-  //   }
-  // );
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
@@ -95,8 +77,12 @@ function AuthPage(): JSX.Element {
               }
             />
             <InputPassword
+              clueError={style.password_error}
+              clueColor={style.password_color}
+              placeholder="Password *"
               passwordError={passwordError}
               setPasswordField={setPassword}
+              passwordField={password}
             />
             <ButtonForm
               onClick={(event): void =>

@@ -9,19 +9,20 @@ import iconEyeClose from '../../../public/assets/icons/eye-close.svg';
 import { IInputPropsPassword } from '../../types/interfaces';
 import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { hideTooltip, showTooltip } from '../../pages/showTooltip';
+import { useParams } from 'react-router-dom';
 
 function InputPassword(props: IInputPropsPassword): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState('');
   const [passwordFocus, setPasswordFocus] = useState(false);
-
-  const passwordErrorTexts = handlePasswordInput(password);
+  const passwordErrorTexts = handlePasswordInput(
+    props.passwordField ? props.passwordField : ''
+  );
   const passwordErrorElements = Object.keys(passwordErrorTexts).map(
     (key, i) => {
       return (
         <p
           key={`tooltip_${i}`}
-          className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
+          className={`${style.tooltip_text} ${props.tooltipColor}`}
         >
           <img
             className={style.tooltip_error}
@@ -34,7 +35,7 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
     }
   );
   return (
-    <div className={`${style.wrapper} ${props.classWrapper}`}>
+    <div className={style.wrapper}>
       <div className={style.wrapper_label}>
         <div className={style.wrapper_img}>
           <img
@@ -47,9 +48,9 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
           onBlur={(): void => hideTooltip(setPasswordFocus)}
           onFocus={(): void => showTooltip(setPasswordFocus)}
           onChange={(e): void => inputHandler(e, props.setPasswordField)}
-          className={`${style.wrapper_input} ${props.classInput}`}
+          className={style.wrapper_input}
           type={passwordVisible ? 'text' : 'password'}
-          placeholder="Password *"
+          placeholder={props.placeholder}
         />
         <ButtonForm
           onClick={(): void =>
@@ -78,10 +79,10 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
       <div
         className={
           passwordFocus
-            ? `${style.password_clue} ${style.unshown}`
+            ? `${style.password_clue} ${style.unshown} ${props.clueColor}`
             : props.passwordError
-            ? `${style.password_clue} ${style.shown} ${style.error}`
-            : `${style.password_clue}`
+            ? `${style.password_clue} ${style.shown} ${props.clueError}`
+            : `${style.password_clue} ${props.clueColor}`
         }
       >
         {props.passwordError

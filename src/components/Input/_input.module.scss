@@ -1,16 +1,15 @@
 @import '../../style/variables';
 
 .wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 
   &_label {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    aspect-ratio: 1 / 0.1;
-    margin-bottom: 0.5rem;
-    padding: 0 20px;
+    margin-bottom: 5px;
+    padding: 5px 20px;
 
     background-color: white;
     border: 2px solid $border-default;
@@ -71,10 +70,7 @@
   &_clue {
     padding: 5px 0 5px 20px;
 
-  color: white;
-
   visibility: visible;
-  background-image: url('../../../public/assets/icons/alert.svg');
   background-repeat: no-repeat;
   background-position: top 3px left 2px;
   background-size: 15px 15px;

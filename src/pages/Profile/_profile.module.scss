@@ -3,18 +3,38 @@
 .profile{
   display: flex;
   flex: 1 1 auto;
-  align-items: center;
-  justify-content: space-around;
+  flex-direction: column;
 
-  .title{
-    font-size: 50px;
+width: 90vw;
+  margin: 0 auto;
+
+  &_top {
+display: flex;
+    width: 100%;
+    padding: 50px 0;
   }
 
-  &_button {
+  &_bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_menu {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+width: 25%;
+  }
+
+  &_info{
+width: 75%;
+  }
+
+  &_logout {
     cursor: pointer;
 
     aspect-ratio: 1 / 0.1;
-    width: 10%;
     max-height: 60px;
     padding: 10px 20px;
 
@@ -27,15 +47,175 @@
     transition: background-color ease-in-out 0.2s;
   }
 
-  &_button:focus {
+  &_logout:focus {
     background-color: $button-focus;
   }
 
-  &_button:hover {
+  &_logout:hover {
     background-color: $button-hover;
   }
 
-  &_button:active {
+  &_logout:active {
     background-color: $button-active;
   }
+
+  &_button {
+    cursor: pointer;
+
+    aspect-ratio: 1 / 0.27;
+    width: 80%;
+    max-width: 300px;
+    margin-bottom: 20px;
+
+    font-family: "No Signal", cursive;
+    font-size: 1.8rem;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 5px #de84ff, 0 0 10px #de84ff, 0 0 20px #de84ff;
+
+    background-color: transparent;
+    background-image: url('../../../public/ui-kit/profile_menu_purple.svg');
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: cover;
+    border: none;
+
+    transition: all 0.2s ease-in-out;
+  }
+
+  &_personal {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  &_title {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 3rem;
+    text-shadow: 0 0 5px #de84ff, 0 0 10px #de84ff, 0 0 20px #de84ff;
+  }
+
+  &_describe {
+    margin: 0;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    color: #e7aefc;
+  }
+
+  &_personal_bio, &_personal_password, &_personal_mail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 30px 10px 30px 100px;
+
+    background-repeat: no-repeat;
+    background-position: top 25px left 10px;
+    background-size: 80px 30%;
+    border-bottom: 1px solid white;
+  }
+
+  &_personal_bio {
+    background-image: url('../../../public/assets/icons/user.svg');
+  }
+
+  &_personal_password {
+    background-image: url('../../../public/assets/icons/password-profile.svg');
+  }
+
+  &_personal_mail {
+    background-image: url('../../../public/assets/icons/email-profile.svg');
+  }
+
+  &_personal_text {
+    width: 75%;
+    padding-right: 15px;
+  }
+
+  &_personal_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+  }
+
+  &_update {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 20%;
+    min-width: 100px;
+    height: 60px;
+
+    font-size: 1.8rem;
+    color: white;
+
+    background-color: transparent;
+    border: 1px solid white;
+
+    transition: background-color 0.2s ease-in-out, border 0.1s ease-in-out;
+
+    &_img {
+      margin-right: 7px;
+    }
+  }
+
+  &_update:focus {
+background-color: $button-focus;
+    border: none;
+  }
+
+  &_update:hover {
+    background-color: $button-hover;
+    border: none;
+  }
+
+  &_update:active {
+    background-color: $button-active;
+    border: none;
+  }
+
+  &_personal_title {
+    margin: 0;
+    margin-bottom: 15px;
+    font-size: 2.4rem;
+  }
+
+  &_personal_describe {
+    margin: 0;
+    font-size: 1.8rem;
+    color: rgb(172 172 172)
+  }
+
+  &_modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+   display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba($color: #000, $alpha: 60%);
+    }
+}
+
+.visible {
+  display: flex;
+}
+
+.hidden {
+  display: none;
 }
