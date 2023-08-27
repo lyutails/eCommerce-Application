@@ -18,7 +18,7 @@ function CategoryPage(): JSX.Element {
   // const productKey = 'red-t-shirts';
   // console.log(getProductProjectionsByKey(productKey));
   const productVariantKey = 'red-love';
-  console.log(getProductProjectionsByVariantKey(productVariantKey));
+  console.log(getProductProjectionsByVariantKey(productVariantKey), 'lalala');
   const { category } = useParams();
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<ProductProjection[]>([]);

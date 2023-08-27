@@ -3,6 +3,7 @@ import {
   Product,
   ProductProjection,
   ProductProjectionPagedSearchResponse,
+  ProductVariant,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
 
@@ -102,19 +103,26 @@ export async function getProductProjectionsByKey(
 }
 
 export async function getProductProjectionsByVariantKey(
-  productVariantKey: string
-): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
+  variantKey: string
+): Promise<ProductVariant | undefined> {
   try {
-    const productByIdKey = apiRoot
+    const productByVariantKey = await apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: `variants.key: "${productVariantKey}"`,
+          filter: `variants.key: "${variantKey}"`,
         },
       })
       .execute();
-    return productByIdKey;
+    const productArray = productByVariantKey.body.results[0];
+    const variant =
+      productArray.masterVariant.key === variantKey
+        ? productArray.masterVariant
+        : productArray.variants.find(
+            (data) => data.key && data.key === variantKey
+          );
+    return variant;
   } catch {
     throw new Error('no product variant by key found');
   }
