@@ -16,6 +16,36 @@
     color: $font-color-title;
   }
 
+  &_filters_color {
+    width: 10%;
+  }
+
+  &_filters_red {
+    aspect-ratio: 1 / 1;
+    width: 40%;
+
+    background-color: red;
+    border: 1px solid $glow-green;
+    border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_filters_black {
+    aspect-ratio: 1 / 1;
+    width: 40%;
+
+    background-color: black;
+    border: 1px solid $glow-green;
+    border-radius: 50%;
+  }
+
+  &_filters_discount {
+    font-size: 1.5rem;
+  }
+
   &_button {
     aspect-ratio: 1 / 0.2;
     width: 20%;
@@ -23,5 +53,15 @@
     max-width: 200px;
 
     background-color: $background-color-primary-five;
+  }
+
+  &_cards_wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    width: 80%;
+  }
+
+  &_card {
+    width: 24%;
   }
 }
