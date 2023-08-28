@@ -7,13 +7,13 @@ import { IInputPropsMask } from '../../types/interfaces';
 function InputBirthDateMask(props: IInputPropsMask): JSX.Element {
   const ref = useRef(null);
   const inputRef = useRef(null);
-
   return (
     <div className={`${style.wrapper} ${props.classWrapper}`}>
       <div className={style.wrapper_label}>
         {props.childrenBefore}
         <IMaskInput
-          onChange={props.func}
+          onAccept={props.onAccept}
+          // onChange={props.func}
           className={`${style.wrapper_input} ${props.classInput}`}
           mask={Date}
           radix="."

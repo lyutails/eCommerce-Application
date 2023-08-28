@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from '../BioModal/_bioModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
@@ -25,8 +25,6 @@ function BioModal(props: IBioModalProps): JSX.Element {
   const [birthday, setBirthday] = useState('');
   const [birthdayError, setBirthdayError] = useState(false);
 
-  const parts = props.birthdayField.split('-');
-  const birthdayDate = parts[2] + parts[1] + parts[0];
   const customerData = {
     version: props.version,
     actions: [
@@ -40,6 +38,9 @@ function BioModal(props: IBioModalProps): JSX.Element {
       },
     ],
   };
+  useEffect(() => {
+    setBirthday(props.birthdayField);
+  }, [props.birthdayField]);
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -108,13 +109,13 @@ function BioModal(props: IBioModalProps): JSX.Element {
         />
         <h4 className={style.modal_title}>Date of birth</h4>
         <InputBirthDateMask
-          value={birthdayDate}
-          func={(e): void => inputHandler(e, setBirthday)}
-          //   clue={
-          //     birthdayError
-          //       ? birthdayError
-          //       : `Enter Date of birth in format DD.MM.YYYY. Your age should be equal or more than 13 to register`
-          //   }
+          value={birthday}
+          onAccept={(value: string): void => setBirthday(value)}
+          // clue={
+          //   birthdayError
+          //     ? birthdayError
+          //     : `Enter Date of birth in format DD.MM.YYYY. Your age should be equal or more than 13 to register`
+          // }
           type="text"
           placeholder="dd.mm.yyyy *"
           classWrapper={style.birth}
@@ -124,21 +125,21 @@ function BioModal(props: IBioModalProps): JSX.Element {
               : style.uncompleted
           }
           classInput={style.birth_input}
-          //   childrenBefore={
-          //     <div
-          //       className={
-          //         checkmarkBirthday
-          //           ? `${style.wrapper_img} ${style.completed}`
-          //           : `${style.wrapper_img} ${style.uncompleted}`
-          //       }
-          //     >
-          //       <img
-          //         className={style.wrapper_img_icon}
-          //         src={iconCheckmark}
-          //         alt="Icon"
-          //       />
-          //     </div>
-          //   }
+          // childrenBefore={
+          //   <div
+          //     className={
+          //       checkmarkBirthday
+          //         ? `${style.wrapper_img} ${style.completed}`
+          //         : `${style.wrapper_img} ${style.uncompleted}`
+          //     }
+          //   >
+          //     <img
+          //       className={style.wrapper_img_icon}
+          //       src={iconCheckmark}
+          //       alt="Icon"
+          //     />
+          //   </div>
+          // }
         />
       </div>
       <ButtonForm
