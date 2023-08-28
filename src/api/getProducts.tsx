@@ -91,9 +91,9 @@ export async function getProductProjectionsByKey(
       .productProjections()
       .search()
       .get({
-        queryArgs: {
-          filter: `key: "${productKey}"`,
-        },
+        // queryArgs: {
+        //   filter: `key: "${productKey}"`,
+        // },
       })
       .execute();
     return productByIdKey;
