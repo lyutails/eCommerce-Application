@@ -5,7 +5,7 @@ import {
   setAuthStatus,
 } from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
-import { IRootState } from '../../types/interfaces';
+import { IPersonalState, IRootState } from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
 import { useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
@@ -14,23 +14,36 @@ import UpdateIcon from '../../../public/assets/icons/update.svg';
 import PasswordModal from '../../components/PasswordModal/PasswordModal';
 import EmailModal from '../../components/EmailModal/EmailModal';
 import BioModal from '../../components/BioModal/BioModal';
+import PlusIcon from '../../../public/assets/icons/addplus.svg';
+import {
+  changeStatusAddress,
+  changeStatusPersonal,
+} from '../../store/reducers/personalReducer';
+import { parseDate } from '../../utils/parseDate';
+import { AddressDraft } from '@commercetools/platform-sdk';
+
+interface IPersonalData {
+  [key: string]: string | undefined;
+}
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [lastname, setLastname] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [version, setVersion] = useState(1);
-  const [clickedPersonal, setClickedPersonal] = useState(true);
-  const [clickedAddress, setClickedAddress] = useState(false);
+  const [addressShip, setAddressShip] = useState<AddressDraft | null>(null);
+  const [addressBill, setAddressBill] = useState<AddressDraft | null>(null);
+  const [personal, setPersonal] = useState<IPersonalData | null>(null);
   const [clickedBioUpdate, setClickedBioUpdate] = useState(false);
   const [clickedEmailUpdate, setClickedEmailUpdate] = useState(false);
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const clickedPersonal = useSelector(
+    (state: IPersonalState) => state.personal.information
+  );
+  const clickedAddress = useSelector(
+    (state: IPersonalState) => state.personal.addresses
+  );
   const customerId = useSelector((state: IRootState) => state.user.customerId);
   const localId = localStorage.getItem('customerId');
   const refreshToken = localStorage.getItem('refreshToken');
@@ -54,14 +67,28 @@ function ProfilePage(): JSX.Element {
       checkRefreshToken();
     } else {
       refreshTokenFlow(refreshToken)
-        .then((response) => {
+        .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            response.body.firstName && setFirstname(response.body.firstName);
-            response.body.lastName && setLastname(response.body.lastName);
-            response.body.dateOfBirth && setBirthday(response.body.dateOfBirth);
-            response.body.email && setEmail(response.body.email);
-            response.body.password && setPassword(response.body.password);
+            setPersonal({
+              firstname: response.body.firstName,
+              lastname: response.body.lastName,
+              birthday: response.body.dateOfBirth
+                ? parseDate(response.body.dateOfBirth)
+                : '',
+              email: response.body.email,
+              password: response.body.password,
+            });
+            // response.body.firstName && setFirstname(response.body.firstName);
+            // response.body.lastName && setLastname(response.body.lastName);
+            // response.body.dateOfBirth &&
+            //   setBirthday(parseDate(response.body.dateOfBirth));
+            // response.body.email && setEmail(response.body.email);
+            // response.body.password && setPassword(response.body.password);
             response.body.version && setVersion(response.body.version);
+            setAddressShip(response.body.addresses[0]);
+            if (response.body.addresses[1]) {
+              setAddressBill(response.body.addresses[1]);
+            }
           });
         })
         .catch(() => {
@@ -71,15 +98,18 @@ function ProfilePage(): JSX.Element {
     }
   }, [customerId, dispatch, navigate, refreshToken]);
   dispatch(createCustomerId(localId));
-
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
         <div className={style.profile_menu}>
           <ButtonForm
             onClick={(): void => {
-              setClickedPersonal(true);
-              setClickedAddress(false);
+              localStorage.setItem('clickedPersonal', 'true');
+              localStorage.setItem('clickedAddress', 'false');
+              dispatch(changeStatusPersonal(true));
+              dispatch(changeStatusAddress(false));
+              // setClickedPersonal(true);
+              // setClickedAddress(false);
             }}
             classNames={style.profile_button}
           >
@@ -87,8 +117,12 @@ function ProfilePage(): JSX.Element {
           </ButtonForm>
           <ButtonForm
             onClick={(): void => {
-              setClickedPersonal(false);
-              setClickedAddress(true);
+              localStorage.setItem('clickedAddress', 'true');
+              localStorage.setItem('clickedPersonal', 'false');
+              dispatch(changeStatusPersonal(false));
+              dispatch(changeStatusAddress(true));
+              // setClickedPersonal(false);
+              // setClickedAddress(true);
             }}
             classNames={style.profile_button}
           >
@@ -96,6 +130,24 @@ function ProfilePage(): JSX.Element {
           </ButtonForm>
         </div>
         <div className={style.profile_info}>
+          <div className={style.profile_info_top}>
+            <div className={style.profile_info_title}>
+              <h2 className={style.profile_title}>
+                {clickedPersonal ? 'Personal information' : 'Addresses'}
+              </h2>
+              <p className={style.profile_describe}>
+                Here you can view and edit your details
+              </p>
+            </div>
+            <div className={style.profile_bottom}>
+              <ButtonForm
+                classNames={style.profile_logout}
+                onClick={handleLogOut}
+              >
+                log out
+              </ButtonForm>
+            </div>
+          </div>
           <div
             className={
               clickedPersonal
@@ -103,10 +155,6 @@ function ProfilePage(): JSX.Element {
                 : `${style.profile_personal} ${style.hidden}`
             }
           >
-            <h2 className={style.profile_title}>Personal information</h2>
-            <p className={style.profile_describe}>
-              Here you can view and edit your details
-            </p>
             <div className={style.profile_personal_info}>
               <div className={style.profile_personal_bio}>
                 <div className={style.profile_personal_text}>
@@ -116,13 +164,13 @@ function ProfilePage(): JSX.Element {
                         Firstname
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {firstname}
+                        {personal ? personal.firstname : ''}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
                       <h4 className={style.profile_personal_title}>Lastname</h4>
                       <p className={style.profile_personal_describe}>
-                        {lastname}
+                        {personal ? personal.lastname : ''}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
@@ -130,7 +178,7 @@ function ProfilePage(): JSX.Element {
                         Date of birth
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {birthday}
+                        {personal ? personal.birthday : ''}
                       </p>
                     </li>
                   </ul>
@@ -153,7 +201,9 @@ function ProfilePage(): JSX.Element {
               <div className={style.profile_personal_mail}>
                 <div className={style.profile_personal_text}>
                   <h4 className={style.profile_personal_title}>Your E-mail</h4>
-                  <p className={style.profile_personal_describe}>{email}</p>
+                  <p className={style.profile_personal_describe}>
+                    {personal ? personal.email : ''}
+                  </p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -175,7 +225,9 @@ function ProfilePage(): JSX.Element {
                   <h4 className={style.profile_personal_title}>
                     Your password
                   </h4>
-                  <p className={style.profile_personal_describe}>{password}</p>
+                  <p className={style.profile_personal_describe}>
+                    {personal ? personal.password : ''}
+                  </p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -201,14 +253,74 @@ function ProfilePage(): JSX.Element {
                 : `${style.profile_address} ${style.hidden}`
             }
           >
-            addresses
+            <div className={style.profile_address_card}>
+              <div className={style.profile_address_add}>
+                <img
+                  className={style.profile_address_add_img}
+                  src={PlusIcon}
+                  alt="Add address"
+                />
+                <p className={style.profile_address_add_title}>
+                  Add new address
+                </p>
+              </div>
+            </div>
+            <div className={style.profile_address_card}>
+              <div className={style.profile_address_add}>
+                <span>Shipping address</span>
+                <p>
+                  <b>Street:</b> {addressShip?.streetName}
+                </p>
+                <p>
+                  <b>Building:</b> {addressShip?.building}
+                </p>
+                {addressShip?.apartment && (
+                  <p>
+                    <b>Apartment:</b> {addressShip?.apartment}
+                  </p>
+                )}
+
+                <p>
+                  <b>City:</b> {addressShip?.city}
+                </p>
+                <p>
+                  <b>Postal:</b> {addressShip?.postalCode}
+                </p>
+                <p>
+                  <b>Country:</b> {addressShip?.country}
+                </p>
+              </div>
+            </div>
+            {addressBill && (
+              <div className={style.profile_address_card}>
+                <div className={style.profile_address_add}>
+                  <span>Shipping address</span>
+                  <p>
+                    <b>Street:</b> {addressBill?.streetName}
+                  </p>
+                  <p>
+                    <b>Building:</b> {addressBill?.building}
+                  </p>
+                  {addressBill?.apartment && (
+                    <p>
+                      <b>Apartment:</b> {addressBill?.apartment}
+                    </p>
+                  )}
+                  <p>
+                    <b>City:</b> {addressBill?.city}
+                  </p>
+                  <p>
+                    <b>Postal:</b> {addressBill?.postalCode}
+                  </p>
+                  addressBill
+                  <p>
+                    <b>Country:</b> {addressBill?.country}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-      <div className={style.profile_bottom}>
-        <ButtonForm classNames={style.profile_logout} onClick={handleLogOut}>
-          log out
-        </ButtonForm>
       </div>
       <div
         className={
@@ -220,9 +332,9 @@ function ProfilePage(): JSX.Element {
         <BioModal
           token={refreshToken ? refreshToken : ''}
           version={version}
-          firstnameField={firstname}
-          lastnameField={lastname}
-          birthdayField={birthday}
+          firstnameField={personal?.firstname ?? ''}
+          lastnameField={personal?.lastname ?? ''}
+          birthdayField={personal?.birthday ?? ''}
           onClick={(): void => {
             setClickedBioUpdate(false);
             setShowModal(false);
@@ -230,7 +342,7 @@ function ProfilePage(): JSX.Element {
           modalClass={clickedBioUpdate ? style.visible : style.hidden}
         />
         <EmailModal
-          emailField={email}
+          emailField={personal?.email ?? ''}
           onClick={(): void => {
             setClickedEmailUpdate(false);
             setShowModal(false);
@@ -257,3 +369,6 @@ export default ProfilePage;
 
 // "email": 'hi@ya.ru';
 // "password": "2327Ybv!"
+
+// "yanatestprofile@mail.com"
+// "2327Ybv!"

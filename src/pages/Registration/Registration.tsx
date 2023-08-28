@@ -234,7 +234,7 @@ function RegistrationPage(): JSX.Element {
             passwordField={password}
           />
           <InputBirthDateMask
-            func={(e): void => inputHandler(e, setBirthday)}
+            onAccept={(value: string): void => setBirthday(value)}
             clue={
               birthdayError
                 ? birthdayError

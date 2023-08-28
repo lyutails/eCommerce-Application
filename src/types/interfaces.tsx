@@ -1,5 +1,6 @@
 import { BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
+import { IMaskMixinProps, ReactMaskOpts } from 'react-imask';
 
 export interface ICustomerFields {
   email: string;
@@ -80,11 +81,14 @@ export interface IInputPropsMask {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onAccept?: any;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;
   max?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onInput?: any;
 }
 
 export interface IButtonFields {
@@ -103,6 +107,13 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
+  };
+}
+
+export interface IPersonalState {
+  personal: {
+    information: boolean;
+    addresses: boolean;
   };
 }
 export interface ICategoryState {
