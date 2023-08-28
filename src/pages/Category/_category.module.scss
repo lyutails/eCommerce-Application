@@ -24,4 +24,14 @@
 
     background-color: $background-color-primary-five;
   }
+
+  &_cards_wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    width: 80%;
+  }
+
+  &_card {
+    width: 24%;
+  }
 }

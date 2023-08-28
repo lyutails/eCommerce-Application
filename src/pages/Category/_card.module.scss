@@ -3,23 +3,20 @@
 .card {
   &_wrapper {
     display: flex;
-    flex-flow: row wrap;
-    width: 60%;
-  }
-
-  &_card {
-    display: flex;
     flex-direction: column;
+    align-items: center;
 
     aspect-ratio: 1 / 1;
-    width: 18%;
+    width: 100%;
 
-    background-color: $background-color-primary-five;
+    background-image: url('../../../public/ui-kit/message_03.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 
   &_pic {
     aspect-ratio: 1 / 1;
-    width: 80%;
+    width: 60%;
     background-repeat: no-repeat;
     background-position: center center;
   }

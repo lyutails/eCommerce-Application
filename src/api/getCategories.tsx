@@ -104,6 +104,7 @@ export async function getSubtreeCategory(
         },
       })
       .execute();
+    console.log(subtree);
     return subtree;
   } catch {
     throw new Error('no subtrees found');

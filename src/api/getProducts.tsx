@@ -104,25 +104,25 @@ export async function getProductProjectionsByKey(
 
 export async function getProductProjectionsByVariantKey(
   variantKey: string
-): Promise<ProductVariant | undefined> {
+): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productByVariantKey = await apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: `variants.key: "${variantKey}"`,
+          'filter.query': [`variants.key: "${variantKey}"`],
         },
       })
       .execute();
-    const productArray = productByVariantKey.body.results[0];
-    const variant =
-      productArray.masterVariant.key === variantKey
-        ? productArray.masterVariant
-        : productArray.variants.find(
-            (data) => data.key && data.key === variantKey
-          );
-    return variant;
+    // const productArray = productByVariantKey.body.results[0];
+    // const variant =
+    //   productArray.masterVariant.key === variantKey
+    //     ? productArray.masterVariant
+    //     : productArray.variants.find(
+    //         (data) => data.key && data.key === variantKey
+    //       );
+    return productByVariantKey;
   } catch {
     throw new Error('no product variant by key found');
   }
