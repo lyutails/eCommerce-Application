@@ -11,7 +11,7 @@ function Card(props: CategoryCardProps): JSX.Element {
       <img className={style.card_pic} src={props.images} alt="" />
       <div className={style.card_buy}>
         <span className={style.card_price}>{props.prices}$</span>
-        <span className={style.card_discount}>{props.discounted}$</span>
+        <span className={style.card_discount}>{props.discounted}</span>
       </div>
     </div>
   );

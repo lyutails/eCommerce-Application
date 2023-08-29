@@ -8,17 +8,11 @@ import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
-  ClientResponse,
   ProductProjection,
-  ProductProjectionPagedSearchResponse,
   ProductVariant,
 } from '@commercetools/platform-sdk';
 import Card from './Card';
-import {
-  getProductProjectionsByKey,
-  getProductProjectionsByVariantKey,
-} from '../../api/getProducts';
-import { filterByColour } from '../../api/filterColour';
+import { filterByColour, getProductType } from '../../api/filterColour';
 
 function CategoryPage(): JSX.Element {
   // const productVariantKey = 't-shirt-bug';
@@ -83,72 +77,103 @@ function CategoryPage(): JSX.Element {
   }
 
   const [allVariants, setAllVariants] = useState<ProductVariant[]>([]);
+  const [allColours, setAllColours] = useState<string[]>([]);
 
   useEffect(() => {
-    filterByColour().then((response) => {
-      const parentCategory = response.body.results;
-      // setAllVariants(parentCategory);
+    getProductType().then((response) => {
+      const productTypeResponse = response.body.attributes;
+      const productTypeColour = productTypeResponse?.filter((data) => {
+        if (data.name === 'color') {
+          if (data.type.name === 'enum') {
+            const coloursEnum = data.type['values'];
+            const colours = coloursEnum.map((data) => data['key']);
+            console.log(colours);
+            setAllColours(colours);
+          }
+        }
+      });
     });
   }, []);
-  console.log(allVariants, 'variants');
+  console.log(allColours);
+  console.log(allVariants);
 
   return (
-    <div className={style.category_wrapper}>
-      <h2 className={style.category_title}>{category}</h2>
-      <div className={style.category_filters_color}>
-        <button
-          onClick={(): void => {
-            const productVariant = filterByColour();
-            console.log(productVariant);
-            setAllCards(allVariants);
-          }}
-          className={style.category_filters_red}
-        ></button>
-        <button className={style.category_filters_black}></button>
-        <button className={style.category_filters_discount}>discount</button>
-      </div>
-      <div className={style.category_categories}>
-        {subtree.map((subCategory) => {
-          // console.log(subCategory);
-          return (
-            <button
-              onClick={(): void => paintProducts(subCategory.name['en-US'])}
-              className={style.category_button}
-              key={subCategory.name['en-US']}
-            >
-              {subCategory.name['en-US']}
-            </button>
-          );
-        })}
-      </div>
-      <div className={style.category_cards_wrapper}>
-        {allCards.map((card) => {
-          console.log(card);
-          return (
-            <Link
-              to={`/category/${category}/${card.key}`}
-              className={style.category_card}
-              key={card.key}
-            >
-              <Card
-                keyCard={card.key ? card.key : ''}
-                images={card.images && card.images[0].url}
-                prices={
-                  card.prices && card.prices[0].value
-                    ? card.prices[0].value.centAmount
-                    : 0
-                }
-                discounted={
-                  card.prices && card.prices[0].discounted?.value.centAmount
-                    ? card.prices[0].discounted?.value.centAmount
-                    : ''
-                }
-                sku={card.sku ? card.sku : ''}
-                brand={''}
-              />
-            </Link>
-          );
-        })}
+    <div className={style.category}>
+      <div className={style.category_wrapper}>
+        <h2 className={style.category_title}>{category}</h2>
+        <div className={style.category_categories}>
+          {subtree.map((subCategory) => {
+            // console.log(subCategory);
+            return (
+              <button
+                onClick={(): void => paintProducts(subCategory.name['en-US'])}
+                className={style.category_button}
+                key={subCategory.name['en-US']}
+              >
+                {subCategory.name['en-US']}
+              </button>
+            );
+          })}
+        </div>
+        <div className={style.category_filters_color}>
+          {allColours.map((colour) => {
+            return (
+              <button
+                onClick={(): void => {
+                  filterByColour(colour).then((response) => {
+                    const parentCategory = response.body.results;
+                    const master = parentCategory.map(
+                      (item) => item.masterVariant
+                    );
+                    setAllVariants(master);
+                  });
+                  setAllCards(allVariants);
+                }}
+                key={colour}
+                className={style[`category_filters_${colour}`]}
+              ></button>
+            );
+          })}
+          {/* <button
+            onClick={(): void => {
+              const productVariant = filterByColour();
+              console.log(productVariant);
+              setAllCards(allVariants);
+            }}
+            className={style.category_filters_red}
+          ></button>
+          <button className={style.category_filters_black}></button>
+          <button className={style.category_filters_white}></button> */}
+          <button className={style.category_filters_discount}>sale</button>
+        </div>
+        <div className={style.category_cards_wrapper}>
+          {allCards.map((card) => {
+            return (
+              <Link
+                to={`/category/${category}/${card.key}`}
+                className={style.category_card}
+                key={card.key}
+              >
+                <Card
+                  keyCard={card.key ? card.key : ''}
+                  images={card.images && card.images[0].url}
+                  prices={
+                    card.prices && card.prices[0].value
+                      ? card.prices[0].value.centAmount
+                      : 0
+                  }
+                  discounted={
+                    card.prices && card.prices[0].discounted?.value.centAmount
+                      ? `${card.prices[0].discounted?.value.centAmount}$`
+                      : ''
+                  }
+                  sku={card.sku ? card.sku : ''}
+                  brand={''}
+                />
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

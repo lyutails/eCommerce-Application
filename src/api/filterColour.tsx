@@ -1,27 +1,42 @@
 import {
   ClientResponse,
   ProductProjectionPagedSearchResponse,
+  ProductType,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
+import { apiRoot as apiRootAdmin } from './createClientAdmin';
 
-export async function filterByColour(): Promise<
-  ClientResponse<ProductProjectionPagedSearchResponse>
-> {
+export async function filterByColour(
+  colour: string
+): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
-    const productsByColor = await apiRoot
+    const productsByColour = await apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
           facet: ['variants.attributes.color'],
-          'filter.query': ['variants.attributes.color.key:"red"'],
+          'filter.query': [`variants.attributes.color.key:"${colour}"`],
         },
       })
       .execute();
-    return productsByColor;
+    return productsByColour;
   } catch {
     throw new Error('no product variant by key found');
   }
 }
 
-// 'categories.id:subtree{"00b71d4b-d8b0-463c-9561-23017777d0eb"}',
+export async function getProductType(): Promise<ClientResponse<ProductType>> {
+  try {
+    const productType = await apiRootAdmin
+      .productTypes()
+      .withKey({ key: 't-shirt' })
+      .get()
+      .execute();
+    return productType;
+  } catch {
+    throw new Error('no product type found');
+  }
+}
+
+// window.apiRootAdmin = apiRootAdmin;
