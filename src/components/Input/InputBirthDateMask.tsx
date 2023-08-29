@@ -12,8 +12,8 @@ function InputBirthDateMask(props: IInputPropsMask): JSX.Element {
       <div className={style.wrapper_label}>
         {props.childrenBefore}
         <IMaskInput
+          onBlur={props.onblur}
           onAccept={props.onAccept}
-          // onChange={props.func}
           className={`${style.wrapper_input} ${props.classInput}`}
           mask={Date}
           radix="."

@@ -87,8 +87,7 @@ export interface IInputPropsMask {
   tooltip?: ReactNode;
   value?: string;
   max?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onInput?: any;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IButtonFields {

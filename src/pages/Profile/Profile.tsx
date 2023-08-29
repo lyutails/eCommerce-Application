@@ -19,24 +19,41 @@ import {
   changeStatusAddress,
   changeStatusPersonal,
 } from '../../store/reducers/personalReducer';
-import { parseDate } from '../../utils/parseDate';
+import { parseDateToWeb } from '../../utils/parseDate';
 import { AddressDraft } from '@commercetools/platform-sdk';
+import TrashIcon from '../../../public/assets/icons/trash.svg';
+import AddressModal from '../../components/AddressModal/AddressModal';
 
-interface IPersonalData {
+export interface IPersonalData {
   [key: string]: string | undefined;
+}
+
+interface IAddressesData {
+  shippingAddressIds: string[] | undefined;
+  billingAddressIds: string[] | undefined;
+  defaultBillingAddressId: string | undefined;
+  defaultShippingAddressId: string | undefined;
+}
+
+interface IAddressesClickedData {
+  [key: string]: boolean;
 }
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [version, setVersion] = useState(1);
-  const [addressShip, setAddressShip] = useState<AddressDraft | null>(null);
-  const [addressBill, setAddressBill] = useState<AddressDraft | null>(null);
-  const [personal, setPersonal] = useState<IPersonalData | null>(null);
+  const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
+  const [bio, setBio] = useState<IPersonalData | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState<string | undefined>('');
   const [clickedBioUpdate, setClickedBioUpdate] = useState(false);
   const [clickedEmailUpdate, setClickedEmailUpdate] = useState(false);
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [addresses, setAddresses] = useState<IAddressesData | null>(null);
+  const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
+  const [addressData, setAddressData] = useState<AddressDraft | null>(null);
 
   const clickedPersonal = useSelector(
     (state: IPersonalState) => state.personal.information
@@ -69,26 +86,24 @@ function ProfilePage(): JSX.Element {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            setPersonal({
+            console.log(response.body);
+            response.body.version && setVersion(response.body.version);
+            setBio({
               firstname: response.body.firstName,
               lastname: response.body.lastName,
               birthday: response.body.dateOfBirth
-                ? parseDate(response.body.dateOfBirth)
+                ? parseDateToWeb(response.body.dateOfBirth)
                 : '',
-              email: response.body.email,
-              password: response.body.password,
             });
-            // response.body.firstName && setFirstname(response.body.firstName);
-            // response.body.lastName && setLastname(response.body.lastName);
-            // response.body.dateOfBirth &&
-            //   setBirthday(parseDate(response.body.dateOfBirth));
-            // response.body.email && setEmail(response.body.email);
-            // response.body.password && setPassword(response.body.password);
-            response.body.version && setVersion(response.body.version);
-            setAddressShip(response.body.addresses[0]);
-            if (response.body.addresses[1]) {
-              setAddressBill(response.body.addresses[1]);
-            }
+            setEmail(response.body.email);
+            setPassword(response.body.password);
+            setAddresses({
+              shippingAddressIds: response.body.shippingAddressIds,
+              billingAddressIds: response.body.billingAddressIds,
+              defaultBillingAddressId: response.body.defaultBillingAddressId,
+              defaultShippingAddressId: response.body.defaultShippingAddressId,
+            });
+            setAddressStore(response.body.addresses);
           });
         })
         .catch(() => {
@@ -98,6 +113,95 @@ function ProfilePage(): JSX.Element {
     }
   }, [customerId, dispatch, navigate, refreshToken]);
   dispatch(createCustomerId(localId));
+
+  const addressCard = addressStore.map((address, i) => {
+    return (
+      <div key={i} className={`${style.profile_address_card} card_${i}}`}>
+        <div className={style.profile_address_top}>
+          <span className={style.profile_address_type}>
+            {addresses?.shippingAddressIds?.includes(address.id as string)
+              ? 'Shipping address'
+              : addresses?.billingAddressIds?.includes(address.id as string)
+              ? 'Billing address'
+              : addresses?.billingAddressIds?.includes(address.id as string) &&
+                addresses?.shippingAddressIds?.includes(address.id as string)
+              ? 'Shipping and Billing address'
+              : ''}
+          </span>
+          <h3
+            className={style.profile_address_name}
+          >{`${bio?.firstname} ${bio?.lastname}`}</h3>
+          <div className={style.profile_address_fields}>
+            <p className={style.profile_address_item}>
+              <b>Street:</b> {address?.streetName}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Building:</b> {address?.building}
+            </p>
+            {address?.apartment && (
+              <p className={style.profile_address_item}>
+                <b>Apartment:</b> {address?.apartment}
+              </p>
+            )}
+            <p className={style.profile_address_item}>
+              <b>City:</b> {address?.city}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Postal:</b> {address?.postalCode}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Country:</b> {address?.country}
+            </p>
+          </div>
+          {addresses?.defaultShippingAddressId === (address.id as string) ||
+            (addresses?.defaultBillingAddressId === (address.id as string) && (
+              <div className={style.profile_address_default}>
+                <p
+                  className={
+                    addresses?.defaultShippingAddressId ===
+                    (address.id as string)
+                      ? `${style.profile_address_default_ship} ${style.visible}`
+                      : `${style.profile_address_default_ship} ${style.hidden}`
+                  }
+                >
+                  Default shipping address
+                </p>
+                <p
+                  className={
+                    addresses?.defaultBillingAddressId ===
+                    (address.id as string)
+                      ? `${style.profile_address_default_bill} ${style.visible}`
+                      : `${style.profile_address_default_bill} ${style.hidden}`
+                  }
+                >
+                  Default billing address
+                </p>
+              </div>
+            ))}
+        </div>
+        <div className={style.profile_address_bottom}>
+          <ButtonForm classNames={style.profile_address_delete}>
+            <img src={TrashIcon} alt="Delete address" />
+          </ButtonForm>
+          <ButtonForm
+            onClick={(): void => {
+              setAddressData(address);
+              setClickedAddressesUpdate(true);
+              setShowModal(true);
+            }}
+            classNames={`${style.profile_update} ${style.profile_address_update}`}
+          >
+            <img
+              className={style.profile_update_img}
+              src={UpdateIcon}
+              alt="Pencil update"
+            />
+            Update
+          </ButtonForm>
+        </div>
+      </div>
+    );
+  });
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -108,8 +212,6 @@ function ProfilePage(): JSX.Element {
               localStorage.setItem('clickedAddress', 'false');
               dispatch(changeStatusPersonal(true));
               dispatch(changeStatusAddress(false));
-              // setClickedPersonal(true);
-              // setClickedAddress(false);
             }}
             classNames={style.profile_button}
           >
@@ -121,8 +223,6 @@ function ProfilePage(): JSX.Element {
               localStorage.setItem('clickedPersonal', 'false');
               dispatch(changeStatusPersonal(false));
               dispatch(changeStatusAddress(true));
-              // setClickedPersonal(false);
-              // setClickedAddress(true);
             }}
             classNames={style.profile_button}
           >
@@ -164,13 +264,13 @@ function ProfilePage(): JSX.Element {
                         Firstname
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.firstname : ''}
+                        {bio ? bio.firstname : ''}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
                       <h4 className={style.profile_personal_title}>Lastname</h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.lastname : ''}
+                        {bio ? bio.lastname : ''}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
@@ -178,7 +278,7 @@ function ProfilePage(): JSX.Element {
                         Date of birth
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.birthday : ''}
+                        {bio ? bio.birthday : ''}
                       </p>
                     </li>
                   </ul>
@@ -201,9 +301,7 @@ function ProfilePage(): JSX.Element {
               <div className={style.profile_personal_mail}>
                 <div className={style.profile_personal_text}>
                   <h4 className={style.profile_personal_title}>Your E-mail</h4>
-                  <p className={style.profile_personal_describe}>
-                    {personal ? personal.email : ''}
-                  </p>
+                  <p className={style.profile_personal_describe}>{email}</p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -225,9 +323,7 @@ function ProfilePage(): JSX.Element {
                   <h4 className={style.profile_personal_title}>
                     Your password
                   </h4>
-                  <p className={style.profile_personal_describe}>
-                    {personal ? personal.password : ''}
-                  </p>
+                  <p className={style.profile_personal_describe}>{password}</p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -253,7 +349,7 @@ function ProfilePage(): JSX.Element {
                 : `${style.profile_address} ${style.hidden}`
             }
           >
-            <div className={style.profile_address_card}>
+            <div className={style.profile_address_card_add}>
               <div className={style.profile_address_add}>
                 <img
                   className={style.profile_address_add_img}
@@ -265,60 +361,7 @@ function ProfilePage(): JSX.Element {
                 </p>
               </div>
             </div>
-            <div className={style.profile_address_card}>
-              <div className={style.profile_address_add}>
-                <span>Shipping address</span>
-                <p>
-                  <b>Street:</b> {addressShip?.streetName}
-                </p>
-                <p>
-                  <b>Building:</b> {addressShip?.building}
-                </p>
-                {addressShip?.apartment && (
-                  <p>
-                    <b>Apartment:</b> {addressShip?.apartment}
-                  </p>
-                )}
-
-                <p>
-                  <b>City:</b> {addressShip?.city}
-                </p>
-                <p>
-                  <b>Postal:</b> {addressShip?.postalCode}
-                </p>
-                <p>
-                  <b>Country:</b> {addressShip?.country}
-                </p>
-              </div>
-            </div>
-            {addressBill && (
-              <div className={style.profile_address_card}>
-                <div className={style.profile_address_add}>
-                  <span>Shipping address</span>
-                  <p>
-                    <b>Street:</b> {addressBill?.streetName}
-                  </p>
-                  <p>
-                    <b>Building:</b> {addressBill?.building}
-                  </p>
-                  {addressBill?.apartment && (
-                    <p>
-                      <b>Apartment:</b> {addressBill?.apartment}
-                    </p>
-                  )}
-                  <p>
-                    <b>City:</b> {addressBill?.city}
-                  </p>
-                  <p>
-                    <b>Postal:</b> {addressBill?.postalCode}
-                  </p>
-                  addressBill
-                  <p>
-                    <b>Country:</b> {addressBill?.country}
-                  </p>
-                </div>
-              </div>
-            )}
+            {addressCard}
           </div>
         </div>
       </div>
@@ -332,21 +375,29 @@ function ProfilePage(): JSX.Element {
         <BioModal
           token={refreshToken ? refreshToken : ''}
           version={version}
-          firstnameField={personal?.firstname ?? ''}
-          lastnameField={personal?.lastname ?? ''}
-          birthdayField={personal?.birthday ?? ''}
+          firstnameField={bio?.firstname ?? ''}
+          lastnameField={bio?.lastname ?? ''}
+          birthdayField={bio?.birthday ?? ''}
           onClick={(): void => {
             setClickedBioUpdate(false);
             setShowModal(false);
           }}
+          setPersonal={setBio}
           modalClass={clickedBioUpdate ? style.visible : style.hidden}
+          setClickedBioUpdate={setClickedBioUpdate}
+          setShowModal={setShowModal}
         />
         <EmailModal
-          emailField={personal?.email ?? ''}
+          version={version}
+          emailField={email}
           onClick={(): void => {
             setClickedEmailUpdate(false);
             setShowModal(false);
           }}
+          setPersonal={setEmail}
+          token={refreshToken ? refreshToken : ''}
+          setClickedEmailUpdate={setClickedEmailUpdate}
+          setShowModal={setShowModal}
           modalClass={clickedEmailUpdate ? style.visible : style.hidden}
         />
         <PasswordModal
@@ -355,6 +406,15 @@ function ProfilePage(): JSX.Element {
             setShowModal(false);
           }}
           modalClass={clickedPasswordUpdate ? style.visible : style.hidden}
+        />
+        <AddressModal
+          onClick={(): void => {
+            setShowModal(false);
+            setClickedAddressesUpdate(false);
+          }}
+          version={version}
+          modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
+          addressData={addressData}
         />
       </div>
     </div>

@@ -65,7 +65,6 @@ function RegistrationPage(): JSX.Element {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
 
-  // const [passwordFocus, setPasswordFocus] = useState(false);
   const [successfulMessage, setSuccessfulMessage] = useState(false);
 
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
@@ -88,24 +87,6 @@ function RegistrationPage(): JSX.Element {
 
   const [checkedShipping, setCheckedShipping] = useState(false);
   const [checkedBilling, setCheckedBilling] = useState(false);
-  // const passwordErrorTexts = handlePasswordInput(password);
-  // const passwordErrorElements = Object.keys(passwordErrorTexts).map(
-  //   (key, i) => {
-  //     return (
-  //       <p
-  //         key={`tooltip_${i}`}
-  //         className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-  //       >
-  //         <img
-  //           className={style.tooltip_error}
-  //           src={passwordErrorTexts[key].isError ? iconError : iconCheckmark}
-  //           alt="Error icon"
-  //         />
-  //         {passwordErrorTexts[key].text}
-  //       </p>
-  //     );
-  //   }
-  // );
   const createModal = (): JSX.Element => {
     return (
       <div className={`${style.overlay}`}>

@@ -241,20 +241,52 @@
   }
 
   &_address {
-display: flex;
-flex-wrap: wrap;
-gap: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
 
 
     &_card {
       display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: space-between;
+
+      width: 250px;
+     padding: 30px;
+
+      border: 1px solid white;
+
+
+      &_add {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
 
-      aspect-ratio: 1 / 1.5;
-      width: 20%;
+      width: 250px;
 
       border: 1px solid white;
+
+      }
+    }
+
+    &_top {
+      display: flex;
+      flex-direction: column;
+      height: 80%;
+    }
+
+    &_type {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    &_name {
+      margin: 0;
+      margin-bottom: 20px;
+      font-size: 2.2rem;
     }
 
     &_add {
@@ -274,6 +306,53 @@ gap: 30px;
         font-size: 1.6rem;
       }
     }
+
+    &_item {
+      display: flex;
+      justify-content: space-between;
+
+      width: 70%;
+      margin: 0;
+
+      font-size: 1.4rem;
+      color: rgb(240 251 252);
+    }
+
+    &_fields {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &_bottom {
+      display: flex;
+      gap: 15px;
+      aspect-ratio: 1 / 0.1;
+    }
+
+    &_delete {
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 25%;
+
+      background-color: white;
+      border: none;
+    }
+
+    &_update {
+      width: 75%;
+      min-width: 0;
+      height: 40px;
+    }
+  }
+
+  &_address_update &_update_img {
+width: 15px;
+height: 15px;
   }
 }
 

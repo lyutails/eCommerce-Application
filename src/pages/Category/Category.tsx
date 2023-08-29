@@ -87,10 +87,11 @@ function CategoryPage(): JSX.Element {
   useEffect(() => {
     filterByColour().then((response) => {
       const parentCategory = response.body.results;
-      // setAllVariants(parentCategory);
+      setAllVariants(parentCategory);
     });
   }, []);
   console.log(allVariants, 'variants');
+  console.log(allCards);
 
   return (
     <div className={style.category_wrapper}>
@@ -99,7 +100,7 @@ function CategoryPage(): JSX.Element {
         <button
           onClick={(): void => {
             const productVariant = filterByColour();
-            console.log(productVariant);
+            // console.log(productVariant);
             setAllCards(allVariants);
           }}
           className={style.category_filters_red}
@@ -123,7 +124,7 @@ function CategoryPage(): JSX.Element {
       </div>
       <div className={style.category_cards_wrapper}>
         {allCards.map((card) => {
-          console.log(card);
+          // console.log(card);
           return (
             <Link
               to={`/category/${category}/${card.key}`}
