@@ -13,7 +13,7 @@ import {
   ProductVariant,
 } from '@commercetools/platform-sdk';
 import Card from './Card';
-import { filterByColour, getProductType } from '../../api/filterColour';
+import { filterByAttributes, getProductType } from '../../api/filterAttributes';
 import {
   Colours,
   Sizes,
@@ -22,8 +22,7 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
-  // const productVariantKey = 't-shirt-bug';
-  // console.log(getProductProjectionsByKey(productVariantKey), 'lalala');
+  const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
   const { category } = useParams();
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
@@ -32,8 +31,8 @@ function CategoryPage(): JSX.Element {
   const [allVariants, setAllVariants] = useState<ProductVariant[]>([]);
   const [allColours, setAllColours] = useState<string[]>([]);
   const [allSizes, setAllSizes] = useState<string[]>([]);
-  const [bestseller, setBestseller] = useState<string>('false');
-  const [sale, setSale] = useState<string>('false');
+  const [bestseller, setBestseller] = useState<boolean>(false);
+  const [sale, setSale] = useState<boolean>(false);
   const [colourFilterRed, setColourFilterRed] = useState({
     name: Colours.red,
     flag: false,
@@ -47,42 +46,34 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
   const [subcategoryMouses, setSubcategoryMouses] = useState({
-    name: SubCategories.Mouses,
     id: SubcategoriesIDs.Mouses,
     flag: false,
   });
   const [subcategoryMousesPads, setSubcategoryMousesPads] = useState({
-    name: SubCategories.MousePads,
     id: SubcategoriesIDs.MousePads,
     flag: false,
   });
   const [subcategoryTShirts, setSubcategoryTShirts] = useState({
-    name: SubCategories.TShirts,
     id: SubcategoriesIDs.TShirts,
     flag: false,
   });
   const [subcategoryHoodies, setSubcategoryHoodies] = useState({
-    name: SubCategories.Hoodies,
     id: SubcategoriesIDs.Hoodies,
     flag: false,
   });
   const [subcategoryCap, setSubcategoryCap] = useState({
-    name: SubCategories.Caps,
     id: SubcategoriesIDs.Caps,
     flag: false,
   });
   const [subcategoryMugs, setSubcategoryMugs] = useState({
-    name: SubCategories.Mugs,
     id: SubcategoriesIDs.Mugs,
     flag: false,
   });
   const [subcategoryNotepad, setSubcategoryNotepad] = useState({
-    name: SubCategories.Notepads,
     id: SubcategoriesIDs.Notepads,
     flag: false,
   });
   const [subcategoryStickerPack, setSubcategoryStickerPack] = useState({
-    name: SubCategories.Stickers,
     id: SubcategoriesIDs.Stickers,
     flag: false,
   });
@@ -114,6 +105,10 @@ function CategoryPage(): JSX.Element {
     name: Sizes.xxxl,
     flag: false,
   });
+  const [sizeFilterUniversal, setSizeFilterUniversal] = useState({
+    name: Sizes.universal,
+    flag: false,
+  });
 
   useEffect(() => {
     getProductType().then((response) => {
@@ -123,54 +118,8 @@ function CategoryPage(): JSX.Element {
           if (data.type.name === 'enum') {
             const coloursEnum = data.type['values'];
             const colours = coloursEnum.map((data) => data['key']);
-            console.log(colours);
             setAllColours(colours);
           }
-        }
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    getProductType().then((response) => {
-      const productTypeResponse = response.body.attributes;
-      console.log(productTypeResponse);
-      const productTypeSize = productTypeResponse?.filter((data) => {
-        if (data.name === 'size') {
-          if (data.type.name === 'enum') {
-            const sizesEnum = data.type['values'];
-            const sizes = sizesEnum.map((data) => data['key']);
-            console.log(sizes);
-            setAllSizes(sizes);
-          }
-        }
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    getProductType().then((response) => {
-      const productTypeResponse = response.body.attributes;
-      console.log(productTypeResponse);
-      const productTypeBestseller = productTypeResponse?.filter((data) => {
-        if (data.name === 'bestseller') {
-          const bestseller = data.name;
-          console.log(bestseller);
-          setBestseller(bestseller);
-        }
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    getProductType().then((response) => {
-      const productTypeResponse = response.body.attributes;
-      console.log(productTypeResponse);
-      const productTypeSale = productTypeResponse?.filter((data) => {
-        if (data.name === 'sale' || data.name === 'base_sale') {
-          const sale = data.name;
-          console.log(sale);
-          setSale(sale);
         }
       });
     });
@@ -194,7 +143,6 @@ function CategoryPage(): JSX.Element {
           });
           setSubtree(onlyWithAncestors);
         });
-        // create function to get subcat
         getSubtreeCategory(response.body.id).then((data) => {
           const subtreeArray = data.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -202,41 +150,31 @@ function CategoryPage(): JSX.Element {
           });
           setAllProducts(subtreeArray);
           setAllCards(allSubTreeArray);
-          // const allProductsArray: ProductVariant[][] = [];
-          // subtreeArray.map((item) => {
-          //   allProductsArray.push(item);
-          // });
-          // setAllCards(subtreeArray);
         });
       });
   }, [category, idCategory]);
 
-  function paintProducts(name: string): void {
-    subtree.map((data) => {
-      // console.log(allProducts);
-      if (name === data.name['en-US']) {
-        console.log(allProducts);
-        const variantsProducts: ProductVariant[] = [];
-        allProducts.forEach((item) => {
-          if (item.categories[0].id === data.id) {
-            console.log(item.variants);
-            variantsProducts.push(...item.variants);
-          }
-        });
-        console.log(variantsProducts);
-        setAllCards(variantsProducts);
-        // console.log(data.variants, 'lalala');
-      }
-    });
-  }
+  // function paintProducts(name: string): void {
+  //   subtree.map((data) => {
+  //     if (name === data.name['en-US']) {
+  //       const variantsProducts: ProductVariant[] = [];
+  //       allProducts.forEach((item) => {
+  //         if (item.categories[0].id === data.id) {
+  //           variantsProducts.push(...item.variants);
+  //         }
+  //       });
+  //       setAllCards(variantsProducts);
+  //     }
+  //   });
+  // }
 
-  function filter(): void {
+  function createQueryColourString(): string {
+    let queryColoursString = '';
     const coloursArray = [
       colourFilterRed,
       colourFilterBlack,
       colourFilterWhite,
     ];
-    let queryColoursString = '';
     coloursArray.forEach((colourItem) => {
       if (colourItem.flag) {
         if (queryColoursString === '') {
@@ -246,6 +184,11 @@ function CategoryPage(): JSX.Element {
         }
       }
     });
+    return queryColoursString;
+  }
+
+  function createQuerySizeString(): string {
+    let querySizesString = '';
     const sizesArray = [
       sizeFilterXS,
       sizeFilterS,
@@ -254,8 +197,8 @@ function CategoryPage(): JSX.Element {
       sizeFilterXL,
       sizeFilterXXL,
       sizeFilterXXXL,
+      sizeFilterUniversal,
     ];
-    let querySizesString = '';
     sizesArray.forEach((sizeItem) => {
       if (sizeItem.flag) {
         if (querySizesString === '') {
@@ -265,6 +208,11 @@ function CategoryPage(): JSX.Element {
         }
       }
     });
+    return querySizesString;
+  }
+
+  function createQuerySubtreeString(): string {
+    let querySubtreesString = '';
     const subtreesArray = [
       subcategoryTShirts,
       subcategoryMouses,
@@ -275,7 +223,6 @@ function CategoryPage(): JSX.Element {
       subcategoryNotepad,
       subcategoryStickerPack,
     ];
-    let querySubtreesString = '';
     subtreesArray.forEach((subtreeItem) => {
       if (subtreeItem.flag) {
         if (querySubtreesString === '') {
@@ -287,30 +234,57 @@ function CategoryPage(): JSX.Element {
         }
       }
     });
+    return querySubtreesString;
+  }
+
+  function filter(): void {
+    let queryColoursString = createQueryColourString();
+    let querySizesString = createQuerySizeString();
+    let querySubtreesString = createQuerySubtreeString();
+    let queryBestsellerString = '';
     const subtrees = `subtree("${idCategory}")`;
-    console.log(querySubtreesString);
-    // const size = `subtree("${idCategory}")`;
     const queryStringAllColours = `"red", "black", "white"`;
-    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl"`;
-    // `subtree("${idCategory}")`
-    console.log(queryColoursString, querySubtreesString);
-    filterByColour(
+    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+    let querySale = '';
+
+    filterByAttributes(
       queryColoursString === ''
         ? (queryColoursString = queryStringAllColours)
         : queryColoursString,
       querySubtreesString === ''
         ? (querySubtreesString = subtrees)
         : querySubtreesString,
-      querySizesString === ''
+      querySizesString === '' && category === 'Clothes'
         ? (querySizesString = queryStringAllSizes)
-        : querySizesString
+        : querySizesString === '' && category !== 'Clothes'
+        ? (querySizesString = `"no"`)
+        : querySizesString,
+      bestseller === false
+        ? (queryBestsellerString = `"true", "false"`)
+        : (queryBestsellerString = `"true"`),
+      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`)
     ).then((response) => {
       const parentCategory = response.body.results;
-      console.log(parentCategory);
-      const master = parentCategory.map((item) => item.masterVariant);
+      let master: ProductVariant[] = [];
+      if (
+        querySizesString === queryStringAllSizes ||
+        querySizesString === '"no"'
+      ) {
+        master = parentCategory.map((item) => item.masterVariant);
+      } else {
+        parentCategory.forEach((item) => master.push(...item.variants));
+      }
       setAllVariants(master);
       setAllCards(master);
     });
+  }
+
+  function onChangeBestseller(): void {
+    setBestseller(!bestseller);
+  }
+
+  function onChangeSale(): void {
+    setSale(!sale);
   }
 
   function onChangeColour(colour: string): void {
@@ -374,6 +348,12 @@ function CategoryPage(): JSX.Element {
           flag: !sizeFilterXXXL.flag,
         });
         break;
+      case Sizes.universal:
+        setSizeFilterUniversal({
+          name: Sizes.universal,
+          flag: !sizeFilterUniversal.flag,
+        });
+        break;
     }
   }
 
@@ -381,159 +361,192 @@ function CategoryPage(): JSX.Element {
     switch (subCategory) {
       case SubCategories.Mouses:
         setSubcategoryMouses({
-          name: SubCategories.Mouses,
           id: SubcategoriesIDs.Mouses,
           flag: !subcategoryMouses.flag,
         });
         break;
       case SubCategories.MousePads:
         setSubcategoryMousesPads({
-          name: SubCategories.MousePads,
           id: SubcategoriesIDs.MousePads,
           flag: !subcategoryMousesPads.flag,
         });
         break;
       case SubCategories.TShirts:
         setSubcategoryTShirts({
-          name: SubCategories.TShirts,
           id: SubcategoriesIDs.TShirts,
           flag: !subcategoryTShirts.flag,
         });
         break;
       case SubCategories.Hoodies:
         setSubcategoryHoodies({
-          name: SubCategories.Hoodies,
           id: SubcategoriesIDs.Hoodies,
           flag: !subcategoryHoodies.flag,
         });
         break;
       case SubCategories.Caps:
         setSubcategoryCap({
-          name: SubCategories.Caps,
           id: SubcategoriesIDs.Caps,
           flag: !subcategoryCap.flag,
         });
         break;
       case SubCategories.Mugs:
         setSubcategoryMugs({
-          name: SubCategories.Mugs,
           id: SubcategoriesIDs.Mugs,
           flag: !subcategoryMugs.flag,
         });
         break;
       case SubCategories.Notepads:
         setSubcategoryNotepad({
-          name: SubCategories.Notepads,
           id: SubcategoriesIDs.Notepads,
           flag: !subcategoryNotepad.flag,
         });
         break;
       case SubCategories.Stickers:
         setSubcategoryStickerPack({
-          name: SubCategories.Stickers,
           id: SubcategoriesIDs.Stickers,
           flag: !subcategoryStickerPack.flag,
         });
         break;
     }
   }
-  console.log(allSizes);
 
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
         <h2 className={style.category_title}>{category}</h2>
-        <div className={style.category_categories}>
-          {subtree.map((subCategory) => {
-            return (
-              <div key={subCategory.name['en-US']}>
-                <input
-                  name="filterColor"
-                  type="checkbox"
-                  id={subCategory.name['en-US']}
-                  onChange={(): void =>
-                    onChangeSubcategory(subCategory.name['en-US'])
-                  }
-                />
-                <label
-                  htmlFor={subCategory.name['en-US']}
-                  className={style.category_filters_category}
-                >
-                  {subCategory.name['en-US']}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-        <div className={style.category_filters_color}>
-          {allColours.map((colour) => {
-            return (
-              <div key={colour} className={style.category_colours_wrapper}>
-                <input
-                  name="filterColor"
-                  type="checkbox"
-                  className={style.colour_input}
-                  id={colour}
-                  onChange={(): void => onChangeColour(colour)}
-                />
-                <label
-                  htmlFor={colour}
-                  className={style[`category_filters_${colour}`]}
-                ></label>
-              </div>
-            );
-          })}
-        </div>
-        <div className={style.category_filters_size}>
-          {allSizes.map((size) => {
-            return (
-              <div key={size}>
-                <input
-                  name="filterSize"
-                  type="checkbox"
-                  className={style.size_input}
-                  id={size}
-                  onChange={(): void => onChangeSize(size)}
-                />
-                <label
-                  htmlFor={size}
-                  className={style[`category_filters_${size}`]}
-                >
-                  {size}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-        <div className={style.category_filters_bestseller}>
-          <div key={bestseller}>
-            <input
-              name="filterBestseller"
-              type="checkbox"
-              className={style.bestseller_input}
-              id={bestseller}
-              // onChange={(): void => onChangeBestseller(bestseller)}
-            />
-            <label
-              htmlFor={bestseller}
-              className={style.category_filters_bestseller}
-            >
-              {bestseller}
-            </label>
+        <div className={style.category_filters}>
+          <div className={style.category_categories}>
+            {subtree.map((subCategory) => {
+              return (
+                <div key={subCategory.name['en-US']}>
+                  <input
+                    name="filterColor"
+                    type="checkbox"
+                    id={subCategory.name['en-US']}
+                    onChange={(): void =>
+                      onChangeSubcategory(subCategory.name['en-US'])
+                    }
+                  />
+                  <label
+                    htmlFor={subCategory.name['en-US']}
+                    className={style.category_filters_category}
+                  >
+                    {subCategory.name['en-US']}
+                  </label>
+                </div>
+              );
+            })}
           </div>
-        </div>
-        <div className={style.category_filters_sale}>
-          <div key={sale}>
-            <input
-              name="filterSale"
-              type="checkbox"
-              className={style.sale_input}
-              id={bestseller}
-              // onChange={(): void => onChangeSale(sale)}
-            />
-            <label htmlFor={sale} className={style.category_filters_sale}>
-              sale
-            </label>
+          <div className={style.category_filters_color}>
+            {allColours.map((colour) => {
+              return (
+                <div key={colour} className={style.category_colours_wrapper}>
+                  <input
+                    name="filterColor"
+                    type="checkbox"
+                    className={style.colour_input}
+                    id={colour}
+                    onChange={(): void => onChangeColour(colour)}
+                  />
+                  <label
+                    htmlFor={colour}
+                    className={style[`category_filters_${colour}`]}
+                  ></label>
+                </div>
+              );
+            })}
+          </div>
+          <div className={style.category_filters_size}>
+            {category === 'Clothes' &&
+              sizesArray.map((size) => {
+                return (
+                  <div
+                    key={size}
+                    className={
+                      (size === 'universal' &&
+                        subcategoryTShirts.flag &&
+                        !subcategoryCap.flag) ||
+                      (size === 'universal' &&
+                        subcategoryHoodies.flag &&
+                        !subcategoryCap.flag)
+                        ? style.category_filter_size_universal
+                        : ''
+                    }
+                  >
+                    <input
+                      name="filterSize"
+                      type="checkbox"
+                      className={style.size_input}
+                      id={size}
+                      onChange={(): void => onChangeSize(size)}
+                    />
+                    <label
+                      htmlFor={size}
+                      className={style[`category_filters_${size}`]}
+                    >
+                      {size}
+                    </label>
+                  </div>
+                );
+              })}
+          </div>
+          <div className={style.category_filters_bestseller}>
+            <div>
+              <input
+                name="filterBestseller"
+                type="checkbox"
+                className={style.bestseller_input}
+                id="bestseller"
+                onChange={onChangeBestseller}
+              />
+              <label
+                htmlFor="bestseller"
+                className={style.category_filters_bestseller}
+              >
+                bestseller
+              </label>
+            </div>
+          </div>
+          <div className={style.category_filters_sale}>
+            <div>
+              <input
+                name="filterSale"
+                type="checkbox"
+                className={style.sale_input}
+                id="sale"
+                onChange={onChangeSale}
+              />
+              <label htmlFor="sale" className={style.category_filters_sale}>
+                sale
+              </label>
+            </div>
+          </div>
+          <div className={style.category_filters_search}>
+            <div>
+              <input
+                name="filterSearch"
+                type="text"
+                className={style.category_search_input}
+                // id={bestseller}
+                placeholder="search"
+                // onChange={(): void => onChangeSale(sale)}
+              />
+            </div>
+          </div>
+          <div className={style.category_price_range_slider}>
+            <div className={style.category_range_value}>
+              <input
+                type="text"
+                className={style.category_price_input}
+                id="amount"
+                readOnly
+                // onChange={(): void => onChangeSale(sale)}
+              />
+            </div>
+            <div
+              id="category_slider_range"
+              className={style.category_range_bar}
+            ></div>
           </div>
         </div>
         <div className={style.category_cards_wrapper}>

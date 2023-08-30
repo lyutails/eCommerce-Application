@@ -58,4 +58,5 @@ export enum Sizes {
   xl = 'xl',
   xxl = 'xxl',
   xxxl = 'xxxl',
+  universal = 'universal',
 }

@@ -22,15 +22,26 @@
     color: $font-color-title;
   }
 
+  &_filters {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+  }
+
+  &_categories {
+    margin-bottom: 20px;
+  }
+
   &_filters_color {
     width: 10%;
+    margin-bottom: 20px;
   }
 
   &_filters_red {
     display: block;
 
     aspect-ratio: 1 / 1;
-    width: 40%;
+    width: 100%;
 
     background-color: red;
     border: 1px solid $glow-green;
@@ -45,7 +56,7 @@
     display: block;
 
     aspect-ratio: 1 / 1;
-    width: 40%;
+    width: 100%;
 
     background-color: black;
     border: 1px solid $glow-green;
@@ -60,7 +71,7 @@
     display: block;
 
     aspect-ratio: 1 / 1;
-    width: 40%;
+    width: 100%;
 
     background-color: white;
     border: 1px solid $glow-green;
@@ -98,6 +109,7 @@
 
   &_filters_size {
     width: 5vw;
+    margin-bottom: 20px;
     font-size: 2rem;
   }
 
@@ -132,6 +144,70 @@
       cursor: pointer;
     }
   }
+
+  &_search_input {
+    aspect-ratio: 1 / 0.15;
+    width: 10vw;
+    font-size: 2rem;
+
+    &::placeholder {
+      font-size: 2rem;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &_price_range_slider {
+    // float: left;
+    width: 100%;
+    padding: 10px 20px;
+  }
+
+  &_range_value {
+    margin: 0;
+  }
+
+  &_price_input {
+    width:100%;
+    margin: 20px 0;
+
+    font-size: 16px;
+    font-weight: initial;
+    color: $font-color-primary-one;
+
+    background:none;
+    border: none;
+    box-shadow: none;
+  }
+
+  &_range_bar {
+		width: 96%;
+		height: 3px;
+		margin-left: 8px;
+
+		background: $gradient-three;
+    border: none;
+
+    &::-webkit-slider-thumb {
+      cursor: pointer;
+
+      width: 25px;
+      height: 25px;
+
+      appearance: none;
+      background: $background-color-primary-five;
+    }
+  }
+
+  &_filter_size_universal {
+    display: none;
+  }
 }
 
 .colour {
@@ -141,21 +217,21 @@
     visibility: hidden;
   }
 
-  // &_label + &_input {
-  //   user-select: none;
-  //   display: inline-flex;
-  //   align-items: center;
-  // }
-
   &_input:checked ~ .category_filters_red {
-    box-shadow: 0 0 20px $glow-green;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
   }
 
   &_input:checked ~ .category_filters_black {
-    box-shadow: 0 0 20px $glow-green;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
   }
 
   &_input:checked ~ .category_filters_white {
-    box-shadow: 0 0 20px $glow-green;
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
   }
 }
