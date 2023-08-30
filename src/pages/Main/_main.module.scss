@@ -301,22 +301,6 @@
     background-position: center center;
     background-size: contain;
     filter: drop-shadow(0 0 5px $glow-green);
-
-    &.one {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-bug.png');
-    }
-
-    &.two {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-deadline.png');
-    }
-
-    &.three {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-git.png');
-    }
-
-    &.four {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-slothorian.png');
-    }
   }
 
   &_arrow {

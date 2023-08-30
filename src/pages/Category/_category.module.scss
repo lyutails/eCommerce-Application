@@ -1,13 +1,19 @@
 @import '../../style/variables';
 
 .category {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  width: 100%;
+
+  background-color: $background-color-primary-one;
+
   &_wrapper {
     display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-
-    background-color: $background-color-primary-one;
+    flex-direction: row;
+    width: 90vw;
+    margin: 0 auto;
   }
 
   &_title {
@@ -16,13 +22,26 @@
     color: $font-color-title;
   }
 
+  &_filters {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+  }
+
+  &_categories {
+    margin-bottom: 20px;
+  }
+
   &_filters_color {
     width: 10%;
+    margin-bottom: 20px;
   }
 
   &_filters_red {
+    display: block;
+
     aspect-ratio: 1 / 1;
-    width: 40%;
+    width: 100%;
 
     background-color: red;
     border: 1px solid $glow-green;
@@ -34,12 +53,33 @@
   }
 
   &_filters_black {
+    display: block;
+
     aspect-ratio: 1 / 1;
-    width: 40%;
+    width: 100%;
 
     background-color: black;
     border: 1px solid $glow-green;
     border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_filters_white {
+    display: block;
+
+    aspect-ratio: 1 / 1;
+    width: 100%;
+
+    background-color: white;
+    border: 1px solid $glow-green;
+    border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &_filters_discount {
@@ -52,6 +92,8 @@
     min-width: 100px;
     max-width: 200px;
 
+    font-size: 1.5rem;
+
     background-color: $background-color-primary-five;
   }
 
@@ -63,5 +105,133 @@
 
   &_card {
     width: 24%;
+  }
+
+  &_filters_size {
+    width: 5vw;
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+
+  &_filters_s {
+    aspect-ratio: 1 / 1;
+    width: 2vw;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_filters_category {
+    font-size: 2rem;
+  }
+
+  &_filters_bestseller {
+    font-size: 2rem;
+  }
+
+  &_filters_sale {
+    font-size: 2rem;
+  }
+
+  &_filter_button {
+    display: block;
+    aspect-ratio: 1 / 0.4;
+    width: 10vw;
+    font-size: 2rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_search_input {
+    aspect-ratio: 1 / 0.15;
+    width: 10vw;
+    font-size: 2rem;
+
+    &::placeholder {
+      font-size: 2rem;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &_price_range_slider {
+    // float: left;
+    width: 100%;
+    padding: 10px 20px;
+  }
+
+  &_range_value {
+    margin: 0;
+  }
+
+  &_price_input {
+    width:100%;
+    margin: 20px 0;
+
+    font-size: 16px;
+    font-weight: initial;
+    color: $font-color-primary-one;
+
+    background:none;
+    border: none;
+    box-shadow: none;
+  }
+
+  &_range_bar {
+		width: 96%;
+		height: 3px;
+		margin-left: 8px;
+
+		background: $gradient-three;
+    border: none;
+
+    &::-webkit-slider-thumb {
+      cursor: pointer;
+
+      width: 25px;
+      height: 25px;
+
+      appearance: none;
+      background: $background-color-primary-five;
+    }
+  }
+
+  &_filter_size_universal {
+    display: none;
+  }
+}
+
+.colour {
+  &_input {
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+  }
+
+  &_input:checked ~ .category_filters_red {
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .category_filters_black {
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .category_filters_white {
+    box-shadow:
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
   }
 }
