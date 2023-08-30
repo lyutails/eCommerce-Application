@@ -27,6 +27,8 @@
   }
 
   &_filters_red {
+    display: block;
+
     aspect-ratio: 1 / 1;
     width: 40%;
 
@@ -40,21 +42,33 @@
   }
 
   &_filters_black {
+    display: block;
+
     aspect-ratio: 1 / 1;
     width: 40%;
 
     background-color: black;
     border: 1px solid $glow-green;
     border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &_filters_white {
+    display: block;
+
     aspect-ratio: 1 / 1;
     width: 40%;
 
     background-color: white;
     border: 1px solid $glow-green;
     border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &_filters_discount {
@@ -80,5 +94,68 @@
 
   &_card {
     width: 24%;
+  }
+
+  &_filters_size {
+    width: 5vw;
+    font-size: 2rem;
+  }
+
+  &_filters_s {
+    aspect-ratio: 1 / 1;
+    width: 2vw;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_filters_category {
+    font-size: 2rem;
+  }
+
+  &_filters_bestseller {
+    font-size: 2rem;
+  }
+
+  &_filters_sale {
+    font-size: 2rem;
+  }
+
+  &_filter_button {
+    display: block;
+    aspect-ratio: 1 / 0.4;
+    width: 10vw;
+    font-size: 2rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.colour {
+  &_input {
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+  }
+
+  // &_label + &_input {
+  //   user-select: none;
+  //   display: inline-flex;
+  //   align-items: center;
+  // }
+
+  &_input:checked ~ .category_filters_red {
+    box-shadow: 0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .category_filters_black {
+    box-shadow: 0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .category_filters_white {
+    box-shadow: 0 0 20px $glow-green;
   }
 }
