@@ -67,10 +67,13 @@ export interface IInputPropsPassword {
   placeholder: string;
   passwordError: boolean;
   setPasswordField: React.Dispatch<React.SetStateAction<string>>;
-  passwordField?: string;
+  passwordField: string;
   clueColor: string;
   clueError: string;
   tooltipColor?: string;
+  setPasswordCheck?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setCheckmarkPassword?: React.Dispatch<React.SetStateAction<boolean>>;
+  checkmarkPassword?: boolean;
 }
 
 export interface IInputPropsMask {

@@ -29,7 +29,7 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailCheck, setEmailCheck] = useState(false);
-  const [checkmarkEmail, setCheckmarkEmail] = useState(false);
+  const [checkmarkEmail, setCheckmarkEmail] = useState(true);
 
   useEffect(() => {
     setEmail(props.emailField);

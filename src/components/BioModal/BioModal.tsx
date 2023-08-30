@@ -38,9 +38,9 @@ function BioModal(props: IBioModalProps): JSX.Element {
   const [lastnameError, setLastnameError] = useState('');
   const [birthday, setBirthday] = useState('');
   const [birthdayError, setBirthdayError] = useState('');
-  const [firstnameСheck, setFirstnameCheck] = useState(false);
-  const [lastnameСheck, setLastnameCheck] = useState(false);
-  const [birthdayСheck, setBirthdayCheck] = useState(false);
+  const [firstnameСheck, setFirstnameCheck] = useState(true);
+  const [lastnameСheck, setLastnameCheck] = useState(true);
+  const [birthdayСheck, setBirthdayCheck] = useState(true);
 
   useEffect(() => {
     setBirthday(props.birthdayField);

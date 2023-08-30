@@ -67,9 +67,15 @@ const authMiddlewareOptionsForPasswordFlow = (
   return options;
 };
 
-export const updateCustomer = async (
+interface IMyUpdatePassword {
+  version: number;
+  currentPassword: string;
+  newPassword: string;
+}
+
+export const updatePassword = async (
   refreshToken: string,
-  data: MyCustomerUpdate
+  data: IMyUpdatePassword
 ): Promise<ClientResponse<Customer> | undefined> => {
   const apiRoot = createApiBuilderFromCtpClient(
     loginUserCTPClient(authMiddlewareOptionsForPasswordFlow(refreshToken)),
@@ -80,6 +86,7 @@ export const updateCustomer = async (
   try {
     const customer = await apiRoot
       .me()
+      .password()
       .post({
         body: data,
         headers: {

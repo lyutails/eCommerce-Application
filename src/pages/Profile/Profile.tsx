@@ -23,6 +23,7 @@ import { parseDateToWeb } from '../../utils/parseDate';
 import { AddressDraft } from '@commercetools/platform-sdk';
 import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
+import { updatePassword } from '../../api/changePassword';
 
 export interface IPersonalData {
   [key: string]: string | undefined;
@@ -202,6 +203,11 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
+  // const data = {
+  //   version: version,
+  //   currentPassword: 'fshHJKL2365',
+  //   newPassword: '2327Ybv!1',
+  // };
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -401,10 +407,14 @@ function ProfilePage(): JSX.Element {
           modalClass={clickedEmailUpdate ? style.visible : style.hidden}
         />
         <PasswordModal
+          version={version}
           onClick={(): void => {
             setClickedPasswordUpdate(false);
             setShowModal(false);
           }}
+          setClickedPasswordUpdate={setClickedPasswordUpdate}
+          setShowModal={setShowModal}
+          token={refreshToken ? refreshToken : ''}
           modalClass={clickedPasswordUpdate ? style.visible : style.hidden}
         />
         <AddressModal
@@ -425,7 +435,8 @@ export default ProfilePage;
 /*   "email": "ianatestAPI@example.com",
   "firstName": "Лфенф",
   "lastName": "ывапаувас",
-  "password": "fshHJKL2365" */
+  "password": "23272327Ybv" 
+  */
 
 // "email": 'hi@ya.ru';
 // "password": "2327Ybv!"
