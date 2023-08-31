@@ -27,10 +27,10 @@ function CategoryPage(): JSX.Element {
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
-  const [allProducts, setAllProducts] = useState<ProductProjection[]>([]);
-  const [allVariants, setAllVariants] = useState<ProductVariant[]>([]);
+  // const [allProducts, setAllProducts] = useState<ProductProjection[]>([]);
+  // const [allVariants, setAllVariants] = useState<ProductVariant[]>([]);
   const [allColours, setAllColours] = useState<string[]>([]);
-  const [allSizes, setAllSizes] = useState<string[]>([]);
+  // const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
   const [colourFilterRed, setColourFilterRed] = useState({
@@ -148,7 +148,7 @@ function CategoryPage(): JSX.Element {
           const allSubTreeArray = subtreeArray.map((item) => {
             return item.masterVariant;
           });
-          setAllProducts(subtreeArray);
+          // setAllProducts(subtreeArray);
           setAllCards(allSubTreeArray);
         });
       });
@@ -274,7 +274,7 @@ function CategoryPage(): JSX.Element {
       } else {
         parentCategory.forEach((item) => master.push(...item.variants));
       }
-      setAllVariants(master);
+      // setAllVariants(master);
       setAllCards(master);
     });
   }
