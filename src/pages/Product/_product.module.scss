@@ -1,3 +1,13 @@
-.product {
+.container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
   width: 100%;
+
+  font-size: 3rem;
+
+  .img{
+    width: 20%;
+  }
 }

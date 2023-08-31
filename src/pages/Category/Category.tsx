@@ -24,8 +24,9 @@ function CategoryPage(): JSX.Element {
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
+
   const [allColours, setAllColours] = useState<string[]>([]);
-  const [allSizes, setAllSizes] = useState<string[]>([]);
+  // const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
