@@ -11,7 +11,8 @@ export async function filterByAttributes(
   subtrees: string,
   size: string,
   bestseller: string,
-  sale: string
+  sale: string,
+  brand: string
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -19,6 +20,9 @@ export async function filterByAttributes(
       .search()
       .get({
         queryArgs: {
+          sort: 'price asc',
+          limit: 8,
+          // offset: 5,
           // facet: ['variants.attributes.color'],
           'filter.query': [
             // `categories.id: subtree("877113a4-f6f2-40df-acee-02bdf03f9977")`,
@@ -28,6 +32,7 @@ export async function filterByAttributes(
             `variants.attributes.size.key:${size}`,
             `variants.attributes.bestseller:${bestseller}`,
             `variants.attributes.sale:${sale}`,
+            `variants.attributes.brand.key:${brand}`,
           ],
         },
       })

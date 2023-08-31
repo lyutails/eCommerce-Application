@@ -1,20 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import {
   GetParentCategory,
-  getSubtreeCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
-import {
-  Category,
-  ProductProjection,
-  ProductVariant,
-} from '@commercetools/platform-sdk';
+import { Category, ProductVariant } from '@commercetools/platform-sdk';
 import Card from './Card';
 import { filterByAttributes, getProductType } from '../../api/filterAttributes';
 import {
+  Brands,
   Colours,
   Sizes,
   SubCategories,
@@ -22,17 +18,25 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
+  const allBrands = ['RSSchool', 'Logitech'];
   const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
   const { category } = useParams();
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
-  // const [allProducts, setAllProducts] = useState<ProductProjection[]>([]);
-  // const [allVariants, setAllVariants] = useState<ProductVariant[]>([]);
+
   const [allColours, setAllColours] = useState<string[]>([]);
   // const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
+  const [brandRSSchool, setBrandRSSchool] = useState({
+    name: Brands.RSSchool,
+    flag: false,
+  });
+  const [brandLogitech, setBrandLogitech] = useState({
+    name: Brands.Logitech,
+    flag: false,
+  });
   const [colourFilterRed, setColourFilterRed] = useState({
     name: Colours.red,
     flag: false,
@@ -113,7 +117,7 @@ function CategoryPage(): JSX.Element {
   useEffect(() => {
     getProductType().then((response) => {
       const productTypeResponse = response.body.attributes;
-      const productTypeColour = productTypeResponse?.filter((data) => {
+      productTypeResponse?.forEach((data) => {
         if (data.name === 'color') {
           if (data.type.name === 'enum') {
             const coloursEnum = data.type['values'];
@@ -143,30 +147,33 @@ function CategoryPage(): JSX.Element {
           });
           setSubtree(onlyWithAncestors);
         });
-        getSubtreeCategory(response.body.id).then((data) => {
-          const subtreeArray = data.body.results;
+        let querySizesString = '';
+        const queryBestsellerString = `"true", "false"`;
+        const subtrees = `subtree("${idCategory}")`;
+        const queryStringAllColours = `"red", "black", "white"`;
+        const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+        const querySale = `"true", "false"`;
+        const queryStringAllBrands = `"RSSchool", "Logitech"`;
+        filterByAttributes(
+          queryStringAllColours,
+          subtrees,
+          querySizesString === '' && category === 'Clothes'
+            ? (querySizesString = queryStringAllSizes)
+            : querySizesString === '' && category !== 'Clothes'
+            ? (querySizesString = `"no"`)
+            : querySizesString,
+          queryBestsellerString,
+          querySale,
+          queryStringAllBrands
+        ).then((response) => {
+          const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
             return item.masterVariant;
           });
-          // setAllProducts(subtreeArray);
           setAllCards(allSubTreeArray);
         });
       });
   }, [category, idCategory]);
-
-  // function paintProducts(name: string): void {
-  //   subtree.map((data) => {
-  //     if (name === data.name['en-US']) {
-  //       const variantsProducts: ProductVariant[] = [];
-  //       allProducts.forEach((item) => {
-  //         if (item.categories[0].id === data.id) {
-  //           variantsProducts.push(...item.variants);
-  //         }
-  //       });
-  //       setAllCards(variantsProducts);
-  //     }
-  //   });
-  // }
 
   function createQueryColourString(): string {
     let queryColoursString = '';
@@ -188,6 +195,7 @@ function CategoryPage(): JSX.Element {
   }
 
   function createQuerySizeString(): string {
+    setAllSizes([]);
     let querySizesString = '';
     const sizesArray = [
       sizeFilterXS,
@@ -201,6 +209,7 @@ function CategoryPage(): JSX.Element {
     ];
     sizesArray.forEach((sizeItem) => {
       if (sizeItem.flag) {
+        allSizes.push(sizeItem.name);
         if (querySizesString === '') {
           querySizesString = querySizesString + `"${sizeItem.name}"`;
         } else {
@@ -237,12 +246,29 @@ function CategoryPage(): JSX.Element {
     return querySubtreesString;
   }
 
+  function createQueryBrand(): string {
+    let queryBrands = '';
+    const brandsArray = [brandRSSchool, brandLogitech];
+    brandsArray.forEach((brand) => {
+      if (brand.flag) {
+        if (queryBrands === '') {
+          queryBrands = queryBrands + `"${brand.name}"`;
+        } else {
+          queryBrands = queryBrands + `, "${brand.name}"`;
+        }
+      }
+    });
+    return queryBrands;
+  }
+
   function filter(): void {
     let queryColoursString = createQueryColourString();
     let querySizesString = createQuerySizeString();
     let querySubtreesString = createQuerySubtreeString();
+    let queryBrandString = createQueryBrand();
     let queryBestsellerString = '';
     const subtrees = `subtree("${idCategory}")`;
+    const queryStringAllBrands = '"RSSchool", "Logitech"';
     const queryStringAllColours = `"red", "black", "white"`;
     const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
     let querySale = '';
@@ -262,7 +288,10 @@ function CategoryPage(): JSX.Element {
       bestseller === false
         ? (queryBestsellerString = `"true", "false"`)
         : (queryBestsellerString = `"true"`),
-      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`)
+      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
+      queryBrandString === ''
+        ? (queryBrandString = queryStringAllBrands)
+        : queryBrandString
     ).then((response) => {
       const parentCategory = response.body.results;
       let master: ProductVariant[] = [];
@@ -271,11 +300,24 @@ function CategoryPage(): JSX.Element {
         querySizesString === '"no"'
       ) {
         master = parentCategory.map((item) => item.masterVariant);
+        setAllCards(master);
       } else {
         parentCategory.forEach((item) => master.push(...item.variants));
+        const sortedVariantsArray: ProductVariant[][] = [];
+        allSizes.forEach((data) => {
+          const sortedVariant = master.filter((variant) => {
+            const sizeAttribute = variant.attributes?.find(
+              (sizeQuery) => sizeQuery.name === 'size'
+            );
+            if (sizeAttribute?.value['key'] === data) {
+              console.log(variant);
+              return variant;
+            }
+          });
+          sortedVariantsArray.push(sortedVariant);
+        });
+        setAllCards(sortedVariantsArray.flat());
       }
-      // setAllVariants(master);
-      setAllCards(master);
     });
   }
 
@@ -302,6 +344,23 @@ function CategoryPage(): JSX.Element {
         setColourFilterWhite({
           name: Colours.white,
           flag: !colourFilterWhite.flag,
+        });
+        break;
+    }
+  }
+
+  function onChangeBrand(brand: string): void {
+    switch (brand) {
+      case Brands.RSSchool:
+        setBrandRSSchool({
+          name: Brands.RSSchool,
+          flag: !brandRSSchool.flag,
+        });
+        break;
+      case Brands.Logitech:
+        setBrandLogitech({
+          name: Brands.Logitech,
+          flag: !brandLogitech.flag,
         });
         break;
     }
@@ -468,7 +527,11 @@ function CategoryPage(): JSX.Element {
                         !subcategoryCap.flag) ||
                       (size === 'universal' &&
                         subcategoryHoodies.flag &&
-                        !subcategoryCap.flag)
+                        !subcategoryCap.flag) ||
+                      (size !== 'universal' &&
+                        subcategoryCap.flag &&
+                        !subcategoryHoodies.flag &&
+                        !subcategoryTShirts.flag)
                         ? style.category_filter_size_universal
                         : ''
                     }
@@ -547,6 +610,27 @@ function CategoryPage(): JSX.Element {
               id="category_slider_range"
               className={style.category_range_bar}
             ></div>
+          </div>
+          <div className={style.category_filters_brand}>
+            {allBrands.map((brand) => {
+              return (
+                <div key={brand} className={style.category_colours_wrapper}>
+                  <input
+                    name="filterColor"
+                    type="checkbox"
+                    // className={style.colour_input}
+                    id={brand}
+                    onChange={(): void => onChangeBrand(brand)}
+                  />
+                  <label
+                    htmlFor={brand}
+                    className={style[`category_filters_${brand}`]}
+                  >
+                    {brand}
+                  </label>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className={style.category_cards_wrapper}>
