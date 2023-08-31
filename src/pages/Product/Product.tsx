@@ -73,6 +73,14 @@ function ProductPage(): JSX.Element {
     sizeProduct?.length
       ? (intermediateProduct.size = sizeProduct[0].value['key'])
       : '';
+
+    const brandProduct = product.masterVariant.attributes?.filter(
+      (item) => item.name === 'brand'
+    );
+    console.log(brandProduct);
+    brandProduct?.length
+      ? (intermediateProduct.brand = brandProduct[0].value['key'])
+      : '';
     setDataProduct(intermediateProduct);
   }
 
@@ -114,11 +122,19 @@ function ProductPage(): JSX.Element {
       ? (intermediateProduct.color = colorProduct[0].value['key'])
       : '';
 
-    const sizeProduct = product.masterVariant.attributes?.filter(
+    const sizeProduct = variant.attributes?.filter(
       (item) => item.name === 'size'
     );
     sizeProduct?.length
       ? (intermediateProduct.size = sizeProduct[0].value['key'])
+      : '';
+
+    const brandProduct = variant.attributes?.filter(
+      (item) => item.name === 'brand'
+    );
+    console.log(brandProduct);
+    brandProduct?.length
+      ? (intermediateProduct.brand = brandProduct[0].value['key'])
       : '';
     setDataProduct(intermediateProduct);
   }
@@ -141,7 +157,43 @@ function ProductPage(): JSX.Element {
 
   return (
     <div className={style.container}>
-      <h2 className={style.title}>Product</h2>
+      <h2 className={style.title}>{dataProduct.name}</h2>
+      <div className={style.blockCard}>
+        {dataProduct.images.map((image, index) => {
+          return (
+            <img
+              className={style.img}
+              src={image['url']}
+              alt={`${dataProduct.name}-${index}`}
+              key={`${dataProduct.name}-${index}`}
+            />
+          );
+        })}
+        {/* <img className={style.cardImg} src={img} alt="" /> */}
+      </div>
+      <div className={style.cardDescription}>
+        <div className={style.descriptionInfo}>{dataProduct.description}</div>
+        <div className={style.descriptionSpecification}>
+          <div className={style.specification}>
+            <div className={style.specificationPrice}>
+              sale : {dataProduct.sale.toFixed(2)} $
+            </div>
+            <div className={style.specificationPrice}>
+              prace: {dataProduct.price.toFixed(2)} $
+            </div>
+            <div className={style.specificationPrice}>
+              size: {dataProduct.size}
+            </div>
+            <div className={style.specificationPrice}>
+              color: {dataProduct.color}
+            </div>
+            <div className={style.specificationPrice}>
+              brand:{dataProduct.brand}
+            </div>
+          </div>
+          <button className={style.specificationButton}>В корзину</button>
+        </div>
+      </div>
     </div>
   );
 }
