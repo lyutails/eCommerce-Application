@@ -36,6 +36,13 @@ interface IAddressesData {
   defaultShippingAddressId: string | undefined;
 }
 
+export interface IAddressesCardData {
+  addressInfo: AddressDraft;
+  statusAddress: {
+    [key: string]: boolean;
+  };
+}
+
 interface IAddressesClickedData {
   [key: string]: boolean;
 }
@@ -44,7 +51,6 @@ function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [version, setVersion] = useState(1);
-  const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
   const [bio, setBio] = useState<IPersonalData | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState<string | undefined>('');
@@ -52,9 +58,11 @@ function ProfilePage(): JSX.Element {
   const [clickedEmailUpdate, setClickedEmailUpdate] = useState(false);
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [addresses, setAddresses] = useState<IAddressesData | null>(null);
   const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
-  const [addressData, setAddressData] = useState<AddressDraft | null>(null);
+  const [addressCardData, setAddressCardData] =
+    useState<IAddressesCardData | null>(null);
+  const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
+  const [addresses, setAddresses] = useState<IAddressesData | null>(null);
 
   const clickedPersonal = useSelector(
     (state: IPersonalState) => state.personal.information
@@ -87,7 +95,6 @@ function ProfilePage(): JSX.Element {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            console.log(response.body);
             response.body.version && setVersion(response.body.version);
             setBio({
               firstname: response.body.firstName,
@@ -186,7 +193,31 @@ function ProfilePage(): JSX.Element {
           </ButtonForm>
           <ButtonForm
             onClick={(): void => {
-              setAddressData(address);
+              setAddressCardData({
+                addressInfo: address,
+                statusAddress: {
+                  shippingAddressIds: addresses?.shippingAddressIds?.includes(
+                    address.id as string
+                  )
+                    ? true
+                    : false,
+                  billingAddressIds: addresses?.billingAddressIds?.includes(
+                    address.id as string
+                  )
+                    ? true
+                    : false,
+                  defaultBillingAddressId:
+                    addresses?.defaultBillingAddressId ===
+                    (address.id as string)
+                      ? true
+                      : false,
+                  defaultShippingAddressId:
+                    addresses?.defaultShippingAddressId ===
+                    (address.id as string)
+                      ? true
+                      : false,
+                },
+              });
               setClickedAddressesUpdate(true);
               setShowModal(true);
             }}
@@ -208,6 +239,11 @@ function ProfilePage(): JSX.Element {
   //   currentPassword: 'fshHJKL2365',
   //   newPassword: '2327Ybv!1',
   // };
+  // const customerAddressesAllInfo = {
+  //   addressInfo: addressCardData,
+  //   statusAddress: addresses,
+  // };
+  // console.log(customerAddressesAllInfo, 456);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -356,7 +392,13 @@ function ProfilePage(): JSX.Element {
             }
           >
             <div className={style.profile_address_card_add}>
-              <div className={style.profile_address_add}>
+              <button
+                onClick={(): void => {
+                  setClickedAddressesUpdate(true);
+                  setShowModal(true);
+                }}
+                className={style.profile_address_add}
+              >
                 <img
                   className={style.profile_address_add_img}
                   src={PlusIcon}
@@ -365,7 +407,7 @@ function ProfilePage(): JSX.Element {
                 <p className={style.profile_address_add_title}>
                   Add new address
                 </p>
-              </div>
+              </button>
             </div>
             {addressCard}
           </div>
@@ -424,7 +466,7 @@ function ProfilePage(): JSX.Element {
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
-          addressData={addressData}
+          addressData={addressCardData}
         />
       </div>
     </div>

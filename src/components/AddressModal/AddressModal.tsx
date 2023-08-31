@@ -7,6 +7,7 @@ import { inputHandler } from '../../pages/verification';
 import InputBirthDateMask from '../Input/InputBirthDateMask';
 import { AddressDraft } from '@commercetools/platform-sdk';
 import AddressForm from '../AddressForm/AddressForm';
+import { IAddressesCardData } from '../../pages/Profile/Profile';
 // import { updateBio } from './bio-update';
 
 export interface IAddressModalProps {
@@ -14,7 +15,7 @@ export interface IAddressModalProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   version: number;
   token?: string;
-  addressData: AddressDraft | null;
+  addressData: IAddressesCardData | null;
 }
 
 function AddressModal(props: IAddressModalProps): JSX.Element {
@@ -36,23 +37,48 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
   const [checkmarkCity, setCheckmarkCity] = useState(false);
   const [checkmarkCountry, setCheckmarkCountry] = useState(false);
   const [checkmarkPostal, setCheckmarkPostal] = useState(false);
-
   const [checkedDefault, setCheckedDefault] = useState(false);
+  const [addressData, setAddressData] = useState<IAddressesCardData | null>(
+    null
+  );
 
-  const customerData = {
+  useEffect(() => {
+    setAddressData(props.addressData);
+  }, [props.addressData]);
+
+  const addAddressData = {
     version: props.version,
     actions: [
       {
-        action: 'setFirstName',
-        firstName: 'hsjdvcdfvsdf',
-      },
-      {
-        action: 'setLastName',
-        lastName: 'sdhjcvsladhjcv',
+        action: 'addAddress',
+        address: {
+          streetName: street,
+          building: building,
+          apartment: apartment,
+          postalCode: postal,
+          city: city,
+          country: country === 'usa' ? 'US' : 'CA',
+        },
       },
     ],
   };
-  const addressData = props.addressData;
+  const changeAddressData = {
+    version: props.version,
+    actions: [
+      {
+        action: 'changeAddress',
+        addressId: '',
+        address: {
+          streetName: street,
+          building: building,
+          apartment: apartment,
+          postalCode: postal,
+          city: city,
+          country: country === 'usa' ? 'US' : 'CA',
+        },
+      },
+    ],
+  };
   const addressFormData = {
     title: 'Update address',
     checboxId: 'address-modal-id',
@@ -62,7 +88,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     cityError: cityError,
     countryError: countryError,
     postalError: postalError,
-    setStreetField: setStreet,
+    // setStreetField: setStreet,
     setBuildingField: setBuilding,
     setApartmentField: setApartment,
     setCityField: setCity,
@@ -76,12 +102,14 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     checkmarkPostal: checkmarkPostal,
     inputFields: addressData,
   };
+  // console.log(addressData);
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
         <img src={CloseIcon} alt="Close Modal" />
       </ButtonForm>
       <AddressForm
+        setStreetField={setStreet}
         addressData={addressFormData}
         setDefaultAddress={setCheckedDefault}
       />

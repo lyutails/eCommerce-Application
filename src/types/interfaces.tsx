@@ -112,12 +112,34 @@ export interface IRootState {
   };
 }
 
+export interface IProfileState {
+  profile: {
+    address: {
+      [key: string]: {
+        value: string;
+        error: string;
+        isChecked: boolean;
+      };
+    };
+    bio: {
+      [key: string]: string;
+    };
+    email: {
+      [key: string]: string;
+    };
+    passwoord: {
+      [key: string]: string;
+    };
+  };
+}
+
 export interface IPersonalState {
   personal: {
     information: boolean;
     addresses: boolean;
   };
 }
+
 export interface ICategoryState {
   category: string[];
 }

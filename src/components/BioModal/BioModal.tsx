@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import style from '../BioModal/_bioModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
@@ -6,6 +6,7 @@ import Input from '../Input/Input';
 import {
   handleBirthdayInput,
   handleFirstnameInput,
+  handleFirstnameInputTwo,
   handleLastnameInput,
   inputHandler,
 } from '../../pages/verification';
@@ -28,6 +29,21 @@ export interface IBioModalProps {
   setPersonal: React.Dispatch<React.SetStateAction<IPersonalData | null>>;
 }
 
+interface IFormData {
+  // street?: string;
+  [key: string]: {
+    value: string;
+    error: string;
+  };
+}
+
+const initialState = {
+  firstname: {
+    value: '',
+    error: '',
+  },
+};
+
 function BioModal(props: IBioModalProps): JSX.Element {
   const [firstname, setFistname] = useState('');
   const [fistnameError, setFirstnameError] = useState('');
@@ -42,11 +58,63 @@ function BioModal(props: IBioModalProps): JSX.Element {
   const [lastnameСheck, setLastnameCheck] = useState(true);
   const [birthdayСheck, setBirthdayCheck] = useState(true);
 
+  const [form, setForm] = useState<IFormData>(initialState);
+  const setInputError = (
+    fieldName: string,
+    handleFieldInput: (
+      arg0: string,
+      arg1: Dispatch<SetStateAction<boolean>>
+    ) => string,
+    setCheckmarkInput: React.Dispatch<React.SetStateAction<boolean>>
+  ): void => {
+    setForm({
+      ...form,
+      [fieldName]: {
+        ...form[fieldName],
+        error: handleFieldInput(form[fieldName].value, setCheckmarkInput),
+      },
+    });
+  };
+
+  const setInputValue = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: string
+  ): void => {
+    setForm({
+      ...form,
+      [fieldName]: {
+        ...form[fieldName],
+        value: event.target.value,
+      },
+    });
+  };
   useEffect(() => {
-    setBirthday(props.birthdayField);
-    setFistname(props.firstnameField);
-    setLastname(props.lastnameField);
+    console.log(props.firstnameField, props.lastnameField, props.birthdayField);
+    setForm({
+      ...form,
+      firstname: {
+        ...form.firstname,
+        value: props.firstnameField,
+      },
+      lastname: {
+        ...form.lastname,
+        value: props.lastnameField,
+      },
+      birthday: {
+        ...form.birthday,
+        value: props.birthdayField,
+      },
+    });
   }, [props.birthdayField, props.firstnameField, props.lastnameField]);
+
+  // useEffect(() => {
+  //   console.log(form);
+  // }, [form]);
+  // useEffect(() => {
+  //   setBirthday(props.birthdayField);
+  //   setFistname(props.firstnameField);
+  //   setLastname(props.lastnameField);
+  // }, [props.birthdayField, props.firstnameField, props.lastnameField]);
 
   const customerUpdateData: IMyCustomerBioUpdate = {
     version: props.version,
@@ -65,6 +133,7 @@ function BioModal(props: IBioModalProps): JSX.Element {
       },
     ],
   };
+
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -73,18 +142,28 @@ function BioModal(props: IBioModalProps): JSX.Element {
       <div className={style.modal_bio}>
         <h4 className={style.modal_title}>Firstname</h4>
         <Input
-          value={firstname}
-          onblur={(): void =>
-            setFirstnameCheck(
-              handleFirstnameInput(
-                firstname,
-                setFirstnameError,
-                firstnameСheck,
-                setCheckmarkFirstname
-              )
-            )
+          value={form.firstname?.value}
+          onblur={
+            (): void =>
+              setForm({
+                firstname: {
+                  ...form.firstname,
+                  error: handleFirstnameInputTwo(
+                    form.firstname.value,
+                    setCheckmarkFirstname
+                  ),
+                },
+              })
+            // setFirstnameCheck(
+            //   handleFirstnameInput(
+            //     firstname,
+            //     setFirstnameError,
+            //     firstnameСheck,
+            //     setCheckmarkFirstname
+            //   )
+            // )
           }
-          onChange={(e): void => inputHandler(e, setFistname)}
+          onChange={(e): void => setInputValue(e, 'firstname')}
           type="text"
           clue={fistnameError ? fistnameError : 'This is required field'}
           placeholder="First name *"
@@ -114,7 +193,7 @@ function BioModal(props: IBioModalProps): JSX.Element {
         <h4 className={style.modal_title}>Lastname</h4>
         <Input
           value={lastname}
-          onChange={(e): void => inputHandler(e, setLastname)}
+          onChange={(e): void => setInputValue(e, 'lastname')}
           onblur={(): void =>
             setLastnameCheck(
               handleLastnameInput(
