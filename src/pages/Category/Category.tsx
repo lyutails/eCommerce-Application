@@ -28,6 +28,7 @@ function CategoryPage(): JSX.Element {
   const [allColours, setAllColours] = useState<string[]>([]);
   // const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
+  const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
@@ -154,6 +155,8 @@ function CategoryPage(): JSX.Element {
         const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
         const querySale = `"true", "false"`;
         const queryStringAllBrands = `"RSSchool", "Logitech"`;
+        const queryStringPriceASC = `price asc`;
+        const queryStringPriceDESC = `price desc`;
         filterByAttributes(
           queryStringAllColours,
           subtrees,
@@ -164,7 +167,8 @@ function CategoryPage(): JSX.Element {
             : querySizesString,
           queryBestsellerString,
           querySale,
-          queryStringAllBrands
+          queryStringAllBrands,
+          priceSort ? queryStringPriceASC : queryStringPriceDESC
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -272,6 +276,8 @@ function CategoryPage(): JSX.Element {
     const queryStringAllColours = `"red", "black", "white"`;
     const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
     let querySale = '';
+    const queryStringPriceASC = `price asc`;
+    const queryStringPriceDESC = `price desc`;
 
     filterByAttributes(
       queryColoursString === ''
@@ -291,7 +297,8 @@ function CategoryPage(): JSX.Element {
       sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
       queryBrandString === ''
         ? (queryBrandString = queryStringAllBrands)
-        : queryBrandString
+        : queryBrandString,
+      priceSort ? queryStringPriceASC : queryStringPriceDESC
     ).then((response) => {
       const parentCategory = response.body.results;
       let master: ProductVariant[] = [];
@@ -319,6 +326,10 @@ function CategoryPage(): JSX.Element {
         setAllCards(sortedVariantsArray.flat());
       }
     });
+  }
+
+  function onChangePriceSort(): void {
+    setPriceSort(!priceSort);
   }
 
   function onChangeBestseller(): void {
@@ -474,6 +485,33 @@ function CategoryPage(): JSX.Element {
       <div className={style.category_wrapper}>
         <h2 className={style.category_title}>{category}</h2>
         <div className={style.category_filters}>
+          <div className={style.category_filters_pricesort}>
+            <div className={style.pricesort_wrapper}>
+              <input
+                name="filterColor"
+                type="checkbox"
+                className={style.pricesort_input}
+                id="price-sort"
+                onChange={(): void => {
+                  onChangePriceSort();
+                  // filter();
+                }}
+              />
+              <label htmlFor="price-sort" className={style.pricesort_label}>
+                <div className={style.day_night_cont}>
+                  <span className={style.the_sun}></span>
+                  <div className={style.the_moon}>
+                    <span className={style.moon_inside}></span>
+                  </div>
+                </div>
+                <div className={style.switch}>
+                  <div className={style.button}>
+                    <div className={style.b_inside}></div>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
           <div className={style.category_categories}>
             {subtree.map((subCategory) => {
               return (
@@ -482,9 +520,10 @@ function CategoryPage(): JSX.Element {
                     name="filterColor"
                     type="checkbox"
                     id={subCategory.name['en-US']}
-                    onChange={(): void =>
-                      onChangeSubcategory(subCategory.name['en-US'])
-                    }
+                    onChange={(): void => {
+                      onChangeSubcategory(subCategory.name['en-US']);
+                      filter();
+                    }}
                   />
                   <label
                     htmlFor={subCategory.name['en-US']}
@@ -505,7 +544,10 @@ function CategoryPage(): JSX.Element {
                     type="checkbox"
                     className={style.colour_input}
                     id={colour}
-                    onChange={(): void => onChangeColour(colour)}
+                    onChange={(): void => {
+                      onChangeColour(colour);
+                      // filter();
+                    }}
                   />
                   <label
                     htmlFor={colour}
@@ -541,7 +583,10 @@ function CategoryPage(): JSX.Element {
                       type="checkbox"
                       className={style.size_input}
                       id={size}
-                      onChange={(): void => onChangeSize(size)}
+                      onChange={(): void => {
+                        onChangeSize(size);
+                        // filter();
+                      }}
                     />
                     <label
                       htmlFor={size}
@@ -560,7 +605,10 @@ function CategoryPage(): JSX.Element {
                 type="checkbox"
                 className={style.bestseller_input}
                 id="bestseller"
-                onChange={onChangeBestseller}
+                onChange={(): void => {
+                  onChangeBestseller();
+                  // filter();
+                }}
               />
               <label
                 htmlFor="bestseller"
@@ -577,7 +625,10 @@ function CategoryPage(): JSX.Element {
                 type="checkbox"
                 className={style.sale_input}
                 id="sale"
-                onChange={onChangeSale}
+                onChange={(): void => {
+                  onChangeSale();
+                  // filter();
+                }}
               />
               <label htmlFor="sale" className={style.category_filters_sale}>
                 sale
@@ -620,7 +671,10 @@ function CategoryPage(): JSX.Element {
                     type="checkbox"
                     // className={style.colour_input}
                     id={brand}
-                    onChange={(): void => onChangeBrand(brand)}
+                    onChange={(): void => {
+                      onChangeBrand(brand);
+                      // filter();
+                    }}
                   />
                   <label
                     htmlFor={brand}

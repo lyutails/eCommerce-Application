@@ -12,7 +12,8 @@ export async function filterByAttributes(
   size: string,
   bestseller: string,
   sale: string,
-  brand: string
+  brand: string,
+  sortprice: string
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -20,7 +21,7 @@ export async function filterByAttributes(
       .search()
       .get({
         queryArgs: {
-          sort: 'price asc',
+          sort: `${sortprice}`,
           limit: 8,
           // offset: 5,
           // facet: ['variants.attributes.color'],
