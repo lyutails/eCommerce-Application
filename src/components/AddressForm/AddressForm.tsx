@@ -1,57 +1,145 @@
-import { ReactNode } from 'react';
+import {
+  handleStreetShipInputTwo,
+  selectHandler,
+} from '../../pages/verification';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import style from '../AddressForm/_addressForm.module.scss';
 import Input from '../Input/Input';
+import { handleCheckbox } from '../../utils/handleCheckbox';
+import { AddressDraft } from '@commercetools/platform-sdk';
+import { IAddressesCardData } from '../../pages/Profile/Profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { IProfileState } from '../../types/interfaces';
+import profileReducer, {
+  changeAddress,
+} from '../../store/reducers/profileReducer';
 
 export interface IAddressFormProps {
-  title: string;
-  setDefaultAddress?: React.ChangeEventHandler<HTMLInputElement> | undefined;
   addBillingAddress?: ReactNode;
+  addressData: IAddressDataObject;
+  setStreetField: Dispatch<SetStateAction<string>>;
+  setDefaultAddress: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface IAddressDataObject {
+  title: string;
   checboxId: string;
-  setStreetField: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  setBuildingField: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  setApartmentField: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  setCityField: React.ChangeEventHandler<HTMLInputElement> | undefined;
-  setCountryField: React.ChangeEventHandler<HTMLSelectElement> | undefined;
-  setPostalField: React.ChangeEventHandler<HTMLInputElement> | undefined;
   streetError: string;
   buildingError: string;
   apartmentError: string;
   cityError: string;
   countryError: string;
   postalError: string;
+  // setStreetField?: Dispatch<SetStateAction<string>>;
+  setBuildingField?: Dispatch<SetStateAction<string>>;
+  setApartmentField?: Dispatch<SetStateAction<string>>;
+  setCityField?: Dispatch<SetStateAction<string>>;
+  setCountryField?: Dispatch<SetStateAction<string>>;
+  setPostalField?: Dispatch<SetStateAction<string>>;
   checkmarkStreet: boolean;
   checkmarkBuilding: boolean;
   checkmarkApartment: boolean;
   checkmarkCity: boolean;
   checkmarkCountry: boolean;
   checkmarkPostal: boolean;
+  inputFields: IAddressesCardData | null;
 }
 
+interface IFormData {
+  // street?: string;
+  [key: string]: string;
+}
+
+const initialState = {
+  street: 'hfkyhu',
+};
+
+// type KeyFormInterface = {
+//   'street',
+// };
+
 function AddressForm(props: IAddressFormProps): JSX.Element {
+  const { address } = useSelector((state: IProfileState) => state.profile);
+  const dispatch = useDispatch();
+  const [addressData, setAddressData] = useState<IAddressDataObject | null>(
+    null
+  );
+  const [form, setForm] = useState<IFormData>(initialState);
+  useEffect(() => {
+    setAddressData(props.addressData);
+  }, [props.addressData]);
+
+  const setInputAction = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: string,
+    checkErrorInput: (streetShipField: string) => string
+  ): void => {
+    const errorMessage = checkErrorInput(event.target.value);
+    dispatch(
+      changeAddress({
+        [fieldName]: {
+          value: event.target.value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
+      })
+    );
+  };
+
+  const setSelectAction = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    fieldName: string,
+    checkErrorInput: (streetShipField: string) => string
+  ): void => {
+    const errorMessage = checkErrorInput(event.target.value);
+    dispatch(
+      changeAddress({
+        [fieldName]: {
+          value: event.target.value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
+      })
+    );
+  };
+  console.log(address.street);
   return (
     <div className={style.shipping}>
       <div className={style.address}>
-        <h4 className={style.address_title}>{props.title}</h4>
+        <h4 className={style.address_title}>{addressData?.title}</h4>
         <input
-          onChange={props.setDefaultAddress}
+          onChange={(e): void => handleCheckbox(e, props.setDefaultAddress)}
           className={style.address_input}
-          id={props.checboxId}
+          id={addressData?.checboxId}
           name="address"
           type="checkbox"
         />
-        <label htmlFor={props.checboxId} className={style.address_label}>
+        <label htmlFor={addressData?.checboxId} className={style.address_label}>
           Set like default shipping address
         </label>
       </div>
       <Input
-        onChange={props.setStreetField}
+        value={address.street.value}
+        onChange={(e): void =>
+          setInputAction(e, 'street', handleStreetShipInputTwo)
+        }
         type="text"
-        clue={props.streetError ? props.streetError : 'This is required field'}
+        clue={
+          addressData?.streetError
+            ? addressData?.streetError
+            : 'This is required field'
+        }
         placeholder="Street *"
         classWrapper={style.street}
         classClue={
-          props.streetError
+          addressData?.streetError
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -59,7 +147,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              props.checkmarkStreet
+              addressData?.checkmarkStreet
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -73,23 +161,28 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        onChange={props.setBuildingField}
+        value={addressData?.inputFields?.addressInfo.building}
+        onChange={(e): void =>
+          setInputAction(e, 'street', handleStreetShipInputTwo)
+        }
         type="text"
         placeholder="Building *"
         classWrapper={style.building}
         classClue={
-          props.buildingError
+          addressData?.buildingError
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
         classInput={style.building_input}
         clue={
-          props.buildingError ? props.buildingError : 'This is required field'
+          addressData?.buildingError
+            ? addressData?.buildingError
+            : 'This is required field'
         }
         childrenBefore={
           <div
             className={
-              props.checkmarkBuilding
+              addressData?.checkmarkBuilding
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -103,23 +196,28 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        onChange={props.setApartmentField}
+        value={addressData?.inputFields?.addressInfo.apartment}
+        onChange={(e): void =>
+          setInputAction(e, 'street', handleStreetShipInputTwo)
+        }
         type="text"
         placeholder="Apartment"
         classWrapper={style.apartment}
         classClue={
-          props.apartmentError
+          addressData?.apartmentError
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
         classInput={style.apartment_input}
         clue={
-          props.apartmentError ? props.apartmentError : 'This is required field'
+          addressData?.apartmentError
+            ? addressData.apartmentError
+            : 'This is required field'
         }
         childrenBefore={
           <div
             className={
-              props.checkmarkApartment
+              addressData?.checkmarkApartment
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -133,13 +231,20 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        onChange={props.setCityField}
+        value={addressData?.inputFields?.addressInfo.city}
+        onChange={(e): void =>
+          setInputAction(e, 'street', handleStreetShipInputTwo)
+        }
         type="text"
-        clue={props.cityError ? props.cityError : 'This is required field'}
+        clue={
+          addressData?.cityError
+            ? addressData?.cityError
+            : 'This is required field'
+        }
         placeholder="City *"
         classWrapper={style.city}
         classClue={
-          props.cityError
+          addressData?.cityError
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -147,7 +252,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              props.checkmarkCity
+              addressData?.checkmarkCity
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -163,9 +268,11 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
       <div className={style.country}>
         <div className={style.country_wrapper}>
           <select
-            onChange={props.setCountryField}
+            onChange={(e): void =>
+              setSelectAction(e, 'street', handleStreetShipInputTwo)
+            }
             className={
-              props.checkmarkCountry
+              addressData?.checkmarkCountry
                 ? `${style.country_select} ${style.approved}`
                 : style.country_select
             }
@@ -173,28 +280,50 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
             <option value="" className={style.country_head}>
               Please, select the country
             </option>
-            <option value="usa">USA</option>
-            <option value="canada">Canada</option>
+            {addressData?.inputFields?.addressInfo.country === 'US' ? (
+              <option selected value="usa">
+                USA
+              </option>
+            ) : (
+              <option value="usa">USA</option>
+            )}
+
+            {addressData?.inputFields?.addressInfo.country === 'CA' ? (
+              <option selected value="canada">
+                Canada
+              </option>
+            ) : (
+              <option value="canada">Canada</option>
+            )}
           </select>
         </div>
         <div
           className={
-            props.countryError
+            addressData?.countryError
               ? `${style.completed} ${style.error}`
               : style.uncompleted
           }
         >
-          {props.countryError ? props.countryError : 'This is required field'}
+          {addressData?.countryError
+            ? addressData?.countryError
+            : 'This is required field'}
         </div>
       </div>
       <Input
-        onChange={props.setPostalField}
+        value={addressData?.inputFields?.addressInfo.postalCode}
+        onChange={(e): void =>
+          setInputAction(e, 'street', handleStreetShipInputTwo)
+        }
         type="text"
-        clue={props.postalError ? props.postalError : 'This is required field'}
+        clue={
+          addressData?.postalError
+            ? addressData.postalError
+            : 'This is required field'
+        }
         placeholder="Postal *"
         classWrapper={style.postal}
         classClue={
-          props.postalError
+          addressData?.postalError
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -202,7 +331,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              props.checkmarkPostal
+              addressData?.checkmarkPostal
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }

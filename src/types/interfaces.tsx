@@ -67,10 +67,13 @@ export interface IInputPropsPassword {
   placeholder: string;
   passwordError: boolean;
   setPasswordField: React.Dispatch<React.SetStateAction<string>>;
-  passwordField?: string;
+  passwordField: string;
   clueColor: string;
   clueError: string;
   tooltipColor?: string;
+  setPasswordCheck?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setCheckmarkPassword?: React.Dispatch<React.SetStateAction<boolean>>;
+  checkmarkPassword?: boolean;
 }
 
 export interface IInputPropsMask {
@@ -87,8 +90,7 @@ export interface IInputPropsMask {
   tooltip?: ReactNode;
   value?: string;
   max?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onInput?: any;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IButtonFields {
@@ -110,12 +112,34 @@ export interface IRootState {
   };
 }
 
+export interface IProfileState {
+  profile: {
+    address: {
+      [key: string]: {
+        value: string;
+        error: string;
+        isChecked: boolean;
+      };
+    };
+    bio: {
+      [key: string]: string;
+    };
+    email: {
+      [key: string]: string;
+    };
+    passwoord: {
+      [key: string]: string;
+    };
+  };
+}
+
 export interface IPersonalState {
   personal: {
     information: boolean;
     addresses: boolean;
   };
 }
+
 export interface ICategoryState {
   category: string[];
 }
