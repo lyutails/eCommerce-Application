@@ -13,10 +13,10 @@ import {
 import { getProducts } from '../../api/getProducts';
 
 export const mainPageOffersSlides = [
-  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day',
-  'HOT SALES 80% OFF on all white t-shirts',
-  '2 = 1 !!! two t-shirts with the same art by price of one',
-  'Get the gift with every second purchase - sticker pack, mug or cap - by your taste!',
+  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day.',
+  'HOT SALES 20% OFF on all red t-shirts and caps during hot summer!',
+  '2 = 1 !!! two t-shirts with the same art by price of one!',
+  'Get the gift with every second purchase - sticker pack, mug or cap - by your taste.',
 ];
 
 function MainPage(): JSX.Element {

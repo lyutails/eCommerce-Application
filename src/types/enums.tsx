@@ -60,3 +60,8 @@ export enum Sizes {
   xxxl = 'xxxl',
   universal = 'universal',
 }
+
+export enum Brands {
+  RSSchool = 'RSSchool',
+  Logitech = 'Logitech',
+}
