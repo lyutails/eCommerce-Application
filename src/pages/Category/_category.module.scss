@@ -97,14 +97,50 @@
     background-color: $background-color-primary-five;
   }
 
+  &_pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+  }
+
   &_cards_wrapper {
     display: flex;
     flex-flow: row wrap;
-    width: 80%;
+    flex-direction: row;
+    row-gap: 50px;
+
+    width: 100%;
   }
 
   &_card {
     width: 24%;
+  }
+
+  &_pagination_buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 25vw;
+    margin-top: 50px;
+  }
+
+  &_pagination_button {
+    aspect-ratio: 1 / 1;
+    width: 15%;
+
+    font-size: 2.5rem;
+    color: $font-color-primary-one;
+
+    background-color: transparent;
+    border: 2px solid $glow-green;
+    border-radius: 50%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &_filters_size {

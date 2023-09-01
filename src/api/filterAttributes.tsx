@@ -13,7 +13,10 @@ export async function filterByAttributes(
   bestseller: string,
   sale: string,
   brand: string,
-  sortprice: string
+  sortprice: string,
+  // search: string
+  priceRangeStart: string,
+  priceRangeFinish: string
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -23,8 +26,13 @@ export async function filterByAttributes(
         queryArgs: {
           sort: `${sortprice}`,
           limit: 8,
-          // offset: 5,
-          // facet: ['variants.attributes.color'],
+          // 'text.en-us': '',
+          fuzzy: true,
+          fuzzyLevel: 1,
+          offset: 8 * 0,
+          // priceCurrency: 'USD',
+          // filter: 'variants.scopedPriceDiscounted:true',
+          // filter: [`variants.scopedPriceDiscounted:"true"`],
           'filter.query': [
             // `categories.id: subtree("877113a4-f6f2-40df-acee-02bdf03f9977")`,
             // `categories.id: subtree("00b71d4b-d8b0-463c-9561-23017777d0eb"), subtree("e19653dc-8b6f-4784-8df2-d8bde2262d28")`,
@@ -34,6 +42,8 @@ export async function filterByAttributes(
             `variants.attributes.bestseller:${bestseller}`,
             `variants.attributes.sale:${sale}`,
             `variants.attributes.brand.key:${brand}`,
+            `variants.price.centAmount:range (${priceRangeStart} to ${priceRangeFinish})`,
+            // `variants.scopedPriceDiscounted:"true"`,
           ],
         },
       })

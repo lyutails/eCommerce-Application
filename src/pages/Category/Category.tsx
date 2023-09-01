@@ -4,7 +4,7 @@ import {
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import { Category, ProductVariant } from '@commercetools/platform-sdk';
 import Card from './Card';
@@ -18,18 +18,33 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
+  const navigate = useNavigate();
+  const { category } = useParams();
+  const { query } = useParams();
+  const productsForSearch = [
+    'Cap',
+    'Hoodie',
+    'Mouse',
+    'Mouse Pad',
+    'Mug',
+    'Notepad',
+    'Sticker',
+    'T-Shirt',
+    'TShirt',
+  ];
   const allBrands = ['RSSchool', 'Logitech'];
   const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
-  const { category } = useParams();
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
-
   const [allColours, setAllColours] = useState<string[]>([]);
-  // const [allSizes, setAllSizes] = useState<string[]>([]);
+  const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchPriceStart, setSearchPriceStart] = useState('');
+  const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -115,6 +130,10 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
+  const urlQuery = query ? query : '';
+  const queryURLArray = urlQuery.split(';');
+  console.log(queryURLArray);
+
   useEffect(() => {
     getProductType().then((response) => {
       const productTypeResponse = response.body.attributes;
@@ -157,6 +176,10 @@ function CategoryPage(): JSX.Element {
         const queryStringAllBrands = `"RSSchool", "Logitech"`;
         const queryStringPriceASC = `price asc`;
         const queryStringPriceDESC = `price desc`;
+        const queryStringPriceRangeStart = `0`;
+        const queryStringPriceRangeFinish = `*`;
+        const querySearch = '';
+
         filterByAttributes(
           queryStringAllColours,
           subtrees,
@@ -168,7 +191,10 @@ function CategoryPage(): JSX.Element {
           queryBestsellerString,
           querySale,
           queryStringAllBrands,
-          priceSort ? queryStringPriceASC : queryStringPriceDESC
+          priceSort ? queryStringPriceASC : queryStringPriceDESC,
+          // querySearch
+          queryStringPriceRangeStart,
+          queryStringPriceRangeFinish
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -266,66 +292,118 @@ function CategoryPage(): JSX.Element {
   }
 
   function filter(): void {
-    let queryColoursString = createQueryColourString();
-    let querySizesString = createQuerySizeString();
-    let querySubtreesString = createQuerySubtreeString();
-    let queryBrandString = createQueryBrand();
-    let queryBestsellerString = '';
-    const subtrees = `subtree("${idCategory}")`;
-    const queryStringAllBrands = '"RSSchool", "Logitech"';
-    const queryStringAllColours = `"red", "black", "white"`;
-    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
-    let querySale = '';
     const queryStringPriceASC = `price asc`;
     const queryStringPriceDESC = `price desc`;
+    const querySearch = '';
 
-    filterByAttributes(
-      queryColoursString === ''
-        ? (queryColoursString = queryStringAllColours)
-        : queryColoursString,
-      querySubtreesString === ''
-        ? (querySubtreesString = subtrees)
-        : querySubtreesString,
-      querySizesString === '' && category === 'Clothes'
-        ? (querySizesString = queryStringAllSizes)
-        : querySizesString === '' && category !== 'Clothes'
-        ? (querySizesString = `"no"`)
-        : querySizesString,
-      bestseller === false
-        ? (queryBestsellerString = `"true", "false"`)
-        : (queryBestsellerString = `"true"`),
-      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
-      queryBrandString === ''
-        ? (queryBrandString = queryStringAllBrands)
-        : queryBrandString,
-      priceSort ? queryStringPriceASC : queryStringPriceDESC
-    ).then((response) => {
-      const parentCategory = response.body.results;
-      let master: ProductVariant[] = [];
-      if (
-        querySizesString === queryStringAllSizes ||
-        querySizesString === '"no"'
-      ) {
-        master = parentCategory.map((item) => item.masterVariant);
-        setAllCards(master);
-      } else {
-        parentCategory.forEach((item) => master.push(...item.variants));
-        const sortedVariantsArray: ProductVariant[][] = [];
-        allSizes.forEach((data) => {
-          const sortedVariant = master.filter((variant) => {
-            const sizeAttribute = variant.attributes?.find(
-              (sizeQuery) => sizeQuery.name === 'size'
-            );
-            if (sizeAttribute?.value['key'] === data) {
-              console.log(variant);
-              return variant;
-            }
-          });
-          sortedVariantsArray.push(sortedVariant);
-        });
-        setAllCards(sortedVariantsArray.flat());
-      }
-    });
+    let queryStringPriceSort = queryStringPriceDESC;
+    priceSort
+      ? (queryStringPriceSort = queryStringPriceASC)
+      : (queryStringPriceSort = queryStringPriceDESC);
+
+    let querySubtreesString = createQuerySubtreeString();
+    const subtrees = `subtree("${idCategory}")`;
+    querySubtreesString === ''
+      ? (querySubtreesString = subtrees)
+      : querySubtreesString;
+
+    const queryStringAllColours = `"red", "black", "white"`;
+    let queryColoursString = createQueryColourString();
+    queryColoursString === ''
+      ? (queryColoursString = queryStringAllColours)
+      : queryColoursString;
+
+    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+    let querySizesString = createQuerySizeString();
+    querySizesString === '' && category === 'Clothes'
+      ? (querySizesString = queryStringAllSizes)
+      : querySizesString === '' && category !== 'Clothes'
+      ? (querySizesString = `"no"`)
+      : querySizesString;
+
+    let queryBestsellerString = '';
+    bestseller === false
+      ? (queryBestsellerString = `"true", "false"`)
+      : (queryBestsellerString = `"true"`);
+
+    let querySale = '';
+    sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
+
+    let queryBrandString = createQueryBrand();
+    const queryStringAllBrands = '"RSSchool", "Logitech"';
+    queryBrandString === ''
+      ? (queryBrandString = queryStringAllBrands)
+      : queryBrandString;
+
+    let queryPriceRangeStart = '0';
+    let queryPriceRangeFinish = '*';
+    searchPriceStart === ''
+      ? queryPriceRangeStart
+      : (queryPriceRangeStart = searchPriceStart),
+      searchPriceFinish === ''
+        ? queryPriceRangeFinish
+        : (queryPriceRangeFinish = searchPriceFinish);
+
+    const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+
+    navigate(queryURL);
+
+    console.log(queryURL);
+
+    // filterByAttributes(
+    //   queryColoursString === ''
+    //     ? (queryColoursString = queryStringAllColours)
+    //     : queryColoursString,
+    //   querySubtreesString === ''
+    //     ? (querySubtreesString = subtrees)
+    //     : querySubtreesString,
+    //   querySizesString === '' && category === 'Clothes'
+    //     ? (querySizesString = queryStringAllSizes)
+    //     : querySizesString === '' && category !== 'Clothes'
+    //     ? (querySizesString = `"no"`)
+    //     : querySizesString,
+    //   bestseller === false
+    //     ? (queryBestsellerString = `"true", "false"`)
+    //     : (queryBestsellerString = `"true"`),
+    //   sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
+    //   queryBrandString === ''
+    //     ? (queryBrandString = queryStringAllBrands)
+    //     : queryBrandString,
+    //   priceSort ? queryStringPriceASC : queryStringPriceDESC,
+    //   // querySearch
+    //   searchPriceStart === ''
+    //     ? queryPriceRangeStart
+    //     : (queryPriceRangeStart = searchPriceStart),
+    //   searchPriceFinish === ''
+    //     ? queryPriceRangeFinish
+    //     : (queryPriceRangeFinish = searchPriceFinish)
+    // ).then((response) => {
+    //   const parentCategory = response.body.results;
+    //   let master: ProductVariant[] = [];
+    //   if (
+    //     querySizesString === queryStringAllSizes ||
+    //     querySizesString === '"no"'
+    //   ) {
+    //     master = parentCategory.map((item) => item.masterVariant);
+    //     setAllCards(master);
+    //   } else {
+    //     parentCategory.forEach((item) => master.push(...item.variants));
+    //     const sortedVariantsArray: ProductVariant[][] = [];
+    //     allSizes.forEach((data) => {
+    //       const sortedVariant = master.filter((variant) => {
+    //         const sizeAttribute = variant.attributes?.find(
+    //           (sizeQuery) => sizeQuery.name === 'size'
+    //         );
+    //         if (sizeAttribute?.value['key'] === data) {
+    //           console.log(variant);
+    //           return variant;
+    //         }
+    //       });
+    //       sortedVariantsArray.push(sortedVariant);
+    //     });
+    //     setAllCards(sortedVariantsArray.flat());
+    //   }
+    // });
   }
 
   function onChangePriceSort(): void {
@@ -641,9 +719,33 @@ function CategoryPage(): JSX.Element {
                 name="filterSearch"
                 type="text"
                 className={style.category_search_input}
-                // id={bestseller}
+                // id='search'
                 placeholder="search"
-                // onChange={(): void => onChangeSale(sale)}
+                onChange={(e): void => setSearchValue(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className={style.category_filters_priceStart}>
+            <div>
+              <input
+                name="filterPriceStart"
+                type="number"
+                className={style.category_search_input}
+                // id='search'
+                placeholder="price"
+                onChange={(e): void => setSearchPriceStart(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className={style.category_filters_priceFinish}>
+            <div>
+              <input
+                name="filterPriceFinish"
+                type="number"
+                className={style.category_search_input}
+                // id='search'
+                placeholder="price"
+                onChange={(e): void => setSearchPriceFinish(e.target.value)}
               />
             </div>
           </div>
@@ -687,33 +789,42 @@ function CategoryPage(): JSX.Element {
             })}
           </div>
         </div>
-        <div className={style.category_cards_wrapper}>
-          {allCards.map((card) => {
-            return (
-              <Link
-                to={`/category/${category}/${card.key}`}
-                className={style.category_card}
-                key={card.key}
-              >
-                <Card
-                  keyCard={card.key ? card.key : ''}
-                  images={card.images && card.images[0].url}
-                  prices={
-                    card.prices && card.prices[0].value
-                      ? card.prices[0].value.centAmount
-                      : 0
-                  }
-                  discounted={
-                    card.prices && card.prices[0].discounted?.value.centAmount
-                      ? `${card.prices[0].discounted?.value.centAmount}$`
-                      : ''
-                  }
-                  sku={card.sku ? card.sku : ''}
-                  brand={''}
-                />
-              </Link>
-            );
-          })}
+        <div className={style.category_pagination}>
+          <div className={style.category_cards_wrapper}>
+            {allCards.map((card) => {
+              return (
+                <Link
+                  to={`/category/${category}/${card.key}`}
+                  className={style.category_card}
+                  key={card.key}
+                >
+                  <Card
+                    keyCard={card.key ? card.key : ''}
+                    images={card.images && card.images[0].url}
+                    prices={
+                      card.prices && card.prices[0].value
+                        ? card.prices[0].value.centAmount
+                        : 0
+                    }
+                    discounted={
+                      card.prices && card.prices[0].discounted?.value.centAmount
+                        ? `${card.prices[0].discounted?.value.centAmount}$`
+                        : ''
+                    }
+                    sku={card.sku ? card.sku : ''}
+                    brand={''}
+                  />
+                </Link>
+              );
+            })}
+          </div>
+          <div className={style.category_pagination_buttons}>
+            <button className={style.category_pagination_button}></button>
+            <button className={style.category_pagination_button}></button>
+            <button className={style.category_pagination_button}>1</button>
+            <button className={style.category_pagination_button}></button>
+            <button className={style.category_pagination_button}></button>
+          </div>
         </div>
       </div>
       <button
