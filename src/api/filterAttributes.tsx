@@ -50,6 +50,7 @@ export async function filterByAttributes(
       .execute();
     return productsByColour;
   } catch {
+    console.log('no product by attribute found');
     throw new Error('no product by attribute found');
   }
 }

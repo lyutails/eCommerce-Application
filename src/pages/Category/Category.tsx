@@ -3,7 +3,7 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import { Category, ProductVariant } from '@commercetools/platform-sdk';
@@ -38,13 +38,13 @@ function CategoryPage(): JSX.Element {
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
   const [allColours, setAllColours] = useState<string[]>([]);
-  const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState('');
   const [searchPriceStart, setSearchPriceStart] = useState('');
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
+  const [count, setCount] = useState(true);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -132,7 +132,6 @@ function CategoryPage(): JSX.Element {
 
   const urlQuery = query ? query : '';
   const queryURLArray = urlQuery.split(';');
-  console.log(queryURLArray);
 
   useEffect(() => {
     getProductType().then((response) => {
@@ -203,31 +202,24 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [category, idCategory]);
+  }, [category, idCategory, priceSort]);
 
-  function createQueryColourString(): string {
-    let queryColoursString = '';
+  const createQueryColourString = useCallback((): string => {
     const coloursArray = [
       colourFilterRed,
       colourFilterBlack,
       colourFilterWhite,
     ];
-    coloursArray.forEach((colourItem) => {
-      if (colourItem.flag) {
-        if (queryColoursString === '') {
-          queryColoursString = queryColoursString + `"${colourItem.name}"`;
-        } else {
-          queryColoursString = queryColoursString + `, "${colourItem.name}"`;
-        }
-      }
-    });
+    const filteredColour = coloursArray.filter((colour) => colour.flag);
+    const filteredColourName = filteredColour.map((colour) => colour.name);
+    const queryColoursString = filteredColourName
+      .map((name) => `"${name}"`)
+      .join(',');
     return queryColoursString;
-  }
+  }, [colourFilterBlack, colourFilterRed, colourFilterWhite]);
 
-  function createQuerySizeString(): string {
-    setAllSizes([]);
-    let querySizesString = '';
-    const sizesArray = [
+  const allSizes = useMemo(() => {
+    const arrayOfSizes = [
       sizeFilterXS,
       sizeFilterS,
       sizeFilterM,
@@ -237,21 +229,21 @@ function CategoryPage(): JSX.Element {
       sizeFilterXXXL,
       sizeFilterUniversal,
     ];
-    sizesArray.forEach((sizeItem) => {
-      if (sizeItem.flag) {
-        allSizes.push(sizeItem.name);
-        if (querySizesString === '') {
-          querySizesString = querySizesString + `"${sizeItem.name}"`;
-        } else {
-          querySizesString = querySizesString + `, "${sizeItem.name}"`;
-        }
-      }
-    });
-    return querySizesString;
-  }
+    const filteredSize = arrayOfSizes.filter((size) => size.flag);
+    return filteredSize.map((size) => size.name);
+  }, [
+    sizeFilterL,
+    sizeFilterM,
+    sizeFilterS,
+    sizeFilterUniversal,
+    sizeFilterXL,
+    sizeFilterXS,
+    sizeFilterXXL,
+    sizeFilterXXXL,
+  ]);
+  const querySizesQueryString = allSizes.map((name) => `"${name}"`).join(',');
 
-  function createQuerySubtreeString(): string {
-    let querySubtreesString = '';
+  const createQuerySubtreeString = useCallback((): string => {
     const subtreesArray = [
       subcategoryTShirts,
       subcategoryMouses,
@@ -262,149 +254,290 @@ function CategoryPage(): JSX.Element {
       subcategoryNotepad,
       subcategoryStickerPack,
     ];
-    subtreesArray.forEach((subtreeItem) => {
-      if (subtreeItem.flag) {
-        if (querySubtreesString === '') {
-          querySubtreesString =
-            querySubtreesString + `subtree("${subtreeItem.id}")`;
-        } else {
-          querySubtreesString =
-            querySubtreesString + `, subtree("${subtreeItem.id}")`;
-        }
-      }
-    });
+    const filteredSubtree = subtreesArray.filter((subtree) => subtree.flag);
+    const filteredSubtreeName = filteredSubtree.map((subtree) => subtree.id);
+    const querySubtreesString = filteredSubtreeName
+      .map((name) => `"${name}"`)
+      .join(',');
     return querySubtreesString;
-  }
+  }, [
+    subcategoryCap,
+    subcategoryHoodies,
+    subcategoryMouses,
+    subcategoryMousesPads,
+    subcategoryMugs,
+    subcategoryNotepad,
+    subcategoryStickerPack,
+    subcategoryTShirts,
+  ]);
 
-  function createQueryBrand(): string {
-    let queryBrands = '';
+  const createQueryBrand = useCallback((): string => {
     const brandsArray = [brandRSSchool, brandLogitech];
-    brandsArray.forEach((brand) => {
-      if (brand.flag) {
-        if (queryBrands === '') {
-          queryBrands = queryBrands + `"${brand.name}"`;
-        } else {
-          queryBrands = queryBrands + `, "${brand.name}"`;
-        }
-      }
-    });
+    const filteredBrand = brandsArray.filter((brand) => brand.flag);
+    const filteredBrandName = filteredBrand.map((brand) => brand.name);
+    const queryBrands = filteredBrandName.map((name) => `"${name}"`).join(',');
     return queryBrands;
-  }
+  }, [brandLogitech, brandRSSchool]);
 
-  function filter(): void {
-    const queryStringPriceASC = `price asc`;
-    const queryStringPriceDESC = `price desc`;
-    const querySearch = '';
+  useEffect(() => {
+    if (count) {
+      const queryStringPriceASC = `price asc`;
+      const queryStringPriceDESC = `price desc`;
+      const querySearch = '';
 
-    let queryStringPriceSort = queryStringPriceDESC;
-    priceSort
-      ? (queryStringPriceSort = queryStringPriceASC)
-      : (queryStringPriceSort = queryStringPriceDESC);
+      let queryStringPriceSort = queryStringPriceDESC;
+      priceSort
+        ? (queryStringPriceSort = queryStringPriceASC)
+        : (queryStringPriceSort = queryStringPriceDESC);
 
-    let querySubtreesString = createQuerySubtreeString();
-    const subtrees = `subtree("${idCategory}")`;
-    querySubtreesString === ''
-      ? (querySubtreesString = subtrees)
-      : querySubtreesString;
+      let querySubtreesString = createQuerySubtreeString();
+      const subtrees = `subtree("${idCategory}")`;
+      querySubtreesString || (querySubtreesString = subtrees);
 
-    const queryStringAllColours = `"red", "black", "white"`;
-    let queryColoursString = createQueryColourString();
-    queryColoursString === ''
-      ? (queryColoursString = queryStringAllColours)
-      : queryColoursString;
+      const queryStringAllColours = `"red", "black", "white"`;
+      let queryColoursString = createQueryColourString();
+      queryColoursString || (queryColoursString = queryStringAllColours);
 
-    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
-    let querySizesString = createQuerySizeString();
-    querySizesString === '' && category === 'Clothes'
-      ? (querySizesString = queryStringAllSizes)
-      : querySizesString === '' && category !== 'Clothes'
-      ? (querySizesString = `"no"`)
-      : querySizesString;
+      console.log('lalala');
 
-    let queryBestsellerString = '';
-    bestseller === false
-      ? (queryBestsellerString = `"true", "false"`)
-      : (queryBestsellerString = `"true"`);
+      const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+      let querySizesString = querySizesQueryString;
+      querySizesString === '' && category === 'Clothes'
+        ? (querySizesString = queryStringAllSizes)
+        : querySizesString === '' && category !== 'Clothes'
+        ? (querySizesString = `"no"`)
+        : querySizesString;
 
-    let querySale = '';
-    sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
+      let queryBestsellerString = '';
+      bestseller === false
+        ? (queryBestsellerString = `"true", "false"`)
+        : (queryBestsellerString = `"true"`);
 
-    let queryBrandString = createQueryBrand();
-    const queryStringAllBrands = '"RSSchool", "Logitech"';
-    queryBrandString === ''
-      ? (queryBrandString = queryStringAllBrands)
-      : queryBrandString;
+      let querySale = '';
+      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
 
-    let queryPriceRangeStart = '0';
-    let queryPriceRangeFinish = '*';
-    searchPriceStart === ''
-      ? queryPriceRangeStart
-      : (queryPriceRangeStart = searchPriceStart),
-      searchPriceFinish === ''
-        ? queryPriceRangeFinish
-        : (queryPriceRangeFinish = searchPriceFinish);
+      let queryBrandString = createQueryBrand();
+      const queryStringAllBrands = '"RSSchool", "Logitech"';
+      queryBrandString === ''
+        ? (queryBrandString = queryStringAllBrands)
+        : queryBrandString;
 
-    const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+      let queryPriceRangeStart = '0';
+      let queryPriceRangeFinish = '*';
+      searchPriceStart === ''
+        ? queryPriceRangeStart
+        : (queryPriceRangeStart = searchPriceStart),
+        searchPriceFinish === ''
+          ? queryPriceRangeFinish
+          : (queryPriceRangeFinish = searchPriceFinish);
 
-    navigate(queryURL);
+      const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
-    console.log(queryURL);
+      // navigate(queryURL);
 
-    // filterByAttributes(
-    //   queryColoursString === ''
-    //     ? (queryColoursString = queryStringAllColours)
-    //     : queryColoursString,
-    //   querySubtreesString === ''
-    //     ? (querySubtreesString = subtrees)
-    //     : querySubtreesString,
-    //   querySizesString === '' && category === 'Clothes'
-    //     ? (querySizesString = queryStringAllSizes)
-    //     : querySizesString === '' && category !== 'Clothes'
-    //     ? (querySizesString = `"no"`)
-    //     : querySizesString,
-    //   bestseller === false
-    //     ? (queryBestsellerString = `"true", "false"`)
-    //     : (queryBestsellerString = `"true"`),
-    //   sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
-    //   queryBrandString === ''
-    //     ? (queryBrandString = queryStringAllBrands)
-    //     : queryBrandString,
-    //   priceSort ? queryStringPriceASC : queryStringPriceDESC,
-    //   // querySearch
-    //   searchPriceStart === ''
-    //     ? queryPriceRangeStart
-    //     : (queryPriceRangeStart = searchPriceStart),
-    //   searchPriceFinish === ''
-    //     ? queryPriceRangeFinish
-    //     : (queryPriceRangeFinish = searchPriceFinish)
-    // ).then((response) => {
-    //   const parentCategory = response.body.results;
-    //   let master: ProductVariant[] = [];
-    //   if (
-    //     querySizesString === queryStringAllSizes ||
-    //     querySizesString === '"no"'
-    //   ) {
-    //     master = parentCategory.map((item) => item.masterVariant);
-    //     setAllCards(master);
-    //   } else {
-    //     parentCategory.forEach((item) => master.push(...item.variants));
-    //     const sortedVariantsArray: ProductVariant[][] = [];
-    //     allSizes.forEach((data) => {
-    //       const sortedVariant = master.filter((variant) => {
-    //         const sizeAttribute = variant.attributes?.find(
-    //           (sizeQuery) => sizeQuery.name === 'size'
-    //         );
-    //         if (sizeAttribute?.value['key'] === data) {
-    //           console.log(variant);
-    //           return variant;
-    //         }
-    //       });
-    //       sortedVariantsArray.push(sortedVariant);
-    //     });
-    //     setAllCards(sortedVariantsArray.flat());
-    //   }
-    // });
-  }
+      console.log('qeteq');
+
+      filterByAttributes(
+        queryColoursString,
+        querySubtreesString,
+        querySizesString,
+        queryBestsellerString,
+        querySale,
+        queryBrandString,
+        queryStringPriceSort,
+        queryPriceRangeStart,
+        queryPriceRangeFinish
+      )
+        .then((response) => {
+          const parentCategory = response.body.results;
+          let master: ProductVariant[] = [];
+          if (
+            querySizesString === queryStringAllSizes ||
+            querySizesString === '"no"'
+          ) {
+            master = parentCategory.map((item) => item.masterVariant);
+            setAllCards(master);
+          } else {
+            parentCategory.forEach((item) => master.push(...item.variants));
+            const sortedVariantsArray: ProductVariant[][] = [];
+            console.log(allSizes, 'popali');
+            allSizes.forEach((data) => {
+              const sortedVariant = master.filter((variant) => {
+                const sizeAttribute = variant.attributes?.find(
+                  (sizeQuery) => sizeQuery.name === 'size'
+                );
+                if (sizeAttribute?.value['key'] === data) {
+                  console.log(variant);
+                  return variant;
+                }
+              });
+              sortedVariantsArray.push(sortedVariant);
+            });
+            setAllCards(sortedVariantsArray.flat());
+          }
+        })
+        .catch(() => {
+          setCount(false);
+        });
+    }
+  }, [
+    allSizes,
+    bestseller,
+    category,
+    count,
+    createQueryBrand,
+    createQueryColourString,
+    createQuerySubtreeString,
+    idCategory,
+    priceSort,
+    querySizesQueryString,
+    sale,
+    searchPriceFinish,
+    searchPriceStart,
+  ]);
+
+  // useEffect(() => {
+  //   console.log(allSizes, 'all sizes');
+  // }, [allSizes]);
+
+  // useEffect(() => {
+  //   console.log(bestseller, 'bestseller');
+  // }, [bestseller]);
+
+  // useEffect(() => {
+  //   console.log(category, 'category');
+  // }, [category]);
+
+  // useEffect(() => {
+  //   console.log(idCategory, 'idCategory');
+  // }, [idCategory]);
+
+  // useEffect(() => {
+  //   console.log(priceSort, 'priceSort');
+  // }, [priceSort]);
+
+  // useEffect(() => {
+  //   console.log(sale, 'sale');
+  // }, [sale]);
+
+  // useEffect(() => {
+  //   console.log(searchPriceFinish, 'searchPriceFinish');
+  // }, [searchPriceFinish]);
+
+  // useEffect(() => {
+  //   console.log(searchPriceStart, 'searchPriceStart');
+  // }, [searchPriceStart]);
+
+  // function filter(): void {
+  //   const queryStringPriceASC = `price asc`;
+  //   const queryStringPriceDESC = `price desc`;
+  //   const querySearch = '';
+
+  //   let queryStringPriceSort = queryStringPriceDESC;
+  //   priceSort
+  //     ? (queryStringPriceSort = queryStringPriceASC)
+  //     : (queryStringPriceSort = queryStringPriceDESC);
+
+  //   let querySubtreesString = createQuerySubtreeString();
+  //   const subtrees = `subtree("${idCategory}")`;
+  //   querySubtreesString || (querySubtreesString = subtrees);
+
+  //   const queryStringAllColours = `"red", "black", "white"`;
+  //   let queryColoursString = createQueryColourString();
+  //   queryColoursString || (queryColoursString = queryStringAllColours);
+
+  //   const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+  //   let querySizesString = createQuerySizeString();
+  //   querySizesString === '' && category === 'Clothes'
+  //     ? (querySizesString = queryStringAllSizes)
+  //     : querySizesString === '' && category !== 'Clothes'
+  //     ? (querySizesString = `"no"`)
+  //     : querySizesString;
+
+  //   let queryBestsellerString = '';
+  //   bestseller === false
+  //     ? (queryBestsellerString = `"true", "false"`)
+  //     : (queryBestsellerString = `"true"`);
+
+  //   let querySale = '';
+  //   sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
+
+  //   let queryBrandString = createQueryBrand();
+  //   const queryStringAllBrands = '"RSSchool", "Logitech"';
+  //   queryBrandString === ''
+  //     ? (queryBrandString = queryStringAllBrands)
+  //     : queryBrandString;
+
+  //   let queryPriceRangeStart = '0';
+  //   let queryPriceRangeFinish = '*';
+  //   searchPriceStart === ''
+  //     ? queryPriceRangeStart
+  //     : (queryPriceRangeStart = searchPriceStart),
+  //     searchPriceFinish === ''
+  //       ? queryPriceRangeFinish
+  //       : (queryPriceRangeFinish = searchPriceFinish);
+
+  //   const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+
+  //   // navigate(queryURL);
+
+  //   console.log(queryURL);
+
+  //   filterByAttributes(
+  //     queryColoursString === ''
+  //       ? (queryColoursString = queryStringAllColours)
+  //       : queryColoursString,
+  //     querySubtreesString === ''
+  //       ? (querySubtreesString = subtrees)
+  //       : querySubtreesString,
+  //     querySizesString === '' && category === 'Clothes'
+  //       ? (querySizesString = queryStringAllSizes)
+  //       : querySizesString === '' && category !== 'Clothes'
+  //       ? (querySizesString = `"no"`)
+  //       : querySizesString,
+  //     bestseller === false
+  //       ? (queryBestsellerString = `"true", "false"`)
+  //       : (queryBestsellerString = `"true"`),
+  //     sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
+  //     queryBrandString === ''
+  //       ? (queryBrandString = queryStringAllBrands)
+  //       : queryBrandString,
+  //     priceSort ? queryStringPriceASC : queryStringPriceDESC,
+  //     // querySearch
+  //     searchPriceStart === ''
+  //       ? queryPriceRangeStart
+  //       : (queryPriceRangeStart = searchPriceStart),
+  //     searchPriceFinish === ''
+  //       ? queryPriceRangeFinish
+  //       : (queryPriceRangeFinish = searchPriceFinish)
+  //   ).then((response) => {
+  //     const parentCategory = response.body.results;
+  //     let master: ProductVariant[] = [];
+  //     if (
+  //       querySizesString === queryStringAllSizes ||
+  //       querySizesString === '"no"'
+  //     ) {
+  //       master = parentCategory.map((item) => item.masterVariant);
+  //       setAllCards(master);
+  //     } else {
+  //       parentCategory.forEach((item) => master.push(...item.variants));
+  //       const sortedVariantsArray: ProductVariant[][] = [];
+  //       allSizes.forEach((data) => {
+  //         const sortedVariant = master.filter((variant) => {
+  //           const sizeAttribute = variant.attributes?.find(
+  //             (sizeQuery) => sizeQuery.name === 'size'
+  //           );
+  //           if (sizeAttribute?.value['key'] === data) {
+  //             console.log(variant);
+  //             return variant;
+  //           }
+  //         });
+  //         sortedVariantsArray.push(sortedVariant);
+  //       });
+  //       setAllCards(sortedVariantsArray.flat());
+  //     }
+  //   });
+  // }
 
   function onChangePriceSort(): void {
     setPriceSort(!priceSort);
@@ -572,7 +705,6 @@ function CategoryPage(): JSX.Element {
                 id="price-sort"
                 onChange={(): void => {
                   onChangePriceSort();
-                  // filter();
                 }}
               />
               <label htmlFor="price-sort" className={style.pricesort_label}>
@@ -600,7 +732,6 @@ function CategoryPage(): JSX.Element {
                     id={subCategory.name['en-US']}
                     onChange={(): void => {
                       onChangeSubcategory(subCategory.name['en-US']);
-                      filter();
                     }}
                   />
                   <label
@@ -624,7 +755,6 @@ function CategoryPage(): JSX.Element {
                     id={colour}
                     onChange={(): void => {
                       onChangeColour(colour);
-                      // filter();
                     }}
                   />
                   <label
@@ -663,7 +793,6 @@ function CategoryPage(): JSX.Element {
                       id={size}
                       onChange={(): void => {
                         onChangeSize(size);
-                        // filter();
                       }}
                     />
                     <label
@@ -685,7 +814,6 @@ function CategoryPage(): JSX.Element {
                 id="bestseller"
                 onChange={(): void => {
                   onChangeBestseller();
-                  // filter();
                 }}
               />
               <label
@@ -705,7 +833,6 @@ function CategoryPage(): JSX.Element {
                 id="sale"
                 onChange={(): void => {
                   onChangeSale();
-                  // filter();
                 }}
               />
               <label htmlFor="sale" className={style.category_filters_sale}>
@@ -775,7 +902,6 @@ function CategoryPage(): JSX.Element {
                     id={brand}
                     onChange={(): void => {
                       onChangeBrand(brand);
-                      // filter();
                     }}
                   />
                   <label
