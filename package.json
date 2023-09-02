@@ -11,9 +11,7 @@
     "clear": "rd /s /q dist",
     "lint": "eslint ./src --color",
     "lint:fix": "eslint ./src --fix --color",
-    "stylelint": "npx stylelint --fix \"src/**/*.scss\"",
-    "format": "prettier --write --config ./.prettierrc.js ./src",
-    "prepare": "husky install"
+    "stylelint": "npx stylelint --fix \"src/**/*.scss\""
   },
   "repository": {
     "type": "git",

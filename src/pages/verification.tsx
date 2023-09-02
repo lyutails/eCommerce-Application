@@ -571,28 +571,21 @@ export const handleBuildingShipInput = (
 };
 
 //hgvfkhgvcyhu
-
 export const handleBuildingShipInputTwo = (
-  buildingShipField: string,
-  setErrorbuildingShip: React.Dispatch<React.SetStateAction<string>>,
-  buildingShipСheck: boolean,
-  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
-): boolean => {
+  buildingShipField: string
+): string => {
+  const error = {
+    message: '',
+  };
   REGEXP.building.lastIndex = 0;
   if (buildingShipField === '') {
-    setErrorbuildingShip(clue.requiredField);
-    buildingShipСheck = false;
-    setCheckmark(false);
+    error.message = clue.requiredField;
   } else if (!REGEXP.building.test(buildingShipField)) {
-    setErrorbuildingShip(clue.building);
-    buildingShipСheck = false;
-    setCheckmark(false);
+    error.message = clue.building;
   } else {
-    setErrorbuildingShip('');
-    setCheckmark(true);
-    buildingShipСheck = true;
+    error.message = '';
   }
-  return buildingShipСheck;
+  return error.message;
 };
 
 export const handleApartmentShipInput = (
@@ -616,4 +609,22 @@ export const handleApartmentShipInput = (
     apartmentShipСheck = true;
   }
   return apartmentShipСheck;
+};
+
+//hgvfkhgvcyhu
+export const handleApartmentShipInputTwo = (
+  apartmentShipField: string
+): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.apartment.lastIndex = 0;
+  if (apartmentShipField === '') {
+    error.message = '';
+  } else if (!REGEXP.apartment.test(apartmentShipField)) {
+    error.message = clue.apartment;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };

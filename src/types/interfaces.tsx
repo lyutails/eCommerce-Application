@@ -1,4 +1,4 @@
-import { BaseAddress } from '@commercetools/platform-sdk';
+import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
 import { IMaskMixinProps, ReactMaskOpts } from 'react-imask';
 
@@ -112,14 +112,33 @@ export interface IRootState {
   };
 }
 
+interface IAddressInput {
+  value: string;
+  error: string;
+  isChecked: boolean;
+}
+
 export interface IProfileState {
   profile: {
     address: {
-      [key: string]: {
-        value: string;
-        error: string;
-        isChecked: boolean;
-      };
+      street: IAddressInput;
+      building: IAddressInput;
+      apartment: IAddressInput;
+      city: IAddressInput;
+      country: IAddressInput;
+      postal: IAddressInput;
+      defaultShipping: boolean;
+      defaultBilling: boolean;
+      shippingAddress: boolean;
+      billingAddress: boolean;
+      isUpdate: boolean;
+      isAdd: boolean;
+      idAddress: string;
+      addressStore: AddressDraft[];
+      defaultShippingId: string;
+      defaultBillingId: string;
+      shippingAddressesId: string[];
+      billingAddressesId: string[];
     };
     bio: {
       [key: string]: string;
@@ -130,6 +149,7 @@ export interface IProfileState {
     passwoord: {
       [key: string]: string;
     };
+    version: number;
   };
 }
 
