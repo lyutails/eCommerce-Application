@@ -5,9 +5,13 @@ import {
   setAuthStatus,
 } from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
-import { IPersonalState, IRootState } from '../../types/interfaces';
+import {
+  IPersonalState,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import UpdateIcon from '../../../public/assets/icons/update.svg';
@@ -24,6 +28,11 @@ import { AddressDraft } from '@commercetools/platform-sdk';
 import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
 import { updatePassword } from '../../api/changePassword';
+import {
+  changeAddress,
+  changeVersion,
+} from '../../store/reducers/profileReducer';
+import { updateCustomer } from '../../api/updateBio';
 
 export interface IPersonalData {
   [key: string]: string | undefined;
@@ -50,7 +59,7 @@ interface IAddressesClickedData {
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [version, setVersion] = useState(1);
+  // const [version, setVersion] = useState(1);
   const [bio, setBio] = useState<IPersonalData | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState<string | undefined>('');
@@ -59,9 +68,10 @@ function ProfilePage(): JSX.Element {
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
-  const [addressCardData, setAddressCardData] =
-    useState<IAddressesCardData | null>(null);
-  const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
+  const { address, version } = useSelector(
+    (state: IProfileState) => state.profile
+  );
+  // const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
   const [addresses, setAddresses] = useState<IAddressesData | null>(null);
 
   const clickedPersonal = useSelector(
@@ -95,7 +105,7 @@ function ProfilePage(): JSX.Element {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            response.body.version && setVersion(response.body.version);
+            dispatch(changeVersion(response.body.version));
             setBio({
               firstname: response.body.firstName,
               lastname: response.body.lastName,
@@ -111,7 +121,15 @@ function ProfilePage(): JSX.Element {
               defaultBillingAddressId: response.body.defaultBillingAddressId,
               defaultShippingAddressId: response.body.defaultShippingAddressId,
             });
-            setAddressStore(response.body.addresses);
+            dispatch(
+              changeAddress({
+                addressStore: response.body.addresses,
+                defaultShippingId: response.body.defaultShippingAddressId,
+                defaultBillingId: response.body.defaultBillingAddressId,
+                shippingAddressesId: response.body.shippingAddressIds,
+                billingAddressesId: response.body.billingAddressIds,
+              })
+            );
           });
         })
         .catch(() => {
@@ -121,103 +139,160 @@ function ProfilePage(): JSX.Element {
     }
   }, [customerId, dispatch, navigate, refreshToken]);
   dispatch(createCustomerId(localId));
+  const addressCard = address.addressStore.map((addressCard, i) => {
+    const statusShipAddress = (): string => {
+      let field = '';
+      if (address.shippingAddressesId.includes(addressCard.id as string)) {
+        field = 'Shipping address';
+        if (address.billingAddressesId.includes(addressCard.id as string)) {
+          field = 'Shipping and Billing address';
+        }
+      } else if (
+        address.billingAddressesId.includes(addressCard.id as string)
+      ) {
+        field = 'Billing address';
+        if (address.shippingAddressesId.includes(addressCard.id as string)) {
+          field = 'Shipping and Billing address';
+        }
+      }
+      return field;
+    };
+    const statusDefaultAddress = (): ReactNode => {
+      if (
+        address.defaultShippingId === (addressCard.id as string) ||
+        address.defaultBillingId === (addressCard.id as string)
+      ) {
+        return (
+          <div className={style.profile_address_default}>
+            <p
+              className={
+                address.defaultShippingId === (addressCard.id as string)
+                  ? `${style.profile_address_default_ship} ${style.visible}`
+                  : `${style.profile_address_default_ship} ${style.hidden}`
+              }
+            >
+              Default shipping address
+            </p>
+            <p
+              className={
+                address.defaultBillingId === (addressCard.id as string)
+                  ? `${style.profile_address_default_bill} ${style.visible}`
+                  : `${style.profile_address_default_bill} ${style.hidden}`
+              }
+            >
+              Default billing address
+            </p>
+          </div>
+        );
+      }
+    };
 
-  const addressCard = addressStore.map((address, i) => {
+    const deleteAddressData = {
+      version: version,
+      actions: [
+        {
+          action: 'removeAddress',
+          addressId: addressCard.id,
+        },
+      ],
+    };
+
     return (
       <div key={i} className={`${style.profile_address_card} card_${i}}`}>
         <div className={style.profile_address_top}>
           <span className={style.profile_address_type}>
-            {addresses?.shippingAddressIds?.includes(address.id as string)
-              ? 'Shipping address'
-              : addresses?.billingAddressIds?.includes(address.id as string)
-              ? 'Billing address'
-              : addresses?.billingAddressIds?.includes(address.id as string) &&
-                addresses?.shippingAddressIds?.includes(address.id as string)
-              ? 'Shipping and Billing address'
-              : ''}
+            {statusShipAddress()}
           </span>
           <h3
             className={style.profile_address_name}
           >{`${bio?.firstname} ${bio?.lastname}`}</h3>
           <div className={style.profile_address_fields}>
             <p className={style.profile_address_item}>
-              <b>Street:</b> {address?.streetName}
+              <b>Street:</b> {addressCard?.streetName}
             </p>
             <p className={style.profile_address_item}>
-              <b>Building:</b> {address?.building}
+              <b>Building:</b> {addressCard?.building}
             </p>
-            {address?.apartment && (
+            {addressCard?.apartment && (
               <p className={style.profile_address_item}>
-                <b>Apartment:</b> {address?.apartment}
+                <b>Apartment:</b> {addressCard?.apartment}
               </p>
             )}
             <p className={style.profile_address_item}>
-              <b>City:</b> {address?.city}
+              <b>City:</b> {addressCard?.city}
             </p>
             <p className={style.profile_address_item}>
-              <b>Postal:</b> {address?.postalCode}
+              <b>Postal:</b> {addressCard?.postalCode}
             </p>
             <p className={style.profile_address_item}>
-              <b>Country:</b> {address?.country}
+              <b>Country:</b> {addressCard?.country}
             </p>
           </div>
-          {addresses?.defaultShippingAddressId === (address.id as string) ||
-            (addresses?.defaultBillingAddressId === (address.id as string) && (
-              <div className={style.profile_address_default}>
-                <p
-                  className={
-                    addresses?.defaultShippingAddressId ===
-                    (address.id as string)
-                      ? `${style.profile_address_default_ship} ${style.visible}`
-                      : `${style.profile_address_default_ship} ${style.hidden}`
-                  }
-                >
-                  Default shipping address
-                </p>
-                <p
-                  className={
-                    addresses?.defaultBillingAddressId ===
-                    (address.id as string)
-                      ? `${style.profile_address_default_bill} ${style.visible}`
-                      : `${style.profile_address_default_bill} ${style.hidden}`
-                  }
-                >
-                  Default billing address
-                </p>
-              </div>
-            ))}
+          {statusDefaultAddress()}
         </div>
         <div className={style.profile_address_bottom}>
-          <ButtonForm classNames={style.profile_address_delete}>
+          <ButtonForm
+            onClick={(): void => {
+              console.log('dfed');
+              updateCustomer(
+                refreshToken ? refreshToken : '',
+                deleteAddressData
+              ).then((response) => {
+                if (response) {
+                  dispatch(
+                    changeAddress({
+                      addressStore: response.body.addresses,
+                      defaultShippingId: response.body.defaultShippingAddressId,
+                      defaultBillingId: response.body.defaultBillingAddressId,
+                      shippingAddressesId: response.body.shippingAddressIds,
+                      billingAddressesId: response.body.billingAddressIds,
+                    })
+                  );
+                  dispatch(changeVersion(response.body.version));
+                }
+              });
+            }}
+            classNames={style.profile_address_delete}
+          >
             <img src={TrashIcon} alt="Delete address" />
           </ButtonForm>
           <ButtonForm
             onClick={(): void => {
-              setAddressCardData({
-                addressInfo: address,
-                statusAddress: {
-                  shippingAddressIds: addresses?.shippingAddressIds?.includes(
-                    address.id as string
-                  )
-                    ? true
-                    : false,
-                  billingAddressIds: addresses?.billingAddressIds?.includes(
-                    address.id as string
-                  )
-                    ? true
-                    : false,
-                  defaultBillingAddressId:
-                    addresses?.defaultBillingAddressId ===
-                    (address.id as string)
-                      ? true
-                      : false,
-                  defaultShippingAddressId:
-                    addresses?.defaultShippingAddressId ===
-                    (address.id as string)
-                      ? true
-                      : false,
-                },
-              });
+              dispatch(
+                changeAddress({
+                  street: {
+                    value: addressCard.streetName,
+                  },
+                  building: {
+                    value: addressCard.building,
+                  },
+                  apartment: {
+                    value: addressCard.apartment,
+                  },
+                  city: {
+                    value: addressCard.city,
+                  },
+                  postal: {
+                    value: addressCard.postalCode,
+                  },
+                  country: {
+                    value: addressCard.country,
+                  },
+                  defaultShipping:
+                    address.defaultShippingId === (addressCard.id as string),
+                  defaultBilling:
+                    address.defaultBillingId === (addressCard.id as string),
+                  shippingAddress: address.shippingAddressesId.includes(
+                    addressCard.id as string
+                  ),
+                  billingAddress: address.billingAddressesId.includes(
+                    addressCard.id as string
+                  ),
+                  isUpdate: true,
+                  isAdd: false,
+                  idAddress: addressCard.id,
+                })
+              );
               setClickedAddressesUpdate(true);
               setShowModal(true);
             }}
@@ -234,16 +309,6 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
-  // const data = {
-  //   version: version,
-  //   currentPassword: 'fshHJKL2365',
-  //   newPassword: '2327Ybv!1',
-  // };
-  // const customerAddressesAllInfo = {
-  //   addressInfo: addressCardData,
-  //   statusAddress: addresses,
-  // };
-  // console.log(customerAddressesAllInfo, 456);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -394,6 +459,30 @@ function ProfilePage(): JSX.Element {
             <div className={style.profile_address_card_add}>
               <button
                 onClick={(): void => {
+                  dispatch(
+                    changeAddress({
+                      street: {
+                        value: '',
+                      },
+                      building: {
+                        value: '',
+                      },
+                      apartment: {
+                        value: '',
+                      },
+                      city: {
+                        value: '',
+                      },
+                      postal: {
+                        value: '',
+                      },
+                      country: {
+                        value: '',
+                      },
+                      isUpdate: false,
+                      isAdd: true,
+                    })
+                  );
                   setClickedAddressesUpdate(true);
                   setShowModal(true);
                 }}
@@ -466,7 +555,10 @@ function ProfilePage(): JSX.Element {
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
-          addressData={addressCardData}
+          // addressData={addressCardData}
+          token={refreshToken ? refreshToken : ''}
+          setClickedAddressesUpdate={setClickedAddressesUpdate}
+          setShowModal={setShowModal}
         />
       </div>
     </div>
@@ -477,7 +569,7 @@ export default ProfilePage;
 /*   "email": "ianatestAPI@example.com",
   "firstName": "Лфенф",
   "lastName": "ывапаувас",
-  "password": "23272327Ybv" 
+  "password": "23272327Ybv"
   */
 
 // "email": 'hi@ya.ru';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import style from '../AddressModal/_addressModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
@@ -8,6 +8,11 @@ import InputBirthDateMask from '../Input/InputBirthDateMask';
 import { AddressDraft } from '@commercetools/platform-sdk';
 import AddressForm from '../AddressForm/AddressForm';
 import { IAddressesCardData } from '../../pages/Profile/Profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { IProfileState } from '../../types/interfaces';
+import { handleUpdateAddress } from './address-modal-verify';
+import { handleCheckbox } from '../../utils/handleCheckbox';
+import { changeAddress } from '../../store/reducers/profileReducer';
 // import { updateBio } from './bio-update';
 
 export interface IAddressModalProps {
@@ -15,106 +20,237 @@ export interface IAddressModalProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   version: number;
   token?: string;
-  addressData: IAddressesCardData | null;
+  // addressData: IAddressesCardData | null;
+  setClickedAddressesUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IAddressUpdateData {
+  streetError: boolean;
+  buildingError: boolean;
+  cityError: boolean;
+  apartmentError: boolean;
+  postalError: boolean;
+  countryError: boolean;
+  token: string;
+}
+
+export interface IChangeAddressData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      addressId: string;
+      address: {
+        streetName: string;
+        building: string;
+        apartment: string;
+        postalCode: string;
+        city: string;
+        country: string;
+      };
+    },
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+  ];
+}
+
+export interface IAddAddressData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      address: {
+        streetName: string;
+        building: string;
+        apartment: string;
+        postalCode: string;
+        city: string;
+        country: string;
+      };
+    },
+  ];
 }
 
 function AddressModal(props: IAddressModalProps): JSX.Element {
-  const [streetError, setStreetError] = useState('');
-  const [buildingError, setBuildingError] = useState('');
-  const [apartmentError, setApartmentError] = useState('');
-  const [cityError, setCityError] = useState('');
-  const [countryError, setCountryError] = useState('');
-  const [postalError, setPostalError] = useState('');
-  const [street, setStreet] = useState('');
-  const [building, setBuilding] = useState('');
-  const [apartment, setApartment] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
-  const [postal, setPostal] = useState('');
-  const [checkmarkBuilding, setCheckmarkBuilding] = useState(false);
-  const [checkmarkStreet, setCheckmarkStreet] = useState(false);
-  const [checkmarkApartment, setCheckmarkApartment] = useState(false);
-  const [checkmarkCity, setCheckmarkCity] = useState(false);
-  const [checkmarkCountry, setCheckmarkCountry] = useState(false);
-  const [checkmarkPostal, setCheckmarkPostal] = useState(false);
+  const dispatch = useDispatch();
+  const { address } = useSelector((state: IProfileState) => state.profile);
   const [checkedDefault, setCheckedDefault] = useState(false);
-  const [addressData, setAddressData] = useState<IAddressesCardData | null>(
-    null
-  );
+  const inputDefaultShipping = document.getElementById(
+    'defaultShip'
+  ) as HTMLInputElement;
+  const inputDefaultBilling = document.getElementById(
+    'defaultBill'
+  ) as HTMLInputElement;
+  const inputAddressShipping = document.getElementById(
+    'shippingAddress'
+  ) as HTMLInputElement;
+  const inputAddressBilling = document.getElementById(
+    'billingAddress'
+  ) as HTMLInputElement;
 
-  useEffect(() => {
-    setAddressData(props.addressData);
-  }, [props.addressData]);
-
-  const addAddressData = {
+  const addAddressData: IAddAddressData = {
     version: props.version,
     actions: [
       {
         action: 'addAddress',
         address: {
-          streetName: street,
-          building: building,
-          apartment: apartment,
-          postalCode: postal,
-          city: city,
-          country: country === 'usa' ? 'US' : 'CA',
+          streetName: address.street.value,
+          building: address.building.value,
+          apartment: address.apartment.value,
+          postalCode: address.postal.value,
+          city: address.city.value,
+          country: address.country.value === 'usa' ? 'US' : 'CA',
         },
       },
     ],
   };
-  const changeAddressData = {
+  const changeAddressData: IChangeAddressData = {
     version: props.version,
     actions: [
       {
         action: 'changeAddress',
-        addressId: '',
+        addressId: address.idAddress,
         address: {
-          streetName: street,
-          building: building,
-          apartment: apartment,
-          postalCode: postal,
-          city: city,
-          country: country === 'usa' ? 'US' : 'CA',
+          streetName: address.street.value,
+          building: address.building.value,
+          apartment: address.apartment.value,
+          postalCode: address.postal.value,
+          city: address.city.value,
+          country: address.country.value === 'usa' ? 'US' : 'CA',
         },
       },
     ],
   };
+  if (address.defaultShipping && inputDefaultShipping) {
+    inputDefaultShipping.checked = true;
+    changeAddressData.actions.push({
+      action: 'setDefaultShippingAddress',
+      addressId: address.idAddress,
+    });
+  }
+  if (address.defaultBilling && inputDefaultBilling) {
+    inputDefaultBilling.checked = true;
+    changeAddressData.actions.push({
+      action: 'setDefaultBillingAddress',
+      addressId: address.idAddress,
+    });
+  }
+  if (address.shippingAddress && inputAddressShipping) {
+    inputAddressShipping.checked = true;
+    changeAddressData.actions.push({
+      action: 'addShippingAddressId',
+      addressId: address.idAddress,
+    });
+  }
+  if (address.billingAddress && inputAddressBilling) {
+    inputAddressBilling.checked = true;
+    changeAddressData.actions.push({
+      action: 'addBillingAddressId',
+      addressId: address.idAddress,
+    });
+  }
+  const updateAddressData: IAddressUpdateData = {
+    streetError: !address.street.error,
+    buildingError: !address.building.error,
+    cityError: !address.city.error,
+    apartmentError: !address.apartment.error,
+    postalError: !address.postal.error,
+    countryError: !address.country.error,
+    token: props.token ? props.token : '',
+  };
   const addressFormData = {
     title: 'Update address',
     checboxId: 'address-modal-id',
-    streetError: streetError,
-    buildingError: buildingError,
-    apartmentError: apartmentError,
-    cityError: cityError,
-    countryError: countryError,
-    postalError: postalError,
-    // setStreetField: setStreet,
-    setBuildingField: setBuilding,
-    setApartmentField: setApartment,
-    setCityField: setCity,
-    setCountryField: setCountry,
-    setPostalField: setPostal,
-    checkmarkStreet: checkmarkStreet,
-    checkmarkBuilding: checkmarkBuilding,
-    checkmarkApartment: checkmarkApartment,
-    checkmarkCity: checkmarkCity,
-    checkmarkCountry: checkmarkCountry,
-    checkmarkPostal: checkmarkPostal,
-    inputFields: addressData,
   };
-  // console.log(addressData);
+  const setAddressStatus = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: string
+  ): void => {
+    dispatch(
+      changeAddress({
+        [fieldName]: event.target.checked,
+      })
+    );
+  };
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
         <img src={CloseIcon} alt="Close Modal" />
       </ButtonForm>
       <AddressForm
-        setStreetField={setStreet}
+        titleStyle={style.address_title}
         addressData={addressFormData}
         setDefaultAddress={setCheckedDefault}
+        setAddressStatus={
+          <div className={style.address_status}>
+            <input
+              onChange={(e): void => setAddressStatus(e, 'defaultShipping')}
+              className={style.address_input}
+              id="defaultShip"
+              name="address"
+              type="checkbox"
+            />
+            <label htmlFor="defaultShip" className={style.address_label}>
+              Set like default shipping address
+            </label>
+            <input
+              onChange={(e): void => setAddressStatus(e, 'defaultBilling')}
+              className={style.address_input}
+              id="defaultBill"
+              name="address"
+              type="checkbox"
+            />
+            <label htmlFor="defaultBill" className={style.address_label}>
+              Set like default billing address
+            </label>
+            <input
+              onChange={(e): void => setAddressStatus(e, 'shippingAddress')}
+              className={style.address_input}
+              id="shippingAddress"
+              name="address"
+              type="checkbox"
+            />
+            <label htmlFor="shippingAddress" className={style.address_label}>
+              Set like shipping address
+            </label>
+            <input
+              onChange={(e): void => setAddressStatus(e, 'billingAddress')}
+              className={style.address_input}
+              id="billingAddress"
+              name="address"
+              type="checkbox"
+            />
+            <label htmlFor="billingAddress" className={style.address_label}>
+              Set like billing address
+            </label>
+          </div>
+        }
       />
       <ButtonForm
-        onClick={(): void => console.log('dhjk')}
+        onClick={(): void =>
+          handleUpdateAddress(
+            updateAddressData,
+            props.setClickedAddressesUpdate,
+            props.setShowModal,
+            address.isUpdate ? changeAddressData : addAddressData,
+            dispatch
+          )
+        }
         classNames={style.modal_button}
       >
         Confirm

@@ -10,14 +10,51 @@ const profileReducer = createSlice({
         error: '',
         isChecked: false,
       },
+      building: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      apartment: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      city: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      country: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      postal: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      defaultShipping: false,
+      defaultBilling: false,
+      shippingAddress: false,
+      billingAddress: false,
+      isUpdate: false,
+      isAdd: false,
+      idAddress: '',
+      addressStore: [],
+      defaultShippingId: '',
+      defaultBillingId: '',
+      shippingAddressesId: [],
+      billingAddressesId: [],
     },
     bio: {},
     email: {},
     passwoord: {},
+    version: 1,
   },
   reducers: {
     changeAddress(state, action) {
-      // {nameInput: valueInput, nameInput: valueInput, nameInput: valueInput}
       state.address = { ...state.address, ...action.payload };
     },
     changeBio(state, action) {
@@ -29,9 +66,17 @@ const profileReducer = createSlice({
     changePassword(state, action) {
       state.passwoord = action.payload;
     },
+    changeVersion(state, action) {
+      state.version = action.payload;
+    },
   },
 });
 
-export const { changeAddress, changeBio, changeEmail, changePassword } =
-  profileReducer.actions;
+export const {
+  changeAddress,
+  changeBio,
+  changeEmail,
+  changePassword,
+  changeVersion,
+} = profileReducer.actions;
 export default profileReducer.reducer;
