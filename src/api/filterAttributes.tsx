@@ -13,7 +13,12 @@ export async function filterByAttributes(
   bestseller: string,
   sale: string,
   brand: string,
-  sortprice: string
+  sortprice: string,
+  search: string,
+  fuzzylevel: number,
+  priceRangeStart: string,
+  priceRangeFinish: string,
+  limit: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -22,9 +27,14 @@ export async function filterByAttributes(
       .get({
         queryArgs: {
           sort: `${sortprice}`,
-          limit: 8,
-          // offset: 5,
-          // facet: ['variants.attributes.color'],
+          limit: Number(`${limit}`),
+          'text.en-us': `${search}`,
+          fuzzy: true,
+          fuzzyLevel: Number(`${fuzzylevel}`),
+          offset: 8 * 0,
+          // priceCurrency: 'USD',
+          // filter: 'variants.scopedPriceDiscounted:true',
+          // filter: [`variants.scopedPriceDiscounted:"true"`],
           'filter.query': [
             // `categories.id: subtree("877113a4-f6f2-40df-acee-02bdf03f9977")`,
             // `categories.id: subtree("00b71d4b-d8b0-463c-9561-23017777d0eb"), subtree("e19653dc-8b6f-4784-8df2-d8bde2262d28")`,
@@ -34,12 +44,15 @@ export async function filterByAttributes(
             `variants.attributes.bestseller:${bestseller}`,
             `variants.attributes.sale:${sale}`,
             `variants.attributes.brand.key:${brand}`,
+            `variants.price.centAmount:range (${priceRangeStart} to ${priceRangeFinish})`,
+            // `variants.scopedPriceDiscounted:"true"`,
           ],
         },
       })
       .execute();
     return productsByColour;
   } catch {
+    console.log('no product by attribute found');
     throw new Error('no product by attribute found');
   }
 }

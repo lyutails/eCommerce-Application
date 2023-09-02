@@ -3,8 +3,8 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import { Category, ProductVariant } from '@commercetools/platform-sdk';
 import Card from './Card';
@@ -18,17 +18,28 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
+  const breadcrumbsSymbol = `${'> '}`;
+  const productsForSearchClothes = 'Cap Hoodie T-Shirt';
+  const productsForSearchPC = 'Mouse Pad';
+  const productsForSearchSouvenirs = 'Mug Notepad';
+  const productsForSearchStickers = 'Sticker';
+  const navigate = useNavigate();
+  const { category } = useParams();
+  const { query } = useParams();
   const allBrands = ['RSSchool', 'Logitech'];
   const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
-  const { category } = useParams();
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
   const [allColours, setAllColours] = useState<string[]>([]);
-  const [allSizes, setAllSizes] = useState<string[]>([]);
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchPriceStart, setSearchPriceStart] = useState('');
+  const [searchPriceFinish, setSearchPriceFinish] = useState('');
+  const [count, setCount] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -156,6 +167,32 @@ function CategoryPage(): JSX.Element {
         const queryStringAllBrands = `"RSSchool", "Logitech"`;
         const queryStringPriceASC = `price asc`;
         const queryStringPriceDESC = `price desc`;
+        const queryStringPriceRangeStart = `0`;
+        const queryStringPriceRangeFinish = `*`;
+        const querySearch = productsForSearchClothes;
+        let fuzzylevel = 0;
+        const queryLimit = 8;
+
+        switch (searchValue.length) {
+          case 1:
+            fuzzylevel = 0;
+            break;
+          case 2:
+            fuzzylevel = 0;
+            break;
+          case 3:
+            fuzzylevel = 1;
+            break;
+          case 4:
+            fuzzylevel = 1;
+            break;
+          case 5:
+            fuzzylevel = 1;
+            break;
+          default:
+            fuzzylevel = 2;
+        }
+
         filterByAttributes(
           queryStringAllColours,
           subtrees,
@@ -167,7 +204,20 @@ function CategoryPage(): JSX.Element {
           queryBestsellerString,
           querySale,
           queryStringAllBrands,
-          priceSort ? queryStringPriceASC : queryStringPriceDESC
+          queryStringPriceDESC,
+          searchValue === '' && category === 'Clothes'
+            ? productsForSearchClothes
+            : searchValue === '' && category === 'PC'
+            ? productsForSearchPC
+            : searchValue === '' && category === 'Souvenirs'
+            ? productsForSearchSouvenirs
+            : searchValue === '' && category === 'Stickers'
+            ? productsForSearchStickers
+            : searchValue,
+          fuzzylevel,
+          queryStringPriceRangeStart,
+          queryStringPriceRangeFinish,
+          queryLimit
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -176,31 +226,32 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [category, idCategory]);
+  }, [
+    category,
+    idCategory,
+    productsForSearchClothes,
+    productsForSearchPC,
+    productsForSearchSouvenirs,
+    productsForSearchStickers,
+    searchValue,
+  ]);
 
-  function createQueryColourString(): string {
-    let queryColoursString = '';
+  const createQueryColourString = useCallback((): string => {
     const coloursArray = [
       colourFilterRed,
       colourFilterBlack,
       colourFilterWhite,
     ];
-    coloursArray.forEach((colourItem) => {
-      if (colourItem.flag) {
-        if (queryColoursString === '') {
-          queryColoursString = queryColoursString + `"${colourItem.name}"`;
-        } else {
-          queryColoursString = queryColoursString + `, "${colourItem.name}"`;
-        }
-      }
-    });
+    const filteredColour = coloursArray.filter((colour) => colour.flag);
+    const filteredColourName = filteredColour.map((colour) => colour.name);
+    const queryColoursString = filteredColourName
+      .map((name) => `"${name}"`)
+      .join(',');
     return queryColoursString;
-  }
+  }, [colourFilterBlack, colourFilterRed, colourFilterWhite]);
 
-  function createQuerySizeString(): string {
-    setAllSizes([]);
-    let querySizesString = '';
-    const sizesArray = [
+  const allSizes = useMemo(() => {
+    const arrayOfSizes = [
       sizeFilterXS,
       sizeFilterS,
       sizeFilterM,
@@ -210,21 +261,21 @@ function CategoryPage(): JSX.Element {
       sizeFilterXXXL,
       sizeFilterUniversal,
     ];
-    sizesArray.forEach((sizeItem) => {
-      if (sizeItem.flag) {
-        allSizes.push(sizeItem.name);
-        if (querySizesString === '') {
-          querySizesString = querySizesString + `"${sizeItem.name}"`;
-        } else {
-          querySizesString = querySizesString + `, "${sizeItem.name}"`;
-        }
-      }
-    });
-    return querySizesString;
-  }
+    const filteredSize = arrayOfSizes.filter((size) => size.flag);
+    return filteredSize.map((size) => size.name);
+  }, [
+    sizeFilterL,
+    sizeFilterM,
+    sizeFilterS,
+    sizeFilterUniversal,
+    sizeFilterXL,
+    sizeFilterXS,
+    sizeFilterXXL,
+    sizeFilterXXXL,
+  ]);
+  const querySizesQueryString = allSizes.map((name) => `"${name}"`).join(',');
 
-  function createQuerySubtreeString(): string {
-    let querySubtreesString = '';
+  const createQuerySubtreeString = useCallback((): string => {
     const subtreesArray = [
       subcategoryTShirts,
       subcategoryMouses,
@@ -235,101 +286,217 @@ function CategoryPage(): JSX.Element {
       subcategoryNotepad,
       subcategoryStickerPack,
     ];
-    subtreesArray.forEach((subtreeItem) => {
-      if (subtreeItem.flag) {
-        if (querySubtreesString === '') {
-          querySubtreesString =
-            querySubtreesString + `subtree("${subtreeItem.id}")`;
-        } else {
-          querySubtreesString =
-            querySubtreesString + `, subtree("${subtreeItem.id}")`;
-        }
-      }
-    });
+    const filteredSubtree = subtreesArray.filter((subtree) => subtree.flag);
+    const filteredSubtreeName = filteredSubtree.map((subtree) => subtree.id);
+    const querySubtreesString = filteredSubtreeName
+      .map((name) => `"${name}"`)
+      .join(',');
     return querySubtreesString;
-  }
+  }, [
+    subcategoryCap,
+    subcategoryHoodies,
+    subcategoryMouses,
+    subcategoryMousesPads,
+    subcategoryMugs,
+    subcategoryNotepad,
+    subcategoryStickerPack,
+    subcategoryTShirts,
+  ]);
 
-  function createQueryBrand(): string {
-    let queryBrands = '';
+  const createQueryBrand = useCallback((): string => {
     const brandsArray = [brandRSSchool, brandLogitech];
-    brandsArray.forEach((brand) => {
-      if (brand.flag) {
-        if (queryBrands === '') {
-          queryBrands = queryBrands + `"${brand.name}"`;
-        } else {
-          queryBrands = queryBrands + `, "${brand.name}"`;
-        }
-      }
-    });
+    const filteredBrand = brandsArray.filter((brand) => brand.flag);
+    const filteredBrandName = filteredBrand.map((brand) => brand.name);
+    const queryBrands = filteredBrandName.map((name) => `"${name}"`).join(',');
     return queryBrands;
-  }
+  }, [brandLogitech, brandRSSchool]);
 
-  function filter(): void {
-    let queryColoursString = createQueryColourString();
-    let querySizesString = createQuerySizeString();
-    let querySubtreesString = createQuerySubtreeString();
-    let queryBrandString = createQueryBrand();
-    let queryBestsellerString = '';
-    const subtrees = `subtree("${idCategory}")`;
-    const queryStringAllBrands = '"RSSchool", "Logitech"';
-    const queryStringAllColours = `"red", "black", "white"`;
-    const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
-    let querySale = '';
-    const queryStringPriceASC = `price asc`;
-    const queryStringPriceDESC = `price desc`;
+  useEffect(() => {
+    if (count) {
+      const queryStringPriceASC = `price asc`;
+      const queryStringPriceDESC = `price desc`;
+      const querySearch = '';
 
-    filterByAttributes(
-      queryColoursString === ''
-        ? (queryColoursString = queryStringAllColours)
-        : queryColoursString,
-      querySubtreesString === ''
-        ? (querySubtreesString = subtrees)
-        : querySubtreesString,
+      let queryStringPriceSort = `price desc`;
+      priceSort === true
+        ? (queryStringPriceSort = `price asc`)
+        : (queryStringPriceSort = `price desc`);
+
+      let querySubtreesString = createQuerySubtreeString();
+      const subtrees = `subtree("${idCategory}")`;
+      querySubtreesString || (querySubtreesString = subtrees);
+
+      const queryStringAllColours = `"red", "black", "white"`;
+      let queryColoursString = createQueryColourString();
+      queryColoursString || (queryColoursString = queryStringAllColours);
+
+      const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+      let querySizesString = querySizesQueryString;
       querySizesString === '' && category === 'Clothes'
         ? (querySizesString = queryStringAllSizes)
         : querySizesString === '' && category !== 'Clothes'
         ? (querySizesString = `"no"`)
-        : querySizesString,
+        : querySizesString;
+
+      let queryBestsellerString = '';
       bestseller === false
         ? (queryBestsellerString = `"true", "false"`)
-        : (queryBestsellerString = `"true"`),
-      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`),
+        : (queryBestsellerString = `"true"`);
+
+      let querySale = '';
+      sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
+
+      let queryBrandString = createQueryBrand();
+      const queryStringAllBrands = '"RSSchool", "Logitech"';
       queryBrandString === ''
         ? (queryBrandString = queryStringAllBrands)
-        : queryBrandString,
-      priceSort ? queryStringPriceASC : queryStringPriceDESC
-    ).then((response) => {
-      const parentCategory = response.body.results;
-      let master: ProductVariant[] = [];
-      if (
-        querySizesString === queryStringAllSizes ||
-        querySizesString === '"no"'
-      ) {
-        master = parentCategory.map((item) => item.masterVariant);
-        setAllCards(master);
-      } else {
-        parentCategory.forEach((item) => master.push(...item.variants));
-        const sortedVariantsArray: ProductVariant[][] = [];
-        allSizes.forEach((data) => {
-          const sortedVariant = master.filter((variant) => {
-            const sizeAttribute = variant.attributes?.find(
-              (sizeQuery) => sizeQuery.name === 'size'
-            );
-            if (sizeAttribute?.value['key'] === data) {
-              console.log(variant);
-              return variant;
-            }
-          });
-          sortedVariantsArray.push(sortedVariant);
-        });
-        setAllCards(sortedVariantsArray.flat());
-      }
-    });
-  }
+        : queryBrandString;
 
-  function onChangePriceSort(): void {
-    setPriceSort(!priceSort);
-  }
+      let queryPriceRangeStart = '0';
+      let queryPriceRangeFinish = '*';
+      searchPriceStart === ''
+        ? queryPriceRangeStart
+        : (queryPriceRangeStart = searchPriceStart),
+        searchPriceFinish === ''
+          ? queryPriceRangeFinish
+          : (queryPriceRangeFinish = searchPriceFinish);
+
+      let querySearchValue = '';
+      searchValue === '' && category === 'Clothes'
+        ? (querySearchValue = productsForSearchClothes)
+        : searchValue === '' && category === 'PC'
+        ? (querySearchValue = productsForSearchPC)
+        : searchValue === '' && category === 'Souvenirs'
+        ? (querySearchValue = productsForSearchSouvenirs)
+        : searchValue === '' && category === 'Stickers'
+        ? (querySearchValue = productsForSearchStickers)
+        : searchValue;
+
+      let fuzzylevel = 0;
+
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
+      }
+      if (searchValue.length === 3) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 4) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 5) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 1 || searchValue.length === 2) {
+        fuzzylevel = 0;
+      }
+
+      const queryLimit =
+        querySizesString === queryStringAllSizes || querySizesString === 'no'
+          ? 8
+          : 100;
+
+      const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+
+      const urlQuery = query ? query : '';
+      const queryURLArray = urlQuery.split(';');
+
+      // navigate(queryURL);
+
+      filterByAttributes(
+        queryColoursString,
+        querySubtreesString,
+        querySizesString,
+        queryBestsellerString,
+        querySale,
+        queryBrandString,
+        queryStringPriceSort,
+        querySearchValue,
+        fuzzylevel,
+        queryPriceRangeStart,
+        queryPriceRangeFinish,
+        queryLimit
+      )
+        .then((response) => {
+          const parentCategory = response.body.results;
+          let master: ProductVariant[] = [];
+          if (
+            querySizesString === queryStringAllSizes ||
+            querySizesString === '"no"'
+          ) {
+            console.log(querySizesString);
+            master = parentCategory.map((item) => item.masterVariant);
+            setAllCards(master);
+          } else {
+            console.log('deti');
+            parentCategory.forEach((item) => master.push(...item.variants));
+            const sortedVariantsArray: ProductVariant[][] = [];
+            allSizes.forEach((data) => {
+              const sortedVariant = master.filter((variant) => {
+                const sizeAttribute = variant.attributes?.find(
+                  (sizeQuery) => sizeQuery.name === 'size'
+                );
+                if (sizeAttribute?.value['key'] === data) {
+                  return variant;
+                }
+              });
+              console.log(master, allSizes);
+              sortedVariantsArray.push(sortedVariant);
+            });
+            const filteredVariantsPrices = sortedVariantsArray.flat();
+            if (queryStringPriceSort === 'price asc') {
+              filteredVariantsPrices.sort(
+                (a: ProductVariant, b: ProductVariant): number => {
+                  if (!a.prices || !b.prices) {
+                    throw new Error('no prices found');
+                  }
+                  return (
+                    a.prices[0].value.centAmount - b.prices[0].value.centAmount
+                  );
+                }
+              );
+            }
+            if (queryStringPriceSort === 'price desc') {
+              filteredVariantsPrices.sort(
+                (a: ProductVariant, b: ProductVariant): number => {
+                  if (!a.prices || !b.prices) {
+                    throw new Error('no prices found');
+                  }
+                  return (
+                    b.prices[0].value.centAmount - a.prices[0].value.centAmount
+                  );
+                }
+              );
+            }
+            const pageVariants = filteredVariantsPrices.slice(0, 8);
+            setAllCards(pageVariants);
+          }
+        })
+        .catch(() => {
+          setCount(false);
+        });
+    }
+  }, [
+    allSizes,
+    bestseller,
+    category,
+    count,
+    createQueryBrand,
+    createQueryColourString,
+    createQuerySubtreeString,
+    idCategory,
+    priceSort,
+    productsForSearchClothes,
+    productsForSearchPC,
+    productsForSearchSouvenirs,
+    productsForSearchStickers,
+    querySizesQueryString,
+    sale,
+    searchPriceFinish,
+    searchPriceStart,
+    searchValue,
+  ]);
+
+  function onChangePriceSort(): void {}
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
@@ -482,157 +649,12 @@ function CategoryPage(): JSX.Element {
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
-        <h2 className={style.category_title}>{category}</h2>
-        <div className={style.category_filters}>
-          <div className={style.category_filters_pricesort}>
-            <div className={style.pricesort_wrapper}>
-              <input
-                name="filterColor"
-                type="checkbox"
-                className={style.pricesort_input}
-                id="price-sort"
-                onChange={(): void => {
-                  onChangePriceSort();
-                  // filter();
-                }}
-              />
-              <label htmlFor="price-sort" className={style.pricesort_label}>
-                <div className={style.day_night_cont}>
-                  <span className={style.the_sun}></span>
-                  <div className={style.the_moon}>
-                    <span className={style.moon_inside}></span>
-                  </div>
-                </div>
-                <div className={style.switch}>
-                  <div className={style.button}>
-                    <div className={style.b_inside}></div>
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-          <div className={style.category_categories}>
-            {subtree.map((subCategory) => {
-              return (
-                <div key={subCategory.name['en-US']}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    id={subCategory.name['en-US']}
-                    onChange={(): void => {
-                      onChangeSubcategory(subCategory.name['en-US']);
-                      filter();
-                    }}
-                  />
-                  <label
-                    htmlFor={subCategory.name['en-US']}
-                    className={style.category_filters_category}
-                  >
-                    {subCategory.name['en-US']}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
-          <div className={style.category_filters_color}>
-            {allColours.map((colour) => {
-              return (
-                <div key={colour} className={style.category_colours_wrapper}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    className={style.colour_input}
-                    id={colour}
-                    onChange={(): void => {
-                      onChangeColour(colour);
-                      // filter();
-                    }}
-                  />
-                  <label
-                    htmlFor={colour}
-                    className={style[`category_filters_${colour}`]}
-                  ></label>
-                </div>
-              );
-            })}
-          </div>
-          <div className={style.category_filters_size}>
-            {category === 'Clothes' &&
-              sizesArray.map((size) => {
-                return (
-                  <div
-                    key={size}
-                    className={
-                      (size === 'universal' &&
-                        subcategoryTShirts.flag &&
-                        !subcategoryCap.flag) ||
-                      (size === 'universal' &&
-                        subcategoryHoodies.flag &&
-                        !subcategoryCap.flag) ||
-                      (size !== 'universal' &&
-                        subcategoryCap.flag &&
-                        !subcategoryHoodies.flag &&
-                        !subcategoryTShirts.flag)
-                        ? style.category_filter_size_universal
-                        : ''
-                    }
-                  >
-                    <input
-                      name="filterSize"
-                      type="checkbox"
-                      className={style.size_input}
-                      id={size}
-                      onChange={(): void => {
-                        onChangeSize(size);
-                        // filter();
-                      }}
-                    />
-                    <label
-                      htmlFor={size}
-                      className={style[`category_filters_${size}`]}
-                    >
-                      {size}
-                    </label>
-                  </div>
-                );
-              })}
-          </div>
-          <div className={style.category_filters_bestseller}>
-            <div>
-              <input
-                name="filterBestseller"
-                type="checkbox"
-                className={style.bestseller_input}
-                id="bestseller"
-                onChange={(): void => {
-                  onChangeBestseller();
-                  // filter();
-                }}
-              />
-              <label
-                htmlFor="bestseller"
-                className={style.category_filters_bestseller}
-              >
-                bestseller
-              </label>
-            </div>
-          </div>
-          <div className={style.category_filters_sale}>
-            <div>
-              <input
-                name="filterSale"
-                type="checkbox"
-                className={style.sale_input}
-                id="sale"
-                onChange={(): void => {
-                  onChangeSale();
-                  // filter();
-                }}
-              />
-              <label htmlFor="sale" className={style.category_filters_sale}>
-                sale
-              </label>
-            </div>
+        <div className={style.breadcrumbs_search}>
+          <div className={style.breadcrumbs}>
+            <span className={style.breadcrumbs_symbol}>
+              {breadcrumbsSymbol}
+            </span>
+            {category}
           </div>
           <div className={style.category_filters_search}>
             <div>
@@ -640,87 +662,267 @@ function CategoryPage(): JSX.Element {
                 name="filterSearch"
                 type="text"
                 className={style.category_search_input}
-                // id={bestseller}
+                // id='search'
                 placeholder="search"
-                // onChange={(): void => onChangeSale(sale)}
+                onChange={(e): void => setSearchValue(e.target.value)}
               />
             </div>
-          </div>
-          <div className={style.category_price_range_slider}>
-            <div className={style.category_range_value}>
-              <input
-                type="text"
-                className={style.category_price_input}
-                id="amount"
-                readOnly
-                // onChange={(): void => onChangeSale(sale)}
-              />
-            </div>
-            <div
-              id="category_slider_range"
-              className={style.category_range_bar}
-            ></div>
-          </div>
-          <div className={style.category_filters_brand}>
-            {allBrands.map((brand) => {
-              return (
-                <div key={brand} className={style.category_colours_wrapper}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    // className={style.colour_input}
-                    id={brand}
-                    onChange={(): void => {
-                      onChangeBrand(brand);
-                      // filter();
-                    }}
-                  />
-                  <label
-                    htmlFor={brand}
-                    className={style[`category_filters_${brand}`]}
-                  >
-                    {brand}
-                  </label>
-                </div>
-              );
-            })}
           </div>
         </div>
-        <div className={style.category_cards_wrapper}>
-          {allCards.map((card) => {
-            return (
-              <Link
-                to={`/category/${category}/${card.key}`}
-                className={style.category_card}
-                key={card.key}
-              >
-                <Card
-                  keyCard={card.key ? card.key : ''}
-                  images={card.images && card.images[0].url}
-                  prices={
-                    card.prices && card.prices[0].value
-                      ? card.prices[0].value.centAmount
-                      : 0
+        <div className={style.category_filters_cards_wrapper}>
+          <h2 className={style.category_title}>{category}</h2>
+          <div className={style.category_filters}>
+            <div className={style.category_categories}>
+              {subtree.map((subCategory) => {
+                return (
+                  <div key={subCategory.name['en-US']}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      id={subCategory.name['en-US']}
+                      onChange={(): void => {
+                        onChangeSubcategory(subCategory.name['en-US']);
+                      }}
+                    />
+                    <label
+                      htmlFor={subCategory.name['en-US']}
+                      className={style.category_filters_category}
+                    >
+                      {subCategory.name['en-US']}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={style.pricesort_wrapper}>
+              <input
+                name="filterColor"
+                type="checkbox"
+                className={style.pricesort_input}
+                id="price-sort"
+                onChange={(): void => {
+                  setIsChecked(isChecked ? false : true);
+                  setPriceSort(!priceSort);
+                }}
+              />
+              <div className={style.pricesort_switch}>
+                <div
+                  className={
+                    isChecked
+                      ? `${style.pricesort_button} ${style.pricesort_button_move}`
+                      : style.pricesort_button
                   }
-                  discounted={
-                    card.prices && card.prices[0].discounted?.value.centAmount
-                      ? `${card.prices[0].discounted?.value.centAmount}$`
-                      : ''
-                  }
-                  sku={card.sku ? card.sku : ''}
-                  brand={''}
+                ></div>
+                <label
+                  htmlFor="price-sort"
+                  className={style.pricesort_label}
+                ></label>
+              </div>
+            </div>
+            <div className={style.category_filters_color}>
+              {allColours.map((colour) => {
+                return (
+                  <div key={colour} className={style.category_colours_wrapper}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      className={style.colour_input}
+                      id={colour}
+                      onChange={(): void => {
+                        onChangeColour(colour);
+                      }}
+                    />
+                    <label
+                      htmlFor={colour}
+                      className={style[`category_filters_${colour}`]}
+                    ></label>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={style.category_filters_size}>
+              {category === 'Clothes' &&
+                sizesArray.map((size) => {
+                  return (
+                    <div
+                      key={size}
+                      className={
+                        (size === 'universal' &&
+                          subcategoryTShirts.flag &&
+                          !subcategoryCap.flag) ||
+                        (size === 'universal' &&
+                          subcategoryHoodies.flag &&
+                          !subcategoryCap.flag) ||
+                        (size !== 'universal' &&
+                          subcategoryCap.flag &&
+                          !subcategoryHoodies.flag &&
+                          !subcategoryTShirts.flag)
+                          ? style.category_filter_size_universal
+                          : ''
+                      }
+                    >
+                      <input
+                        name="filterSize"
+                        type="checkbox"
+                        className={style.size_input}
+                        id={size}
+                        onChange={(): void => {
+                          onChangeSize(size);
+                        }}
+                      />
+                      <label
+                        htmlFor={size}
+                        className={style[`category_filters_${size}`]}
+                      >
+                        {size}
+                      </label>
+                    </div>
+                  );
+                })}
+            </div>
+            <div className={style.category_filters_bestseller}>
+              <div>
+                <input
+                  name="filterBestseller"
+                  type="checkbox"
+                  className={style.bestseller_input}
+                  id="bestseller"
+                  onChange={(): void => {
+                    onChangeBestseller();
+                  }}
                 />
-              </Link>
-            );
-          })}
+                <label
+                  htmlFor="bestseller"
+                  className={style.category_filters_bestseller}
+                >
+                  bestseller
+                </label>
+              </div>
+            </div>
+            <div className={style.category_filters_sale}>
+              <div>
+                <input
+                  name="filterSale"
+                  type="checkbox"
+                  className={style.sale_input}
+                  id="sale"
+                  onChange={(): void => {
+                    onChangeSale();
+                  }}
+                />
+                <label htmlFor="sale" className={style.category_filters_sale}>
+                  sale
+                </label>
+              </div>
+            </div>
+            <div className={style.category_filters_priceStart}>
+              <div>
+                <input
+                  name="filterPriceStart"
+                  type="number"
+                  className={style.category_search_input_price}
+                  // id='search'
+                  placeholder="price"
+                  onChange={(e): void => setSearchPriceStart(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={style.category_filters_priceFinish}>
+              <div>
+                <input
+                  name="filterPriceFinish"
+                  type="number"
+                  className={style.category_search_input_price}
+                  // id='search'
+                  placeholder="price"
+                  onChange={(e): void => setSearchPriceFinish(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={style.category_price_range_slider}>
+              <div className={style.category_range_value}>
+                <input
+                  type="text"
+                  className={style.category_price_input}
+                  id="amount"
+                  readOnly
+                  // onChange={(): void => onChangeSale(sale)}
+                />
+              </div>
+              <div
+                id="category_slider_range"
+                className={style.category_range_bar}
+              ></div>
+            </div>
+            <div className={style.category_filters_brand}>
+              {allBrands.map((brand) => {
+                return (
+                  <div key={brand} className={style.category_colours_wrapper}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      // className={style.colour_input}
+                      id={brand}
+                      onChange={(): void => {
+                        onChangeBrand(brand);
+                      }}
+                    />
+                    <label
+                      htmlFor={brand}
+                      className={style[`category_filters_${brand}`]}
+                    >
+                      {brand}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={style.category_pagination}>
+            <div className={style.category_cards_wrapper}>
+              {allCards.map((card) => {
+                return (
+                  <Link
+                    to={`/category/${category}/${card.key}`}
+                    className={style.category_card}
+                    key={card.key}
+                  >
+                    <Card
+                      keyCard={card.key ? card.key : ''}
+                      images={card.images && card.images[0].url}
+                      prices={
+                        card.prices && card.prices[0].value
+                          ? card.prices[0].value.centAmount
+                          : 0
+                      }
+                      discounted={
+                        card.prices &&
+                        card.prices[0].discounted?.value.centAmount
+                          ? `${card.prices[0].discounted?.value.centAmount}$`
+                          : ''
+                      }
+                      sku={card.sku ? card.sku : ''}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+            <div className={style.category_pagination_buttons}>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}>1</button>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}></button>
+            </div>
+          </div>
         </div>
       </div>
-      <button
+      {/* <button
         className={style.category_filter_button}
         onClick={(): void => filter()}
       >
         Filter
-      </button>
+      </button> */}
     </div>
   );
 }
