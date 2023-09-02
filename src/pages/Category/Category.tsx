@@ -18,6 +18,9 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
+  const urlQuery = query ? query : '';
+  const queryURLArray = urlQuery.split(';');
+  const breadcrumbsSymbol = `${'> '}`;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
   const productsForSearchSouvenirs = 'Mug Notepad';
@@ -38,6 +41,7 @@ function CategoryPage(): JSX.Element {
   const [searchPriceStart, setSearchPriceStart] = useState('');
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -123,9 +127,6 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
-  const urlQuery = query ? query : '';
-  const queryURLArray = urlQuery.split(';');
-
   useEffect(() => {
     getProductType().then((response) => {
       const productTypeResponse = response.body.attributes;
@@ -172,23 +173,27 @@ function CategoryPage(): JSX.Element {
         const queryStringPriceRangeFinish = `*`;
         const querySearch = productsForSearchClothes;
         let fuzzylevel = 0;
+        const queryLimit = 8;
 
-        if (searchValue.length > 5) {
-          fuzzylevel = 2;
+        switch (searchValue.length) {
+          case 1:
+            fuzzylevel = 0;
+            break;
+          case 2:
+            fuzzylevel = 0;
+            break;
+          case 3:
+            fuzzylevel = 1;
+            break;
+          case 4:
+            fuzzylevel = 1;
+            break;
+          case 5:
+            fuzzylevel = 1;
+            break;
+          default:
+            fuzzylevel = 2;
         }
-        if (searchValue.length === 3) {
-          fuzzylevel = 1;
-        }
-        if (searchValue.length === 4) {
-          fuzzylevel = 1;
-        }
-        if (searchValue.length === 5) {
-          fuzzylevel = 1;
-        }
-        if (searchValue.length === 1 || searchValue.length === 2) {
-          fuzzylevel = 0;
-        }
-        console.log(fuzzylevel);
 
         filterByAttributes(
           queryStringAllColours,
@@ -201,7 +206,7 @@ function CategoryPage(): JSX.Element {
           queryBestsellerString,
           querySale,
           queryStringAllBrands,
-          priceSort ? queryStringPriceASC : queryStringPriceDESC,
+          queryStringPriceDESC,
           searchValue === '' && category === 'Clothes'
             ? productsForSearchClothes
             : searchValue === '' && category === 'PC'
@@ -213,7 +218,8 @@ function CategoryPage(): JSX.Element {
             : searchValue,
           fuzzylevel,
           queryStringPriceRangeStart,
-          queryStringPriceRangeFinish
+          queryStringPriceRangeFinish,
+          queryLimit
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -225,7 +231,6 @@ function CategoryPage(): JSX.Element {
   }, [
     category,
     idCategory,
-    priceSort,
     productsForSearchClothes,
     productsForSearchPC,
     productsForSearchSouvenirs,
@@ -314,10 +319,10 @@ function CategoryPage(): JSX.Element {
       const queryStringPriceDESC = `price desc`;
       const querySearch = '';
 
-      let queryStringPriceSort = queryStringPriceDESC;
-      priceSort
-        ? (queryStringPriceSort = queryStringPriceASC)
-        : (queryStringPriceSort = queryStringPriceDESC);
+      let queryStringPriceSort = `price desc`;
+      priceSort === true
+        ? (queryStringPriceSort = `price asc`)
+        : (queryStringPriceSort = `price desc`);
 
       let querySubtreesString = createQuerySubtreeString();
       const subtrees = `subtree("${idCategory}")`;
@@ -386,7 +391,11 @@ function CategoryPage(): JSX.Element {
       if (searchValue.length === 1 || searchValue.length === 2) {
         fuzzylevel = 0;
       }
-      console.log(searchValue);
+
+      const queryLimit =
+        querySizesString === queryStringAllSizes || querySizesString === 'no'
+          ? 8
+          : 100;
 
       const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
@@ -403,7 +412,8 @@ function CategoryPage(): JSX.Element {
         querySearchValue,
         fuzzylevel,
         queryPriceRangeStart,
-        queryPriceRangeFinish
+        queryPriceRangeFinish,
+        queryLimit
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -412,25 +422,52 @@ function CategoryPage(): JSX.Element {
             querySizesString === queryStringAllSizes ||
             querySizesString === '"no"'
           ) {
+            console.log(querySizesString);
             master = parentCategory.map((item) => item.masterVariant);
             setAllCards(master);
           } else {
+            console.log('deti');
             parentCategory.forEach((item) => master.push(...item.variants));
             const sortedVariantsArray: ProductVariant[][] = [];
-            console.log(allSizes, 'popali');
             allSizes.forEach((data) => {
               const sortedVariant = master.filter((variant) => {
                 const sizeAttribute = variant.attributes?.find(
                   (sizeQuery) => sizeQuery.name === 'size'
                 );
                 if (sizeAttribute?.value['key'] === data) {
-                  console.log(variant);
                   return variant;
                 }
               });
+              console.log(master, allSizes);
               sortedVariantsArray.push(sortedVariant);
             });
-            setAllCards(sortedVariantsArray.flat());
+            const filteredVariantsPrices = sortedVariantsArray.flat();
+            if (queryStringPriceSort === 'price asc') {
+              filteredVariantsPrices.sort(
+                (a: ProductVariant, b: ProductVariant): number => {
+                  if (!a.prices || !b.prices) {
+                    throw new Error('no prices found');
+                  }
+                  return (
+                    a.prices[0].value.centAmount - b.prices[0].value.centAmount
+                  );
+                }
+              );
+            }
+            if (queryStringPriceSort === 'price desc') {
+              filteredVariantsPrices.sort(
+                (a: ProductVariant, b: ProductVariant): number => {
+                  if (!a.prices || !b.prices) {
+                    throw new Error('no prices found');
+                  }
+                  return (
+                    b.prices[0].value.centAmount - a.prices[0].value.centAmount
+                  );
+                }
+              );
+            }
+            const pageVariants = filteredVariantsPrices.slice(0, 8);
+            setAllCards(pageVariants);
           }
         })
         .catch(() => {
@@ -458,9 +495,7 @@ function CategoryPage(): JSX.Element {
     searchValue,
   ]);
 
-  function onChangePriceSort(): void {
-    setPriceSort(!priceSort);
-  }
+  function onChangePriceSort(): void {}
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
@@ -613,143 +648,12 @@ function CategoryPage(): JSX.Element {
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
-        <h2 className={style.category_title}>{category}</h2>
-        <div className={style.category_filters}>
-          <div className={style.pricesort_wrapper}>
-            <input
-              name="filterColor"
-              type="checkbox"
-              className={style.pricesort_input}
-              id="price-sort"
-              onChange={(): void => {
-                onChangePriceSort();
-              }}
-            />
-            <div className={style.pricesort_switch}>
-              <label
-                htmlFor="price-sort"
-                className={style.pricesort_label}
-              ></label>
-              <div className={style.pricesort_button}></div>
-            </div>
-          </div>
-          <div className={style.category_categories}>
-            {subtree.map((subCategory) => {
-              return (
-                <div key={subCategory.name['en-US']}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    id={subCategory.name['en-US']}
-                    onChange={(): void => {
-                      onChangeSubcategory(subCategory.name['en-US']);
-                    }}
-                  />
-                  <label
-                    htmlFor={subCategory.name['en-US']}
-                    className={style.category_filters_category}
-                  >
-                    {subCategory.name['en-US']}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
-          <div className={style.category_filters_color}>
-            {allColours.map((colour) => {
-              return (
-                <div key={colour} className={style.category_colours_wrapper}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    className={style.colour_input}
-                    id={colour}
-                    onChange={(): void => {
-                      onChangeColour(colour);
-                    }}
-                  />
-                  <label
-                    htmlFor={colour}
-                    className={style[`category_filters_${colour}`]}
-                  ></label>
-                </div>
-              );
-            })}
-          </div>
-          <div className={style.category_filters_size}>
-            {category === 'Clothes' &&
-              sizesArray.map((size) => {
-                return (
-                  <div
-                    key={size}
-                    className={
-                      (size === 'universal' &&
-                        subcategoryTShirts.flag &&
-                        !subcategoryCap.flag) ||
-                      (size === 'universal' &&
-                        subcategoryHoodies.flag &&
-                        !subcategoryCap.flag) ||
-                      (size !== 'universal' &&
-                        subcategoryCap.flag &&
-                        !subcategoryHoodies.flag &&
-                        !subcategoryTShirts.flag)
-                        ? style.category_filter_size_universal
-                        : ''
-                    }
-                  >
-                    <input
-                      name="filterSize"
-                      type="checkbox"
-                      className={style.size_input}
-                      id={size}
-                      onChange={(): void => {
-                        onChangeSize(size);
-                      }}
-                    />
-                    <label
-                      htmlFor={size}
-                      className={style[`category_filters_${size}`]}
-                    >
-                      {size}
-                    </label>
-                  </div>
-                );
-              })}
-          </div>
-          <div className={style.category_filters_bestseller}>
-            <div>
-              <input
-                name="filterBestseller"
-                type="checkbox"
-                className={style.bestseller_input}
-                id="bestseller"
-                onChange={(): void => {
-                  onChangeBestseller();
-                }}
-              />
-              <label
-                htmlFor="bestseller"
-                className={style.category_filters_bestseller}
-              >
-                bestseller
-              </label>
-            </div>
-          </div>
-          <div className={style.category_filters_sale}>
-            <div>
-              <input
-                name="filterSale"
-                type="checkbox"
-                className={style.sale_input}
-                id="sale"
-                onChange={(): void => {
-                  onChangeSale();
-                }}
-              />
-              <label htmlFor="sale" className={style.category_filters_sale}>
-                sale
-              </label>
-            </div>
+        <div className={style.breadcrumbs_search}>
+          <div className={style.breadcrumbs}>
+            <span className={style.breadcrumbs_symbol}>
+              {breadcrumbsSymbol}
+            </span>
+            {category}
           </div>
           <div className={style.category_filters_search}>
             <div>
@@ -763,104 +667,252 @@ function CategoryPage(): JSX.Element {
               />
             </div>
           </div>
-          <div className={style.category_filters_priceStart}>
-            <div>
-              <input
-                name="filterPriceStart"
-                type="number"
-                className={style.category_search_input}
-                // id='search'
-                placeholder="price"
-                onChange={(e): void => setSearchPriceStart(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className={style.category_filters_priceFinish}>
-            <div>
-              <input
-                name="filterPriceFinish"
-                type="number"
-                className={style.category_search_input}
-                // id='search'
-                placeholder="price"
-                onChange={(e): void => setSearchPriceFinish(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className={style.category_price_range_slider}>
-            <div className={style.category_range_value}>
-              <input
-                type="text"
-                className={style.category_price_input}
-                id="amount"
-                readOnly
-                // onChange={(): void => onChangeSale(sale)}
-              />
-            </div>
-            <div
-              id="category_slider_range"
-              className={style.category_range_bar}
-            ></div>
-          </div>
-          <div className={style.category_filters_brand}>
-            {allBrands.map((brand) => {
-              return (
-                <div key={brand} className={style.category_colours_wrapper}>
-                  <input
-                    name="filterColor"
-                    type="checkbox"
-                    // className={style.colour_input}
-                    id={brand}
-                    onChange={(): void => {
-                      onChangeBrand(brand);
-                    }}
-                  />
-                  <label
-                    htmlFor={brand}
-                    className={style[`category_filters_${brand}`]}
-                  >
-                    {brand}
-                  </label>
-                </div>
-              );
-            })}
-          </div>
         </div>
-        <div className={style.category_pagination}>
-          <div className={style.category_cards_wrapper}>
-            {allCards.map((card) => {
-              return (
-                <Link
-                  to={`/category/${category}/${card.key}`}
-                  className={style.category_card}
-                  key={card.key}
+        <div className={style.category_filters_cards_wrapper}>
+          <h2 className={style.category_title}>{category}</h2>
+          <div className={style.category_filters}>
+            <div className={style.category_categories}>
+              {subtree.map((subCategory) => {
+                return (
+                  <div key={subCategory.name['en-US']}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      id={subCategory.name['en-US']}
+                      onChange={(): void => {
+                        onChangeSubcategory(subCategory.name['en-US']);
+                      }}
+                    />
+                    <label
+                      htmlFor={subCategory.name['en-US']}
+                      className={style.category_filters_category}
+                    >
+                      {subCategory.name['en-US']}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={style.pricesort_wrapper}>
+              <input
+                name="filterColor"
+                type="checkbox"
+                className={style.pricesort_input}
+                id="price-sort"
+                onChange={(): void => {
+                  setIsChecked(isChecked ? false : true);
+                  setPriceSort(!priceSort);
+                }}
+              />
+              <div className={style.pricesort_switch}>
+                <div
+                  className={
+                    isChecked
+                      ? `${style.pricesort_button} ${style.pricesort_button_move}`
+                      : style.pricesort_button
+                  }
+                ></div>
+                <label
+                  htmlFor="price-sort"
+                  className={style.pricesort_label}
+                ></label>
+              </div>
+            </div>
+            <div className={style.category_filters_color}>
+              {allColours.map((colour) => {
+                return (
+                  <div key={colour} className={style.category_colours_wrapper}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      className={style.colour_input}
+                      id={colour}
+                      onChange={(): void => {
+                        onChangeColour(colour);
+                      }}
+                    />
+                    <label
+                      htmlFor={colour}
+                      className={style[`category_filters_${colour}`]}
+                    ></label>
+                  </div>
+                );
+              })}
+            </div>
+            <div className={style.category_filters_size}>
+              {category === 'Clothes' &&
+                sizesArray.map((size) => {
+                  return (
+                    <div
+                      key={size}
+                      className={
+                        (size === 'universal' &&
+                          subcategoryTShirts.flag &&
+                          !subcategoryCap.flag) ||
+                        (size === 'universal' &&
+                          subcategoryHoodies.flag &&
+                          !subcategoryCap.flag) ||
+                        (size !== 'universal' &&
+                          subcategoryCap.flag &&
+                          !subcategoryHoodies.flag &&
+                          !subcategoryTShirts.flag)
+                          ? style.category_filter_size_universal
+                          : ''
+                      }
+                    >
+                      <input
+                        name="filterSize"
+                        type="checkbox"
+                        className={style.size_input}
+                        id={size}
+                        onChange={(): void => {
+                          onChangeSize(size);
+                        }}
+                      />
+                      <label
+                        htmlFor={size}
+                        className={style[`category_filters_${size}`]}
+                      >
+                        {size}
+                      </label>
+                    </div>
+                  );
+                })}
+            </div>
+            <div className={style.category_filters_bestseller}>
+              <div>
+                <input
+                  name="filterBestseller"
+                  type="checkbox"
+                  className={style.bestseller_input}
+                  id="bestseller"
+                  onChange={(): void => {
+                    onChangeBestseller();
+                  }}
+                />
+                <label
+                  htmlFor="bestseller"
+                  className={style.category_filters_bestseller}
                 >
-                  <Card
-                    keyCard={card.key ? card.key : ''}
-                    images={card.images && card.images[0].url}
-                    prices={
-                      card.prices && card.prices[0].value
-                        ? card.prices[0].value.centAmount
-                        : 0
-                    }
-                    discounted={
-                      card.prices && card.prices[0].discounted?.value.centAmount
-                        ? `${card.prices[0].discounted?.value.centAmount}$`
-                        : ''
-                    }
-                    sku={card.sku ? card.sku : ''}
-                    brand={''}
-                  />
-                </Link>
-              );
-            })}
+                  bestseller
+                </label>
+              </div>
+            </div>
+            <div className={style.category_filters_sale}>
+              <div>
+                <input
+                  name="filterSale"
+                  type="checkbox"
+                  className={style.sale_input}
+                  id="sale"
+                  onChange={(): void => {
+                    onChangeSale();
+                  }}
+                />
+                <label htmlFor="sale" className={style.category_filters_sale}>
+                  sale
+                </label>
+              </div>
+            </div>
+            <div className={style.category_filters_priceStart}>
+              <div>
+                <input
+                  name="filterPriceStart"
+                  type="number"
+                  className={style.category_search_input_price}
+                  // id='search'
+                  placeholder="price"
+                  onChange={(e): void => setSearchPriceStart(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={style.category_filters_priceFinish}>
+              <div>
+                <input
+                  name="filterPriceFinish"
+                  type="number"
+                  className={style.category_search_input_price}
+                  // id='search'
+                  placeholder="price"
+                  onChange={(e): void => setSearchPriceFinish(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={style.category_price_range_slider}>
+              <div className={style.category_range_value}>
+                <input
+                  type="text"
+                  className={style.category_price_input}
+                  id="amount"
+                  readOnly
+                  // onChange={(): void => onChangeSale(sale)}
+                />
+              </div>
+              <div
+                id="category_slider_range"
+                className={style.category_range_bar}
+              ></div>
+            </div>
+            <div className={style.category_filters_brand}>
+              {allBrands.map((brand) => {
+                return (
+                  <div key={brand} className={style.category_colours_wrapper}>
+                    <input
+                      name="filterColor"
+                      type="checkbox"
+                      // className={style.colour_input}
+                      id={brand}
+                      onChange={(): void => {
+                        onChangeBrand(brand);
+                      }}
+                    />
+                    <label
+                      htmlFor={brand}
+                      className={style[`category_filters_${brand}`]}
+                    >
+                      {brand}
+                    </label>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className={style.category_pagination_buttons}>
-            <button className={style.category_pagination_button}></button>
-            <button className={style.category_pagination_button}></button>
-            <button className={style.category_pagination_button}>1</button>
-            <button className={style.category_pagination_button}></button>
-            <button className={style.category_pagination_button}></button>
+          <div className={style.category_pagination}>
+            <div className={style.category_cards_wrapper}>
+              {allCards.map((card) => {
+                return (
+                  <Link
+                    to={`/category/${category}/${card.key}`}
+                    className={style.category_card}
+                    key={card.key}
+                  >
+                    <Card
+                      keyCard={card.key ? card.key : ''}
+                      images={card.images && card.images[0].url}
+                      prices={
+                        card.prices && card.prices[0].value
+                          ? card.prices[0].value.centAmount
+                          : 0
+                      }
+                      discounted={
+                        card.prices &&
+                        card.prices[0].discounted?.value.centAmount
+                          ? `${card.prices[0].discounted?.value.centAmount}$`
+                          : ''
+                      }
+                      sku={card.sku ? card.sku : ''}
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+            <div className={style.category_pagination_buttons}>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}>1</button>
+              <button className={style.category_pagination_button}></button>
+              <button className={style.category_pagination_button}></button>
+            </div>
           </div>
         </div>
       </div>

@@ -11,9 +11,14 @@
 
   &_wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 90vw;
     margin: 0 auto;
+  }
+
+  &_filters_cards_wrapper {
+    display: flex;
+    flex-direction: row;
   }
 
   &_title {
@@ -182,7 +187,41 @@
   }
 
   &_search_input {
-    aspect-ratio: 1 / 0.15;
+    resize: both;
+
+    aspect-ratio: 1 / 0.36;
+    width: 15vw;
+    padding-left: 2vw;
+
+    font-family: Cyberpunk, cursive;
+    font-size: 2rem;
+    color: $glow-green;
+
+    background-color: transparent;
+    background-image: url('../../../public/ui-kit/search_purple_blue.svg');
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      font-family: Cyberpunk, cursive;
+      font-size: 2rem;
+      color: $glow-green;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      color: $glow-green;
+      outline: none;
+    }
+  }
+
+  &_search_input_price {
+    resize: both;
+    aspect-ratio: 1 / 0.2;
     width: 10vw;
     font-size: 2rem;
 
@@ -333,12 +372,48 @@ input#price-sort[type='checkbox'] {
   border-radius: 15%;
   box-shadow: 0 0 5px $glow-green;
 
-  transition: left 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
-#price-sort:checked ~ .pricesort_switch > .pricesort_button {
-  right: 0;
-  transform: translate(10vw, 0);
-  float: right;
-  box-shadow: 0 0 35px $glow-green;
+.pricesort_button_move {
+  transform: translateX(7vw);
+
+  // box-shadow: 0 0 35px $glow-green;
+}
+
+#price-sort {
+  display: none;
+}
+
+.breadcrumbs_search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 50px;
+  margin-bottom: 30px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 50vw;
+
+  font-family: Cyberpunk, cursive;
+  font-size: 2rem;
+  color: $glow-green;
+}
+
+.breadcrumbs_symbol {
+  display: inline-block;
+
+  aspect-ratio: 1 / 0.4;
+  width: 3vw;
+  margin-right: 10px;
+
+  background-image: url('../../../public/ui-kit/breadcrumbs_arrow_purple_green.svg');
+  background-repeat: no-repeat;
 }

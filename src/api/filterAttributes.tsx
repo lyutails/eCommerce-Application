@@ -17,7 +17,8 @@ export async function filterByAttributes(
   search: string,
   fuzzylevel: number,
   priceRangeStart: string,
-  priceRangeFinish: string
+  priceRangeFinish: string,
+  limit: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -26,7 +27,7 @@ export async function filterByAttributes(
       .get({
         queryArgs: {
           sort: `${sortprice}`,
-          limit: 8,
+          limit: Number(`${limit}`),
           'text.en-us': `${search}`,
           fuzzy: true,
           fuzzyLevel: Number(`${fuzzylevel}`),
