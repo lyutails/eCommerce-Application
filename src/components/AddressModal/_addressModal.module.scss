@@ -7,12 +7,12 @@
 
     width: 70vw;
     max-width: 700px;
-    min-height: 30vh;
+    min-height: 50vh;
     padding: 50px;
 
     background-color: white;
 
-    &_email {
+    &_bio {
         width: 60%;
       min-width: 200px;
     }
@@ -70,27 +70,4 @@
       border: none;
     }
 
-}
-
-.completed {
-  visibility: visible;
-}
-
-.uncompleted {
-  visibility: hidden;
-}
-
-.email_clue {
-  visibility: hidden;
-}
-
-.error {
-  margin: 0;
-  padding: 0;
-
-  font-size: 1.2rem;
-  color: red;
-
-  visibility: visible;
-  background-image: none;
 }

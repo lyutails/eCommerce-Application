@@ -18,8 +18,6 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
-  const urlQuery = query ? query : '';
-  const queryURLArray = urlQuery.split(';');
   const breadcrumbsSymbol = `${'> '}`;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
@@ -398,6 +396,9 @@ function CategoryPage(): JSX.Element {
           : 100;
 
       const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+
+      const urlQuery = query ? query : '';
+      const queryURLArray = urlQuery.split(';');
 
       // navigate(queryURL);
 

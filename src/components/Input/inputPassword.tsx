@@ -9,7 +9,6 @@ import iconEyeClose from '../../../public/assets/icons/eye-close.svg';
 import { IInputPropsPassword } from '../../types/interfaces';
 import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { hideTooltip, showTooltip } from '../../pages/showTooltip';
-import { useParams } from 'react-router-dom';
 
 function InputPassword(props: IInputPropsPassword): JSX.Element {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -34,18 +33,42 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
       );
     }
   );
+  const passwordErrors = handlePasswordInput(props.passwordField);
+  // const answer = Object.keys(passwordErrors).every((key): void => {
+  //   if (passwordErrors[key].isError === true) {
+  //     props.setPasswordCheck ? props.setPasswordCheck(false) : '';
+  //   } else {
+  //     props.setCheckmarkPassword(true);
+  //     props.setPasswordCheck ? props.setPasswordCheck(true) : '';
+  //   }
+  // });
+  const error = Object.keys(passwordErrors).map((key): boolean => {
+    if (passwordErrors[key].isError === true) {
+      return true;
+    }
+    return false;
+  });
+  if (error.includes(true)) {
+    props.setCheckmarkPassword ? props.setCheckmarkPassword(false) : '';
+    props.setPasswordCheck ? props.setPasswordCheck(false) : '';
+  } else {
+    props.setCheckmarkPassword ? props.setCheckmarkPassword(true) : '';
+    props.setPasswordCheck ? props.setPasswordCheck(true) : '';
+  }
   return (
     <div className={style.wrapper}>
       <div className={style.wrapper_label}>
         <div className={style.wrapper_img}>
           <img
             className={style.wrapper_img_icon}
-            src={iconPassword}
+            src={props.checkmarkPassword ? iconCheckmark : iconPassword}
             alt="Icon"
           />
         </div>
         <input
-          onBlur={(): void => hideTooltip(setPasswordFocus)}
+          onBlur={(): void => {
+            hideTooltip(setPasswordFocus);
+          }}
           onFocus={(): void => showTooltip(setPasswordFocus)}
           onChange={(e): void => inputHandler(e, props.setPasswordField)}
           className={style.wrapper_input}

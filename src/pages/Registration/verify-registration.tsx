@@ -24,6 +24,7 @@ import { AnyAction, Dispatch } from 'redux';
 import { createCustomerId } from '../../store/reducers/userReducer';
 import { getCustomerToken } from '../../api/adminBuilder';
 import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
+import { parseDateToServer } from '../../utils/parseDate';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -214,15 +215,13 @@ export const handleСreationReg = (
     birthdayСheck,
     setCheckmarkBirthday
   );
-  let parts = birthdayField.split('.');
-  let newBirthday = parts[2] + '-' + parts[1] + '-' + parts[0];
 
   const dataBill = {
     email: loginField,
     firstName: fistnameField,
     lastName: lastnameField,
     password: passwordField,
-    dateOfBirth: newBirthday,
+    dateOfBirth: parseDateToServer(birthdayField),
     addresses: [
       {
         streetName: streetShipField,
@@ -252,7 +251,7 @@ export const handleСreationReg = (
     firstName: fistnameField,
     lastName: lastnameField,
     password: passwordField,
-    dateOfBirth: newBirthday,
+    dateOfBirth: parseDateToServer(birthdayField),
     addresses: [
       {
         streetName: streetShipField,

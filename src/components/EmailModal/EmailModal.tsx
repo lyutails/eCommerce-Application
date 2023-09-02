@@ -1,27 +1,49 @@
-import { ChangeEventHandler, ReactNode, useState } from 'react';
+import { ChangeEventHandler, ReactNode, useEffect, useState } from 'react';
 import style from '../EmailModal/_emailModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import Input from '../Input/Input';
-import { inputHandler } from '../../pages/verification';
+import { handleLoginInput, inputHandler } from '../../pages/verification';
 import iconEmail from '../../../public/assets/icons/email.svg';
+import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
+import { MyCustomerChangeEmailAction } from '@commercetools/platform-sdk';
+import { handleUpdateEmail } from './email-modal-verify';
 
 export interface IEmailModalProps {
   emailField: string;
   modalClass: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-  onfocus?: ChangeEventHandler<HTMLInputElement>;
-  onblur?: ChangeEventHandler<HTMLInputElement>;
+  version: number;
+  token?: string;
+  setClickedEmailUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setPersonal: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface IMyCustomerEmailUpdate {
+  version: number;
+  actions: [MyCustomerChangeEmailAction];
 }
 
 function EmailModal(props: IEmailModalProps): JSX.Element {
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [emailCheck, setEmailCheck] = useState(false);
+  const [checkmarkEmail, setCheckmarkEmail] = useState(true);
+
+  useEffect(() => {
+    setEmail(props.emailField);
+  }, [props.emailField]);
+
+  const customerUpdateData: IMyCustomerEmailUpdate = {
+    version: props.version,
+    actions: [
+      {
+        action: 'changeEmail',
+        email: email,
+      },
+    ],
+  };
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -30,9 +52,19 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
       <div className={style.modal_email}>
         <h4 className={style.modal_title}>Update E-mail</h4>
         <Input
-          value={props.emailField}
+          value={email}
+          onblur={(): void =>
+            setEmailCheck(
+              handleLoginInput(
+                email,
+                setEmailError,
+                emailCheck,
+                setCheckmarkEmail
+              )
+            )
+          }
           onChange={(e): void => inputHandler(e, setEmail)}
-          //   clue={emailError ? emailError : 'This is required field'}
+          clue={emailError ? emailError : 'This is required field'}
           type="email"
           placeholder="E-mail"
           classWrapper={style.email}
@@ -44,7 +76,7 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
             <div className={style.wrapper_img}>
               <img
                 className={style.wrapper_img_icon}
-                src={iconEmail}
+                src={checkmarkEmail ? iconCheckmark : iconEmail}
                 alt="Icon"
               />
             </div>
@@ -52,7 +84,16 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
         />
       </div>
       <ButtonForm
-        onClick={(): void => console.log('gr')}
+        onClick={(): void =>
+          handleUpdateEmail(
+            emailCheck,
+            props.token ? props.token : '',
+            customerUpdateData,
+            props.setClickedEmailUpdate,
+            props.setShowModal,
+            props.setPersonal
+          )
+        }
         classNames={style.modal_button}
       >
         Confirm
