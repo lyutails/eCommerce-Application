@@ -18,20 +18,13 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
+  const productsForSearchClothes = 'Cap Hoodie T-Shirt';
+  const productsForSearchPC = 'Mouse Pad';
+  const productsForSearchSouvenirs = 'Mug Notepad';
+  const productsForSearchStickers = 'Sticker';
   const navigate = useNavigate();
   const { category } = useParams();
   const { query } = useParams();
-  const productsForSearch = [
-    'Cap',
-    'Hoodie',
-    'Mouse',
-    'Mouse Pad',
-    'Mug',
-    'Notepad',
-    'Sticker',
-    'T-Shirt',
-    'TShirt',
-  ];
   const allBrands = ['RSSchool', 'Logitech'];
   const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
   const [idCategory, setIdcategoty] = useState('');
@@ -177,7 +170,25 @@ function CategoryPage(): JSX.Element {
         const queryStringPriceDESC = `price desc`;
         const queryStringPriceRangeStart = `0`;
         const queryStringPriceRangeFinish = `*`;
-        const querySearch = '';
+        const querySearch = productsForSearchClothes;
+        let fuzzylevel = 0;
+
+        if (searchValue.length > 5) {
+          fuzzylevel = 2;
+        }
+        if (searchValue.length === 3) {
+          fuzzylevel = 1;
+        }
+        if (searchValue.length === 4) {
+          fuzzylevel = 1;
+        }
+        if (searchValue.length === 5) {
+          fuzzylevel = 1;
+        }
+        if (searchValue.length === 1 || searchValue.length === 2) {
+          fuzzylevel = 0;
+        }
+        console.log(fuzzylevel);
 
         filterByAttributes(
           queryStringAllColours,
@@ -191,7 +202,16 @@ function CategoryPage(): JSX.Element {
           querySale,
           queryStringAllBrands,
           priceSort ? queryStringPriceASC : queryStringPriceDESC,
-          // querySearch
+          searchValue === '' && category === 'Clothes'
+            ? productsForSearchClothes
+            : searchValue === '' && category === 'PC'
+            ? productsForSearchPC
+            : searchValue === '' && category === 'Souvenirs'
+            ? productsForSearchSouvenirs
+            : searchValue === '' && category === 'Stickers'
+            ? productsForSearchStickers
+            : searchValue,
+          fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish
         ).then((response) => {
@@ -202,7 +222,16 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [category, idCategory, priceSort]);
+  }, [
+    category,
+    idCategory,
+    priceSort,
+    productsForSearchClothes,
+    productsForSearchPC,
+    productsForSearchSouvenirs,
+    productsForSearchStickers,
+    searchValue,
+  ]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -298,8 +327,6 @@ function CategoryPage(): JSX.Element {
       let queryColoursString = createQueryColourString();
       queryColoursString || (queryColoursString = queryStringAllColours);
 
-      console.log('lalala');
-
       const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
       let querySizesString = querySizesQueryString;
       querySizesString === '' && category === 'Clothes'
@@ -331,11 +358,39 @@ function CategoryPage(): JSX.Element {
           ? queryPriceRangeFinish
           : (queryPriceRangeFinish = searchPriceFinish);
 
+      let querySearchValue = '';
+      searchValue === '' && category === 'Clothes'
+        ? (querySearchValue = productsForSearchClothes)
+        : searchValue === '' && category === 'PC'
+        ? (querySearchValue = productsForSearchPC)
+        : searchValue === '' && category === 'Souvenirs'
+        ? (querySearchValue = productsForSearchSouvenirs)
+        : searchValue === '' && category === 'Stickers'
+        ? (querySearchValue = productsForSearchStickers)
+        : searchValue;
+
+      let fuzzylevel = 0;
+
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
+      }
+      if (searchValue.length === 3) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 4) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 5) {
+        fuzzylevel = 1;
+      }
+      if (searchValue.length === 1 || searchValue.length === 2) {
+        fuzzylevel = 0;
+      }
+      console.log(searchValue);
+
       const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
       // navigate(queryURL);
-
-      console.log('qeteq');
 
       filterByAttributes(
         queryColoursString,
@@ -345,6 +400,8 @@ function CategoryPage(): JSX.Element {
         querySale,
         queryBrandString,
         queryStringPriceSort,
+        querySearchValue,
+        fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish
       )
@@ -390,10 +447,15 @@ function CategoryPage(): JSX.Element {
     createQuerySubtreeString,
     idCategory,
     priceSort,
+    productsForSearchClothes,
+    productsForSearchPC,
+    productsForSearchSouvenirs,
+    productsForSearchStickers,
     querySizesQueryString,
     sale,
     searchPriceFinish,
     searchPriceStart,
+    searchValue,
   ]);
 
   function onChangePriceSort(): void {
@@ -553,30 +615,22 @@ function CategoryPage(): JSX.Element {
       <div className={style.category_wrapper}>
         <h2 className={style.category_title}>{category}</h2>
         <div className={style.category_filters}>
-          <div className={style.category_filters_pricesort}>
-            <div className={style.pricesort_wrapper}>
-              <input
-                name="filterColor"
-                type="checkbox"
-                className={style.pricesort_input}
-                id="price-sort"
-                onChange={(): void => {
-                  onChangePriceSort();
-                }}
-              />
-              <label htmlFor="price-sort" className={style.pricesort_label}>
-                <div className={style.day_night_cont}>
-                  <span className={style.the_sun}></span>
-                  <div className={style.the_moon}>
-                    <span className={style.moon_inside}></span>
-                  </div>
-                </div>
-                <div className={style.switch}>
-                  <div className={style.button}>
-                    <div className={style.b_inside}></div>
-                  </div>
-                </div>
-              </label>
+          <div className={style.pricesort_wrapper}>
+            <input
+              name="filterColor"
+              type="checkbox"
+              className={style.pricesort_input}
+              id="price-sort"
+              onChange={(): void => {
+                onChangePriceSort();
+              }}
+            />
+            <div className={style.pricesort_switch}>
+              <label
+                htmlFor="price-sort"
+                className={style.pricesort_label}
+              ></label>
+              <div className={style.pricesort_button}></div>
             </div>
           </div>
           <div className={style.category_categories}>

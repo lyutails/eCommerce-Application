@@ -14,7 +14,8 @@ export async function filterByAttributes(
   sale: string,
   brand: string,
   sortprice: string,
-  // search: string
+  search: string,
+  fuzzylevel: number,
   priceRangeStart: string,
   priceRangeFinish: string
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
@@ -26,9 +27,9 @@ export async function filterByAttributes(
         queryArgs: {
           sort: `${sortprice}`,
           limit: 8,
-          // 'text.en-us': '',
+          'text.en-us': `${search}`,
           fuzzy: true,
-          fuzzyLevel: 1,
+          fuzzyLevel: Number(`${fuzzylevel}`),
           offset: 8 * 0,
           // priceCurrency: 'USD',
           // filter: 'variants.scopedPriceDiscounted:true',
