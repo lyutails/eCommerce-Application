@@ -5,7 +5,11 @@ import CloseIcon from '../../../public/assets/icons/close.svg';
 import Input from '../Input/Input';
 import { inputHandler } from '../../pages/verification';
 import InputBirthDateMask from '../Input/InputBirthDateMask';
-import { AddressDraft } from '@commercetools/platform-sdk';
+import {
+  AddressDraft,
+  ClientResponse,
+  Customer,
+} from '@commercetools/platform-sdk';
 import AddressForm from '../AddressForm/AddressForm';
 import { IAddressesCardData } from '../../pages/Profile/Profile';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,6 +79,7 @@ export interface IAddAddressData {
     {
       action: string;
       address: {
+        key: string;
         streetName: string;
         building: string;
         apartment: string;
@@ -83,12 +88,52 @@ export interface IAddAddressData {
         country: string;
       };
     },
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+  ];
+}
+
+export interface IAddAddressStatusData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
   ];
 }
 
 function AddressModal(props: IAddressModalProps): JSX.Element {
   const dispatch = useDispatch();
-  const { address } = useSelector((state: IProfileState) => state.profile);
+  const { address, version } = useSelector(
+    (state: IProfileState) => state.profile
+  );
   const [checkedDefault, setCheckedDefault] = useState(false);
   const inputDefaultShipping = document.getElementById(
     'defaultShip'
@@ -104,11 +149,12 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
   ) as HTMLInputElement;
 
   const addAddressData: IAddAddressData = {
-    version: props.version,
+    version: version,
     actions: [
       {
         action: 'addAddress',
         address: {
+          key: `address${version}`,
           streetName: address.street.value,
           building: address.building.value,
           apartment: address.apartment.value,
@@ -120,7 +166,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     ],
   };
   const changeAddressData: IChangeAddressData = {
-    version: props.version,
+    version: version,
     actions: [
       {
         action: 'changeAddress',
@@ -142,6 +188,10 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'setDefaultShippingAddress',
       addressId: address.idAddress,
     });
+    // addAddressData.actions.push({
+    //   action: 'setDefaultShippingAddress',
+    //   addressKey: `address1`,
+    // });
   }
   if (address.defaultBilling && inputDefaultBilling) {
     inputDefaultBilling.checked = true;
@@ -149,6 +199,10 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'setDefaultBillingAddress',
       addressId: address.idAddress,
     });
+    // addAddressData.actions.push({
+    //   action: 'setDefaultBillingAddress',
+    //   addressKey: `address1`,
+    // });
   }
   if (address.shippingAddress && inputAddressShipping) {
     inputAddressShipping.checked = true;
@@ -156,6 +210,10 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'addShippingAddressId',
       addressId: address.idAddress,
     });
+    // addAddressData.actions.push({
+    //   action: 'addShippingAddressId',
+    //   addressKey: `address1`,
+    // });
   }
   if (address.billingAddress && inputAddressBilling) {
     inputAddressBilling.checked = true;
@@ -163,6 +221,41 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'addBillingAddressId',
       addressId: address.idAddress,
     });
+    // addAddressData.actions.push({
+    //   action: 'addBillingAddressId',
+    //   addressKey: `address1`,
+    // });
+  }
+  function addStatusAddress(id: string): IAddAddressStatusData {
+    const addAddressStatusData: IAddAddressStatusData = {
+      version: version + 1,
+      actions: [],
+    };
+    if (address.billingAddress) {
+      addAddressStatusData.actions.push({
+        action: 'addBillingAddressId',
+        addressId: id,
+      });
+    }
+    if (address.shippingAddress) {
+      addAddressStatusData.actions.push({
+        action: 'addShippingAddressId',
+        addressId: id,
+      });
+    }
+    if (address.defaultBilling) {
+      addAddressStatusData.actions.push({
+        action: 'setDefaultBillingAddress',
+        addressId: id,
+      });
+    }
+    if (address.defaultShipping) {
+      addAddressStatusData.actions.push({
+        action: 'setDefaultShippingAddress',
+        addressId: id,
+      });
+    }
+    return addAddressStatusData;
   }
   const updateAddressData: IAddressUpdateData = {
     streetError: !address.street.error,
@@ -248,7 +341,10 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
             props.setClickedAddressesUpdate,
             props.setShowModal,
             address.isUpdate ? changeAddressData : addAddressData,
-            dispatch
+            dispatch,
+            addStatusAddress,
+            address.isAdd,
+            version
           )
         }
         classNames={style.modal_button}

@@ -89,7 +89,6 @@ function BioModal(props: IBioModalProps): JSX.Element {
     });
   };
   useEffect(() => {
-    console.log(props.firstnameField, props.lastnameField, props.birthdayField);
     setForm({
       ...form,
       firstname: {

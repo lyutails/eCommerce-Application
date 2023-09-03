@@ -113,14 +113,17 @@ function ProfilePage(): JSX.Element {
                 ? parseDateToWeb(response.body.dateOfBirth)
                 : '',
             });
+            // dispatch(
+            //   changeBio({
+            //     addressStore: response.body.addresses,
+            //     defaultShippingId: response.body.defaultShippingAddressId,
+            //     defaultBillingId: response.body.defaultBillingAddressId,
+            //     shippingAddressesId: response.body.shippingAddressIds,
+            //     billingAddressesId: response.body.billingAddressIds,
+            //   })
+            // );
             setEmail(response.body.email);
             setPassword(response.body.password);
-            setAddresses({
-              shippingAddressIds: response.body.shippingAddressIds,
-              billingAddressIds: response.body.billingAddressIds,
-              defaultBillingAddressId: response.body.defaultBillingAddressId,
-              defaultShippingAddressId: response.body.defaultShippingAddressId,
-            });
             dispatch(
               changeAddress({
                 addressStore: response.body.addresses,
@@ -196,7 +199,6 @@ function ProfilePage(): JSX.Element {
         },
       ],
     };
-
     return (
       <div key={i} className={`${style.profile_address_card} card_${i}}`}>
         <div className={style.profile_address_top}>
@@ -225,7 +227,7 @@ function ProfilePage(): JSX.Element {
               <b>Postal:</b> {addressCard?.postalCode}
             </p>
             <p className={style.profile_address_item}>
-              <b>Country:</b> {addressCard?.country}
+              <b>Country:</b> {addressCard?.country === 'US' ? 'USA' : 'Canada'}
             </p>
           </div>
           {statusDefaultAddress()}
@@ -233,7 +235,6 @@ function ProfilePage(): JSX.Element {
         <div className={style.profile_address_bottom}>
           <ButtonForm
             onClick={(): void => {
-              console.log('dfed');
               updateCustomer(
                 refreshToken ? refreshToken : '',
                 deleteAddressData

@@ -48,7 +48,11 @@ const profileReducer = createSlice({
       shippingAddressesId: [],
       billingAddressesId: [],
     },
-    bio: {},
+    bio: {
+      firstname: '',
+      lastname: '',
+      birthday: '',
+    },
     email: {},
     passwoord: {},
     version: 1,
