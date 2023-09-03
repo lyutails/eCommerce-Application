@@ -4,7 +4,7 @@ import style from './_card.module.scss';
 function Card(props: CategoryCardProps): JSX.Element {
   return (
     <div className={style.card_wrapper}>
-      <button className={style.card_to_cart}>to Cart</button>
+      {/* <button className={style.card_to_cart}>to Cart</button> */}
       <h2 className={style.card_name} id={props.keyCard}>
         <span>{props.sku}</span>
       </h2>

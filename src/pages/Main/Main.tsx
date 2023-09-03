@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { getProducts } from '../../api/getProducts';
 
 export const mainPageOffersSlides = [
   'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day.',

@@ -38,15 +38,21 @@
   }
 
   &_filters_color {
-    width: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    aspect-ratio: 1 / 0.2;
+    width: 12vw;
     margin-bottom: 20px;
   }
 
   &_filters_red {
-    display: block;
+    display: inline-block;
 
     aspect-ratio: 1 / 1;
-    width: 100%;
+    width: 3vw;
 
     background-color: red;
     border: 1px solid $glow-green;
@@ -58,10 +64,10 @@
   }
 
   &_filters_black {
-    display: block;
+    display: inline-block;
 
     aspect-ratio: 1 / 1;
-    width: 100%;
+    width: 3vw;
 
     background-color: black;
     border: 1px solid $glow-green;
@@ -73,10 +79,10 @@
   }
 
   &_filters_white {
-    display: block;
+    display: inline-block;
 
     aspect-ratio: 1 / 1;
-    width: 100%;
+    width: 3vw;
 
     background-color: white;
     border: 1px solid $glow-green;
@@ -115,11 +121,13 @@
     flex-direction: row;
     row-gap: 50px;
 
+    // justify-content: space-between;
+
     width: 100%;
   }
 
   &_card {
-    width: 24%;
+    width: 25%;
   }
 
   &_pagination_buttons {
@@ -133,6 +141,10 @@
   }
 
   &_pagination_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     aspect-ratio: 1 / 1;
     width: 15%;
 
@@ -146,6 +158,54 @@
     &:hover {
       cursor: pointer;
     }
+
+    &.beginning {
+      transform: rotate(180deg);
+
+      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 80% 80%;
+    }
+
+    &.ending {
+      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 80% 80%;
+    }
+
+    &.previous {
+      transform: rotate(180deg);
+
+      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 80% 80%;
+    }
+
+    &.next {
+      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 80% 80%;
+    }
+  }
+
+  &_pagination_number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 15%;
+
+    font-size: 2.5rem;
+    color: $font-color-primary-one;
+
+    background-color: transparent;
+    border: 2px solid $glow-green;
+    border-radius: 50%;
   }
 
   &_filters_size {
@@ -190,11 +250,11 @@
     resize: both;
 
     aspect-ratio: 1 / 0.36;
-    width: 15vw;
-    padding-left: 2vw;
+    width: 20vw;
+    padding-left: 2.5vw;
 
     font-family: Cyberpunk, cursive;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: $glow-green;
 
     background-color: transparent;
@@ -202,21 +262,6 @@
     background-repeat: no-repeat;
     border: none;
     outline: none;
-
-    &::placeholder {
-      font-family: Cyberpunk, cursive;
-      font-size: 2rem;
-      color: $glow-green;
-    }
-
-    &:focus::placeholder {
-      color: transparent;
-    }
-
-    &:focus {
-      color: $glow-green;
-      outline: none;
-    }
   }
 
   &_search_input_price {
@@ -311,10 +356,6 @@
   }
 }
 
-input#price-sort[type='checkbox'] {
-  display: none;
-}
-
 .pricesort_wrapper {
   position: relative;
 
@@ -381,7 +422,7 @@ input#price-sort[type='checkbox'] {
   // box-shadow: 0 0 35px $glow-green;
 }
 
-#price-sort {
+input#price-sort {
   display: none;
 }
 
@@ -391,29 +432,67 @@ input#price-sort[type='checkbox'] {
   align-items: center;
   justify-content: space-between;
 
-  height: 50px;
+  height: 100px;
   margin-bottom: 30px;
 }
 
 .breadcrumbs {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
 
   width: 50vw;
 
   font-family: Cyberpunk, cursive;
-  font-size: 2rem;
-  color: $glow-green;
+  font-size: 5rem;
+  color: $font-color-title;
 }
 
 .breadcrumbs_symbol {
   display: inline-block;
 
-  aspect-ratio: 1 / 0.4;
-  width: 3vw;
-  margin-right: 10px;
+  aspect-ratio: 1 / 0.5;
+  width: 5vw;
 
   background-image: url('../../../public/ui-kit/breadcrumbs_arrow_purple_green.svg');
   background-repeat: no-repeat;
+}
+
+.category_search_input::placeholder {
+  font-family: Cyberpunk, cursive;
+  font-size: 2.5rem;
+  color: $glow-green;
+
+  opacity: 1;
+
+  animation-name: search-anim;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.category_search_input:focus::placeholder {
+  color: transparent;
+}
+
+.category_search_input:focus {
+  color: $glow-green;
+  outline: none;
+}
+
+@keyframes search-anim {
+  0% {
+    color: transparent;
+    opacity: 0.1;
+  }
+
+  50% {
+    color: $glow-green;
+    opacity: 1;
+  }
+
+  100% {
+    color: transparent;
+    opacity: 0.1;
+  }
 }

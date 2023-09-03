@@ -18,7 +18,8 @@ export async function filterByAttributes(
   fuzzylevel: number,
   priceRangeStart: string,
   priceRangeFinish: string,
-  limit: number
+  limit: number,
+  offset: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -31,7 +32,7 @@ export async function filterByAttributes(
           'text.en-us': `${search}`,
           fuzzy: true,
           fuzzyLevel: Number(`${fuzzylevel}`),
-          offset: 8 * 0,
+          offset: Number(`${limit}`) * Number(`${offset}`),
           // priceCurrency: 'USD',
           // filter: 'variants.scopedPriceDiscounted:true',
           // filter: [`variants.scopedPriceDiscounted:"true"`],

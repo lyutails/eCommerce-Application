@@ -25,14 +25,14 @@ export enum ParhRoute {
 }
 
 export enum SubCategories {
-  Mouses = 'Mouses',
+  Mouses = 'Mice',
   MousePads = 'Mouse Pads',
   TShirts = 'T-Shirts',
   Hoodies = 'Hoodies',
-  Caps = 'Cap',
+  Caps = 'Caps',
   Mugs = 'Mugs',
-  Notepads = 'Notepad',
-  Stickers = 'Sticker Pack',
+  Notepads = 'Notepads',
+  Stickers = 'Sticker Packs',
 }
 
 export enum Colours {

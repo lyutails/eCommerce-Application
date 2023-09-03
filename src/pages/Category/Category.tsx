@@ -18,9 +18,6 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
-  const urlQuery = query ? query : '';
-  const queryURLArray = urlQuery.split(';');
-  const breadcrumbsSymbol = `${'> '}`;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
   const productsForSearchSouvenirs = 'Mug Notepad';
@@ -42,6 +39,8 @@ function CategoryPage(): JSX.Element {
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentOffset, setCurrentOffset] = useState(0);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -167,11 +166,9 @@ function CategoryPage(): JSX.Element {
         const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
         const querySale = `"true", "false"`;
         const queryStringAllBrands = `"RSSchool", "Logitech"`;
-        const queryStringPriceASC = `price asc`;
         const queryStringPriceDESC = `price desc`;
         const queryStringPriceRangeStart = `0`;
         const queryStringPriceRangeFinish = `*`;
-        const querySearch = productsForSearchClothes;
         let fuzzylevel = 0;
         const queryLimit = 8;
 
@@ -219,7 +216,8 @@ function CategoryPage(): JSX.Element {
           fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
-          queryLimit
+          queryLimit,
+          currentOffset
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -236,6 +234,7 @@ function CategoryPage(): JSX.Element {
     productsForSearchSouvenirs,
     productsForSearchStickers,
     searchValue,
+    currentOffset,
   ]);
 
   const createQueryColourString = useCallback((): string => {
@@ -317,12 +316,11 @@ function CategoryPage(): JSX.Element {
     if (count) {
       const queryStringPriceASC = `price asc`;
       const queryStringPriceDESC = `price desc`;
-      const querySearch = '';
 
-      let queryStringPriceSort = `price desc`;
+      let queryStringPriceSort = queryStringPriceDESC;
       priceSort === true
-        ? (queryStringPriceSort = `price asc`)
-        : (queryStringPriceSort = `price desc`);
+        ? (queryStringPriceSort = queryStringPriceASC)
+        : (queryStringPriceSort = queryStringPriceDESC);
 
       let querySubtreesString = createQuerySubtreeString();
       const subtrees = `subtree("${idCategory}")`;
@@ -399,6 +397,9 @@ function CategoryPage(): JSX.Element {
 
       const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
+      const urlQuery = query ? query : '';
+      const queryURLArray = urlQuery.split(';');
+
       // navigate(queryURL);
 
       filterByAttributes(
@@ -413,7 +414,8 @@ function CategoryPage(): JSX.Element {
         fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
-        queryLimit
+        queryLimit,
+        currentOffset
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -422,11 +424,9 @@ function CategoryPage(): JSX.Element {
             querySizesString === queryStringAllSizes ||
             querySizesString === '"no"'
           ) {
-            console.log(querySizesString);
             master = parentCategory.map((item) => item.masterVariant);
             setAllCards(master);
           } else {
-            console.log('deti');
             parentCategory.forEach((item) => master.push(...item.variants));
             const sortedVariantsArray: ProductVariant[][] = [];
             allSizes.forEach((data) => {
@@ -438,7 +438,6 @@ function CategoryPage(): JSX.Element {
                   return variant;
                 }
               });
-              console.log(master, allSizes);
               sortedVariantsArray.push(sortedVariant);
             });
             const filteredVariantsPrices = sortedVariantsArray.flat();
@@ -466,8 +465,16 @@ function CategoryPage(): JSX.Element {
                 }
               );
             }
-            const pageVariants = filteredVariantsPrices.slice(0, 8);
-            setAllCards(pageVariants);
+            if (currentOffset === 0) {
+              const pageVariants = filteredVariantsPrices.slice(0, 8);
+              setAllCards(pageVariants);
+            }
+            if (currentOffset === 1) {
+              const pageVariants = filteredVariantsPrices.slice(8, 16);
+              setAllCards(pageVariants);
+            }
+            // setAllCards(pageVariants);
+            // console.log(pageVariants);
           }
         })
         .catch(() => {
@@ -493,9 +500,22 @@ function CategoryPage(): JSX.Element {
     searchPriceFinish,
     searchPriceStart,
     searchValue,
+    currentOffset,
   ]);
 
-  function onChangePriceSort(): void {}
+  function onChangeFirst(): void {
+    // setBestseller(!bestseller);
+  }
+
+  function onChangeLast(): void {
+    // setBestseller(!bestseller);
+  }
+
+  // function onChangeNextPageOffset(): number {
+  //   setCurrentOffset(currentOffset + 1);
+  //   currentOffset;
+  //   return currentOffset;
+  // }
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
@@ -650,9 +670,7 @@ function CategoryPage(): JSX.Element {
       <div className={style.category_wrapper}>
         <div className={style.breadcrumbs_search}>
           <div className={style.breadcrumbs}>
-            <span className={style.breadcrumbs_symbol}>
-              {breadcrumbsSymbol}
-            </span>
+            <span className={style.breadcrumbs_symbol}></span>
             {category}
           </div>
           <div className={style.category_filters_search}>
@@ -669,7 +687,7 @@ function CategoryPage(): JSX.Element {
           </div>
         </div>
         <div className={style.category_filters_cards_wrapper}>
-          <h2 className={style.category_title}>{category}</h2>
+          {/* <h2 className={style.category_title}>{category}</h2> */}
           <div className={style.category_filters}>
             <div className={style.category_categories}>
               {subtree.map((subCategory) => {
@@ -907,11 +925,40 @@ function CategoryPage(): JSX.Element {
               })}
             </div>
             <div className={style.category_pagination_buttons}>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}>1</button>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}></button>
+              <button
+                className={`${style.category_pagination_button} ${style.beginning}`}
+                onClick={(): void => {
+                  setCurrentPage(1);
+                  setCurrentOffset(0);
+                }}
+              ></button>
+              <button
+                className={`${style.category_pagination_button} ${style.previous}`}
+                onClick={(): void => {
+                  currentPage > 1
+                    ? setCurrentPage(currentPage - 1)
+                    : setCurrentPage(1);
+                  currentOffset > 0
+                    ? setCurrentOffset(currentOffset - 1)
+                    : setCurrentOffset(0);
+                }}
+              ></button>
+              <div
+                className={`${style.category_pagination_number} ${style.current}`}
+              >
+                {currentPage}
+              </div>
+              <button
+                className={`${style.category_pagination_button} ${style.next}`}
+                onClick={(): void => {
+                  setCurrentPage(currentPage + 1);
+                  setCurrentOffset(currentOffset + 1);
+                  console.log(currentOffset, 'offset');
+                }}
+              ></button>
+              <button
+                className={`${style.category_pagination_button} ${style.ending}`}
+              ></button>
             </div>
           </div>
         </div>
