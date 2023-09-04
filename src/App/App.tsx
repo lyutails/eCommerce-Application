@@ -1,6 +1,6 @@
 import style from './_app.module.scss';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
 import RegistrationPage from '../pages/Registration/Registration';
 import NotFoundPage from '../pages/NotFound/NotFound';
@@ -15,6 +15,11 @@ import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { ParhRoute } from '../types/enums';
+import { useEffect } from 'react';
+import {
+  createCustomerId,
+  setRefreshTokenStatus,
+} from '../store/reducers/userReducer';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);

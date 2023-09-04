@@ -1,6 +1,5 @@
-import { BaseAddress } from '@commercetools/platform-sdk';
+import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
-import { IMaskMixinProps, ReactMaskOpts } from 'react-imask';
 
 export interface ICustomerFields {
   email: string;
@@ -66,11 +65,15 @@ export interface IInputProps {
 export interface IInputPropsPassword {
   placeholder: string;
   passwordError: boolean;
-  setPasswordField: React.Dispatch<React.SetStateAction<string>>;
-  passwordField?: string;
+  setPasswordField?: React.Dispatch<React.SetStateAction<string>>;
+  passwordField: string;
   clueColor: string;
   clueError: string;
   tooltipColor?: string;
+  setPasswordCheck?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setCheckmarkPassword?: React.Dispatch<React.SetStateAction<boolean>>;
+  checkmarkPassword?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IInputPropsMask {
@@ -87,8 +90,7 @@ export interface IInputPropsMask {
   tooltip?: ReactNode;
   value?: string;
   max?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onInput?: any;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IButtonFields {
@@ -107,6 +109,52 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
+    refreshToken: string;
+  };
+}
+
+interface IAddressInput {
+  value: string;
+  error: string;
+  isChecked: boolean;
+}
+
+export interface IProfileState {
+  profile: {
+    address: {
+      street: IAddressInput;
+      building: IAddressInput;
+      apartment: IAddressInput;
+      city: IAddressInput;
+      country: IAddressInput;
+      postal: IAddressInput;
+      defaultShipping: boolean;
+      defaultBilling: boolean;
+      shippingAddress: boolean;
+      billingAddress: boolean;
+      isUpdate: boolean;
+      isAdd: boolean;
+      idAddress: string;
+      addressStore: AddressDraft[];
+      defaultShippingId: string;
+      defaultBillingId: string;
+      shippingAddressesId: string[];
+      billingAddressesId: string[];
+    };
+    bio: {
+      firstname: IAddressInput;
+      lastname: IAddressInput;
+      birthday: IAddressInput;
+    };
+    email: IAddressInput;
+    password: {
+      [key: string]: {
+        value: string;
+        error: boolean;
+        isChecked: boolean;
+      };
+    };
+    version: number;
   };
 }
 
@@ -116,6 +164,7 @@ export interface IPersonalState {
     addresses: boolean;
   };
 }
+
 export interface ICategoryState {
   category: string[];
 }

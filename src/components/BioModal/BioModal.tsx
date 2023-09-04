@@ -3,44 +3,100 @@ import style from '../BioModal/_bioModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import Input from '../Input/Input';
-import { inputHandler } from '../../pages/verification';
+import {
+  handleBirthdayInputTwo,
+  handleFirstnameInputTwo,
+  handleLastnameInputTwo,
+} from '../../pages/verification';
 import InputBirthDateMask from '../Input/InputBirthDateMask';
-import { updateBio } from './bio-update';
+import { handleUpdateBio, IMyCustomerBioUpdate } from './bio-modal-verify';
+import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
+import { parseDateToServer, parseDateToWeb } from '../../utils/parseDate';
+import { useDispatch, useSelector } from 'react-redux';
+import { IProfileState } from '../../types/interfaces';
+import { changeBio } from '../../store/reducers/profileReducer';
 
 export interface IBioModalProps {
   modalClass: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
-  firstnameField: string;
-  lastnameField: string;
-  birthdayField: string;
-  version: number;
   token?: string;
+  setClickedBioUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IBioUpdateData {
+  firstnameError: boolean;
+  lastnameError: boolean;
+  birthdayError: boolean;
+  token: string;
 }
 
 function BioModal(props: IBioModalProps): JSX.Element {
-  const [firstname, setFistname] = useState('');
-  const [fistnameError, setFirstnameError] = useState(false);
-  const [lastname, setLastname] = useState('');
-  const [lastnameError, setLastnameError] = useState(false);
-  const [birthday, setBirthday] = useState('');
-  const [birthdayError, setBirthdayError] = useState(false);
+  const dispatch = useDispatch();
+  const { version, bio } = useSelector((state: IProfileState) => state.profile);
+  const [token, setToken] = useState('');
 
-  const customerData = {
-    version: props.version,
+  useEffect(() => {
+    setToken(props.token ? props.token : '');
+  }, [props.token]);
+
+  const customerUpdateData: IMyCustomerBioUpdate = {
+    version: version,
     actions: [
       {
         action: 'setFirstName',
-        firstName: 'hsjdvcdfvsdf',
+        firstName: bio.firstname.value,
       },
       {
         action: 'setLastName',
-        lastName: 'sdhjcvsladhjcv',
+        lastName: bio.lastname.value,
+      },
+      {
+        action: 'setDateOfBirth',
+        dateOfBirth: parseDateToServer(bio.birthday.value),
       },
     ],
   };
-  useEffect(() => {
-    setBirthday(props.birthdayField);
-  }, [props.birthdayField]);
+  const setInputAction = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: string,
+    checkErrorInput: (streetShipField: string) => string
+  ): void => {
+    const errorMessage = checkErrorInput(event.target.value);
+    dispatch(
+      changeBio({
+        [fieldName]: {
+          value: event.target.value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
+      })
+    );
+  };
+
+  const setInputBirthdayAction = (
+    value: string,
+    fieldName: string,
+    checkErrorInput: (streetShipField: string) => string
+  ): void => {
+    const errorMessage = checkErrorInput(value);
+    dispatch(
+      changeBio({
+        [fieldName]: {
+          value: value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
+      })
+    );
+  };
+  const updateBioData: IBioUpdateData = {
+    firstnameError: !bio.firstname.error,
+    lastnameError: !bio.lastname.error,
+    birthdayError: !bio.birthday.error,
+    token: token,
+  };
+
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -49,102 +105,117 @@ function BioModal(props: IBioModalProps): JSX.Element {
       <div className={style.modal_bio}>
         <h4 className={style.modal_title}>Firstname</h4>
         <Input
-          value={props.firstnameField}
-          onChange={(e): void => inputHandler(e, setFistname)}
+          value={bio.firstname.value}
+          onChange={(e): void =>
+            setInputAction(e, 'firstname', handleFirstnameInputTwo)
+          }
           type="text"
-          //   clue={fistnameError ? fistnameError : 'This is required field'}
+          clue={
+            bio.firstname.error ? bio.firstname.error : 'This is required field'
+          }
           placeholder="First name *"
           classWrapper={style.firstname}
           classClue={
-            fistnameError
+            bio.firstname.error
               ? `${style.completed} ${style.error}`
               : style.uncompleted
           }
           classInput={style.firstname_input}
-          //   childrenBefore={
-          //     <div
-          //       className={
-          //         checkmarkFirstname
-          //           ? `${style.wrapper_img} ${style.completed}`
-          //           : `${style.wrapper_img} ${style.uncompleted}`
-          //       }
-          //     >
-          //       <img
-          //         className={style.wrapper_img_icon}
-          //         src={iconCheckmark}
-          //         alt="Icon"
-          //       />
-          //     </div>
-          //   }
+          childrenBefore={
+            <div
+              className={
+                bio.firstname.isChecked
+                  ? `${style.wrapper_img} ${style.completed}`
+                  : `${style.wrapper_img} ${style.uncompleted}`
+              }
+            >
+              <img
+                className={style.wrapper_img_icon}
+                src={iconCheckmark}
+                alt="Icon"
+              />
+            </div>
+          }
         />
         <h4 className={style.modal_title}>Lastname</h4>
         <Input
-          value={props.lastnameField}
-          onChange={(e): void => inputHandler(e, setLastname)}
+          value={bio.lastname.value}
+          onChange={(e): void =>
+            setInputAction(e, 'lastname', handleLastnameInputTwo)
+          }
           type="text"
-          //   clue={lastnameError ? lastnameError : 'This is required field'}
+          clue={
+            bio.lastname.error ? bio.lastname.error : 'This is required field'
+          }
           placeholder="Last name *"
           classWrapper={style.lastname}
           classClue={
-            lastnameError
+            bio.lastname.error
               ? `${style.completed} ${style.error}`
               : style.uncompleted
           }
           classInput={style.lastname_input}
-          //   childrenBefore={
-          //     <div
-          //       className={
-          //         checkmarkLastname
-          //           ? `${style.wrapper_img} ${style.completed}`
-          //           : `${style.wrapper_img} ${style.uncompleted}`
-          //       }
-          //     >
-          //       <img
-          //         className={style.wrapper_img_icon}
-          //         src={iconCheckmark}
-          //         alt="Icon"
-          //       />
-          //     </div>
-          //   }
+          childrenBefore={
+            <div
+              className={
+                bio.lastname.isChecked
+                  ? `${style.wrapper_img} ${style.completed}`
+                  : `${style.wrapper_img} ${style.uncompleted}`
+              }
+            >
+              <img
+                className={style.wrapper_img_icon}
+                src={iconCheckmark}
+                alt="Icon"
+              />
+            </div>
+          }
         />
         <h4 className={style.modal_title}>Date of birth</h4>
         <InputBirthDateMask
-          value={birthday}
-          onAccept={(value: string): void => setBirthday(value)}
-          // clue={
-          //   birthdayError
-          //     ? birthdayError
-          //     : `Enter Date of birth in format DD.MM.YYYY. Your age should be equal or more than 13 to register`
-          // }
+          value={bio.birthday.value}
+          onAccept={(value: string): void => {
+            setInputBirthdayAction(value, 'birthday', handleBirthdayInputTwo);
+          }}
+          clue={
+            bio.birthday.error
+              ? bio.birthday.error
+              : `Enter Date of birth in format DD.MM.YYYY. Your age should be equal or more than 13 to register`
+          }
           type="text"
           placeholder="dd.mm.yyyy *"
           classWrapper={style.birth}
           classClue={
-            birthdayError
+            bio.birthday.error
               ? `${style.completed} ${style.error}`
               : style.uncompleted
           }
           classInput={style.birth_input}
-          // childrenBefore={
-          //   <div
-          //     className={
-          //       checkmarkBirthday
-          //         ? `${style.wrapper_img} ${style.completed}`
-          //         : `${style.wrapper_img} ${style.uncompleted}`
-          //     }
-          //   >
-          //     <img
-          //       className={style.wrapper_img_icon}
-          //       src={iconCheckmark}
-          //       alt="Icon"
-          //     />
-          //   </div>
-          // }
+          childrenBefore={
+            <div
+              className={
+                bio.birthday.isChecked
+                  ? `${style.wrapper_img} ${style.completed}`
+                  : `${style.wrapper_img} ${style.uncompleted}`
+              }
+            >
+              <img
+                className={style.wrapper_img_icon}
+                src={iconCheckmark}
+                alt="Icon"
+              />
+            </div>
+          }
         />
       </div>
       <ButtonForm
         onClick={(): void =>
-          updateBio(props.token ? props.token : '', customerData)
+          handleUpdateBio(
+            updateBioData,
+            customerUpdateData,
+            props.setClickedBioUpdate,
+            props.setShowModal
+          )
         }
         classNames={style.modal_button}
       >

@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   createCustomerId,
   setAuthStatus,
 } from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
-import { IPersonalState, IRootState } from '../../types/interfaces';
+import {
+  IPersonalState,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
-import { useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import UpdateIcon from '../../../public/assets/icons/update.svg';
@@ -19,24 +23,41 @@ import {
   changeStatusAddress,
   changeStatusPersonal,
 } from '../../store/reducers/personalReducer';
-import { parseDate } from '../../utils/parseDate';
-import { AddressDraft } from '@commercetools/platform-sdk';
+import { AddressDraft, Customer } from '@commercetools/platform-sdk';
+import TrashIcon from '../../../public/assets/icons/trash.svg';
+import AddressModal from '../../components/AddressModal/AddressModal';
+import {
+  changeAddress,
+  changeBio,
+  changeEmail,
+  changeVersion,
+} from '../../store/reducers/profileReducer';
+import { updateCustomer } from '../../api/updateBio';
+import { parseDateToWeb } from '../../utils/parseDate';
 
-interface IPersonalData {
+export interface IPersonalData {
   [key: string]: string | undefined;
+}
+
+export interface IAddressesCardData {
+  addressInfo: AddressDraft;
+  statusAddress: {
+    [key: string]: boolean;
+  };
 }
 
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [version, setVersion] = useState(1);
-  const [addressShip, setAddressShip] = useState<AddressDraft | null>(null);
-  const [addressBill, setAddressBill] = useState<AddressDraft | null>(null);
-  const [personal, setPersonal] = useState<IPersonalData | null>(null);
   const [clickedBioUpdate, setClickedBioUpdate] = useState(false);
   const [clickedEmailUpdate, setClickedEmailUpdate] = useState(false);
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
+  const { address, version, bio, email } = useSelector(
+    (state: IProfileState) => state.profile
+  );
+  const [password, setPassword] = useState('');
 
   const clickedPersonal = useSelector(
     (state: IPersonalState) => state.personal.information
@@ -44,60 +65,266 @@ function ProfilePage(): JSX.Element {
   const clickedAddress = useSelector(
     (state: IPersonalState) => state.personal.addresses
   );
-  const customerId = useSelector((state: IRootState) => state.user.customerId);
-  const localId = localStorage.getItem('customerId');
-  const refreshToken = localStorage.getItem('refreshToken');
 
-  const handleLogOut = (): void => {
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('isAuth');
+  const { customerId, refreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+
+  const checkRefreshToken = useCallback((): void => {
+    console.log('qwerty');
     dispatch(setAuthStatus(false));
-    navigate('/');
-  };
+    navigate('/login');
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('isAuth');
+  }, [dispatch, navigate]);
 
   useEffect(() => {
-    const checkRefreshToken = (): void => {
-      dispatch(setAuthStatus(false));
-      navigate('/login');
-      localStorage.removeItem('customerId');
-      localStorage.removeItem('isAuth');
-    };
     if (!refreshToken) {
       checkRefreshToken();
     } else {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            setPersonal({
-              firstname: response.body.firstName,
-              lastname: response.body.lastName,
-              birthday: response.body.dateOfBirth
-                ? parseDate(response.body.dateOfBirth)
-                : '',
-              email: response.body.email,
-              password: response.body.password,
-            });
-            // response.body.firstName && setFirstname(response.body.firstName);
-            // response.body.lastName && setLastname(response.body.lastName);
-            // response.body.dateOfBirth &&
-            //   setBirthday(parseDate(response.body.dateOfBirth));
-            // response.body.email && setEmail(response.body.email);
-            // response.body.password && setPassword(response.body.password);
-            response.body.version && setVersion(response.body.version);
-            setAddressShip(response.body.addresses[0]);
-            if (response.body.addresses[1]) {
-              setAddressBill(response.body.addresses[1]);
-            }
+            // setResponseData(response.body);
+            setPassword(response.body.password ? response.body.password : '');
+            dispatch(changeVersion(response.body.version));
+            dispatch(
+              changeBio({
+                firstname: {
+                  value: response.body.firstName,
+                },
+                lastname: {
+                  value: response.body.lastName,
+                },
+                birthday: {
+                  value: parseDateToWeb(
+                    response.body.dateOfBirth ? response.body.dateOfBirth : ''
+                  ),
+                },
+              })
+            );
+            dispatch(changeEmail({ value: response.body.email }));
+            dispatch(
+              changeAddress({
+                addressStore: response.body.addresses,
+                defaultShippingId: response.body.defaultShippingAddressId,
+                defaultBillingId: response.body.defaultBillingAddressId,
+                shippingAddressesId: response.body.shippingAddressIds,
+                billingAddressesId: response.body.billingAddressIds,
+              })
+            );
           });
         })
         .catch(() => {
+          console.log(789);
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
     }
-  }, [customerId, dispatch, navigate, refreshToken]);
-  dispatch(createCustomerId(localId));
+  }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
+
+  const handleLogOut = (): void => {
+    console.log(147);
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('isAuth');
+    dispatch(setAuthStatus(false));
+    navigate('/');
+  };
+  // console.log(responseData);
+  // dispatch(changeVersion(responseData?.version));
+  // dispatch(
+  //   changeBio({
+  //     firstname: {
+  //       value: responseData?.firstName,
+  //     },
+  //     lastname: {
+  //       value: responseData?.lastName,
+  //     },
+  //     birthday: {
+  //       value: responseData?.dateOfBirth,
+  //     },
+  //   })
+  // );
+  // dispatch(changeEmail({ value: responseData?.email }));
+  // dispatch(
+  //   changeAddress({
+  //     addressStore: responseData?.addresses,
+  //     defaultShippingId: responseData?.defaultShippingAddressId,
+  //     defaultBillingId: responseData?.defaultBillingAddressId,
+  //     shippingAddressesId: responseData?.shippingAddressIds,
+  //     billingAddressesId: responseData?.billingAddressIds,
+  //   })
+  // );
+  const addressCard = address.addressStore.map((addressCard, i) => {
+    const statusShipAddress = (): string => {
+      let field = '';
+      if (address.shippingAddressesId.includes(addressCard.id as string)) {
+        field = 'Shipping address';
+        if (address.billingAddressesId.includes(addressCard.id as string)) {
+          field = 'Shipping and Billing address';
+        }
+      } else if (
+        address.billingAddressesId.includes(addressCard.id as string)
+      ) {
+        field = 'Billing address';
+        if (address.shippingAddressesId.includes(addressCard.id as string)) {
+          field = 'Shipping and Billing address';
+        }
+      }
+      return field;
+    };
+    const statusDefaultAddress = (): ReactNode => {
+      if (
+        address.defaultShippingId === (addressCard.id as string) ||
+        address.defaultBillingId === (addressCard.id as string)
+      ) {
+        return (
+          <div className={style.profile_address_default}>
+            <p
+              className={
+                address.defaultShippingId === (addressCard.id as string)
+                  ? `${style.profile_address_default_ship} ${style.visible}`
+                  : `${style.profile_address_default_ship} ${style.hidden}`
+              }
+            >
+              Default shipping address
+            </p>
+            <p
+              className={
+                address.defaultBillingId === (addressCard.id as string)
+                  ? `${style.profile_address_default_bill} ${style.visible}`
+                  : `${style.profile_address_default_bill} ${style.hidden}`
+              }
+            >
+              Default billing address
+            </p>
+          </div>
+        );
+      }
+    };
+
+    const deleteAddressData = {
+      version: version,
+      actions: [
+        {
+          action: 'removeAddress',
+          addressId: addressCard.id,
+        },
+      ],
+    };
+    return (
+      <div key={i} className={`${style.profile_address_card} card_${i}}`}>
+        <div className={style.profile_address_top}>
+          <span className={style.profile_address_type}>
+            {statusShipAddress()}
+          </span>
+          <h3
+            className={style.profile_address_name}
+          >{`${bio?.firstname.value} ${bio?.lastname.value}`}</h3>
+          <div className={style.profile_address_fields}>
+            <p className={style.profile_address_item}>
+              <b>Street:</b> {addressCard?.streetName}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Building:</b> {addressCard?.building}
+            </p>
+            {addressCard?.apartment && (
+              <p className={style.profile_address_item}>
+                <b>Apartment:</b> {addressCard?.apartment}
+              </p>
+            )}
+            <p className={style.profile_address_item}>
+              <b>City:</b> {addressCard?.city}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Postal:</b> {addressCard?.postalCode}
+            </p>
+            <p className={style.profile_address_item}>
+              <b>Country:</b> {addressCard?.country === 'US' ? 'USA' : 'Canada'}
+            </p>
+          </div>
+          {statusDefaultAddress()}
+        </div>
+        <div className={style.profile_address_bottom}>
+          <ButtonForm
+            onClick={(): void => {
+              updateCustomer(
+                refreshToken ? refreshToken : '',
+                deleteAddressData
+              ).then((response) => {
+                if (response) {
+                  dispatch(
+                    changeAddress({
+                      addressStore: response.body.addresses,
+                      defaultShippingId: response.body.defaultShippingAddressId,
+                      defaultBillingId: response.body.defaultBillingAddressId,
+                      shippingAddressesId: response.body.shippingAddressIds,
+                      billingAddressesId: response.body.billingAddressIds,
+                    })
+                  );
+                  dispatch(changeVersion(response.body.version));
+                }
+              });
+            }}
+            classNames={style.profile_address_delete}
+          >
+            <img src={TrashIcon} alt="Delete address" />
+          </ButtonForm>
+          <ButtonForm
+            onClick={(): void => {
+              dispatch(
+                changeAddress({
+                  street: {
+                    value: addressCard.streetName,
+                  },
+                  building: {
+                    value: addressCard.building,
+                  },
+                  apartment: {
+                    value: addressCard.apartment,
+                  },
+                  city: {
+                    value: addressCard.city,
+                  },
+                  postal: {
+                    value: addressCard.postalCode,
+                  },
+                  country: {
+                    value: addressCard.country,
+                  },
+                  defaultShipping:
+                    address.defaultShippingId === (addressCard.id as string),
+                  defaultBilling:
+                    address.defaultBillingId === (addressCard.id as string),
+                  shippingAddress: address.shippingAddressesId.includes(
+                    addressCard.id as string
+                  ),
+                  billingAddress: address.billingAddressesId.includes(
+                    addressCard.id as string
+                  ),
+                  isUpdate: true,
+                  isAdd: false,
+                  idAddress: addressCard.id,
+                })
+              );
+              setClickedAddressesUpdate(true);
+              setShowModal(true);
+            }}
+            classNames={`${style.profile_update} ${style.profile_address_update}`}
+          >
+            <img
+              className={style.profile_update_img}
+              src={UpdateIcon}
+              alt="Pencil update"
+            />
+            Update
+          </ButtonForm>
+        </div>
+      </div>
+    );
+  });
+  console.log(customerId, refreshToken, 123);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -108,8 +335,6 @@ function ProfilePage(): JSX.Element {
               localStorage.setItem('clickedAddress', 'false');
               dispatch(changeStatusPersonal(true));
               dispatch(changeStatusAddress(false));
-              // setClickedPersonal(true);
-              // setClickedAddress(false);
             }}
             classNames={style.profile_button}
           >
@@ -121,8 +346,6 @@ function ProfilePage(): JSX.Element {
               localStorage.setItem('clickedPersonal', 'false');
               dispatch(changeStatusPersonal(false));
               dispatch(changeStatusAddress(true));
-              // setClickedPersonal(false);
-              // setClickedAddress(true);
             }}
             classNames={style.profile_button}
           >
@@ -164,13 +387,13 @@ function ProfilePage(): JSX.Element {
                         Firstname
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.firstname : ''}
+                        {bio.firstname.value}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
                       <h4 className={style.profile_personal_title}>Lastname</h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.lastname : ''}
+                        {bio.lastname.value}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
@@ -178,7 +401,7 @@ function ProfilePage(): JSX.Element {
                         Date of birth
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {personal ? personal.birthday : ''}
+                        {bio.birthday.value}
                       </p>
                     </li>
                   </ul>
@@ -202,7 +425,7 @@ function ProfilePage(): JSX.Element {
                 <div className={style.profile_personal_text}>
                   <h4 className={style.profile_personal_title}>Your E-mail</h4>
                   <p className={style.profile_personal_describe}>
-                    {personal ? personal.email : ''}
+                    {email.value}
                   </p>
                 </div>
                 <ButtonForm
@@ -225,9 +448,7 @@ function ProfilePage(): JSX.Element {
                   <h4 className={style.profile_personal_title}>
                     Your password
                   </h4>
-                  <p className={style.profile_personal_describe}>
-                    {personal ? personal.password : ''}
-                  </p>
+                  <p className={style.profile_personal_describe}>{password}</p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -253,8 +474,38 @@ function ProfilePage(): JSX.Element {
                 : `${style.profile_address} ${style.hidden}`
             }
           >
-            <div className={style.profile_address_card}>
-              <div className={style.profile_address_add}>
+            <div className={style.profile_address_card_add}>
+              <button
+                onClick={(): void => {
+                  dispatch(
+                    changeAddress({
+                      street: {
+                        value: '',
+                      },
+                      building: {
+                        value: '',
+                      },
+                      apartment: {
+                        value: '',
+                      },
+                      city: {
+                        value: '',
+                      },
+                      postal: {
+                        value: '',
+                      },
+                      country: {
+                        value: '',
+                      },
+                      isUpdate: false,
+                      isAdd: true,
+                    })
+                  );
+                  setClickedAddressesUpdate(true);
+                  setShowModal(true);
+                }}
+                className={style.profile_address_add}
+              >
                 <img
                   className={style.profile_address_add_img}
                   src={PlusIcon}
@@ -263,62 +514,9 @@ function ProfilePage(): JSX.Element {
                 <p className={style.profile_address_add_title}>
                   Add new address
                 </p>
-              </div>
+              </button>
             </div>
-            <div className={style.profile_address_card}>
-              <div className={style.profile_address_add}>
-                <span>Shipping address</span>
-                <p>
-                  <b>Street:</b> {addressShip?.streetName}
-                </p>
-                <p>
-                  <b>Building:</b> {addressShip?.building}
-                </p>
-                {addressShip?.apartment && (
-                  <p>
-                    <b>Apartment:</b> {addressShip?.apartment}
-                  </p>
-                )}
-
-                <p>
-                  <b>City:</b> {addressShip?.city}
-                </p>
-                <p>
-                  <b>Postal:</b> {addressShip?.postalCode}
-                </p>
-                <p>
-                  <b>Country:</b> {addressShip?.country}
-                </p>
-              </div>
-            </div>
-            {addressBill && (
-              <div className={style.profile_address_card}>
-                <div className={style.profile_address_add}>
-                  <span>Shipping address</span>
-                  <p>
-                    <b>Street:</b> {addressBill?.streetName}
-                  </p>
-                  <p>
-                    <b>Building:</b> {addressBill?.building}
-                  </p>
-                  {addressBill?.apartment && (
-                    <p>
-                      <b>Apartment:</b> {addressBill?.apartment}
-                    </p>
-                  )}
-                  <p>
-                    <b>City:</b> {addressBill?.city}
-                  </p>
-                  <p>
-                    <b>Postal:</b> {addressBill?.postalCode}
-                  </p>
-                  addressBill
-                  <p>
-                    <b>Country:</b> {addressBill?.country}
-                  </p>
-                </div>
-              </div>
-            )}
+            {addressCard}
           </div>
         </div>
       </div>
@@ -331,22 +529,22 @@ function ProfilePage(): JSX.Element {
       >
         <BioModal
           token={refreshToken ? refreshToken : ''}
-          version={version}
-          firstnameField={personal?.firstname ?? ''}
-          lastnameField={personal?.lastname ?? ''}
-          birthdayField={personal?.birthday ?? ''}
           onClick={(): void => {
             setClickedBioUpdate(false);
             setShowModal(false);
           }}
           modalClass={clickedBioUpdate ? style.visible : style.hidden}
+          setClickedBioUpdate={setClickedBioUpdate}
+          setShowModal={setShowModal}
         />
         <EmailModal
-          emailField={personal?.email ?? ''}
           onClick={(): void => {
             setClickedEmailUpdate(false);
             setShowModal(false);
           }}
+          token={refreshToken ? refreshToken : ''}
+          setClickedEmailUpdate={setClickedEmailUpdate}
+          setShowModal={setShowModal}
           modalClass={clickedEmailUpdate ? style.visible : style.hidden}
         />
         <PasswordModal
@@ -354,7 +552,21 @@ function ProfilePage(): JSX.Element {
             setClickedPasswordUpdate(false);
             setShowModal(false);
           }}
+          setClickedPasswordUpdate={setClickedPasswordUpdate}
+          setShowModal={setShowModal}
+          token={refreshToken ? refreshToken : ''}
           modalClass={clickedPasswordUpdate ? style.visible : style.hidden}
+        />
+        <AddressModal
+          onClick={(): void => {
+            setShowModal(false);
+            setClickedAddressesUpdate(false);
+          }}
+          version={version}
+          modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
+          token={refreshToken ? refreshToken : ''}
+          setClickedAddressesUpdate={setClickedAddressesUpdate}
+          setShowModal={setShowModal}
         />
       </div>
     </div>
@@ -365,9 +577,10 @@ export default ProfilePage;
 /*   "email": "ianatestAPI@example.com",
   "firstName": "Лфенф",
   "lastName": "ывапаувас",
-  "password": "fshHJKL2365" */
+  "password": "23272327Ybv"
+  */
 
-// "email": 'hi@ya.ru';
+// "email": 'hi@ya.ruer';
 // "password": "2327Ybv!"
 
 // "yanatestprofile@mail.com"

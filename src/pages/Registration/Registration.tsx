@@ -12,7 +12,6 @@ import {
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
-// import { hideTooltip, showTooltip } from '../showTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
 import { IRootState } from '../../types/interfaces';
@@ -65,7 +64,6 @@ function RegistrationPage(): JSX.Element {
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
 
-  // const [passwordFocus, setPasswordFocus] = useState(false);
   const [successfulMessage, setSuccessfulMessage] = useState(false);
 
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
@@ -88,24 +86,6 @@ function RegistrationPage(): JSX.Element {
 
   const [checkedShipping, setCheckedShipping] = useState(false);
   const [checkedBilling, setCheckedBilling] = useState(false);
-  // const passwordErrorTexts = handlePasswordInput(password);
-  // const passwordErrorElements = Object.keys(passwordErrorTexts).map(
-  //   (key, i) => {
-  //     return (
-  //       <p
-  //         key={`tooltip_${i}`}
-  //         className={`${style.tooltip_text}${i} ${style.tooltip_text}`}
-  //       >
-  //         <img
-  //           className={style.tooltip_error}
-  //           src={passwordErrorTexts[key].isError ? iconError : iconCheckmark}
-  //           alt="Error icon"
-  //         />
-  //         {passwordErrorTexts[key].text}
-  //       </p>
-  //     );
-  //   }
-  // );
   const createModal = (): JSX.Element => {
     return (
       <div className={`${style.overlay}`}>
@@ -127,6 +107,24 @@ function RegistrationPage(): JSX.Element {
       }, 5300);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
+
+  function checkInputError(
+    passwordField: string,
+    setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
+  ): void {
+    const passwordErrors = handlePasswordInput(passwordField);
+    const error = Object.keys(passwordErrors).map((key): boolean => {
+      if (passwordErrors[key].isError === true) {
+        return true;
+      }
+      return false;
+    });
+    if (error.includes(true)) {
+      setCheckmarkPassword(false);
+    } else {
+      setCheckmarkPassword(true);
+    }
+  }
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -226,11 +224,14 @@ function RegistrationPage(): JSX.Element {
             }
           />
           <InputPassword
+            onChange={(e): void => {
+              inputHandler(e, setPassword);
+              checkInputError(e.target.value, setPasswordError);
+            }}
             clueError={style.password_error}
             clueColor={style.password_color}
             placeholder="Password *"
             passwordError={passwordError}
-            setPasswordField={setPassword}
             passwordField={password}
           />
           <InputBirthDateMask
