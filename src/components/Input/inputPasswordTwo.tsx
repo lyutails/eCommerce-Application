@@ -6,23 +6,36 @@ import iconEye from '../../../public/assets/icons/eye.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import iconEyeClose from '../../../public/assets/icons/eye-close.svg';
-import { IInputPropsPassword } from '../../types/interfaces';
+import { IInputPropsPassword, IProfileState } from '../../types/interfaces';
 import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { hideTooltip, showTooltip } from '../../pages/showTooltip';
+import { useSelector } from 'react-redux';
 
-function InputPassword(props: IInputPropsPassword): JSX.Element {
+function InputPasswordTwo(props: IInputPropsPassword): JSX.Element {
+  const { password } = useSelector((state: IProfileState) => state.profile);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordField, setPasswordField] = useState('');
   const [placeholder, setPlaceholder] = useState('');
   const [errorPassword, setErrorPassword] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
+  const [passwordCheckmark, setPasswordCheckmark] = useState(false);
 
-  const passwordErrorTexts = handlePasswordInput(passwordField);
+  const passwordErrorTexts = handlePasswordInput(
+    passwordField ? password[passwordField].value : ''
+  );
   useEffect(() => {
     setPasswordField(props.passwordField);
     setPlaceholder(props.placeholder);
     setErrorPassword(props.passwordError);
-  }, [props.passwordError, props.passwordField, props.placeholder]);
+    setPasswordCheckmark(
+      props.checkmarkPassword ? props.checkmarkPassword : false
+    );
+  }, [
+    props.checkmarkPassword,
+    props.passwordError,
+    props.passwordField,
+    props.placeholder,
+  ]);
 
   const passwordErrorElements = Object.keys(passwordErrorTexts).map(
     (key, i) => {
@@ -47,17 +60,15 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
         <div className={style.wrapper_img}>
           <img
             className={style.wrapper_img_icon}
-            src={errorPassword ? iconCheckmark : iconPassword}
+            src={passwordCheckmark ? iconCheckmark : iconPassword}
             alt="Icon"
           />
         </div>
         <input
           onBlur={(): void => {
             hideTooltip(setPasswordFocus);
-            // props.checkError;
           }}
           onFocus={(): void => showTooltip(setPasswordFocus)}
-          // onChange={(e): void => inputHandler(e, props.setPasswordField)}
           onChange={props.onChange}
           className={style.wrapper_input}
           type={passwordVisible ? 'text' : 'password'}
@@ -91,12 +102,12 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
         className={
           passwordFocus
             ? `${style.password_clue} ${style.unshown} ${props.clueColor}`
-            : props.passwordError
+            : errorPassword
             ? `${style.password_clue} ${style.shown} ${props.clueError}`
             : `${style.password_clue} ${props.clueColor}`
         }
       >
-        {props.passwordError
+        {errorPassword
           ? 'Please enter valid password'
           : 'Password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number'}
       </div>
@@ -104,4 +115,4 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
   );
 }
 
-export default InputPassword;
+export default InputPasswordTwo;

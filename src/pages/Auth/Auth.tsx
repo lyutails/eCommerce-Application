@@ -23,7 +23,6 @@ function AuthPage(): JSX.Element {
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
-  // const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
@@ -34,6 +33,24 @@ function AuthPage(): JSX.Element {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
+
+  function checkInputError(
+    passwordField: string,
+    setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
+  ): void {
+    const passwordErrors = handlePasswordInput(passwordField);
+    const error = Object.keys(passwordErrors).map((key): boolean => {
+      if (passwordErrors[key].isError === true) {
+        return true;
+      }
+      return false;
+    });
+    if (error.includes(true)) {
+      setCheckmarkPassword(false);
+    } else {
+      setCheckmarkPassword(true);
+    }
+  }
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
@@ -77,11 +94,14 @@ function AuthPage(): JSX.Element {
               }
             />
             <InputPassword
+              onChange={(e): void => {
+                inputHandler(e, setPassword);
+                checkInputError(e.target.value, setPasswordError);
+              }}
               clueError={style.password_error}
               clueColor={style.password_color}
               placeholder="Password *"
               passwordError={passwordError}
-              setPasswordField={setPassword}
               passwordField={password}
             />
             <ButtonForm

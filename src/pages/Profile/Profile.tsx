@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   createCustomerId,
   setAuthStatus,
@@ -11,7 +11,7 @@ import {
   IRootState,
 } from '../../types/interfaces';
 import { getCustomerById } from '../../api/getCustomer';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import UpdateIcon from '../../../public/assets/icons/update.svg';
@@ -23,26 +23,20 @@ import {
   changeStatusAddress,
   changeStatusPersonal,
 } from '../../store/reducers/personalReducer';
-import { parseDateToWeb } from '../../utils/parseDate';
-import { AddressDraft } from '@commercetools/platform-sdk';
+import { AddressDraft, Customer } from '@commercetools/platform-sdk';
 import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
-import { updatePassword } from '../../api/changePassword';
 import {
   changeAddress,
+  changeBio,
+  changeEmail,
   changeVersion,
 } from '../../store/reducers/profileReducer';
 import { updateCustomer } from '../../api/updateBio';
+import { parseDateToWeb } from '../../utils/parseDate';
 
 export interface IPersonalData {
   [key: string]: string | undefined;
-}
-
-interface IAddressesData {
-  shippingAddressIds: string[] | undefined;
-  billingAddressIds: string[] | undefined;
-  defaultBillingAddressId: string | undefined;
-  defaultShippingAddressId: string | undefined;
 }
 
 export interface IAddressesCardData {
@@ -52,27 +46,18 @@ export interface IAddressesCardData {
   };
 }
 
-interface IAddressesClickedData {
-  [key: string]: boolean;
-}
-
 function ProfilePage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [version, setVersion] = useState(1);
-  const [bio, setBio] = useState<IPersonalData | null>(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState<string | undefined>('');
   const [clickedBioUpdate, setClickedBioUpdate] = useState(false);
   const [clickedEmailUpdate, setClickedEmailUpdate] = useState(false);
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
-  const { address, version } = useSelector(
+  const { address, version, bio, email } = useSelector(
     (state: IProfileState) => state.profile
   );
-  // const [addressStore, setAddressStore] = useState<AddressDraft[] | []>([]);
-  const [addresses, setAddresses] = useState<IAddressesData | null>(null);
+  const [password, setPassword] = useState('');
 
   const clickedPersonal = useSelector(
     (state: IPersonalState) => state.personal.information
@@ -80,47 +65,45 @@ function ProfilePage(): JSX.Element {
   const clickedAddress = useSelector(
     (state: IPersonalState) => state.personal.addresses
   );
-  const customerId = useSelector((state: IRootState) => state.user.customerId);
-  const localId = localStorage.getItem('customerId');
-  const refreshToken = localStorage.getItem('refreshToken');
 
-  const handleLogOut = (): void => {
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('isAuth');
+  const { customerId, refreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+
+  const checkRefreshToken = useCallback((): void => {
+    console.log('qwerty');
     dispatch(setAuthStatus(false));
-    navigate('/');
-  };
+    navigate('/login');
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('isAuth');
+  }, [dispatch, navigate]);
 
   useEffect(() => {
-    const checkRefreshToken = (): void => {
-      dispatch(setAuthStatus(false));
-      navigate('/login');
-      localStorage.removeItem('customerId');
-      localStorage.removeItem('isAuth');
-    };
     if (!refreshToken) {
       checkRefreshToken();
     } else {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
+            // setResponseData(response.body);
+            setPassword(response.body.password ? response.body.password : '');
             dispatch(changeVersion(response.body.version));
-            setBio({
-              firstname: response.body.firstName,
-              lastname: response.body.lastName,
-              birthday: response.body.dateOfBirth
-                ? parseDateToWeb(response.body.dateOfBirth)
-                : '',
-            });
-            setEmail(response.body.email);
-            setPassword(response.body.password);
-            setAddresses({
-              shippingAddressIds: response.body.shippingAddressIds,
-              billingAddressIds: response.body.billingAddressIds,
-              defaultBillingAddressId: response.body.defaultBillingAddressId,
-              defaultShippingAddressId: response.body.defaultShippingAddressId,
-            });
+            dispatch(
+              changeBio({
+                firstname: {
+                  value: response.body.firstName,
+                },
+                lastname: {
+                  value: response.body.lastName,
+                },
+                birthday: {
+                  value: parseDateToWeb(
+                    response.body.dateOfBirth ? response.body.dateOfBirth : ''
+                  ),
+                },
+              })
+            );
+            dispatch(changeEmail({ value: response.body.email }));
             dispatch(
               changeAddress({
                 addressStore: response.body.addresses,
@@ -133,12 +116,46 @@ function ProfilePage(): JSX.Element {
           });
         })
         .catch(() => {
+          console.log(789);
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
     }
-  }, [customerId, dispatch, navigate, refreshToken]);
-  dispatch(createCustomerId(localId));
+  }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
+
+  const handleLogOut = (): void => {
+    console.log(147);
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('isAuth');
+    dispatch(setAuthStatus(false));
+    navigate('/');
+  };
+  // console.log(responseData);
+  // dispatch(changeVersion(responseData?.version));
+  // dispatch(
+  //   changeBio({
+  //     firstname: {
+  //       value: responseData?.firstName,
+  //     },
+  //     lastname: {
+  //       value: responseData?.lastName,
+  //     },
+  //     birthday: {
+  //       value: responseData?.dateOfBirth,
+  //     },
+  //   })
+  // );
+  // dispatch(changeEmail({ value: responseData?.email }));
+  // dispatch(
+  //   changeAddress({
+  //     addressStore: responseData?.addresses,
+  //     defaultShippingId: responseData?.defaultShippingAddressId,
+  //     defaultBillingId: responseData?.defaultBillingAddressId,
+  //     shippingAddressesId: responseData?.shippingAddressIds,
+  //     billingAddressesId: responseData?.billingAddressIds,
+  //   })
+  // );
   const addressCard = address.addressStore.map((addressCard, i) => {
     const statusShipAddress = (): string => {
       let field = '';
@@ -196,7 +213,6 @@ function ProfilePage(): JSX.Element {
         },
       ],
     };
-
     return (
       <div key={i} className={`${style.profile_address_card} card_${i}}`}>
         <div className={style.profile_address_top}>
@@ -205,7 +221,7 @@ function ProfilePage(): JSX.Element {
           </span>
           <h3
             className={style.profile_address_name}
-          >{`${bio?.firstname} ${bio?.lastname}`}</h3>
+          >{`${bio?.firstname.value} ${bio?.lastname.value}`}</h3>
           <div className={style.profile_address_fields}>
             <p className={style.profile_address_item}>
               <b>Street:</b> {addressCard?.streetName}
@@ -225,7 +241,7 @@ function ProfilePage(): JSX.Element {
               <b>Postal:</b> {addressCard?.postalCode}
             </p>
             <p className={style.profile_address_item}>
-              <b>Country:</b> {addressCard?.country}
+              <b>Country:</b> {addressCard?.country === 'US' ? 'USA' : 'Canada'}
             </p>
           </div>
           {statusDefaultAddress()}
@@ -233,7 +249,6 @@ function ProfilePage(): JSX.Element {
         <div className={style.profile_address_bottom}>
           <ButtonForm
             onClick={(): void => {
-              console.log('dfed');
               updateCustomer(
                 refreshToken ? refreshToken : '',
                 deleteAddressData
@@ -309,6 +324,7 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
+  console.log(customerId, refreshToken, 123);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -371,13 +387,13 @@ function ProfilePage(): JSX.Element {
                         Firstname
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {bio ? bio.firstname : ''}
+                        {bio.firstname.value}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
                       <h4 className={style.profile_personal_title}>Lastname</h4>
                       <p className={style.profile_personal_describe}>
-                        {bio ? bio.lastname : ''}
+                        {bio.lastname.value}
                       </p>
                     </li>
                     <li className={style.profile_personal_item}>
@@ -385,7 +401,7 @@ function ProfilePage(): JSX.Element {
                         Date of birth
                       </h4>
                       <p className={style.profile_personal_describe}>
-                        {bio ? bio.birthday : ''}
+                        {bio.birthday.value}
                       </p>
                     </li>
                   </ul>
@@ -408,7 +424,9 @@ function ProfilePage(): JSX.Element {
               <div className={style.profile_personal_mail}>
                 <div className={style.profile_personal_text}>
                   <h4 className={style.profile_personal_title}>Your E-mail</h4>
-                  <p className={style.profile_personal_describe}>{email}</p>
+                  <p className={style.profile_personal_describe}>
+                    {email.value}
+                  </p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
@@ -511,34 +529,25 @@ function ProfilePage(): JSX.Element {
       >
         <BioModal
           token={refreshToken ? refreshToken : ''}
-          version={version}
-          firstnameField={bio?.firstname ?? ''}
-          lastnameField={bio?.lastname ?? ''}
-          birthdayField={bio?.birthday ?? ''}
           onClick={(): void => {
             setClickedBioUpdate(false);
             setShowModal(false);
           }}
-          setPersonal={setBio}
           modalClass={clickedBioUpdate ? style.visible : style.hidden}
           setClickedBioUpdate={setClickedBioUpdate}
           setShowModal={setShowModal}
         />
         <EmailModal
-          version={version}
-          emailField={email}
           onClick={(): void => {
             setClickedEmailUpdate(false);
             setShowModal(false);
           }}
-          setPersonal={setEmail}
           token={refreshToken ? refreshToken : ''}
           setClickedEmailUpdate={setClickedEmailUpdate}
           setShowModal={setShowModal}
           modalClass={clickedEmailUpdate ? style.visible : style.hidden}
         />
         <PasswordModal
-          version={version}
           onClick={(): void => {
             setClickedPasswordUpdate(false);
             setShowModal(false);
@@ -555,7 +564,6 @@ function ProfilePage(): JSX.Element {
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
-          // addressData={addressCardData}
           token={refreshToken ? refreshToken : ''}
           setClickedAddressesUpdate={setClickedAddressesUpdate}
           setShowModal={setShowModal}
@@ -572,7 +580,7 @@ export default ProfilePage;
   "password": "23272327Ybv"
   */
 
-// "email": 'hi@ya.ru';
+// "email": 'hi@ya.ruer';
 // "password": "2327Ybv!"
 
 // "yanatestprofile@mail.com"

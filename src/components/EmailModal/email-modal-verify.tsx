@@ -6,13 +6,11 @@ export const handleUpdateEmail = (
   token: string,
   data: IMyCustomerEmailUpdate,
   setClickedEmailUpdate: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setPersonal: React.Dispatch<React.SetStateAction<string>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   if (emailCheck) {
     updateCustomer(token, data);
     setClickedEmailUpdate(false);
     setShowModal(false);
-    setPersonal(data.actions[0].email);
   }
 };

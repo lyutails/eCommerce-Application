@@ -6,6 +6,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { IPersonalData } from '../../pages/Profile/Profile';
 import { parseDateToWeb } from '../../utils/parseDate';
+import { IBioUpdateData } from './BioModal';
 
 export interface IMyCustomerBioUpdate {
   version: number;
@@ -17,23 +18,18 @@ export interface IMyCustomerBioUpdate {
 }
 
 export const handleUpdateBio = (
-  firstnameСheck: boolean,
-  lastnameСheck: boolean,
-  birthdayСheck: boolean,
-  token: string,
+  updateBioData: IBioUpdateData,
   data: IMyCustomerBioUpdate,
   setClickedBioUpdate: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setPersonal: React.Dispatch<React.SetStateAction<IPersonalData | null>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
-  if (firstnameСheck && lastnameСheck && birthdayСheck) {
-    updateCustomer(token, data);
+  if (
+    updateBioData.firstnameError &&
+    updateBioData.lastnameError &&
+    updateBioData.birthdayError
+  ) {
+    updateCustomer(updateBioData.token, data);
     setClickedBioUpdate(false);
     setShowModal(false);
-    setPersonal({
-      firstname: data.actions[0].firstName,
-      lastname: data.actions[1].lastName,
-      birthday: parseDateToWeb(data.actions[2].dateOfBirth),
-    });
   }
 };
