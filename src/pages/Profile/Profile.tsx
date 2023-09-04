@@ -23,7 +23,7 @@ import {
   changeStatusAddress,
   changeStatusPersonal,
 } from '../../store/reducers/personalReducer';
-import { AddressDraft, Customer } from '@commercetools/platform-sdk';
+import { AddressDraft } from '@commercetools/platform-sdk';
 import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
 import {
@@ -69,9 +69,9 @@ function ProfilePage(): JSX.Element {
   const { customerId, refreshToken } = useSelector(
     (state: IRootState) => state.user
   );
+  // console.log(refreshToken);
 
   const checkRefreshToken = useCallback((): void => {
-    console.log('qwerty');
     dispatch(setAuthStatus(false));
     navigate('/login');
     localStorage.removeItem('customerId');
@@ -85,7 +85,6 @@ function ProfilePage(): JSX.Element {
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
-            // setResponseData(response.body);
             setPassword(response.body.password ? response.body.password : '');
             dispatch(changeVersion(response.body.version));
             dispatch(
@@ -116,7 +115,6 @@ function ProfilePage(): JSX.Element {
           });
         })
         .catch(() => {
-          console.log(789);
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
@@ -124,38 +122,12 @@ function ProfilePage(): JSX.Element {
   }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
 
   const handleLogOut = (): void => {
-    console.log(147);
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
     dispatch(setAuthStatus(false));
     navigate('/');
   };
-  // console.log(responseData);
-  // dispatch(changeVersion(responseData?.version));
-  // dispatch(
-  //   changeBio({
-  //     firstname: {
-  //       value: responseData?.firstName,
-  //     },
-  //     lastname: {
-  //       value: responseData?.lastName,
-  //     },
-  //     birthday: {
-  //       value: responseData?.dateOfBirth,
-  //     },
-  //   })
-  // );
-  // dispatch(changeEmail({ value: responseData?.email }));
-  // dispatch(
-  //   changeAddress({
-  //     addressStore: responseData?.addresses,
-  //     defaultShippingId: responseData?.defaultShippingAddressId,
-  //     defaultBillingId: responseData?.defaultBillingAddressId,
-  //     shippingAddressesId: responseData?.shippingAddressIds,
-  //     billingAddressesId: responseData?.billingAddressIds,
-  //   })
-  // );
   const addressCard = address.addressStore.map((addressCard, i) => {
     const statusShipAddress = (): string => {
       let field = '';
@@ -324,7 +296,6 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
-  console.log(customerId, refreshToken, 123);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -585,3 +556,7 @@ export default ProfilePage;
 
 // "yanatestprofile@mail.com"
 // "2327Ybv!"
+
+// tycteam:cn-qqCLdwzkJaZFsOw4IlgdqftWdZkbtPWTO2Bi4W_c
+
+// tycteam:ZFNIpB6J4c2ilbvHWTIhpC7eY-njz54kx6tXbaARgpg

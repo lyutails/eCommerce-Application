@@ -54,10 +54,8 @@ function InputPassword(props: IInputPropsPassword): JSX.Element {
         <input
           onBlur={(): void => {
             hideTooltip(setPasswordFocus);
-            // props.checkError;
           }}
           onFocus={(): void => showTooltip(setPasswordFocus)}
-          // onChange={(e): void => inputHandler(e, props.setPasswordField)}
           onChange={props.onChange}
           className={style.wrapper_input}
           type={passwordVisible ? 'text' : 'password'}

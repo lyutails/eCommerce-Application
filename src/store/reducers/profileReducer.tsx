@@ -93,6 +93,15 @@ const profileReducer = createSlice({
       state.address = { ...state.address, ...action.payload };
     },
     changeBio(state, action) {
+      // const keys = Object.keys(action.payload);
+      // const result = keys.map((key) => {
+      //   return {
+      //     [key]: {
+      //       ...state.bio,
+      //       ...action.payload[key],
+      //     },
+      //   };
+      // });
       state.bio = { ...state.bio, ...action.payload };
     },
     changeEmail(state, action) {

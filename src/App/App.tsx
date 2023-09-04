@@ -15,11 +15,6 @@ import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { ParhRoute } from '../types/enums';
-import { useEffect } from 'react';
-import {
-  createCustomerId,
-  setRefreshTokenStatus,
-} from '../store/reducers/userReducer';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);

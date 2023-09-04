@@ -11,6 +11,10 @@ import {
   RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
+import { AnyAction } from 'redux';
+import { Dispatch, useEffect, useState } from 'react';
+import { changePassword } from '../store/reducers/profileReducer';
+import { IPasswordUpdateData } from '../components/PasswordModal/PasswordModal';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
   throw new Error('no client id found');
@@ -75,7 +79,9 @@ interface IMyUpdatePassword {
 
 export const updatePassword = async (
   refreshToken: string,
-  data: IMyUpdatePassword
+  data: IMyUpdatePassword,
+  dispatch: Dispatch<AnyAction>,
+  passwordUpdateData: IPasswordUpdateData
 ): Promise<ClientResponse<Customer> | undefined> => {
   const apiRoot = createApiBuilderFromCtpClient(
     loginUserCTPClient(authMiddlewareOptionsForPasswordFlow(refreshToken)),
@@ -95,7 +101,14 @@ export const updatePassword = async (
       })
       .execute();
     return customer;
-  } catch (error) {
-    console.log(error);
+  } catch {
+    dispatch(
+      changePassword({
+        currentPassword: {
+          ...passwordUpdateData.currentPassword,
+          error: true,
+        },
+      })
+    );
   }
 };

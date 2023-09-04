@@ -46,11 +46,12 @@ function AuthPage(): JSX.Element {
       return false;
     });
     if (error.includes(true)) {
-      setCheckmarkPassword(false);
-    } else {
       setCheckmarkPassword(true);
+    } else {
+      setCheckmarkPassword(false);
     }
   }
+  console.log(passwordError);
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>

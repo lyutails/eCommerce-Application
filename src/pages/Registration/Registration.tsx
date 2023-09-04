@@ -120,9 +120,9 @@ function RegistrationPage(): JSX.Element {
       return false;
     });
     if (error.includes(true)) {
-      setCheckmarkPassword(false);
-    } else {
       setCheckmarkPassword(true);
+    } else {
+      setCheckmarkPassword(false);
     }
   }
   return (
