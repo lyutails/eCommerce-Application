@@ -46,7 +46,6 @@ export async function filterByAttributes(
             `variants.attributes.sale:${sale}`,
             `variants.attributes.brand.key:${brand}`,
             `variants.price.centAmount:range (${priceRangeStart} to ${priceRangeFinish})`,
-            // `variants.scopedPriceDiscounted:"true"`,
           ],
         },
       })

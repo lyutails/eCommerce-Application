@@ -504,6 +504,16 @@ function CategoryPage(): JSX.Element {
     currentOffset,
   ]);
 
+  let searchCharacter = 0;
+  const placeholder: string = '';
+  const searchPlaceholderText = 'search for...';
+  const speed = 180;
+  function typeSearch(placeholder: string): void {
+    placeholder += searchPlaceholderText.charAt(searchCharacter);
+    searchCharacter++;
+    setTimeout(typeSearch, speed);
+  }
+
   function variantsPageOffset(): void {}
 
   function onChangeLast(): void {
@@ -680,7 +690,10 @@ function CategoryPage(): JSX.Element {
                 className={style.category_search_input}
                 // id='search'
                 placeholder="search for..."
-                onChange={(e): void => setSearchValue(e.target.value)}
+                onChange={(e): void => {
+                  setSearchValue(e.target.value);
+                  typeSearch(placeholder);
+                }}
               />
             </div>
           </div>
@@ -756,7 +769,7 @@ function CategoryPage(): JSX.Element {
                 );
               })}
             </div>
-            <div className={style.category_filters_size}>
+            <div className={style.category_filters_sizes}>
               {category === 'Clothes' &&
                 sizesArray.map((size) => {
                   return (
@@ -789,6 +802,7 @@ function CategoryPage(): JSX.Element {
                       <label
                         htmlFor={size}
                         className={style[`category_filters_${size}`]}
+                        /* className={style[`category_filters_${size}`]} */
                       >
                         {size}
                       </label>
@@ -855,7 +869,7 @@ function CategoryPage(): JSX.Element {
                 />
               </div>
             </div>
-            <div className={style.category_price_range_slider}>
+            {/* <div className={style.category_price_range_slider}>
               <div className={style.category_range_value}>
                 <input
                   type="text"
@@ -869,11 +883,11 @@ function CategoryPage(): JSX.Element {
                 id="category_slider_range"
                 className={style.category_range_bar}
               ></div>
-            </div>
+            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
-                  <div key={brand} className={style.category_colours_wrapper}>
+                  <div key={brand} className={style.category_brands_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -952,7 +966,6 @@ function CategoryPage(): JSX.Element {
                 onClick={(): void => {
                   setCurrentPage(currentPage + 1);
                   setCurrentOffset(currentOffset + 1);
-                  console.log(currentOffset, 'offset');
                 }}
               ></button>
               <button

@@ -5,9 +5,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 
     aspect-ratio: 1 / 1;
     width: 100%;
+    padding-bottom: 5%;
 
     background-image: url('../../../public/ui-kit/product_blue.svg');
     background-repeat: no-repeat;
@@ -17,12 +19,17 @@
   &_pic {
     aspect-ratio: 1 / 1;
     width: 60%;
+    margin-top: 5%;
+
     background-repeat: no-repeat;
     background-position: center center;
   }
 
   &_name {
-    font-size: 1.8rem;
+      padding-right: 5%;
+      padding-left: 5%;
+
+    font-size: 1.6rem;
     color: $font-color-primary-one;
     text-shadow:
       0 0 5px $glow-green,

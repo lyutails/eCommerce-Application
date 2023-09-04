@@ -208,19 +208,15 @@
     border-radius: 50%;
   }
 
-  &_filters_size {
-    width: 5vw;
+  &_filters_sizes {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 1vw;
+
+    width: 100%;
     margin-bottom: 20px;
+
     font-size: 2rem;
-  }
-
-  &_filters_s {
-    aspect-ratio: 1 / 1;
-    width: 2vw;
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &_filters_category {
@@ -232,6 +228,7 @@
   }
 
   &_filters_sale {
+    margin-bottom: 20px;
     font-size: 2rem;
   }
 
@@ -251,7 +248,8 @@
 
     aspect-ratio: 1 / 0.36;
     width: 20vw;
-    padding-left: 2.5vw;
+    min-width: 300px;
+    padding-left: 4vw;
 
     font-family: Cyberpunk, cursive;
     font-size: 2.5rem;
@@ -328,6 +326,181 @@
   &_filter_size_universal {
     display: none;
   }
+
+  &_brands_wrapper {
+    font-size: 2rem;
+
+    &:not(:last-child) {
+      margin-top: 20px;
+    }
+  }
+
+  &_filters_rsschool {
+    margin-bottom: 5px;
+  }
+
+  &_filters_xs {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_s {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &_filters_m {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_l {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_xl {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_xxl {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_xxxl {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  &_filters_universal {
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 0.4;
+    width: 10vw;
+
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    border: 1px solid $background-color-primary-five;
+    border-radius: 10px;
+
+    // background-image: url('../../../public/ui-kit/input_bestseller_blue.svg');
+    // background-repeat: no-repeat;
+    // background-size: contain;
+  }
+}
+
+// #size:checked ~ .category_filters_size {
+//   transform: rotate(135deg);
+// }
+
+// input[type="checkbox"] {
+//   display: none;
+// }
+
+label:hover {
+  cursor: pointer;
 }
 
 .colour {
@@ -417,8 +590,6 @@
 
 .pricesort_button_move {
   transform: translateX(7vw);
-
-  // box-shadow: 0 0 35px $glow-green;
 }
 
 input#price-sort {
@@ -497,6 +668,14 @@ input#price-sort {
 }
 
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
+  .category_filters {
+    width: 100%;
+  }
+
+  .category_filters_sizes {
+    justify-content: space-between;
+  }
+
   .category_filters_cards_wrapper {
     display: flex;
     flex-direction: column-reverse;
@@ -508,5 +687,97 @@ input#price-sort {
 
   .category_cards_wrapper {
     width: 100%;
+  }
+
+  .category_pagination_buttons {
+    width: 50%;
+  }
+
+  .pricesort_switch {
+    width: 50vw;
+    padding-top: 25%;
+    padding-left: 6vw;
+  }
+
+  .pricesort_button_move {
+    transform: translateX(23vw);
+  }
+
+  .category_filters_color {
+    width: 50vw;
+  }
+
+  .category_filters_black {
+    width: 10vw;
+  }
+
+  .category_filters_red {
+    width: 10vw;
+  }
+
+  .category_filters_white {
+    width: 10vw;
+  }
+
+  .category_filters_xs {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_s {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .category_filters_m {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_l {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_xl {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_xxl {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_xxxl {
+    aspect-ratio: 1 / 1;
+    width: 10vw;
+  }
+
+  .category_filters_universal {
+    aspect-ratio: 1 / 0.4;
+    width: 20vw;
+
+    // background-image: url('../../../public/ui-kit/input_bestseller_blue.svg');
+    // background-repeat: no-repeat;
+    // background-size: contain;
+  }
+
+  .category_search_input {
+    width: 40vw;
+    min-width: 150px;
+    padding-left: 30px;
+  }
+
+  .category_search_input_price {
+    width: 40vw;
+  }
+
+  .breadcrumbs {
+    font-size: 4rem;
   }
 }
