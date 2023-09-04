@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const StylelintPlugin = require('stylelint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -19,7 +18,6 @@ const plugins = [
     filename: '[name].css',
   }),
   new ESLintPlugin({ extensions: ['.ts'] }),
-  new StylelintPlugin({ fix: true }),
 
   new Dotenv(),
 
