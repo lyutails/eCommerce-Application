@@ -465,16 +465,17 @@ function CategoryPage(): JSX.Element {
                 }
               );
             }
-            if (currentOffset === 0) {
-              const pageVariants = filteredVariantsPrices.slice(0, 8);
-              setAllCards(pageVariants);
+            let pageVariants = filteredVariantsPrices.slice(0, 8);
+            if (currentOffset === 0 || currentOffset < 0) {
+              pageVariants = filteredVariantsPrices.slice(0, 8);
             }
-            if (currentOffset === 1) {
-              const pageVariants = filteredVariantsPrices.slice(8, 16);
-              setAllCards(pageVariants);
+            if (currentOffset >= 1) {
+              pageVariants = filteredVariantsPrices.slice(
+                8 * currentOffset,
+                8 * (currentOffset + 1)
+              );
             }
-            // setAllCards(pageVariants);
-            // console.log(pageVariants);
+            setAllCards(pageVariants);
           }
         })
         .catch(() => {
@@ -503,9 +504,7 @@ function CategoryPage(): JSX.Element {
     currentOffset,
   ]);
 
-  function onChangeFirst(): void {
-    // setBestseller(!bestseller);
-  }
+  function variantsPageOffset(): void {}
 
   function onChangeLast(): void {
     // setBestseller(!bestseller);
@@ -680,7 +679,7 @@ function CategoryPage(): JSX.Element {
                 type="text"
                 className={style.category_search_input}
                 // id='search'
-                placeholder="search"
+                placeholder="search for..."
                 onChange={(e): void => setSearchValue(e.target.value)}
               />
             </div>
@@ -839,7 +838,7 @@ function CategoryPage(): JSX.Element {
                   type="number"
                   className={style.category_search_input_price}
                   // id='search'
-                  placeholder="price"
+                  placeholder="price from"
                   onChange={(e): void => setSearchPriceStart(e.target.value)}
                 />
               </div>
@@ -851,7 +850,7 @@ function CategoryPage(): JSX.Element {
                   type="number"
                   className={style.category_search_input_price}
                   // id='search'
-                  placeholder="price"
+                  placeholder="price to"
                   onChange={(e): void => setSearchPriceFinish(e.target.value)}
                 />
               </div>

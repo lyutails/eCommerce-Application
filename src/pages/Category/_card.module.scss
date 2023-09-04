@@ -22,6 +22,29 @@
   }
 
   &_name {
+    font-size: 1.8rem;
     color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+  }
+
+  &_buy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100%;
+  }
+
+  &_price {
+    font-size: 1.5rem;
+  }
+
+  &_discount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $discount;
   }
 }

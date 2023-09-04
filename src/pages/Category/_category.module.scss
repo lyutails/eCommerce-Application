@@ -363,7 +363,6 @@
 
   aspect-ratio: 1 / 0.4;
   width: 15vw;
-  margin: auto;
   margin-bottom: 30px;
 }
 
@@ -494,5 +493,20 @@ input#price-sort {
   100% {
     color: transparent;
     opacity: 0.1;
+  }
+}
+
+@media screen and (min-width: (320px)) and (max-width: (767.98px)) {
+  .category_filters_cards_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .category_pagination {
+    width: 100%;
+  }
+
+  .category_cards_wrapper {
+    width: 100%;
   }
 }

@@ -34,7 +34,7 @@ export async function filterByAttributes(
           fuzzyLevel: Number(`${fuzzylevel}`),
           offset: Number(`${limit}`) * Number(`${offset}`),
           // priceCurrency: 'USD',
-          // filter: 'variants.scopedPriceDiscounted:true',
+          // filter: 'variants.scopedPriceDiscounted:false',
           // filter: [`variants.scopedPriceDiscounted:"true"`],
           'filter.query': [
             // `categories.id: subtree("877113a4-f6f2-40df-acee-02bdf03f9977")`,
