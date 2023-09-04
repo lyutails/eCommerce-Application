@@ -224,6 +224,7 @@
   }
 
   &_filters_bestseller {
+    margin-bottom: 20px;
     font-size: 2rem;
   }
 
@@ -333,6 +334,10 @@
     &:not(:last-child) {
       margin-top: 20px;
     }
+
+    &:not(:first-child) {
+      margin-bottom: 20px;
+    }
   }
 
   &_filters_rsschool {
@@ -346,9 +351,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -364,9 +369,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -386,9 +391,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -404,9 +409,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -422,9 +427,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -440,9 +445,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -458,9 +463,9 @@
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
+    width: 6vw;
 
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-transform: uppercase;
 
@@ -475,19 +480,21 @@
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 0.4;
-    width: 10vw;
+    aspect-ratio: 1 / 1;
+    width: 6vw;
+    padding: 1.2vw;
 
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
+    text-align: center;
     text-transform: uppercase;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 
-    border: 1px solid $background-color-primary-five;
-    border-radius: 10px;
-
-    // background-image: url('../../../public/ui-kit/input_bestseller_blue.svg');
-    // background-repeat: no-repeat;
-    // background-size: contain;
+    background-image: url('../../../public/ui-kit/circle_05.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 }
 
@@ -722,49 +729,48 @@ input#price-sort {
   .category_filters_xs {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_s {
     aspect-ratio: 1 / 1;
     width: 10vw;
-
-    &:hover {
-      cursor: pointer;
-    }
+    font-size: 2rem;
   }
 
   .category_filters_m {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_l {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_xl {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_xxl {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_xxxl {
     aspect-ratio: 1 / 1;
     width: 10vw;
+    font-size: 2rem;
   }
 
   .category_filters_universal {
-    aspect-ratio: 1 / 0.4;
-    width: 20vw;
-
-    // background-image: url('../../../public/ui-kit/input_bestseller_blue.svg');
-    // background-repeat: no-repeat;
-    // background-size: contain;
+    aspect-ratio: 1 / 1;
+    width: 10vw;
   }
 
   .category_search_input {

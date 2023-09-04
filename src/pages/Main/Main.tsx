@@ -14,7 +14,7 @@ import {
 export const mainPageOffersSlides = [
   'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase.',
   'HOT SALES 20% OFF on all red t-shirts and caps during hot summer and autumn!',
-  'Winter is coming so get the 10% OFF on all white hoodies and mugs.',
+  'Winter is coming so get the 10% OFF on all white hoodies, mugs and mice.',
   '2 = 1 !!! two t-shirts of the same colour by price of one!',
 ];
 

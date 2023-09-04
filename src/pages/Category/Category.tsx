@@ -34,6 +34,7 @@ function CategoryPage(): JSX.Element {
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
+  const [winter, setWinter] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState('');
   const [searchPriceStart, setSearchPriceStart] = useState('');
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
@@ -171,6 +172,7 @@ function CategoryPage(): JSX.Element {
         const queryStringPriceRangeFinish = `*`;
         let fuzzylevel = 0;
         const queryLimit = 8;
+        const winterSale = `"true", "false"`;
 
         switch (searchValue.length) {
           case 1:
@@ -217,7 +219,8 @@ function CategoryPage(): JSX.Element {
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
           queryLimit,
-          currentOffset
+          currentOffset,
+          winterSale
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -346,6 +349,11 @@ function CategoryPage(): JSX.Element {
       let querySale = '';
       sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
 
+      let winterSale = '';
+      winter === false
+        ? (winterSale = `"true", "false"`)
+        : (winterSale = `"true"`);
+
       let queryBrandString = createQueryBrand();
       const queryStringAllBrands = '"RSSchool", "Logitech"';
       queryBrandString === ''
@@ -415,7 +423,8 @@ function CategoryPage(): JSX.Element {
         queryPriceRangeStart,
         queryPriceRangeFinish,
         queryLimit,
-        currentOffset
+        currentOffset,
+        winterSale
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -502,6 +511,7 @@ function CategoryPage(): JSX.Element {
     searchPriceStart,
     searchValue,
     currentOffset,
+    winter,
   ]);
 
   let searchCharacter = 0;
@@ -532,6 +542,10 @@ function CategoryPage(): JSX.Element {
 
   function onChangeSale(): void {
     setSale(!sale);
+  }
+
+  function onChangeWinterSale(): void {
+    setWinter(!winter);
   }
 
   function onChangeColour(colour: string): void {
@@ -841,7 +855,26 @@ function CategoryPage(): JSX.Element {
                   }}
                 />
                 <label htmlFor="sale" className={style.category_filters_sale}>
-                  sale
+                  red sale
+                </label>
+              </div>
+            </div>
+            <div className={style.category_filters_sale}>
+              <div>
+                <input
+                  name="filterSale"
+                  type="checkbox"
+                  className={style.sale_input}
+                  id="winter_sale"
+                  onChange={(): void => {
+                    onChangeWinterSale();
+                  }}
+                />
+                <label
+                  htmlFor="winter_sale"
+                  className={style.category_filters_sale}
+                >
+                  winter sale
                 </label>
               </div>
             </div>

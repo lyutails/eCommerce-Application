@@ -19,7 +19,8 @@ export async function filterByAttributes(
   priceRangeStart: string,
   priceRangeFinish: string,
   limit: number,
-  offset: number
+  offset: number,
+  winter: string
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -44,6 +45,7 @@ export async function filterByAttributes(
             `variants.attributes.size.key:${size}`,
             `variants.attributes.bestseller:${bestseller}`,
             `variants.attributes.sale:${sale}`,
+            `variants.attributes.winter:${winter}`,
             `variants.attributes.brand.key:${brand}`,
             `variants.price.centAmount:range (${priceRangeStart} to ${priceRangeFinish})`,
           ],
