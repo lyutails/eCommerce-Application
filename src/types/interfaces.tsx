@@ -1,6 +1,5 @@
 import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
-import { IMaskMixinProps, ReactMaskOpts } from 'react-imask';
 
 export interface ICustomerFields {
   email: string;
@@ -66,7 +65,7 @@ export interface IInputProps {
 export interface IInputPropsPassword {
   placeholder: string;
   passwordError: boolean;
-  setPasswordField: React.Dispatch<React.SetStateAction<string>>;
+  setPasswordField?: React.Dispatch<React.SetStateAction<string>>;
   passwordField: string;
   clueColor: string;
   clueError: string;
@@ -74,6 +73,7 @@ export interface IInputPropsPassword {
   setPasswordCheck?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
   setCheckmarkPassword?: React.Dispatch<React.SetStateAction<boolean>>;
   checkmarkPassword?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IInputPropsMask {
@@ -109,6 +109,7 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
+    refreshToken: string;
   };
 }
 
@@ -141,13 +142,17 @@ export interface IProfileState {
       billingAddressesId: string[];
     };
     bio: {
-      [key: string]: string;
+      firstname: IAddressInput;
+      lastname: IAddressInput;
+      birthday: IAddressInput;
     };
-    email: {
-      [key: string]: string;
-    };
-    passwoord: {
-      [key: string]: string;
+    email: IAddressInput;
+    password: {
+      [key: string]: {
+        value: string;
+        error: boolean;
+        isChecked: boolean;
+      };
     };
     version: number;
   };

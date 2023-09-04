@@ -56,15 +56,14 @@ export const handleUpdateAddress = (
     updateAddressData.postalError &&
     updateAddressData.countryError
   ) {
-    console.log(data);
-    updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-      (response) => {
-        const id = response?.body.addresses.filter(
-          (item) => item.key === `address${version}`
-        );
-        if (id && typeof id[0]?.id == 'string') {
-          const addAddressStatusData = addStatusAddress(id[0]?.id);
-          if (isAdd) {
+    if (isAdd) {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
+        (response) => {
+          const id = response?.body.addresses.filter(
+            (item) => item.key === `address${version}`
+          );
+          if (id && typeof id[0]?.id == 'string') {
+            const addAddressStatusData = addStatusAddress(id[0]?.id);
             updateCustomer(
               updateAddressData.token,
               addAddressStatusData as MyCustomerUpdate
@@ -82,24 +81,27 @@ export const handleUpdateAddress = (
                 dispatch(changeVersion(response.body.version));
               }
             });
-          } else {
-            if (response) {
-              dispatch(
-                changeAddress({
-                  addressStore: response.body.addresses,
-                  defaultShippingId: response.body.defaultShippingAddressId,
-                  defaultBillingId: response.body.defaultBillingAddressId,
-                  shippingAddressesId: response.body.shippingAddressIds,
-                  billingAddressesId: response.body.billingAddressIds,
-                })
-              );
-              dispatch(changeVersion(response.body.version));
-            }
           }
         }
-      }
-    );
-
+      );
+    } else {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
+        (response) => {
+          if (response) {
+            dispatch(
+              changeAddress({
+                addressStore: response.body.addresses,
+                defaultShippingId: response.body.defaultShippingAddressId,
+                defaultBillingId: response.body.defaultBillingAddressId,
+                shippingAddressesId: response.body.shippingAddressIds,
+                billingAddressesId: response.body.billingAddressIds,
+              })
+            );
+            dispatch(changeVersion(response.body.version));
+          }
+        }
+      );
+    }
     setClickedAddressUpdate(false);
     setShowModal(false);
   }

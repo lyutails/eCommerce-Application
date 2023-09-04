@@ -12,7 +12,6 @@ import {
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
-// import { hideTooltip, showTooltip } from '../showTooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
 import { IRootState } from '../../types/interfaces';
@@ -108,6 +107,24 @@ function RegistrationPage(): JSX.Element {
       }, 5300);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
+
+  function checkInputError(
+    passwordField: string,
+    setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
+  ): void {
+    const passwordErrors = handlePasswordInput(passwordField);
+    const error = Object.keys(passwordErrors).map((key): boolean => {
+      if (passwordErrors[key].isError === true) {
+        return true;
+      }
+      return false;
+    });
+    if (error.includes(true)) {
+      setCheckmarkPassword(false);
+    } else {
+      setCheckmarkPassword(true);
+    }
+  }
   return (
     <div className={style.login}>
       <div className={style.authorization}>
@@ -207,11 +224,14 @@ function RegistrationPage(): JSX.Element {
             }
           />
           <InputPassword
+            onChange={(e): void => {
+              inputHandler(e, setPassword);
+              checkInputError(e.target.value, setPasswordError);
+            }}
             clueError={style.password_error}
             clueColor={style.password_color}
             placeholder="Password *"
             passwordError={passwordError}
-            setPasswordField={setPassword}
             passwordField={password}
           />
           <InputBirthDateMask

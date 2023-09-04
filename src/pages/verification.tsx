@@ -85,6 +85,22 @@ export const handleLoginInput = (
   return loginСheck;
 };
 
+//hjfgluyfvli
+export const handleLoginInputTwo = (loginField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.mail.lastIndex = 0;
+  if (loginField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.mail.test(loginField)) {
+    error.message = clue.invalidEmail;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
   REGEXP.uppercasePassword.lastIndex = 0;
   REGEXP.lowercasePassword.lastIndex = 0;
@@ -161,10 +177,9 @@ export const handleFirstnameInput = (
 };
 
 export const handleFirstnameInputTwo = (
-  firstnameField: string,
+  firstnameField: string
   // setErrorFirstname: React.Dispatch<React.SetStateAction<string>>,
   // firstnameСheck: boolean,
-  setCheckmark: React.Dispatch<React.SetStateAction<boolean>>
 ): string => {
   const error = {
     message: '',
@@ -174,16 +189,13 @@ export const handleFirstnameInputTwo = (
     error.message = clue.requiredField;
     // setErrorFirstname(clue.requiredField);
     // firstnameСheck = false;
-    setCheckmark(false);
   } else if (!REGEXP.fistname.test(firstnameField)) {
     error.message = clue.character;
     // setErrorFirstname(clue.character);
     // firstnameСheck = false;
-    setCheckmark(false);
   } else {
     error.message = '';
     // setErrorFirstname('');
-    setCheckmark(true);
     // firstnameСheck = true;
   }
   return error.message;
@@ -210,6 +222,23 @@ export const handleLastnameInput = (
     lastnameСheck = true;
   }
   return lastnameСheck;
+};
+
+//ghcfkjv
+
+export const handleLastnameInputTwo = (lastnameField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.lastname.lastIndex = 0;
+  if (lastnameField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.lastname.test(lastnameField)) {
+    error.message = clue.character;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };
 
 export const handleStreetShipInput = (
@@ -400,6 +429,19 @@ export const handleBirthdayInput = (
     birthdayСheck = true;
   }
   return birthdayСheck;
+};
+
+//jgljb;l;
+export const handleBirthdayInputTwo = (birthdayField: string): string => {
+  const error = {
+    message: '',
+  };
+  if (birthdayField.length < 10) {
+    error.message = clue.requiredField;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };
 
 export const handleStreetBillInput = (

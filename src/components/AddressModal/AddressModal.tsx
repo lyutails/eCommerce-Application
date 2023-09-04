@@ -124,7 +124,7 @@ export interface IAddAddressStatusData {
     }?,
     {
       action: string;
-      addressId: string;
+      key: string;
     }?,
   ];
 }
@@ -188,10 +188,6 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'setDefaultShippingAddress',
       addressId: address.idAddress,
     });
-    // addAddressData.actions.push({
-    //   action: 'setDefaultShippingAddress',
-    //   addressKey: `address1`,
-    // });
   }
   if (address.defaultBilling && inputDefaultBilling) {
     inputDefaultBilling.checked = true;
@@ -199,10 +195,6 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'setDefaultBillingAddress',
       addressId: address.idAddress,
     });
-    // addAddressData.actions.push({
-    //   action: 'setDefaultBillingAddress',
-    //   addressKey: `address1`,
-    // });
   }
   if (address.shippingAddress && inputAddressShipping) {
     inputAddressShipping.checked = true;
@@ -210,10 +202,6 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'addShippingAddressId',
       addressId: address.idAddress,
     });
-    // addAddressData.actions.push({
-    //   action: 'addShippingAddressId',
-    //   addressKey: `address1`,
-    // });
   }
   if (address.billingAddress && inputAddressBilling) {
     inputAddressBilling.checked = true;
@@ -221,10 +209,6 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       action: 'addBillingAddressId',
       addressId: address.idAddress,
     });
-    // addAddressData.actions.push({
-    //   action: 'addBillingAddressId',
-    //   addressKey: `address1`,
-    // });
   }
   function addStatusAddress(id: string): IAddAddressStatusData {
     const addAddressStatusData: IAddAddressStatusData = {

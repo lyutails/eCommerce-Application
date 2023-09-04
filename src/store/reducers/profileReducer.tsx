@@ -1,4 +1,3 @@
-import { IProfileState } from '../../types/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 
 const profileReducer = createSlice({
@@ -49,12 +48,44 @@ const profileReducer = createSlice({
       billingAddressesId: [],
     },
     bio: {
-      firstname: '',
-      lastname: '',
-      birthday: '',
+      firstname: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      lastname: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
+      birthday: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
     },
-    email: {},
-    passwoord: {},
+    email: {
+      value: '',
+      error: '',
+      isChecked: false,
+    },
+    password: {
+      currentPassword: {
+        value: '',
+        error: false,
+        isChecked: false,
+      },
+      newPassword: {
+        value: '',
+        error: false,
+        isChecked: false,
+      },
+      repeatePassword: {
+        value: '',
+        error: false,
+        isChecked: false,
+      },
+    },
     version: 1,
   },
   reducers: {
@@ -62,13 +93,13 @@ const profileReducer = createSlice({
       state.address = { ...state.address, ...action.payload };
     },
     changeBio(state, action) {
-      state.bio = action.payload;
+      state.bio = { ...state.bio, ...action.payload };
     },
     changeEmail(state, action) {
-      state.email = action.payload;
+      state.email = { ...state.email, ...action.payload };
     },
     changePassword(state, action) {
-      state.passwoord = action.payload;
+      state.password = { ...state.password, ...action.payload };
     },
     changeVersion(state, action) {
       state.version = action.payload;
