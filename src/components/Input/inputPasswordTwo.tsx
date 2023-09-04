@@ -10,6 +10,7 @@ import { IInputPropsPassword, IProfileState } from '../../types/interfaces';
 import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { hideTooltip, showTooltip } from '../../pages/showTooltip';
 import { useSelector } from 'react-redux';
+import { handlePasswordInputTwo } from '../../pages/verificationTwo';
 
 function InputPasswordTwo(props: IInputPropsPassword): JSX.Element {
   const { password } = useSelector((state: IProfileState) => state.profile);
@@ -20,7 +21,7 @@ function InputPasswordTwo(props: IInputPropsPassword): JSX.Element {
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [passwordCheckmark, setPasswordCheckmark] = useState(false);
 
-  const passwordErrorTexts = handlePasswordInput(
+  const passwordErrorTexts = handlePasswordInputTwo(
     passwordField ? password[passwordField].value : ''
   );
   useEffect(() => {

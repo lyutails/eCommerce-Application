@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../Input/inputPassword';
 import style from '../PasswordModal/_passwordModal.module.scss';
@@ -10,6 +10,7 @@ import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { checkPasswordError } from '../../pages/verificationTwo';
 import InputPasswordTwo from '../Input/inputPasswordTwo';
 import { changePassword } from '../../store/reducers/profileReducer';
+import { AnyAction } from 'redux';
 
 export interface IPasswordModalProps {
   modalClass: string;
@@ -26,14 +27,21 @@ export interface IPasswordUpdateData {
   token: string;
   passwordNewField: string;
   passwordRepeatField: string;
+  dispatch: Dispatch<AnyAction>;
+  login: string;
+  currentPassword: {
+    value: string;
+    error: boolean;
+    isChecked: boolean;
+  };
 }
 
 function PasswordModal(props: IPasswordModalProps): JSX.Element {
   const dispatch = useDispatch();
-  const { version, password } = useSelector(
+  const { version, password, email } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const [passwordCurrent, setPasswordCurrent] = useState('');
+  //const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [token, setToken] = useState('');
@@ -48,34 +56,37 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
 
   const customerUpdateData = {
     version: version,
-    currentPassword: passwordCurrent,
-    newPassword: passwordNew,
+    currentPassword: password.currentPassword.value,
+    newPassword: password.newPassword.value,
   };
   const passwordUpdateData: IPasswordUpdateData = {
-    currentError: checkmarkPasswordCurrent,
-    newError: checkmarkPasswordNew,
-    repeateError: checkmarkPasswordRepeat,
+    currentError: password.currentPassword.error,
+    newError: password.newPassword.error,
+    repeateError: password.repeatePassword.error,
     token: token,
-    passwordNewField: passwordNew,
-    passwordRepeatField: passwordRepeat,
+    passwordNewField: password.newPassword.value,
+    passwordRepeatField: password.repeatePassword.value,
+    dispatch: dispatch,
+    login: email.value,
+    currentPassword: password.currentPassword,
   };
-  function checkInputError(
-    passwordField: string,
-    setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
-  ): void {
-    const passwordErrors = handlePasswordInput(passwordField);
-    const error = Object.keys(passwordErrors).map((key): boolean => {
-      if (passwordErrors[key].isError === true) {
-        return true;
-      }
-      return false;
-    });
-    if (error.includes(true)) {
-      setCheckmarkPassword(false);
-    } else {
-      setCheckmarkPassword(true);
-    }
-  }
+  // function checkInputError(
+  //   passwordField: string,
+  //   setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
+  // ): void {
+  //   const passwordErrors = handlePasswordInput(passwordField);
+  //   const error = Object.keys(passwordErrors).map((key): boolean => {
+  //     if (passwordErrors[key].isError === true) {
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  //   if (error.includes(true)) {
+  //     setCheckmarkPassword(false);
+  //   } else {
+  //     setCheckmarkPassword(true);
+  //   }
+  // }
   const setInputAction = (
     event: React.ChangeEvent<HTMLInputElement>,
     fieldName: string,
@@ -92,6 +103,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
       })
     );
   };
+  // console.log(password.currentPassword.error);
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -124,7 +136,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
           placeholder="Password *"
         />
         <h4 className={style.modal_title}>New password</h4>
-        <InputPassword
+        {/* <InputPassword
           onChange={(e): void => {
             inputHandler(e, setPasswordNew);
             checkInputError(e.target.value, setCheckmarkPasswordNew);
@@ -135,9 +147,21 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
           placeholder="New password *"
           passwordError={checkmarkPasswordNew}
           passwordField={passwordNew}
+        /> */}
+        <InputPasswordTwo
+          onChange={(e): void =>
+            setInputAction(e, 'newPassword', checkPasswordError)
+          }
+          checkmarkPassword={password.newPassword.isChecked}
+          passwordError={password.newPassword.error}
+          passwordField={'newPassword'}
+          tooltipColor={style.tooltip_color}
+          clueError={style.password_error}
+          clueColor={style.modal_color}
+          placeholder="Password *"
         />
         <h4 className={style.modal_title}>Confirm password</h4>
-        <InputPassword
+        {/* <InputPassword
           onChange={(e): void => {
             inputHandler(e, setPasswordRepeat);
             checkInputError(e.target.value, setCheckmarkPasswordRepeat);
@@ -148,6 +172,18 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
           placeholder="Confirm password *"
           passwordError={checkmarkPasswordRepeat}
           passwordField={passwordRepeat}
+        /> */}
+        <InputPasswordTwo
+          onChange={(e): void =>
+            setInputAction(e, 'repeatePassword', checkPasswordError)
+          }
+          checkmarkPassword={password.repeatePassword.isChecked}
+          passwordError={password.repeatePassword.error}
+          passwordField={'repeatePassword'}
+          tooltipColor={style.tooltip_color}
+          clueError={style.password_error}
+          clueColor={style.modal_color}
+          placeholder="Password *"
         />
       </div>
       <ButtonForm

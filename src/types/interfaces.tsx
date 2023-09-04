@@ -142,9 +142,7 @@ export interface IProfileState {
       billingAddressesId: string[];
     };
     bio: {
-      firstname: IAddressInput;
-      lastname: IAddressInput;
-      birthday: IAddressInput;
+      [key: string]: IAddressInput;
     };
     email: IAddressInput;
     password: {
