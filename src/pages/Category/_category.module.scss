@@ -108,11 +108,18 @@
     background-color: $background-color-primary-five;
   }
 
-  &_pagination {
+  &_pagination_customize {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 80%;
+  }
+
+  &_pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 
   &_cards_wrapper {
@@ -340,8 +347,29 @@
     }
   }
 
-  &_filters_rsschool {
+  &_filters_RSSchool {
+    display: inline-block;
+
+    aspect-ratio: 1 / 0.5;
+    width: 50%;
     margin-bottom: 5px;
+
+    background-image: url('../../../public/assets/icons/logo-rsschool.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: invert(1);
+  }
+
+  &_filters_Logitech {
+    display: inline-block;
+
+    aspect-ratio: 1 / 0.5;
+    width: 50%;
+    margin-bottom: 5px;
+
+    background-image: url('../../../public/assets/icons/logitech_logo_02.png');
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 
   &_filters_xs {
@@ -505,6 +533,73 @@
 // input[type="checkbox"] {
 //   display: none;
 // }
+
+.catalog {
+  &_advertisment {
+    resize: both;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    aspect-ratio: 1 / 0.36;
+    width: 100%;
+    min-height: 80px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px 4vw 0;
+
+    background-image: url('../../../public/ui-kit/main_advertisment.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 10px;
+
+    -webkit-text-stroke: 1px;
+
+    &.customize {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+
+  &_advertisment_text {
+    width: 50%;
+    font-size: 3.2rem;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_sloth_left {
+    resize: both;
+
+    transform: scaleX(-1);
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/congrats.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  &_sloth_right {
+    resize: both;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/good.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+}
 
 label:hover {
   cursor: pointer;
@@ -785,5 +880,30 @@ input#price-sort {
 
   .breadcrumbs {
     font-size: 4rem;
+  }
+
+  .category_pagination_customize {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: (768px)) and (max-width: (1199.98px)) {
+  .catalog_advertisment_text {
+    width: 50%;
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (min-width: (500px)) and (max-width: (767.98px)) {
+  .catalog_advertisment_text {
+    width: 50%;
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (min-width: (320px)) and (max-width: (499.98px)) {
+  .catalog_advertisment_text {
+    width: 50%;
+    font-size: 1.2rem;
   }
 }

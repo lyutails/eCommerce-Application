@@ -919,6 +919,7 @@ function CategoryPage(): JSX.Element {
             </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
+                console.log(brand);
                 return (
                   <div key={brand} className={style.category_brands_wrapper}>
                     <input
@@ -933,77 +934,89 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={brand}
                       className={style[`category_filters_${brand}`]}
-                    >
-                      {brand}
-                    </label>
+                    ></label>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className={style.category_pagination}>
-            <div className={style.category_cards_wrapper}>
-              {allCards.map((card) => {
-                return (
-                  <Link
-                    to={`/category/${category}/${card.key}`}
-                    className={style.category_card}
-                    key={card.key}
-                  >
-                    <Card
-                      keyCard={card.key ? card.key : ''}
-                      images={card.images && card.images[0].url}
-                      prices={
-                        card.prices && card.prices[0].value
-                          ? card.prices[0].value.centAmount
-                          : 0
-                      }
-                      discounted={
-                        card.prices &&
-                        card.prices[0].discounted?.value.centAmount
-                          ? `${card.prices[0].discounted?.value.centAmount}$`
-                          : ''
-                      }
-                      sku={card.sku ? card.sku : ''}
-                    />
-                  </Link>
-                );
-              })}
-            </div>
-            <div className={style.category_pagination_buttons}>
-              <button
-                className={`${style.category_pagination_button} ${style.beginning}`}
-                onClick={(): void => {
-                  setCurrentPage(1);
-                  setCurrentOffset(0);
-                }}
-              ></button>
-              <button
-                className={`${style.category_pagination_button} ${style.previous}`}
-                onClick={(): void => {
-                  currentPage > 1
-                    ? setCurrentPage(currentPage - 1)
-                    : setCurrentPage(1);
-                  currentOffset > 0
-                    ? setCurrentOffset(currentOffset - 1)
-                    : setCurrentOffset(0);
-                }}
-              ></button>
-              <div
-                className={`${style.category_pagination_number} ${style.current}`}
-              >
-                {currentPage}
+          <div className={style.category_pagination_customize}>
+            <div className={style.category_pagination}>
+              <div className={style.category_cards_wrapper}>
+                {allCards.map((card) => {
+                  return (
+                    <Link
+                      to={`/category/${category}/${card.key}`}
+                      className={style.category_card}
+                      key={card.key}
+                    >
+                      <Card
+                        keyCard={card.key ? card.key : ''}
+                        images={card.images && card.images[0].url}
+                        prices={
+                          card.prices && card.prices[0].value
+                            ? card.prices[0].value.centAmount
+                            : 0
+                        }
+                        discounted={
+                          card.prices &&
+                          card.prices[0].discounted?.value.centAmount
+                            ? `${card.prices[0].discounted?.value.centAmount}$`
+                            : ''
+                        }
+                        sku={card.sku ? card.sku : ''}
+                      />
+                    </Link>
+                  );
+                })}
               </div>
-              <button
-                className={`${style.category_pagination_button} ${style.next}`}
-                onClick={(): void => {
-                  setCurrentPage(currentPage + 1);
-                  setCurrentOffset(currentOffset + 1);
-                }}
-              ></button>
-              <button
-                className={`${style.category_pagination_button} ${style.ending}`}
-              ></button>
+              <div className={style.category_pagination_buttons}>
+                <button
+                  className={`${style.category_pagination_button} ${style.beginning}`}
+                  onClick={(): void => {
+                    setCurrentPage(1);
+                    setCurrentOffset(0);
+                  }}
+                ></button>
+                <button
+                  className={`${style.category_pagination_button} ${style.previous}`}
+                  onClick={(): void => {
+                    currentPage > 1
+                      ? setCurrentPage(currentPage - 1)
+                      : setCurrentPage(1);
+                    currentOffset > 0
+                      ? setCurrentOffset(currentOffset - 1)
+                      : setCurrentOffset(0);
+                  }}
+                ></button>
+                <div
+                  className={`${style.category_pagination_number} ${style.current}`}
+                >
+                  {currentPage}
+                </div>
+                <button
+                  className={`${style.category_pagination_button} ${style.next}`}
+                  onClick={(): void => {
+                    setCurrentPage(currentPage + 1);
+                    setCurrentOffset(currentOffset + 1);
+                  }}
+                ></button>
+                <button
+                  className={`${style.category_pagination_button} ${style.ending}`}
+                ></button>
+              </div>
+              <Link to="/customize">
+                <div
+                  className={`${style.catalog_advertisment} ${style.customize}`}
+                >
+                  <div className={style.catalog_sloth_left}></div>
+                  <div className={style.catalog_advertisment_text}>
+                    Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
+                    your own with RSSchool amazing merch... have fun \o/
+                  </div>
+                  <div className={style.catalog_sloth_right}></div>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
