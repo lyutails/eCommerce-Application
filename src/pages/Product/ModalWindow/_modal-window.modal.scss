@@ -18,6 +18,20 @@
     display: flex;
     position: relative;
     top: 5%;
+    .modal-button {
+      cursor: pointer;
+      position: absolute;
+      z-index: 2;
+      right: 20%;
+
+      height: 10rem;
+      width: 10rem;
+
+      background: transparent;
+      border: none;
+
+      transition: 2s;
+    }
 
     .swiper {
       width: 100%;

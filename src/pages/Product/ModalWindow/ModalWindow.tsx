@@ -3,18 +3,23 @@ import { IProductState } from '../../../types/interfaces';
 
 import { EffectCards, Zoom, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import 'swiper/css';
 import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import './_modal-window.scss';
+import './_modal-window.modal.scss';
+import iconModal from '../../../../public/portal/circle_14.svg';
+import { changeflagInModalWindow } from '../../../store/reducers/productReduser';
 
 function ModalWindow(): JSX.Element {
   const dataProduct = useSelector(
     (state: IProductState) => state.product.productImg
   );
-  console.log(dataProduct);
+  const dispatch = useDispatch();
+  function disablingModal(): void {
+    dispatch(changeflagInModalWindow(false));
+  }
   const pagination = {
     clickable: true,
     renderBullet: function (index: number, className: string): string {
@@ -24,16 +29,19 @@ function ModalWindow(): JSX.Element {
 
   return (
     <section className="modal-window">
-      <button>
-        <img src="" alt="" />
-      </button>
       <div className="modal-wrapper">
+        <button onClick={disablingModal} className="modal-button">
+          <img className="modal-button_img" src={iconModal} alt="iconModal" />
+        </button>
         <Swiper
           loop={true}
           navigation={true}
           effect={'cards'}
           grabCursor={true}
-          zoom={true}
+          zoom={{
+            maxRatio: 2,
+            minRatio: 1,
+          }}
           pagination={pagination}
           modules={[EffectCards, Zoom, Navigation, Pagination]}
           className="mySwiper"

@@ -1,6 +1,5 @@
 import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
-import { IMaskMixinProps, ReactMaskOpts } from 'react-imask';
 
 export interface ICustomerFields {
   email: string;
@@ -166,6 +165,7 @@ export interface ICategoryState {
 export interface IProductState {
   product: {
     productImg: string[];
+    flagInModalWindow: boolean;
   };
 }
 

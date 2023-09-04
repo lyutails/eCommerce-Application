@@ -3,15 +3,18 @@ import { getProductProjectionsByVariantKey } from '../../api/getProducts';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 
-// import '../Product/_product.scss';
-
-import { createProductImgArr } from '../../store/reducers/productReduser';
+import {
+  changeflagInModalWindow,
+  createProductImgArr,
+} from '../../store/reducers/productReduser';
 import ModalWindow from './ModalWindow/ModalWindow';
+import { IProductState } from '../../types/interfaces';
+import '../Product/_product.scss';
 
 interface IDataProduct {
   name: string;
@@ -27,6 +30,9 @@ interface IDataProduct {
 
 function ProductPage(): JSX.Element {
   const dispatch = useDispatch();
+  const flagModalWindow = useSelector(
+    (state: IProductState) => state.product.flagInModalWindow
+  );
   const { id } = useParams();
   const [dataProduct, setDataProduct] = useState<IDataProduct>({
     name: '',
@@ -98,6 +104,13 @@ function ProductPage(): JSX.Element {
       brandProduct?.length
         ? (intermediateProduct.brand = brandProduct[0].value['key'])
         : '';
+
+      const bestseller = product.masterVariant.attributes?.filter(
+        (item) => item.name === 'bestseller'
+      );
+      bestseller?.length
+        ? (intermediateProduct.bestseller = bestseller[0].value)
+        : '';
       setDataProduct(intermediateProduct);
     },
     [dispatch]
@@ -159,6 +172,13 @@ function ProductPage(): JSX.Element {
       brandProduct?.length
         ? (intermediateProduct.brand = brandProduct[0].value['key'])
         : '';
+      const bestseller = variant.attributes?.filter(
+        (item) => item.name === 'bestseller'
+      );
+      bestseller?.length
+        ? (intermediateProduct.bestseller = bestseller[0].value)
+        : '';
+      setDataProduct(intermediateProduct);
       setDataProduct(intermediateProduct);
     },
     [dispatch]
@@ -178,41 +198,51 @@ function ProductPage(): JSX.Element {
         }
       });
   }, [creatingQueryForMaster, creatingQueryForVariant, id]);
-
+  function openModalWindow(): void {
+    dispatch(changeflagInModalWindow(true));
+  }
   return (
     <section className="showcase">
       <h2 className="showcase_header">{dataProduct.name}</h2>
       <div className="showcase__content-wrapper">
         <div className="showcase_content">
           <div className="showcase_carousel">
+            <div
+              className={
+                dataProduct.bestseller
+                  ? 'showcase_carousel-bestSellerOn'
+                  : 'showcase_carousel-bestSellerOff'
+              }
+            >
+              BestSeller!!!
+            </div>
             <Swiper
               className="swiper-wrapper"
-              // effect={'coverflow'}
               grabCursor={true}
+              navigation={true}
+              // braackpoints={{
+              //   1880: {
+              //     slidesPerView: 3,
+              //   },
+              // }}
               loop={true}
-              slidesPerView={3}
+              slidesPerView={1}
               // spaceBetween={30}
               centeredSlides={true}
-              speed={1800}
+              // speed={1800}
               // coverfloweffect={{
               //   rotate: 0,
               //   stretch: 0,
               //   depth: 100,
               //   modifier: 2.5,
               // }}
-              // pagination={{ el: '.swiper-pagination', clickable: true }}
-              navigation={{
-                nextEl: 'showcase-navigation_next',
-                prevEl: 'showcase-navigation_prev',
-                // clickable: true,
-              }}
-              modules={[EffectCoverflow, Navigation]}
+              modules={[Navigation]}
             >
               {dataProduct.images.map((image, index) => {
                 return (
                   <SwiperSlide
-                    onClick={(): void => console.log(index)}
-                    // className="swiper-slide showcase_carousel_item"
+                    onClick={openModalWindow}
+                    className="swiper-slide showcase_carousel_item"
                     key={`${dataProduct.name}-${index}`}
                   >
                     <img
@@ -224,28 +254,29 @@ function ProductPage(): JSX.Element {
                 );
               })}
             </Swiper>
-            <div className="showcase-navigation_prev"></div>
-            <div className="showcase-navigation_next"></div>
+            {/* <div className="showcase-navigation_prev"></div>
+            <div className="showcase-navigation_next"></div> */}
           </div>
         </div>
       </div>
 
-      <div>
-        <div>
-          <div>{dataProduct.description}</div>
-          <div>
+      <div className="product-description">
+        <div className="product-description-wrapper wrapper">
+          <div className="wrapper-desc">{dataProduct.description}</div>
+          <div className="wrapper-characteristics">
             <div>
               <div>sale : {dataProduct.sale.toFixed(2)} $</div>
               <div>prace: {dataProduct.price.toFixed(2)} $</div>
               <div>size: {dataProduct.size}</div>
               <div>color: {dataProduct.color}</div>
               <div>brand:{dataProduct.brand}</div>
+              <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div>
             </div>
-            <button>В корзину</button>
+            <button className="wrapper-characteristics_button">To Cart</button>
           </div>
         </div>
       </div>
-      <ModalWindow />
+      <div>{flagModalWindow ? <ModalWindow /> : ''}</div>
     </section>
   );
 }

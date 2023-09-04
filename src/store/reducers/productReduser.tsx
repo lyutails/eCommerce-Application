@@ -1,22 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IProductState } from '../../types/interfaces';
-
-// const initialState: IProductState = {
-//   productImg: [],
-// };
-
 const productReducer = createSlice({
   name: 'product',
   initialState: {
     productImg: [],
+    flagInModalWindow: false,
   },
   reducers: {
     createProductImgArr(state, action) {
       state.productImg = action.payload;
     },
+    changeflagInModalWindow(state, action) {
+      state.flagInModalWindow = action.payload;
+    },
   },
 });
 
-export const { createProductImgArr } = productReducer.actions;
+export const { createProductImgArr, changeflagInModalWindow } =
+  productReducer.actions;
 export default productReducer.reducer;
