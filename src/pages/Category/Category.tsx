@@ -18,7 +18,7 @@ import {
 } from '../../types/enums';
 
 function CategoryPage(): JSX.Element {
-  const breadcrumbsSymbol = `${'> '}`;
+  const pageLimit = 8;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
   const productsForSearchSouvenirs = 'Mug Notepad';
@@ -35,11 +35,15 @@ function CategoryPage(): JSX.Element {
   const [bestseller, setBestseller] = useState<boolean>(false);
   const [priceSort, setPriceSort] = useState<boolean>(false);
   const [sale, setSale] = useState<boolean>(false);
+  const [winter, setWinter] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState('');
   const [searchPriceStart, setSearchPriceStart] = useState('');
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [maxPage, setMaxPage] = useState(1);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -165,13 +169,13 @@ function CategoryPage(): JSX.Element {
         const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
         const querySale = `"true", "false"`;
         const queryStringAllBrands = `"RSSchool", "Logitech"`;
-        const queryStringPriceASC = `price asc`;
         const queryStringPriceDESC = `price desc`;
         const queryStringPriceRangeStart = `0`;
         const queryStringPriceRangeFinish = `*`;
-        const querySearch = productsForSearchClothes;
         let fuzzylevel = 0;
-        const queryLimit = 8;
+        const queryLimitStart = 8;
+        const queryOffsetStart = 0;
+        const winterSale = `"true", "false"`;
 
         switch (searchValue.length) {
           case 1:
@@ -217,7 +221,9 @@ function CategoryPage(): JSX.Element {
           fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
-          queryLimit
+          queryLimitStart,
+          queryOffsetStart,
+          winterSale
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -315,12 +321,11 @@ function CategoryPage(): JSX.Element {
     if (count) {
       const queryStringPriceASC = `price asc`;
       const queryStringPriceDESC = `price desc`;
-      const querySearch = '';
 
-      let queryStringPriceSort = `price desc`;
+      let queryStringPriceSort = queryStringPriceDESC;
       priceSort === true
-        ? (queryStringPriceSort = `price asc`)
-        : (queryStringPriceSort = `price desc`);
+        ? (queryStringPriceSort = queryStringPriceASC)
+        : (queryStringPriceSort = queryStringPriceDESC);
 
       let querySubtreesString = createQuerySubtreeString();
       const subtrees = `subtree("${idCategory}")`;
@@ -345,6 +350,11 @@ function CategoryPage(): JSX.Element {
 
       let querySale = '';
       sale === false ? (querySale = `"true", "false"`) : (querySale = `"true"`);
+
+      let winterSale = '';
+      winter === false
+        ? (winterSale = `"true", "false"`)
+        : (winterSale = `"true"`);
 
       let queryBrandString = createQueryBrand();
       const queryStringAllBrands = '"RSSchool", "Logitech"';
@@ -392,8 +402,13 @@ function CategoryPage(): JSX.Element {
 
       const queryLimit =
         querySizesString === queryStringAllSizes || querySizesString === 'no'
-          ? 8
+          ? pageLimit
           : 100;
+
+      const queryOffset =
+        querySizesString === queryStringAllSizes || querySizesString === 'no'
+          ? currentOffset
+          : 0;
 
       const queryURL = `/catalog/${category}/priceSort=${queryStringPriceSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
@@ -414,7 +429,9 @@ function CategoryPage(): JSX.Element {
         fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
-        queryLimit
+        queryLimit,
+        queryOffset,
+        winterSale
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -423,11 +440,29 @@ function CategoryPage(): JSX.Element {
             querySizesString === queryStringAllSizes ||
             querySizesString === '"no"'
           ) {
-            console.log(querySizesString);
             master = parentCategory.map((item) => item.masterVariant);
             setAllCards(master);
+            filterByAttributes(
+              queryColoursString,
+              querySubtreesString,
+              querySizesString,
+              queryBestsellerString,
+              querySale,
+              queryBrandString,
+              queryStringPriceSort,
+              querySearchValue,
+              fuzzylevel,
+              queryPriceRangeStart,
+              queryPriceRangeFinish,
+              100,
+              0,
+              winterSale
+            ).then((response) => {
+              const parentResults = response.body.results;
+              const maxPageParent = Math.ceil(parentResults.length / pageLimit);
+              setMaxPage(maxPageParent);
+            });
           } else {
-            console.log('deti');
             parentCategory.forEach((item) => master.push(...item.variants));
             const sortedVariantsArray: ProductVariant[][] = [];
             allSizes.forEach((data) => {
@@ -439,7 +474,6 @@ function CategoryPage(): JSX.Element {
                   return variant;
                 }
               });
-              console.log(master, allSizes);
               sortedVariantsArray.push(sortedVariant);
             });
             const filteredVariantsPrices = sortedVariantsArray.flat();
@@ -467,7 +501,23 @@ function CategoryPage(): JSX.Element {
                 }
               );
             }
-            const pageVariants = filteredVariantsPrices.slice(0, 8);
+            let pageVariants = filteredVariantsPrices.slice(0, pageLimit);
+            const maxPageChild = Math.ceil(
+              filteredVariantsPrices.length / pageLimit
+            );
+            setMaxPage(maxPageChild);
+            console.log('children', maxPageChild);
+            if (currentOffset === 0) {
+              pageVariants = filteredVariantsPrices.slice(0, pageLimit);
+            }
+            if (currentOffset >= 1 || currentOffset < maxPageChild - 1) {
+              const firstNumberSlice = pageLimit * currentOffset;
+              const lastNumberSlice = pageLimit * (currentOffset + 1);
+              pageVariants = filteredVariantsPrices.slice(
+                firstNumberSlice,
+                lastNumberSlice
+              );
+            }
             setAllCards(pageVariants);
           }
         })
@@ -494,9 +544,45 @@ function CategoryPage(): JSX.Element {
     searchPriceFinish,
     searchPriceStart,
     searchValue,
+    currentPage,
+    currentOffset,
+    winter,
+    query,
   ]);
 
-  function onChangePriceSort(): void {}
+  let searchCharacter = 0;
+  const placeholder: string = '';
+  const searchPlaceholderText = 'search for...';
+  const speed = 180;
+  function typeSearch(placeholder: string): void {
+    placeholder += searchPlaceholderText.charAt(searchCharacter);
+    searchCharacter++;
+    setTimeout(typeSearch, speed);
+  }
+
+  function variantsPageOffset(): void {}
+
+  function onChangeFirst(): void {
+    // setBestseller(!bestseller);
+  }
+
+  function onChangePrevious(): void {
+    // setBestseller(!bestseller);
+  }
+
+  function onChangeNext(): void {
+    // setBestseller(!bestseller);
+  }
+
+  function onChangeLast(): void {
+    // setBestseller(!bestseller);
+  }
+
+  // function onChangeNextPageOffset(): number {
+  //   setCurrentOffset(currentOffset + 1);
+  //   currentOffset;
+  //   return currentOffset;
+  // }
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
@@ -504,6 +590,10 @@ function CategoryPage(): JSX.Element {
 
   function onChangeSale(): void {
     setSale(!sale);
+  }
+
+  function onChangeWinterSale(): void {
+    setWinter(!winter);
   }
 
   function onChangeColour(colour: string): void {
@@ -651,9 +741,7 @@ function CategoryPage(): JSX.Element {
       <div className={style.category_wrapper}>
         <div className={style.breadcrumbs_search}>
           <div className={style.breadcrumbs}>
-            <span className={style.breadcrumbs_symbol}>
-              {breadcrumbsSymbol}
-            </span>
+            <span className={style.breadcrumbs_symbol}></span>
             {category}
           </div>
           <div className={style.category_filters_search}>
@@ -663,14 +751,17 @@ function CategoryPage(): JSX.Element {
                 type="text"
                 className={style.category_search_input}
                 // id='search'
-                placeholder="search"
-                onChange={(e): void => setSearchValue(e.target.value)}
+                placeholder="search for..."
+                onChange={(e): void => {
+                  setSearchValue(e.target.value);
+                  typeSearch(placeholder);
+                }}
               />
             </div>
           </div>
         </div>
         <div className={style.category_filters_cards_wrapper}>
-          <h2 className={style.category_title}>{category}</h2>
+          {/* <h2 className={style.category_title}>{category}</h2> */}
           <div className={style.category_filters}>
             <div className={style.category_categories}>
               {subtree.map((subCategory) => {
@@ -740,7 +831,7 @@ function CategoryPage(): JSX.Element {
                 );
               })}
             </div>
-            <div className={style.category_filters_size}>
+            <div className={style.category_filters_sizes}>
               {category === 'Clothes' &&
                 sizesArray.map((size) => {
                   return (
@@ -773,6 +864,7 @@ function CategoryPage(): JSX.Element {
                       <label
                         htmlFor={size}
                         className={style[`category_filters_${size}`]}
+                        /* className={style[`category_filters_${size}`]} */
                       >
                         {size}
                       </label>
@@ -799,20 +891,44 @@ function CategoryPage(): JSX.Element {
                 </label>
               </div>
             </div>
-            <div className={style.category_filters_sale}>
-              <div>
-                <input
-                  name="filterSale"
-                  type="checkbox"
-                  className={style.sale_input}
-                  id="sale"
-                  onChange={(): void => {
-                    onChangeSale();
-                  }}
-                />
-                <label htmlFor="sale" className={style.category_filters_sale}>
-                  sale
-                </label>
+            <div className={style.category_filters_sales}>
+              <div className={style.category_filters_sale}>
+                <div>
+                  <input
+                    name="filterSale"
+                    type="checkbox"
+                    className={style.sale_input}
+                    id="sale"
+                    onChange={(): void => {
+                      onChangeSale();
+                    }}
+                  />
+                  <label
+                    htmlFor="sale"
+                    className={style.category_filters_sale_red}
+                  >
+                    red sale
+                  </label>
+                </div>
+              </div>
+              <div className={style.category_filters_sale}>
+                <div>
+                  <input
+                    name="filterSale"
+                    type="checkbox"
+                    className={style.sale_input}
+                    id="winter_sale"
+                    onChange={(): void => {
+                      onChangeWinterSale();
+                    }}
+                  />
+                  <label
+                    htmlFor="winter_sale"
+                    className={style.category_filters_sale_winter}
+                  >
+                    winter sale
+                  </label>
+                </div>
               </div>
             </div>
             <div className={style.category_filters_priceStart}>
@@ -822,7 +938,7 @@ function CategoryPage(): JSX.Element {
                   type="number"
                   className={style.category_search_input_price}
                   // id='search'
-                  placeholder="price"
+                  placeholder="price from"
                   onChange={(e): void => setSearchPriceStart(e.target.value)}
                 />
               </div>
@@ -834,12 +950,12 @@ function CategoryPage(): JSX.Element {
                   type="number"
                   className={style.category_search_input_price}
                   // id='search'
-                  placeholder="price"
+                  placeholder="price to"
                   onChange={(e): void => setSearchPriceFinish(e.target.value)}
                 />
               </div>
             </div>
-            <div className={style.category_price_range_slider}>
+            {/* <div className={style.category_price_range_slider}>
               <div className={style.category_range_value}>
                 <input
                   type="text"
@@ -853,11 +969,11 @@ function CategoryPage(): JSX.Element {
                 id="category_slider_range"
                 className={style.category_range_bar}
               ></div>
-            </div>
+            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
-                  <div key={brand} className={style.category_colours_wrapper}>
+                  <div key={brand} className={style.category_brands_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -870,49 +986,94 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={brand}
                       className={style[`category_filters_${brand}`]}
-                    >
-                      {brand}
-                    </label>
+                    ></label>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className={style.category_pagination}>
-            <div className={style.category_cards_wrapper}>
-              {allCards.map((card) => {
-                return (
-                  <Link
-                    to={`/category/${category}/${card.key}`}
-                    className={style.category_card}
-                    key={card.key}
-                  >
-                    <Card
-                      keyCard={card.key ? card.key : ''}
-                      images={card.images && card.images[0].url}
-                      prices={
-                        card.prices && card.prices[0].value
-                          ? card.prices[0].value.centAmount
-                          : 0
-                      }
-                      discounted={
-                        card.prices &&
-                        card.prices[0].discounted?.value.centAmount
-                          ? `${card.prices[0].discounted?.value.centAmount}$`
-                          : ''
-                      }
-                      sku={card.sku ? card.sku : ''}
-                    />
-                  </Link>
-                );
-              })}
-            </div>
-            <div className={style.category_pagination_buttons}>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}>1</button>
-              <button className={style.category_pagination_button}></button>
-              <button className={style.category_pagination_button}></button>
+          <div className={style.category_pagination_customize}>
+            <div className={style.category_pagination}>
+              <div className={style.category_cards_wrapper}>
+                {allCards.map((card) => {
+                  let productPrice = 0;
+                  let productDiscount;
+                  let ifProductDiscount = 0;
+                  card.prices
+                    ? (productPrice = card.prices[0].value.centAmount / 100)
+                    : 0;
+
+                  card.prices && card.prices[0].discounted?.value.centAmount
+                    ? ((ifProductDiscount =
+                        card.prices[0].discounted?.value.centAmount / 100),
+                      (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+                    : '';
+                  return (
+                    <Link
+                      to={`/category/${category}/${card.key}`}
+                      className={style.category_card}
+                      key={card.key}
+                    >
+                      <Card
+                        keyCard={card.key ? card.key : ''}
+                        images={card.images && card.images[0].url}
+                        prices={productPrice.toFixed(2)}
+                        discounted={productDiscount}
+                        sku={card.sku ? card.sku : ''}
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className={style.category_pagination_buttons}>
+                <button
+                  className={`${style.category_pagination_button} ${style.previous}`}
+                  onClick={(): void => {
+                    currentPage > 1
+                      ? setCurrentPage(currentPage - 1)
+                      : setCurrentPage(1);
+                    currentOffset > 0
+                      ? setCurrentOffset(currentOffset - 1)
+                      : setCurrentOffset(0);
+                  }}
+                ></button>
+                <div
+                  className={`${style.category_pagination_number} ${style.current}`}
+                >
+                  {currentPage}
+                </div>
+                <button
+                  className={`${style.category_pagination_button} ${style.next}`}
+                  onClick={(): void => {
+                    console.log(
+                      'page',
+                      currentPage,
+                      'max',
+                      maxPage,
+                      'offset',
+                      currentOffset
+                    );
+                    currentPage !== maxPage
+                      ? setCurrentPage(currentPage + 1)
+                      : setCurrentPage(maxPage);
+                    currentOffset !== maxPage - 1
+                      ? setCurrentOffset(currentOffset + 1)
+                      : setCurrentOffset(maxPage - 1);
+                  }}
+                ></button>
+              </div>
+              <Link to="/customize">
+                <div
+                  className={`${style.catalog_advertisment} ${style.customize}`}
+                >
+                  <div className={style.catalog_sloth_left}></div>
+                  <div className={style.catalog_advertisment_text}>
+                    Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
+                    your own with RSSchool amazing merch... have fun \o/
+                  </div>
+                  <div className={style.catalog_sloth_right}></div>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

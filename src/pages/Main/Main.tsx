@@ -10,25 +10,15 @@ import {
   useRef,
   useState,
 } from 'react';
-import { getProducts } from '../../api/getProducts';
 
 export const mainPageOffersSlides = [
-  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase per one day.',
-  'HOT SALES 20% OFF on all red t-shirts and caps during hot summer!',
-  '2 = 1 !!! two t-shirts with the same art by price of one!',
-  'Get the gift with every second purchase - sticker pack, mug or cap - by your taste.',
+  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase.',
+  'HOT SALES 20% OFF on all red t-shirts and caps during hot summer and autumn!',
+  'Winter is coming so get the 10% OFF on all white hoodies, mugs and mice.',
+  '2 = 1 !!! two t-shirts of the same colour by price of one!',
 ];
 
 function MainPage(): JSX.Element {
-  // const [allProducts, setAllProducts] = useState<string[]>([]);
-  // useEffect(() => {
-  //   getProducts()
-  //     .then((response) => {
-  //       setAllProducts(response);
-  //     })
-  //     .then((response) => console.log(response.length));
-  // }, []);
-  // console.log(getProducts());
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
