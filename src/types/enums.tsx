@@ -18,7 +18,7 @@ export enum ParhRoute {
   CategoryPageQuery = 'catalog/:category/:query',
   CategoryPageQueryProductPage = 'catalog/:category/:query/:id',
   ProductPage = 'category/:category/:id',
-  ProfilePage = '/profile/:localId',
+  ProfilePage = '/profile/:customerId',
   RegistrationPage = '/registration',
   AuthPage = '/login',
   NotFoundPage = '*',

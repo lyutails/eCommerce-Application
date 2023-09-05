@@ -13,7 +13,7 @@ import {
 import AddressForm from '../AddressForm/AddressForm';
 import { IAddressesCardData } from '../../pages/Profile/Profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState } from '../../types/interfaces';
+import { IProfileState, IRootState } from '../../types/interfaces';
 import { handleUpdateAddress } from './address-modal-verify';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { changeAddress } from '../../store/reducers/profileReducer';
@@ -134,6 +134,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
   const { address, version } = useSelector(
     (state: IProfileState) => state.profile
   );
+  const { refreshToken } = useSelector((state: IRootState) => state.user);
   const [checkedDefault, setCheckedDefault] = useState(false);
   const inputDefaultShipping = document.getElementById(
     'defaultShip'
@@ -248,7 +249,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     apartmentError: !address.apartment.error,
     postalError: !address.postal.error,
     countryError: !address.country.error,
-    token: props.token ? props.token : '',
+    token: refreshToken,
   };
   const addressFormData = {
     title: 'Update address',
