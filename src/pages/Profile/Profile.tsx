@@ -1,9 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  createCustomerId,
-  setAuthStatus,
-} from '../../store/reducers/userReducer';
+import { useNavigate } from 'react-router-dom';
+import { setAuthStatus } from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
 import {
   IPersonalState,
@@ -69,7 +66,6 @@ function ProfilePage(): JSX.Element {
   const { customerId, refreshToken } = useSelector(
     (state: IRootState) => state.user
   );
-  // console.log(refreshToken);
 
   const checkRefreshToken = useCallback((): void => {
     dispatch(setAuthStatus(false));
@@ -285,6 +281,7 @@ function ProfilePage(): JSX.Element {
                   isUpdate: true,
                   isAdd: false,
                   idAddress: addressCard.id,
+                  id: addressCard.id,
                 })
               );
               setClickedAddressesUpdate(true);
@@ -540,6 +537,14 @@ function ProfilePage(): JSX.Element {
           onClick={(): void => {
             setShowModal(false);
             setClickedAddressesUpdate(false);
+            dispatch(
+              changeAddress({
+                defaultShipping: false,
+                defaultBilling: false,
+                shippingAddress: false,
+                billingAddress: false,
+              })
+            );
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
