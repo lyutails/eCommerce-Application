@@ -794,10 +794,16 @@ input#price-sort {
   display: inline-block;
 
   aspect-ratio: 1 / 0.5;
-  width: 5vw;
+  width: 3vw;
+  margin-right: 1vw;
+  margin-left: 1vw;
 
   background-image: url('../../../public/ui-kit/breadcrumbs_arrow_purple_green.svg');
   background-repeat: no-repeat;
+}
+
+.breadcrumbs_link {
+  font-size: 2rem;
 }
 
 .category_search_input::placeholder {
@@ -945,9 +951,10 @@ input#price-sort {
   }
 
   .category_search_input {
-    width: 40vw;
+    width: 60vw;
     min-width: 150px;
     padding-left: 30px;
+    max-width: 320px;
   }
 
   .category_search_input_price {
@@ -956,10 +963,21 @@ input#price-sort {
 
   .breadcrumbs {
     font-size: 4rem;
+    width: 90vw;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
   }
 
   .category_pagination_customize {
     width: 100%;
+  }
+
+  .breadcrumbs_search {
+    flex-direction: column;
+    height: 160px;
+    align-content: center;
   }
 }
 
@@ -967,6 +985,10 @@ input#price-sort {
   .catalog_advertisment_text {
     width: 50%;
     font-size: 1.8rem;
+  }
+
+  .category_search_input {
+    padding-left: 3vw;
   }
 }
 

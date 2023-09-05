@@ -163,9 +163,6 @@ export interface IPersonalState {
   };
 }
 
-export interface ICategoryState {
-  category: string[];
-}
 export interface IProductState {
   product: {
     productImg: string[];
@@ -199,10 +196,9 @@ export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
 }
-// export interface IStore {
-//   user: userReducer;
-//   category: categoryReducer;
-//   personal: personalReducer;
-//   profile: profileReducer;
-//   productImg: productReducer;
-// }
+
+export interface ICategoryState {
+  category: {
+    category: string[];
+  };
+}

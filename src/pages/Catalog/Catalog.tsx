@@ -3,25 +3,12 @@ import style from './_catalog.module.scss';
 import { useEffect, useState } from 'react';
 import { GetParentCategory } from '../../api/getCategories';
 import { Category } from '@commercetools/platform-sdk';
+import { useDispatch } from 'react-redux';
+import { createCategory } from '../../store/reducers/categoryReducer';
 
 function CatalogPage(): JSX.Element {
-  /* const category = useSelector((state: ICategoryState) => state.category); */
-  // const [allCategories, setAllCategories] = useState<string[]>([]);
-  // useEffect(() => {
-  //   GetCategories().then((response) => {
-  //     setAllCategories(response);
-  //   });
-  // }, []);
-  // const [particularCategories, setParticularCategory] = useState<string[]>([]);
-  // useEffect(() => {
-  //   GetCategory().then((response) => {
-  //     setAllCategories(response);
-  //   });
-  // }, []);
-  // console.log(GetCategory());
-  // console.log(GetCategories());
-  // console.log(GetParentCategory());
   const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     GetParentCategory().then((response) => {
       const parentCategory = response.body.results;
@@ -29,8 +16,12 @@ function CatalogPage(): JSX.Element {
         (data) => data.ancestors.length === 0
       );
       setAllCategories(onlyWithoutAncestors);
+      const subCategories = onlyWithoutAncestors.map(
+        (categoryItem) => categoryItem?.name['en-US']
+      );
+      dispatch(createCategory(subCategories));
     });
-  }, []);
+  }, [dispatch]);
   return (
     <div className={style.catalog} data-testid="catalog-component">
       <div className={style.catalog_wrapper}>
