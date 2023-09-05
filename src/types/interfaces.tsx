@@ -164,9 +164,6 @@ export interface IPersonalState {
   };
 }
 
-export interface ICategoryState {
-  category: string[];
-}
 export interface IProductState {
   product: {
     productImg: string[];

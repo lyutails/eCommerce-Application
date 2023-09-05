@@ -430,11 +430,12 @@ function CategoryPage(): JSX.Element {
         querySizesString === queryStringAllSizes || querySizesString === `"no"`
           ? currentOffset
           : 0;
-
+      
       /* const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
       const urlQuery = query ? query : '';
       const queryURLArray = urlQuery.split(';'); */
+
 
       filterByAttributes(
         queryColoursString,
@@ -747,6 +748,14 @@ function CategoryPage(): JSX.Element {
       <div className={style.category_wrapper}>
         <div className={style.breadcrumbs_search}>
           <div className={style.breadcrumbs}>
+            <span className={style.breadcrumbs_symbol}></span>
+            <Link to={'/'} className={style.breadcrumbs_link}>
+              Main
+            </Link>
+            <span className={style.breadcrumbs_symbol}></span>
+            <Link to={'/catalog'} className={style.breadcrumbs_link}>
+              Catalog
+            </Link>
             <span className={style.breadcrumbs_symbol}></span>
             {category}
           </div>
