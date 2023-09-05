@@ -4,7 +4,7 @@ import { IProductState } from '../../../types/interfaces';
 import { EffectCards, Zoom, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
-import 'swiper/css';
+
 import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -36,6 +36,7 @@ function ModalWindow(): JSX.Element {
         <Swiper
           loop={true}
           navigation={true}
+          centeredSlides={true}
           effect={'cards'}
           grabCursor={true}
           zoom={{
