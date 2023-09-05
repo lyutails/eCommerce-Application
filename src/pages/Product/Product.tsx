@@ -6,8 +6,8 @@ import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
+import { EffectCoverflow } from 'swiper/modules';
+
 import 'swiper/css/navigation';
 
 import {
@@ -17,6 +17,8 @@ import {
 import ModalWindow from './ModalWindow/ModalWindow';
 import { IProductState } from '../../types/interfaces';
 import '../Product/_product.scss';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
 
 interface IDataProduct {
   name: string;
@@ -220,11 +222,33 @@ function ProductPage(): JSX.Element {
               BestSeller!!!
             </div>
             <Swiper
+              effect={'coverflow'}
+              centeredSlides={true}
               loop={true}
-              navigation={true}
               grabCursor={true}
-              modules={[Navigation]}
-              className="swiper-wrapper"
+              slidesPerView={1}
+              spaceBetween={70}
+              coverflowEffect={{
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 4,
+                slideShadows: false,
+              }}
+              modules={[EffectCoverflow]}
+              keyboard={{
+                enabled: true,
+              }}
+              mousewheel={{
+                thresholdDelta: 70,
+              }}
+              initialSlide={0}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+              }}
+              className="swiper-content"
             >
               {dataProduct.images.map((image, index) => {
                 return (
