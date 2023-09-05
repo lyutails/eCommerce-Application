@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import { Category, ProductVariant } from '@commercetools/platform-sdk';
-import Card from './Card';
+
 import { filterByAttributes, getProductType } from '../../api/filterAttributes';
 import {
   Brands,
@@ -16,6 +16,7 @@ import {
   SubCategories,
   SubcategoriesIDs,
 } from '../../types/enums';
+import Card from '../../components/Card/Card';
 
 function CategoryPage(): JSX.Element {
   const pageLimit = 8;
@@ -47,6 +48,7 @@ function CategoryPage(): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
+  const [picOnMouseEnter, setPicOnMouseEnter] = useState('');
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -797,7 +799,7 @@ function CategoryPage(): JSX.Element {
             </div>
             <div className={style.pricesort_wrapper}>
               <input
-                name="filterColor"
+                name="filterPriceSort"
                 type="checkbox"
                 className={style.pricesort_input}
                 id="price-sort"
@@ -831,7 +833,7 @@ function CategoryPage(): JSX.Element {
                   setNameSort(!nameSort);
                 }}
               />
-              <div className={style.pricesort_switch}>
+              <div className={style.namesort_switch}>
                 <div
                   className={
                     nameIsChecked
@@ -842,9 +844,7 @@ function CategoryPage(): JSX.Element {
                 <label
                   htmlFor="name-sort"
                   className={style.namesort_ascdesc_label}
-                >
-                  name
-                </label>
+                ></label>
               </div>
             </div>
             <div className={style.category_filters_color}>
@@ -1061,7 +1061,8 @@ function CategoryPage(): JSX.Element {
                     >
                       <Card
                         keyCard={card.key ? card.key : ''}
-                        images={card.images && card.images[0].url}
+                        // images={card.images && card.images[0].url}
+                        images={card.images}
                         prices={productPrice.toFixed(2)}
                         discounted={productDiscount}
                         sku={card.sku ? card.sku : ''}

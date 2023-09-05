@@ -145,6 +145,7 @@
 
     width: 15vw;
     margin-top: 50px;
+    margin-bottom: 20px;
   }
 
   &_pagination_button {
@@ -169,14 +170,14 @@
     &.previous {
       transform: rotate(180deg);
 
-      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-image: url('../../../public/ui-kit/arrow_02_green_blue.svg');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 80% 80%;
     }
 
     &.next {
-      background-image: url('../../../public/ui-kit/arrow_01_purple_blue.svg');
+      background-image: url('../../../public/ui-kit/arrow_02_green_blue.svg');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 80% 80%;
@@ -265,6 +266,7 @@
     aspect-ratio: 1 / 0.36;
     width: 20vw;
     min-width: 300px;
+    max-width: 420px;
     padding-left: 4vw;
 
     font-family: Cyberpunk, cursive;
@@ -403,6 +405,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_s {
@@ -421,10 +424,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
-
-    &:hover {
-      cursor: pointer;
-    }
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_m {
@@ -443,6 +443,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_l {
@@ -461,6 +462,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_xl {
@@ -479,6 +481,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_xxl {
@@ -497,6 +500,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_xxxl {
@@ -515,6 +519,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_filters_universal {
@@ -538,6 +543,7 @@
     background-image: url('../../../public/ui-kit/circle_05.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
   }
 
   &_reset_button {
@@ -739,6 +745,28 @@ input#price-sort {
   transform: translateX(7vw);
 }
 
+.namesort_switch {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  aspect-ratio: 1 / 0.45;
+  width: 15vw;
+  margin: 0 auto;
+  padding-top: 8%;
+  padding-right: 1.8vw;
+  padding-left: 1.8vw;
+
+  background-image: url('../../../public/ui-kit/sort_name.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  transition: left 0.25s ease-in-out;
+}
+
 .breadcrumbs_search {
   display: flex;
   flex-direction: row;
@@ -747,6 +775,7 @@ input#price-sort {
 
   height: 100px;
   margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .breadcrumbs {
@@ -837,6 +866,12 @@ input#price-sort {
   }
 
   .pricesort_switch {
+    width: 50vw;
+    padding-top: 25%;
+    padding-left: 6vw;
+  }
+
+  .namesort_switch {
     width: 50vw;
     padding-top: 25%;
     padding-left: 6vw;
@@ -940,11 +975,35 @@ input#price-sort {
     width: 50%;
     font-size: 1.5rem;
   }
+
+  .category_filters_sale_red {
+    margin-bottom: 20px;
+    font-size: 3.6rem;
+  }
+
+  .category_filters_sale_winter {
+    margin-bottom: 20px;
+    font-size: 3.6rem;
+  }
+
+  .category_filters_sizes {
+    font-size: 2.4rem;
+  }
 }
 
 @media screen and (min-width: (320px)) and (max-width: (499.98px)) {
   .catalog_advertisment_text {
     width: 50%;
     font-size: 1.2rem;
+  }
+
+  .category_filters_sale_red {
+    margin-bottom: 20px;
+    font-size: 3.8rem;
+  }
+
+  .category_filters_sale_winter {
+    margin-bottom: 20px;
+    font-size: 3.8rem;
   }
 }

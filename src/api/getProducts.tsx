@@ -1,9 +1,7 @@
 import {
   ClientResponse,
-  Product,
   ProductProjection,
   ProductProjectionPagedSearchResponse,
-  ProductVariant,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
 
