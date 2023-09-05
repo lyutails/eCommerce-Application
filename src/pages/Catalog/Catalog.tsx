@@ -24,7 +24,6 @@ function CatalogPage(): JSX.Element {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   useEffect(() => {
     GetParentCategory().then((response) => {
-      console.log(response);
       const parentCategory = response.body.results;
       const onlyWithoutAncestors = parentCategory.filter(
         (data) => data.ancestors.length === 0
