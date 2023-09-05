@@ -69,7 +69,6 @@ function ProfilePage(): JSX.Element {
   const { customerId, refreshToken } = useSelector(
     (state: IRootState) => state.user
   );
-  // console.log(refreshToken);
 
   const checkRefreshToken = useCallback((): void => {
     dispatch(setAuthStatus(false));
