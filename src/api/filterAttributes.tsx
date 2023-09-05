@@ -13,7 +13,7 @@ export async function filterByAttributes(
   bestseller: string,
   sale: string,
   brand: string,
-  sortprice: string,
+  sortpricename: string | string[],
   search: string,
   fuzzylevel: number,
   priceRangeStart: string,
@@ -28,7 +28,8 @@ export async function filterByAttributes(
       .search()
       .get({
         queryArgs: {
-          sort: `${sortprice}`,
+          sort: sortpricename,
+          // sort: ['price desc', 'name.en-us asc'],
           limit: Number(`${limit}`),
           'text.en-us': `${search}`,
           fuzzy: true,
@@ -54,8 +55,7 @@ export async function filterByAttributes(
       .execute();
     return productsByColour;
   } catch {
-    console.log('no product by attribute found');
-    throw new Error('no product by attribute found');
+    throw new Error('no product by attribute or filter found');
   }
 }
 
