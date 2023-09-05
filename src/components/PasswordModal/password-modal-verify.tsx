@@ -1,7 +1,11 @@
-import { changePassword } from '../../store/reducers/profileReducer';
+import {
+  changePassword,
+  changeVersion,
+} from '../../store/reducers/profileReducer';
 import { updatePassword } from '../../api/changePassword';
 import { IPasswordUpdateData } from './PasswordModal';
 import { getCustomerToken } from '../../api/adminBuilder';
+import { setRefreshTokenStatus } from '../../store/reducers/userReducer';
 
 export interface IMyCustomerPasswordUpdate {
   version: number;
@@ -24,6 +28,7 @@ export const handleUpdatePassword = (
       passwordUpdateData.passwordNewField ===
       passwordUpdateData.passwordRepeatField
     ) {
+      console.log(data.version, 'password');
       updatePassword(
         passwordUpdateData.token,
         data,
@@ -38,11 +43,16 @@ export const handleUpdatePassword = (
               passwordUpdateData.login,
               passwordUpdateData.passwordNewField
             );
+            passwordUpdateData.dispatch(changeVersion(response.body.version));
             return token;
           }
         })
         .then((response) => {
+          console.log(response);
           localStorage.setItem('refreshToken', response.refresh_token);
+          passwordUpdateData.dispatch(
+            setRefreshTokenStatus(response.refresh_token)
+          );
         })
         .catch((error) => {
           if (error) {
