@@ -1,3 +1,6 @@
+import { changeVersion } from '../../store/reducers/profileReducer';
+import { Dispatch } from 'react';
+import { AnyAction } from 'redux';
 import { updateCustomer } from '../../api/updateBio';
 import { IMyCustomerEmailUpdate } from './EmailModal';
 
@@ -6,10 +9,15 @@ export const handleUpdateEmail = (
   token: string,
   data: IMyCustomerEmailUpdate,
   setClickedEmailUpdate: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  dispatch: Dispatch<AnyAction>
 ): void => {
   if (emailCheck) {
-    updateCustomer(token, data);
+    updateCustomer(token, data).then((response) => {
+      if (response) {
+        dispatch(changeVersion(response.body.version));
+      }
+    });
     setClickedEmailUpdate(false);
     setShowModal(false);
   }

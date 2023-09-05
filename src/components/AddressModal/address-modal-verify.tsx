@@ -1,19 +1,11 @@
 import {
-  AddressDraft,
-  MyCustomerAddAddressAction,
   MyCustomerAddBillingAddressIdAction,
   MyCustomerAddShippingAddressIdAction,
   MyCustomerChangeAddressAction,
-  MyCustomerSetDateOfBirthAction,
   MyCustomerSetDefaultBillingAddressAction,
   MyCustomerSetDefaultShippingAddressAction,
-  MyCustomerSetFirstNameAction,
-  MyCustomerSetLastNameAction,
   MyCustomerUpdate,
 } from '@commercetools/platform-sdk';
-import { IPersonalData } from '../../pages/Profile/Profile';
-import { parseDateToWeb } from '../../utils/parseDate';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   IAddAddressData,
   IAddAddressStatusData,
@@ -76,6 +68,10 @@ export const handleUpdateAddress = (
                     defaultBillingId: response.body.defaultBillingAddressId,
                     shippingAddressesId: response.body.shippingAddressIds,
                     billingAddressesId: response.body.billingAddressIds,
+                    defaultShipping: false,
+                    defaultBilling: false,
+                    shippingAddress: false,
+                    billingAddress: false,
                   })
                 );
                 dispatch(changeVersion(response.body.version));
@@ -95,6 +91,10 @@ export const handleUpdateAddress = (
                 defaultBillingId: response.body.defaultBillingAddressId,
                 shippingAddressesId: response.body.shippingAddressIds,
                 billingAddressesId: response.body.billingAddressIds,
+                defaultShipping: false,
+                defaultBilling: false,
+                shippingAddress: false,
+                billingAddress: false,
               })
             );
             dispatch(changeVersion(response.body.version));

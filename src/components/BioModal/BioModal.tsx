@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import style from '../BioModal/_bioModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
@@ -11,9 +10,9 @@ import {
 import InputBirthDateMask from '../Input/InputBirthDateMask';
 import { handleUpdateBio, IMyCustomerBioUpdate } from './bio-modal-verify';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
-import { parseDateToServer, parseDateToWeb } from '../../utils/parseDate';
+import { parseDateToServer } from '../../utils/parseDate';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState } from '../../types/interfaces';
+import { IProfileState, IRootState } from '../../types/interfaces';
 import { changeBio } from '../../store/reducers/profileReducer';
 
 export interface IBioModalProps {
@@ -34,11 +33,12 @@ export interface IBioUpdateData {
 function BioModal(props: IBioModalProps): JSX.Element {
   const dispatch = useDispatch();
   const { version, bio } = useSelector((state: IProfileState) => state.profile);
-  const [token, setToken] = useState('');
+  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  // const [token, setToken] = useState('');
 
-  useEffect(() => {
-    setToken(props.token ? props.token : '');
-  }, [props.token]);
+  // useEffect(() => {
+  //   setToken(props.token ? props.token : '');
+  // }, [props.token]);
 
   const customerUpdateData: IMyCustomerBioUpdate = {
     version: version,
@@ -94,9 +94,8 @@ function BioModal(props: IBioModalProps): JSX.Element {
     firstnameError: !bio.firstname.error,
     lastnameError: !bio.lastname.error,
     birthdayError: !bio.birthday.error,
-    token: token,
+    token: refreshToken,
   };
-
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
@@ -214,7 +213,8 @@ function BioModal(props: IBioModalProps): JSX.Element {
             updateBioData,
             customerUpdateData,
             props.setClickedBioUpdate,
-            props.setShowModal
+            props.setShowModal,
+            dispatch
           )
         }
         classNames={style.modal_button}

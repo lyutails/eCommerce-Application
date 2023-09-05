@@ -1,9 +1,13 @@
-import { createCustomerId } from '../../store/reducers/userReducer';
+import {
+  createCustomerId,
+  setRefreshTokenStatus,
+} from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput, clue } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
 import { getCustomerToken } from '../../api/adminBuilder';
+import { changeVersion } from '../../store/reducers/profileReducer';
 /* 
 eslint-disable-next-line prefer-const */
 let loginСheck = false;
@@ -48,6 +52,7 @@ export const handleСreationAuth = (
         if (response) {
           localStorage.setItem('customerId', response.body.customer.id);
           dispatch(createCustomerId(response.body.customer.id));
+          dispatch(changeVersion(response.body.customer.version));
         }
       })
       .then(() => {
@@ -56,6 +61,7 @@ export const handleСreationAuth = (
       })
       .then((response) => {
         localStorage.setItem('refreshToken', response.refresh_token);
+        dispatch(setRefreshTokenStatus(response.refresh_token));
       })
       .catch((error) => {
         if (error) {

@@ -430,13 +430,12 @@ function CategoryPage(): JSX.Element {
         querySizesString === queryStringAllSizes || querySizesString === `"no"`
           ? currentOffset
           : 0;
+      
+      /* const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
-      /* const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`; */
+      const urlQuery = query ? query : '';
+      const queryURLArray = urlQuery.split(';'); */
 
-      /* const urlQuery = query ? query : ''; */
-      /* const queryURLArray = urlQuery.split(';'); */
-
-      // navigate(queryURL);
 
       filterByAttributes(
         queryColoursString,
@@ -991,21 +990,6 @@ function CategoryPage(): JSX.Element {
                 />
               </div>
             </div>
-            {/* <div className={style.category_price_range_slider}>
-              <div className={style.category_range_value}>
-                <input
-                  type="text"
-                  className={style.category_price_input}
-                  id="amount"
-                  readOnly
-                  // onChange={(): void => onChangeSale(sale)}
-                />
-              </div>
-              <div
-                id="category_slider_range"
-                className={style.category_range_bar}
-              ></div>
-            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (

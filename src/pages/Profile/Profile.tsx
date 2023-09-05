@@ -1,9 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  createCustomerId,
-  setAuthStatus,
-} from '../../store/reducers/userReducer';
+import { useNavigate } from 'react-router-dom';
+import { setAuthStatus } from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
 import {
   IPersonalState,
@@ -75,6 +72,7 @@ function ProfilePage(): JSX.Element {
     navigate('/login');
     localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
+    dispatch(changeVersion(1));
   }, [dispatch, navigate]);
 
   useEffect(() => {
@@ -114,6 +112,7 @@ function ProfilePage(): JSX.Element {
           });
         })
         .catch(() => {
+          console.log('error');
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
@@ -125,6 +124,7 @@ function ProfilePage(): JSX.Element {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
     dispatch(setAuthStatus(false));
+    dispatch(changeVersion(1));
     navigate('/');
   };
   const addressCard = address.addressStore.map((addressCard, i) => {
@@ -277,6 +277,7 @@ function ProfilePage(): JSX.Element {
                   isUpdate: true,
                   isAdd: false,
                   idAddress: addressCard.id,
+                  id: addressCard.id,
                 })
               );
               setClickedAddressesUpdate(true);
@@ -531,6 +532,14 @@ function ProfilePage(): JSX.Element {
           onClick={(): void => {
             setShowModal(false);
             setClickedAddressesUpdate(false);
+            dispatch(
+              changeAddress({
+                defaultShipping: false,
+                defaultBilling: false,
+                shippingAddress: false,
+                billingAddress: false,
+              })
+            );
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
@@ -559,3 +568,5 @@ export default ProfilePage;
 // tycteam:cn-qqCLdwzkJaZFsOw4IlgdqftWdZkbtPWTO2Bi4W_c
 
 // tycteam:ZFNIpB6J4c2ilbvHWTIhpC7eY-njz54kx6tXbaARgpg
+
+// hjfjhHGF76

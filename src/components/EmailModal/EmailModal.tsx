@@ -13,7 +13,7 @@ import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { MyCustomerChangeEmailAction } from '@commercetools/platform-sdk';
 import { handleUpdateEmail } from './email-modal-verify';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState } from '../../types/interfaces';
+import { IProfileState, IRootState } from '../../types/interfaces';
 import { changeEmail } from '../../store/reducers/profileReducer';
 
 export interface IEmailModalProps {
@@ -34,6 +34,7 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
   const { email, version } = useSelector(
     (state: IProfileState) => state.profile
   );
+  const { refreshToken } = useSelector((state: IRootState) => state.user);
   const [emailError, setEmailError] = useState('');
   const [emailCheck, setEmailCheck] = useState(false);
   const [checkmarkEmail, setCheckmarkEmail] = useState(true);
@@ -51,7 +52,6 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
     event: React.ChangeEvent<HTMLInputElement>,
     checkErrorInput: (streetShipField: string) => string
   ): void => {
-    console.log(event.target.value);
     const errorMessage = checkErrorInput(event.target.value);
     dispatch(
       changeEmail({
@@ -96,10 +96,11 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
         onClick={(): void =>
           handleUpdateEmail(
             !email.error,
-            props.token ? props.token : '',
+            refreshToken,
             customerUpdateData,
             props.setClickedEmailUpdate,
-            props.setShowModal
+            props.setShowModal,
+            dispatch
           )
         }
         classNames={style.modal_button}

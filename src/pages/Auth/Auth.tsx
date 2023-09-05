@@ -2,7 +2,6 @@ import Input from '../../components/Input/Input';
 import style from '../Auth/_auth.module.scss';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import iconEmail from '../../../public/assets/icons/email.svg';
-import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import iconError from '../../../public/assets/icons/error.svg';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +11,6 @@ import { useState } from 'react';
 import { handlePasswordInput, inputHandler } from '../verification';
 import { IRootState } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
-import { hideTooltip, showTooltip } from '../showTooltip';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -51,7 +49,6 @@ function AuthPage(): JSX.Element {
       setCheckmarkPassword(false);
     }
   }
-  console.log(passwordError);
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>

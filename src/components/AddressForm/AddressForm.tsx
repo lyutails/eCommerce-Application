@@ -5,31 +5,18 @@ import {
   handleCountryShipInputTwo,
   handlePostalShipInputTwo,
   handleStreetShipInputTwo,
-  selectHandler,
 } from '../../pages/verification';
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import style from '../AddressForm/_addressForm.module.scss';
 import Input from '../Input/Input';
-import { handleCheckbox } from '../../utils/handleCheckbox';
-import { AddressDraft } from '@commercetools/platform-sdk';
-import { IAddressesCardData } from '../../pages/Profile/Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { IProfileState } from '../../types/interfaces';
-import profileReducer, {
-  changeAddress,
-} from '../../store/reducers/profileReducer';
+import { changeAddress } from '../../store/reducers/profileReducer';
 
 export interface IAddressFormProps {
   addBillingAddress?: ReactNode;
   addressData: IAddressDataObject;
-  setDefaultAddress: React.Dispatch<React.SetStateAction<boolean>>;
   setDefault?: ReactNode;
   setAddressStatus?: ReactNode;
   titleStyle: string;
@@ -275,7 +262,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
               Please, select the country
             </option>
             {address.country.value === 'US' ? (
-              <option selected value="usa">
+              <option selected value="US">
                 USA
               </option>
             ) : (
@@ -283,7 +270,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
             )}
 
             {address.country.value === 'CA' ? (
-              <option selected value="canada">
+              <option selected value="CA">
                 Canada
               </option>
             ) : (
