@@ -1,21 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
 import style from '../AddressModal/_addressModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
-import Input from '../Input/Input';
-import { inputHandler } from '../../pages/verification';
-import InputBirthDateMask from '../Input/InputBirthDateMask';
-import {
-  AddressDraft,
-  ClientResponse,
-  Customer,
-} from '@commercetools/platform-sdk';
 import AddressForm from '../AddressForm/AddressForm';
-import { IAddressesCardData } from '../../pages/Profile/Profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { IProfileState, IRootState } from '../../types/interfaces';
 import { handleUpdateAddress } from './address-modal-verify';
-import { handleCheckbox } from '../../utils/handleCheckbox';
 import { changeAddress } from '../../store/reducers/profileReducer';
 // import { updateBio } from './bio-update';
 
@@ -135,19 +124,6 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     (state: IProfileState) => state.profile
   );
   const { refreshToken } = useSelector((state: IRootState) => state.user);
-  const [checkedDefault, setCheckedDefault] = useState(false);
-  const inputDefaultShipping = document.getElementById(
-    'defaultShip'
-  ) as HTMLInputElement;
-  const inputDefaultBilling = document.getElementById(
-    'defaultBill'
-  ) as HTMLInputElement;
-  const inputAddressShipping = document.getElementById(
-    'shippingAddress'
-  ) as HTMLInputElement;
-  const inputAddressBilling = document.getElementById(
-    'billingAddress'
-  ) as HTMLInputElement;
 
   const addAddressData: IAddAddressData = {
     version: version,
@@ -183,31 +159,45 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       },
     ],
   };
-  if (address.defaultShipping && inputDefaultShipping) {
-    inputDefaultShipping.checked = true;
+  if (address.defaultShipping) {
     changeAddressData.actions.push({
       action: 'setDefaultShippingAddress',
       addressId: address.idAddress,
     });
   }
-  if (address.defaultBilling && inputDefaultBilling) {
-    inputDefaultBilling.checked = true;
+  if (address.defaultBilling) {
     changeAddressData.actions.push({
       action: 'setDefaultBillingAddress',
       addressId: address.idAddress,
     });
   }
-  if (address.shippingAddress && inputAddressShipping) {
-    inputAddressShipping.checked = true;
+  if (address.shippingAddress) {
     changeAddressData.actions.push({
       action: 'addShippingAddressId',
       addressId: address.idAddress,
     });
   }
-  if (address.billingAddress && inputAddressBilling) {
-    inputAddressBilling.checked = true;
+  if (address.billingAddress) {
     changeAddressData.actions.push({
       action: 'addBillingAddressId',
+      addressId: address.idAddress,
+    });
+  }
+  if (
+    !address.shippingAddress &&
+    address.shippingAddressesId.includes(address.idAddress)
+  ) {
+    changeAddressData.actions.push({
+      action: 'removeShippingAddressId',
+      addressId: address.idAddress,
+    });
+  }
+  if (
+    !address.billingAddress &&
+    address.billingAddressesId.includes(address.idAddress)
+  ) {
+    changeAddressData.actions.push({
+      action: 'removeBillingAddressId',
       addressId: address.idAddress,
     });
   }
@@ -273,12 +263,12 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
       <AddressForm
         titleStyle={style.address_title}
         addressData={addressFormData}
-        setDefaultAddress={setCheckedDefault}
         setAddressStatus={
           <div className={style.address_status}>
             <input
               onChange={(e): void => setAddressStatus(e, 'defaultShipping')}
               className={style.address_input}
+              checked={address.defaultShipping}
               id="defaultShip"
               name="address"
               type="checkbox"
@@ -289,6 +279,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
             <input
               onChange={(e): void => setAddressStatus(e, 'defaultBilling')}
               className={style.address_input}
+              checked={address.defaultBilling}
               id="defaultBill"
               name="address"
               type="checkbox"
@@ -299,6 +290,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
             <input
               onChange={(e): void => setAddressStatus(e, 'shippingAddress')}
               className={style.address_input}
+              checked={address.shippingAddress}
               id="shippingAddress"
               name="address"
               type="checkbox"
@@ -309,6 +301,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
             <input
               onChange={(e): void => setAddressStatus(e, 'billingAddress')}
               className={style.address_input}
+              checked={address.billingAddress}
               id="billingAddress"
               name="address"
               type="checkbox"

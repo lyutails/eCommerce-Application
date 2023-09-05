@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import style from '../BioModal/_bioModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
@@ -11,7 +10,7 @@ import {
 import InputBirthDateMask from '../Input/InputBirthDateMask';
 import { handleUpdateBio, IMyCustomerBioUpdate } from './bio-modal-verify';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
-import { parseDateToServer, parseDateToWeb } from '../../utils/parseDate';
+import { parseDateToServer } from '../../utils/parseDate';
 import { useDispatch, useSelector } from 'react-redux';
 import { IProfileState, IRootState } from '../../types/interfaces';
 import { changeBio } from '../../store/reducers/profileReducer';
