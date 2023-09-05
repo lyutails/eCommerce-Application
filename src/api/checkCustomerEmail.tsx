@@ -13,7 +13,6 @@ export async function checkCustomerEmail(
     const customersEmailsArray = customersArray.filter(
       (email) => email.email === emailUser
     );
-    console.log(customersEmailsArray, 'dhcv,lA');
     return customers;
   } catch {
     throw new Error('cannot get a customer');

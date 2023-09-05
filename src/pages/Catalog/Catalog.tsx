@@ -5,22 +5,6 @@ import { GetParentCategory } from '../../api/getCategories';
 import { Category } from '@commercetools/platform-sdk';
 
 function CatalogPage(): JSX.Element {
-  /* const category = useSelector((state: ICategoryState) => state.category); */
-  // const [allCategories, setAllCategories] = useState<string[]>([]);
-  // useEffect(() => {
-  //   GetCategories().then((response) => {
-  //     setAllCategories(response);
-  //   });
-  // }, []);
-  // const [particularCategories, setParticularCategory] = useState<string[]>([]);
-  // useEffect(() => {
-  //   GetCategory().then((response) => {
-  //     setAllCategories(response);
-  //   });
-  // }, []);
-  // console.log(GetCategory());
-  // console.log(GetCategories());
-  // console.log(GetParentCategory());
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   useEffect(() => {
     GetParentCategory().then((response) => {

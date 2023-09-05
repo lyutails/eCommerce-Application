@@ -57,7 +57,6 @@ export const handleUpdateAddress = (
     updateAddressData.countryError
   ) {
     if (isAdd) {
-      console.log(data.version, 'add');
       updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
         (response) => {
           const id = response?.body.addresses.filter(
@@ -86,7 +85,6 @@ export const handleUpdateAddress = (
         }
       );
     } else {
-      console.log(data.version, 'update');
       updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
         (response) => {
           if (response) {

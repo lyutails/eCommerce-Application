@@ -52,7 +52,6 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
     event: React.ChangeEvent<HTMLInputElement>,
     checkErrorInput: (streetShipField: string) => string
   ): void => {
-    console.log(event.target.value);
     const errorMessage = checkErrorInput(event.target.value);
     dispatch(
       changeEmail({
