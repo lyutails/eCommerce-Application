@@ -23,7 +23,7 @@ import {
   changeStatusAddress,
   changeStatusPersonal,
 } from '../../store/reducers/personalReducer';
-import { AddressDraft } from '@commercetools/platform-sdk';
+import { AddressDraft, MyCustomerUpdate } from '@commercetools/platform-sdk';
 import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
 import {
@@ -222,7 +222,7 @@ function ProfilePage(): JSX.Element {
             onClick={(): void => {
               updateCustomer(
                 refreshToken ? refreshToken : '',
-                deleteAddressData
+                deleteAddressData as MyCustomerUpdate
               ).then((response) => {
                 if (response) {
                   dispatch(

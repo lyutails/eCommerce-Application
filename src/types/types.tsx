@@ -7,4 +7,5 @@ export type CategoryCardProps = {
   discounted?: number | string;
   sku: string;
   brand?: string;
+  description?: string;
 };
