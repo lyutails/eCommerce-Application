@@ -32,8 +32,6 @@ export async function GetCategory(): Promise<ClientResponse<Category>> {
       .get()
       .execute();
 
-    // console.log(category);
-
     return category;
   } catch {
     throw new Error('no categories found');
@@ -104,16 +102,8 @@ export async function getSubtreeCategory(
         },
       })
       .execute();
-    // console.log(subtree);
     return subtree;
   } catch {
     throw new Error('no subtrees found');
   }
 }
-
-// Валера можно через expand подтянуть данные родительской категории
-// categories().get({
-//         queryArgs: {
-//           expand: ['parent']
-//         }
-//       })

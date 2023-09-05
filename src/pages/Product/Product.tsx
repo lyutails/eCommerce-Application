@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 import {
   changeflagInModalWindow,
@@ -201,6 +203,7 @@ function ProductPage(): JSX.Element {
   function openModalWindow(): void {
     dispatch(changeflagInModalWindow(true));
   }
+  console.log(dataProduct.sale);
   return (
     <section className="showcase">
       <h2 className="showcase_header">{dataProduct.name}</h2>
@@ -217,32 +220,17 @@ function ProductPage(): JSX.Element {
               BestSeller!!!
             </div>
             <Swiper
-              className="swiper-wrapper"
-              grabCursor={true}
-              navigation={true}
-              // braackpoints={{
-              //   1880: {
-              //     slidesPerView: 3,
-              //   },
-              // }}
               loop={true}
-              slidesPerView={1}
-              // spaceBetween={30}
-              centeredSlides={true}
-              // speed={1800}
-              // coverfloweffect={{
-              //   rotate: 0,
-              //   stretch: 0,
-              //   depth: 100,
-              //   modifier: 2.5,
-              // }}
+              navigation={true}
+              grabCursor={true}
               modules={[Navigation]}
+              className="swiper-wrapper"
             >
               {dataProduct.images.map((image, index) => {
                 return (
                   <SwiperSlide
                     onClick={openModalWindow}
-                    className="swiper-slide showcase_carousel_item"
+                    className="showcase_carousel_item"
                     key={`${dataProduct.name}-${index}`}
                   >
                     <img
@@ -262,15 +250,71 @@ function ProductPage(): JSX.Element {
 
       <div className="product-description">
         <div className="product-description-wrapper wrapper">
-          <div className="wrapper-desc">{dataProduct.description}</div>
+          <h3 className="wrapper-title">{dataProduct.name}</h3>
+          <div
+            className={
+              dataProduct.bestseller
+                ? 'wrapper-title-bestSellerOn'
+                : 'wrapper-title-bestSellerOff'
+            }
+          >
+            BestSeller!!!
+          </div>
+          <div className="wrapper-desc-block">
+            <p className="wrapper-desc">
+              <span className="wrapper-desc-span">Description: </span>
+              {dataProduct.description}
+            </p>
+          </div>
           <div className="wrapper-characteristics">
-            <div>
-              <div>sale : {dataProduct.sale.toFixed(2)} $</div>
-              <div>prace: {dataProduct.price.toFixed(2)} $</div>
-              <div>size: {dataProduct.size}</div>
-              <div>color: {dataProduct.color}</div>
-              <div>brand:{dataProduct.brand}</div>
-              <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div>
+            <div className="specifications">
+              <div className="specifications-item">
+                <span className="specifications-item-span1">prace:</span>
+                <span
+                  className={
+                    dataProduct.sale === 0
+                      ? 'specifications-item-span2'
+                      : 'specifications-item-OFF'
+                  }
+                >
+                  {dataProduct.price.toFixed(2)} $
+                  <div
+                    className={
+                      dataProduct.sale === 0
+                        ? 'specifications-item-OFF'
+                        : 'specifications-item-sale'
+                    }
+                  >
+                    {dataProduct.sale.toFixed(2)} $
+                  </div>
+                </span>
+              </div>
+              <div className="specifications-item">
+                <span className="specifications-item-span1">color: </span>
+                <span className="specifications-item-span2">
+                  {dataProduct.color}
+                </span>
+              </div>
+              <div className="specifications-item">
+                <span className="specifications-item-span1">brand:</span>
+                <span className="specifications-item-span2">
+                  {dataProduct.brand}
+                </span>
+              </div>
+              <div
+                className={
+                  dataProduct.size === 'no'
+                    ? 'specifications-item-OFF'
+                    : 'specifications-item'
+                }
+              >
+                <span className="specifications-item-span1">size:</span>
+                <span className="specifications-item-span2">
+                  {' '}
+                  {dataProduct.size}
+                </span>
+              </div>
+              {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
             <button className="wrapper-characteristics_button">To Cart</button>
           </div>

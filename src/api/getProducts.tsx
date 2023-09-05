@@ -9,8 +9,8 @@ import { apiRoot } from './createClient';
 
 export async function getProducts(): Promise<ProductProjection[]> {
   try {
-    // const products = await apiRoot.products().get().execute();
-    /* const url = products.body.results[0].masterData.current.variants[0].images;
+    /* const products = await apiRoot.products().get().execute();
+     const url = products.body.results[0].masterData.current.variants[0].images;
     url?.length ? (image = url[0].url) : console.log('error'); */
 
     const productsProjection = await apiRoot
@@ -23,65 +23,11 @@ export async function getProducts(): Promise<ProductProjection[]> {
     const totalProductsAmount = productsProjection.body.results.length;
     const totalProductsCount = productsProjection.body.results;
 
-    console.log(totalProductsCount);
     return totalProductsCount;
   } catch {
     throw new Error('no products found');
   }
 }
-
-// export async function returnProductByKey(
-//   productKey: string
-// ): Promise<ClientResponse<Product>> {
-//   try {
-//     const productByKey = await apiRoot
-//       .products()
-//       .withKey({
-//         key: `${productKey}`,
-//       })
-//       .get()
-//       .execute();
-//     return productByKey;
-//   } catch {
-//     throw new Error('no product by key found');
-//   }
-// }
-
-// export async function returnProductById(
-//   productId: string
-// ): Promise<ClientResponse<Product>> {
-//   try {
-//     const productByKey = await apiRoot
-//       .products()
-//       .withId({
-//         ID: `${productId}`,
-//       })
-//       .get()
-//       .execute();
-//     return productByKey;
-//   } catch {
-//     throw new Error('no product by id found');
-//   }
-// }
-
-// export async function getProductProjectionsById(
-//   productId: number
-// ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
-//   try {
-//     const productById = apiRoot
-//       .productProjections()
-//       .search()
-//       .get({
-//         queryArgs: {
-//           filter: `ID: ${productId}`,
-//         },
-//       })
-//       .execute();
-//     return productById;
-//   } catch {
-//     throw new Error('no subtrees found');
-//   }
-// }
 
 export async function getProductProjectionsByKey(
   productKey: string
@@ -115,13 +61,6 @@ export async function getProductProjectionsByVariantKey(
         },
       })
       .execute();
-    // const productArray = productByVariantKey.body.results[0];
-    // const variant =
-    //   productArray.masterVariant.key === variantKey
-    //     ? productArray.masterVariant
-    //     : productArray.variants.find(
-    //         (data) => data.key && data.key === variantKey
-    //       );
     return productByVariantKey;
   } catch {
     throw new Error('no product variant by key found');
