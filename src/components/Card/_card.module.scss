@@ -26,8 +26,8 @@
   }
 
   &_name {
-      padding-right: 5%;
-      padding-left: 5%;
+    padding-right: 5%;
+    padding-left: 5%;
 
     font-size: 1.6rem;
     color: $font-color-primary-one;
@@ -53,5 +53,15 @@
     font-size: 2rem;
     font-weight: 700;
     color: $discount;
+  }
+
+  &_description {
+    font-size: 1.2rem;
+    text-align: center;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    position: absolute;
+    transform: translateY(100px);
+    width: 15vw;
   }
 }

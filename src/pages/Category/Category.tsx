@@ -6,7 +6,11 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
-import { Category, ProductVariant } from '@commercetools/platform-sdk';
+import {
+  Category,
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 
 import { filterByAttributes, getProductType } from '../../api/filterAttributes';
 import {
@@ -48,7 +52,7 @@ function CategoryPage(): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
-  const [picOnMouseEnter, setPicOnMouseEnter] = useState('');
+  const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -461,6 +465,7 @@ function CategoryPage(): JSX.Element {
       )
         .then((response) => {
           const parentCategory = response.body.results;
+          setAllParents(response.body.results);
           let master: ProductVariant[] = [];
           if (
             querySizesString === queryStringAllSizes ||
@@ -1040,7 +1045,7 @@ function CategoryPage(): JSX.Element {
           <div className={style.category_pagination_customize}>
             <div className={style.category_pagination}>
               <div className={style.category_cards_wrapper}>
-                {allCards.map((card) => {
+                {allCards.map((card, index) => {
                   let productPrice = 0;
                   let productDiscount;
                   let ifProductDiscount = 0;
@@ -1060,8 +1065,13 @@ function CategoryPage(): JSX.Element {
                       key={card.key}
                     >
                       <Card
+                        description={
+                          allParents.length &&
+                          allParents[index].description !== undefined
+                            ? allParents[index].description['en-US']
+                            : ''
+                        }
                         keyCard={card.key ? card.key : ''}
-                        // images={card.images && card.images[0].url}
                         images={card.images}
                         prices={productPrice.toFixed(2)}
                         discounted={productDiscount}
