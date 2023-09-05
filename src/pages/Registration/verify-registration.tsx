@@ -21,10 +21,14 @@ import {
   handleApartmentShipInput,
 } from '../verification';
 import { AnyAction, Dispatch } from 'redux';
-import { createCustomerId } from '../../store/reducers/userReducer';
+import {
+  createCustomerId,
+  setRefreshTokenStatus,
+} from '../../store/reducers/userReducer';
 import { getCustomerToken } from '../../api/adminBuilder';
 import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 import { parseDateToServer } from '../../utils/parseDate';
+import { changeVersion } from '../../store/reducers/profileReducer';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -291,6 +295,7 @@ export const handleСreationReg = (
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
             dispatch(createCustomerId(response.body.customer.id));
+            dispatch(changeVersion(response.body.customer.version));
           }
         })
         .then(() => {
@@ -299,6 +304,7 @@ export const handleСreationReg = (
         })
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
+          dispatch(setRefreshTokenStatus(response.refresh_token));
         })
         .catch((error) => {
           if (error) {
@@ -327,6 +333,7 @@ export const handleСreationReg = (
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
             dispatch(createCustomerId(response.body.customer.id));
+            dispatch(changeVersion(response.body.customer.version));
           }
         })
         .then(() => {
@@ -335,6 +342,7 @@ export const handleСreationReg = (
         })
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
+          dispatch(setRefreshTokenStatus(response.refresh_token));
         })
         .catch((error) => {
           if (error) {

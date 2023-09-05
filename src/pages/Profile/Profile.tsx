@@ -75,12 +75,16 @@ function ProfilePage(): JSX.Element {
     navigate('/login');
     localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
+    dispatch(changeVersion(1));
   }, [dispatch, navigate]);
 
   useEffect(() => {
+    console.log(refreshToken);
     if (!refreshToken) {
+      console.log('old');
       checkRefreshToken();
     } else {
+      console.log('young');
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
@@ -114,6 +118,7 @@ function ProfilePage(): JSX.Element {
           });
         })
         .catch(() => {
+          console.log('error');
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
@@ -121,10 +126,12 @@ function ProfilePage(): JSX.Element {
   }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
 
   const handleLogOut = (): void => {
+    console.log('logout');
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
     dispatch(setAuthStatus(false));
+    dispatch(changeVersion(1));
     navigate('/');
   };
   const addressCard = address.addressStore.map((addressCard, i) => {
@@ -295,6 +302,7 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
+  console.log(version);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -559,3 +567,5 @@ export default ProfilePage;
 // tycteam:cn-qqCLdwzkJaZFsOw4IlgdqftWdZkbtPWTO2Bi4W_c
 
 // tycteam:ZFNIpB6J4c2ilbvHWTIhpC7eY-njz54kx6tXbaARgpg
+
+// hjfjhHGF76

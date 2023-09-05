@@ -5,7 +5,7 @@ import style from '../PasswordModal/_passwordModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import { handleUpdatePassword } from './password-modal-verify';
-import { IProfileState } from '../../types/interfaces';
+import { IProfileState, IRootState } from '../../types/interfaces';
 import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { checkPasswordError } from '../../pages/verificationTwo';
 import InputPasswordTwo from '../Input/inputPasswordTwo';
@@ -41,18 +41,19 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
   const { version, password, email } = useSelector(
     (state: IProfileState) => state.profile
   );
+  const { refreshToken } = useSelector((state: IRootState) => state.user);
   //const [passwordCurrent, setPasswordCurrent] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
-  const [token, setToken] = useState('');
+  // const [token, setToken] = useState('');
   const [checkmarkPasswordCurrent, setCheckmarkPasswordCurrent] =
     useState(false);
   const [checkmarkPasswordNew, setCheckmarkPasswordNew] = useState(false);
   const [checkmarkPasswordRepeat, setCheckmarkPasswordRepeat] = useState(false);
 
-  useEffect(() => {
-    setToken(props.token);
-  }, [props.token]);
+  // useEffect(() => {
+  //   setToken(props.token);
+  // }, [props.token]);
 
   const customerUpdateData = {
     version: version,
@@ -63,7 +64,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
     currentError: password.currentPassword.error,
     newError: password.newPassword.error,
     repeateError: password.repeatePassword.error,
-    token: token,
+    token: refreshToken,
     passwordNewField: password.newPassword.value,
     passwordRepeatField: password.repeatePassword.value,
     dispatch: dispatch,
