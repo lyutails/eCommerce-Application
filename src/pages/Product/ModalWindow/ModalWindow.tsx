@@ -49,10 +49,7 @@ function ModalWindow(): JSX.Element {
         >
           {dataProduct.map((image, index) => {
             return (
-              <SwiperSlide
-                onClick={(): void => console.log(index)}
-                key={`${index}`}
-              >
+              <SwiperSlide key={`${index}`}>
                 <div className="swiper-zoom-container">
                   <img
                     className="content_wrapper_img"

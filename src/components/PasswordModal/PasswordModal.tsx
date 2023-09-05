@@ -104,7 +104,6 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
       })
     );
   };
-  // console.log(password.currentPassword.error);
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>

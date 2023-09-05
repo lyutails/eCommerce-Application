@@ -4,7 +4,7 @@ import {
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
@@ -28,10 +28,8 @@ function CategoryPage(): JSX.Element {
   const productsForSearchPC = 'Mouse Pad';
   const productsForSearchSouvenirs = 'Mug Notepad';
   const productsForSearchStickers = 'Sticker';
-  const navigate = useNavigate();
   const { category } = useParams();
   const { query } = useParams();
-  const [resetFilters, setResetFilters] = useState(false);
   const allBrands = ['RSSchool', 'Logitech'];
   const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
   const [idCategory, setIdcategoty] = useState('');
@@ -330,8 +328,6 @@ function CategoryPage(): JSX.Element {
 
   useEffect(() => {
     if (count) {
-      // const queryStringPriceDESC = 'price desc';
-      // const queryStringPriceASC = 'price asc';
       const priceDESC = 'price desc';
       const priceASC = 'price asc';
       const nameASC = 'name.en-us asc';
@@ -351,11 +347,6 @@ function CategoryPage(): JSX.Element {
       if (priceSort === false && nameSort === true) {
         queryStringPriceNameSort = [`${priceDESC}`, `${nameDESC}`];
       }
-
-      // let queryStringPriceSort = queryStringPriceDESC;
-      // priceSort === true
-      //   ? (queryStringPriceSort = queryStringPriceASC)
-      //   : (queryStringPriceSort = queryStringPriceDESC);
 
       let querySubtreesString = createQuerySubtreeString();
       const subtrees = `subtree("${idCategory}")`;
@@ -440,12 +431,10 @@ function CategoryPage(): JSX.Element {
           ? currentOffset
           : 0;
 
-      const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
+      /* const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
       const urlQuery = query ? query : '';
-      const queryURLArray = urlQuery.split(';');
-
-      // navigate(queryURL);
+      const queryURLArray = urlQuery.split(';'); */
 
       filterByAttributes(
         queryColoursString,
@@ -767,7 +756,6 @@ function CategoryPage(): JSX.Element {
                 name="filterSearch"
                 type="text"
                 className={style.category_search_input}
-                // id='search'
                 placeholder="search for..."
                 onChange={(e): void => {
                   setSearchValue(e.target.value);
@@ -778,7 +766,6 @@ function CategoryPage(): JSX.Element {
           </div>
         </div>
         <div className={style.category_filters_cards_wrapper}>
-          {/* <h2 className={style.category_title}>{category}</h2> */}
           <div className={style.category_filters}>
             <div className={style.category_categories}>
               {subtree.map((subCategory) => {
@@ -906,7 +893,6 @@ function CategoryPage(): JSX.Element {
                       <label
                         htmlFor={size}
                         className={style[`category_filters_${size}`]}
-                        /* className={style[`category_filters_${size}`]} */
                       >
                         {size}
                       </label>
@@ -979,7 +965,6 @@ function CategoryPage(): JSX.Element {
                   name="filterPriceStart"
                   type="number"
                   className={style.category_search_input_price}
-                  // id='search'
                   placeholder="price from"
                   onChange={(e): void => setSearchPriceStart(e.target.value)}
                 />
@@ -991,27 +976,11 @@ function CategoryPage(): JSX.Element {
                   name="filterPriceFinish"
                   type="number"
                   className={style.category_search_input_price}
-                  // id='search'
                   placeholder="price to"
                   onChange={(e): void => setSearchPriceFinish(e.target.value)}
                 />
               </div>
             </div>
-            {/* <div className={style.category_price_range_slider}>
-              <div className={style.category_range_value}>
-                <input
-                  type="text"
-                  className={style.category_price_input}
-                  id="amount"
-                  readOnly
-                  // onChange={(): void => onChangeSale(sale)}
-                />
-              </div>
-              <div
-                id="category_slider_range"
-                className={style.category_range_bar}
-              ></div>
-            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
@@ -1019,7 +988,6 @@ function CategoryPage(): JSX.Element {
                     <input
                       name="filterColor"
                       type="checkbox"
-                      // className={style.colour_input}
                       id={brand}
                       onChange={(): void => {
                         onChangeBrand(brand);

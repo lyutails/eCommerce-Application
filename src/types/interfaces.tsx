@@ -199,10 +199,3 @@ export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
 }
-// export interface IStore {
-//   user: userReducer;
-//   category: categoryReducer;
-//   personal: personalReducer;
-//   profile: profileReducer;
-//   productImg: productReducer;
-// }

@@ -205,7 +205,6 @@ function ProductPage(): JSX.Element {
   function openModalWindow(): void {
     dispatch(changeflagInModalWindow(true));
   }
-  console.log(dataProduct.sale);
   return (
     <section className="showcase">
       <h2 className="showcase_header">{dataProduct.name}</h2>
@@ -293,7 +292,7 @@ function ProductPage(): JSX.Element {
           <div className="wrapper-characteristics">
             <div className="specifications">
               <div className="specifications-item">
-                <span className="specifications-item-span1">prace:</span>
+                <span className="specifications-item-span1">price:</span>
                 <span
                   className={
                     dataProduct.sale === 0

@@ -29,18 +29,12 @@ export async function filterByAttributes(
       .get({
         queryArgs: {
           sort: sortpricename,
-          // sort: ['price desc', 'name.en-us asc'],
           limit: Number(`${limit}`),
           'text.en-us': `${search}`,
           fuzzy: true,
           fuzzyLevel: Number(`${fuzzylevel}`),
           offset: Number(`${limit}`) * Number(`${offset}`),
-          // priceCurrency: 'USD',
-          // filter: 'variants.scopedPriceDiscounted:false',
-          // filter: [`variants.scopedPriceDiscounted:"true"`],
           'filter.query': [
-            // `categories.id: subtree("877113a4-f6f2-40df-acee-02bdf03f9977")`,
-            // `categories.id: subtree("00b71d4b-d8b0-463c-9561-23017777d0eb"), subtree("e19653dc-8b6f-4784-8df2-d8bde2262d28")`,
             `categories.id: ${subtrees}`,
             `variants.attributes.color.key:${colour}`,
             `variants.attributes.size.key:${size}`,
@@ -86,25 +80,3 @@ export async function getProductTypeSizeAttribute(): Promise<
     throw new Error('no product type found');
   }
 }
-
-// window.apiRootAdmin = apiRootAdmin;
-
-// export async function filterBySize(
-//   colour: string
-// ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
-//   try {
-//     const productsByColour = await apiRoot
-//       .productProjections()
-//       .search()
-//       .get({
-//         queryArgs: {
-//           facet: ['variants.attributes.color'],
-//           'filter.query': [`variants.attributes.size.key:"${size}"`],
-//         },
-//       })
-//       .execute();
-//     return productsByColour;
-//   } catch {
-//     throw new Error('no product variant by key found');
-//   }
-// }
