@@ -274,7 +274,7 @@ function ProductPage(): JSX.Element {
                   className={
                     dataProduct.sale === 0
                       ? 'specifications-item-span2'
-                      : 'specifications-item-OFF'
+                      : 'specifications-item-span2OFF'
                   }
                 >
                   {dataProduct.price.toFixed(2)} $
