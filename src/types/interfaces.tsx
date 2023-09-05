@@ -140,6 +140,7 @@ export interface IProfileState {
       defaultBillingId: string;
       shippingAddressesId: string[];
       billingAddressesId: string[];
+      id: string;
     };
     bio: {
       [key: string]: IAddressInput;
