@@ -539,6 +539,11 @@
     background-repeat: no-repeat;
     background-size: contain;
   }
+
+  &_reset_button {
+    margin-bottom: 20px;
+    font-size: 3rem;
+  }
 }
 
 // #size:checked ~ .category_filters_size {
@@ -712,6 +717,26 @@ label:hover {
 
 input#price-sort {
   display: none;
+}
+
+.namesort_ascdesc_label {
+  cursor: pointer;
+
+  position: relative;
+  z-index: 200;
+
+  display: block;
+
+  aspect-ratio: 1 / 0.24;
+  width: 100%;
+  margin: 0 auto;
+
+  font-size: 4rem;
+  text-align: center;
+}
+
+.namesort_button_move {
+  transform: translateX(7vw);
 }
 
 .breadcrumbs_search {
