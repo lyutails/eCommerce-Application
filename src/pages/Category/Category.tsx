@@ -765,7 +765,7 @@ function CategoryPage(): JSX.Element {
                 name="filterSearch"
                 type="text"
                 className={style.category_search_input}
-                placeholder="search for..."
+                placeholder="🔎Search For..."
                 onChange={(e): void => {
                   setSearchValue(e.target.value);
                   typeSearch(placeholder);
@@ -793,7 +793,7 @@ function CategoryPage(): JSX.Element {
                       htmlFor={subCategory.name['en-US']}
                       className={
                         isSubtreeChecked
-                          ? `${style.category_filters_category} ${style.recolour} ${subCategory.name['en-US']}`
+                          ? `${style.category_filters_category}`
                           : style.category_filters_category
                       }
                     >
