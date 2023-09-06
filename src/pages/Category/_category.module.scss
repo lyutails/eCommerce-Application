@@ -229,13 +229,6 @@
         0 0 5px $glow-green,
         0 0 10px $glow-green;
     }
-
-    &.recolour .T-Shirts {
-      background-image: url('../../../public/ui-kit/subtree_green_blue.svg');
-      text-shadow:
-        0 0 5px $glow-green,
-        0 0 10px $glow-green;
-    }
   }
 
   &_filters_bestseller {
@@ -292,7 +285,7 @@
     max-width: 420px;
     padding-left: 2vw;
 
-    font-family: Cyberpunk, cursive;
+    font-family: Assassin;
     font-size: 2.5rem;
     color: $glow-green;
 
@@ -591,6 +584,13 @@
   }
 }
 
+.category_categories input[type=checkbox]:checked + .category_filters_category {
+  background-image: url('../../../public/ui-kit/subtree_purple.svg');
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
+}
+
 #Caps:checked {
   background-image: url('../../../public/ui-kit/filter_category_green_blue_subcat.svg');
   text-shadow:
@@ -853,8 +853,8 @@ input#price-sort {
 }
 
 .category_search_input::placeholder {
-  font-family: Cyberpunk, cursive;
-  font-size: 2.5rem;
+  font-family: Assassin;
+  font-size: 2.8rem;
   color: $glow-green;
 
   opacity: 1;
