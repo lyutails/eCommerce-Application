@@ -1027,7 +1027,8 @@ function CategoryPage(): JSX.Element {
           <div className={style.category_pagination_customize}>
             <div className={style.category_pagination}>
               <div className={style.category_cards_wrapper}>
-                {allCards.map((card, index) => {
+                {allCards.map((card) => {
+                  console.log(card);
                   let productPrice = 0;
                   let productDiscount;
                   let ifProductDiscount = 0;
@@ -1035,6 +1036,10 @@ function CategoryPage(): JSX.Element {
                     ? (productPrice = card.prices[0].value.centAmount / 100)
                     : 0;
 
+                  const variantDescription = allParents.find(
+                    (parent) => parent.key && card.key?.startsWith(parent.key)
+                  );
+                  console.log(variantDescription?.description['en-US']);
                   card.prices && card.prices[0].discounted?.value.centAmount
                     ? ((ifProductDiscount =
                         card.prices[0].discounted?.value.centAmount / 100),
@@ -1047,12 +1052,9 @@ function CategoryPage(): JSX.Element {
                       key={card.key}
                     >
                       <Card
-                        // description={
-                        //   allParents[index].description &&
-                        //   allParents[index].description !== undefined
-                        //     ? allParents[index].description['en-US']
-                        //     : ''
-                        // }
+                        description={
+                          variantDescription?.description['en-US'] ?? ' '
+                        }
                         keyCard={card.key ? card.key : ''}
                         images={card.images}
                         prices={productPrice.toFixed(2)}
