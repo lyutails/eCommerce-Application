@@ -387,10 +387,10 @@ function CategoryPage(): JSX.Element {
       let queryPriceRangeFinish = '*';
       searchPriceStart === ''
         ? queryPriceRangeStart
-        : (queryPriceRangeStart = searchPriceStart),
+        : (queryPriceRangeStart = String(+searchPriceStart * 100)),
         searchPriceFinish === ''
           ? queryPriceRangeFinish
-          : (queryPriceRangeFinish = searchPriceFinish);
+          : (queryPriceRangeFinish = String(+searchPriceFinish * 100));
 
       let querySearchValue = '';
       searchValue === '' && category === 'Clothes'
