@@ -46,6 +46,7 @@ function CategoryPage(): JSX.Element {
   const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [isSubtreeChecked, setIsSubtreeChecked] = useState(false);
   const [nameIsChecked, setNameIsChecked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentOffset, setCurrentOffset] = useState(0);
@@ -430,12 +431,11 @@ function CategoryPage(): JSX.Element {
         querySizesString === queryStringAllSizes || querySizesString === `"no"`
           ? currentOffset
           : 0;
-      
+
       /* const queryURL = `/catalog/${category}/priceNameSort=${queryStringPriceNameSort};category.id=${querySubtreesString};color=${queryColoursString};size=${querySizesString};bestseller=${queryBestsellerString};sale=${querySale};brand=${queryBrandString};pricesearchstart=${queryPriceRangeStart};pricesearchfinish=${queryPriceRangeFinish}`;
 
       const urlQuery = query ? query : '';
       const queryURLArray = urlQuery.split(';'); */
-
 
       filterByAttributes(
         queryColoursString,
@@ -785,12 +785,17 @@ function CategoryPage(): JSX.Element {
                       type="checkbox"
                       id={subCategory.name['en-US']}
                       onChange={(): void => {
+                        setIsSubtreeChecked(isSubtreeChecked ? false : true);
                         onChangeSubcategory(subCategory.name['en-US']);
                       }}
                     />
                     <label
                       htmlFor={subCategory.name['en-US']}
-                      className={style.category_filters_category}
+                      className={
+                        isSubtreeChecked
+                          ? `${style.category_filters_category} ${style.recolour} ${subCategory.name['en-US']}`
+                          : style.category_filters_category
+                      }
                     >
                       {subCategory.name['en-US']}
                     </label>
@@ -1042,12 +1047,12 @@ function CategoryPage(): JSX.Element {
                       key={card.key}
                     >
                       <Card
-                        description={
-                          allParents.length &&
-                          allParents[index].description !== undefined
-                            ? allParents[index].description['en-US']
-                            : ''
-                        }
+                        // description={
+                        //   allParents[index].description &&
+                        //   allParents[index].description !== undefined
+                        //     ? allParents[index].description['en-US']
+                        //     : ''
+                        // }
                         keyCard={card.key ? card.key : ''}
                         images={card.images}
                         prices={productPrice.toFixed(2)}

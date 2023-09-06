@@ -140,7 +140,6 @@ export interface IProfileState {
       defaultBillingId: string;
       shippingAddressesId: string[];
       billingAddressesId: string[];
-      id: string;
     };
     bio: {
       [key: string]: IAddressInput;
@@ -196,4 +195,10 @@ export interface IMyCustomerDraft {
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
+}
+
+export interface ICategoryState {
+  category: {
+    category: string[];
+  };
 }

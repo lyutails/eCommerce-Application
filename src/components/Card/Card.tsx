@@ -14,14 +14,21 @@ function Card(props: CategoryCardProps): JSX.Element {
     setCurrentImage(props.images[0].url);
   }, [props.images]);
 
+  // useEffect(() => {
+  //   if (!props.description) {
+  //     throw new Error('no description found');
+  //   }
+  //   setDescription(props.description);
+  // }, [props.description]);
+
   return (
     <div
       className={style.card_wrapper}
       onMouseEnter={(): void => {
-        if (!props.description) {
-          throw new Error('no description found');
-        }
-        setDescription(props.description);
+        // if (!props.description) {
+        //   throw new Error('no description found');
+        // }
+        // setDescription(props.description);
         if (!props.images) {
           throw new Error('no pic found');
         }
@@ -41,15 +48,6 @@ function Card(props: CategoryCardProps): JSX.Element {
         className={style.card_pic}
         src={currentSecondImage || currentImage}
         alt=""
-        // onMouseEnter={(): void => {
-        //   if (!props.images) {
-        //     throw new Error('no pic found');
-        //   }
-        //   setCurrentSecondImage(props.images[1].url);
-        // }}
-        // onMouseLeave={(): void => {
-        //   setCurrentSecondImage('');
-        // }}
       />
       <div className={style.card_buy}>
         <span className={style.card_price}>{props.prices}$</span>
