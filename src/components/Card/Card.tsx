@@ -25,10 +25,10 @@ function Card(props: CategoryCardProps): JSX.Element {
     <div
       className={style.card_wrapper}
       onMouseEnter={(): void => {
-        // if (!props.description) {
-        //   throw new Error('no description found');
-        // }
-        // setDescription(props.description);
+        if (!props.description) {
+          throw new Error('no description found');
+        }
+        setDescription(props.description);
         if (!props.images) {
           throw new Error('no pic found');
         }
