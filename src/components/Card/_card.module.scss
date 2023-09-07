@@ -14,6 +14,12 @@
     background-image: url('../../../public/ui-kit/product_blue.svg');
     background-repeat: no-repeat;
     background-position: center center;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-image: url('../../../public/ui-kit/product_green_blue.svg');
+    }
   }
 
   &_pic {

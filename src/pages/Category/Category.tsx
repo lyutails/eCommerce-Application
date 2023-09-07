@@ -777,6 +777,7 @@ function CategoryPage(): JSX.Element {
         <div className={style.category_filters_cards_wrapper}>
           <div className={style.category_filters}>
             <div className={style.category_categories}>
+              <div className={style.category_subtree_divider}></div>
               {subtree.map((subCategory) => {
                 return (
                   <div key={subCategory.name['en-US']}>
@@ -803,6 +804,7 @@ function CategoryPage(): JSX.Element {
                 );
               })}
             </div>
+            <div className={style.category_pricename_divider}></div>
             <div className={style.pricesort_wrapper}>
               <input
                 name="filterPriceSort"
@@ -853,6 +855,7 @@ function CategoryPage(): JSX.Element {
                 ></label>
               </div>
             </div>
+            <div className={style.category_colour_divider}></div>
             <div className={style.category_filters_color}>
               {allColours.map((colour) => {
                 return (
@@ -874,6 +877,7 @@ function CategoryPage(): JSX.Element {
                 );
               })}
             </div>
+            <div className={style.category_sizes_divider}></div>
             <div className={style.category_filters_sizes}>
               {category === 'Clothes' &&
                 sizesArray.map((size) => {
@@ -915,23 +919,21 @@ function CategoryPage(): JSX.Element {
                 })}
             </div>
             <div className={style.category_filters_bestseller}>
-              <div>
-                <input
-                  name="filterBestseller"
-                  type="checkbox"
-                  className={style.bestseller_input}
-                  id="bestseller"
-                  onChange={(): void => {
-                    onChangeBestseller();
-                  }}
-                />
-                <label
-                  htmlFor="bestseller"
-                  className={style.category_filters_bestseller}
-                >
-                  bestseller
-                </label>
-              </div>
+              <input
+                name="filterBestseller"
+                type="checkbox"
+                className={style.bestseller_input}
+                id="bestseller"
+                onChange={(): void => {
+                  onChangeBestseller();
+                }}
+              />
+              <label
+                htmlFor="bestseller"
+                className={style.category_bestseller_label}
+              >
+                Bestseller
+              </label>
             </div>
             <div className={style.category_filters_sales}>
               <div className={style.category_filters_sale}>
@@ -949,7 +951,7 @@ function CategoryPage(): JSX.Element {
                     htmlFor="sale"
                     className={style.category_filters_sale_red}
                   >
-                    red sale
+                    Red Sale
                   </label>
                 </div>
               </div>
@@ -968,7 +970,7 @@ function CategoryPage(): JSX.Element {
                     htmlFor="winter_sale"
                     className={style.category_filters_sale_winter}
                   >
-                    winter sale
+                    Winter Sale
                   </label>
                 </div>
               </div>
