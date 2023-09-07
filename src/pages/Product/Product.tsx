@@ -207,26 +207,28 @@ function ProductPage(): JSX.Element {
   }
   return (
     <section className="showcase">
-      <h2 className="showcase_header">{dataProduct.name}</h2>
+      <div className="showcase_header">
+        <h2 className="showcase_header-title">{dataProduct.name}</h2>
+        <div
+          className={
+            dataProduct.bestseller
+              ? 'showcase_carousel-bestSellerOn'
+              : 'showcase_carousel-bestSellerOff'
+          }
+        >
+          BestSeller!!!
+        </div>
+      </div>
       <div className="showcase__content-wrapper">
         <div className="showcase_content">
           <div className="showcase_carousel">
-            <div
-              className={
-                dataProduct.bestseller
-                  ? 'showcase_carousel-bestSellerOn'
-                  : 'showcase_carousel-bestSellerOff'
-              }
-            >
-              BestSeller!!!
-            </div>
             <Swiper
+              grabCursor={true}
+              // loop={true}
               effect={'coverflow'}
               centeredSlides={true}
-              loop={true}
-              grabCursor={true}
-              slidesPerView={1}
-              spaceBetween={70}
+              spaceBetween={100}
+              slidesPerView={3}
               coverflowEffect={{
                 rotate: 0,
                 stretch: 0,
@@ -235,19 +237,28 @@ function ProductPage(): JSX.Element {
                 slideShadows: false,
               }}
               modules={[EffectCoverflow]}
-              keyboard={{
-                enabled: true,
-              }}
-              mousewheel={{
-                thresholdDelta: 70,
-              }}
-              initialSlide={0}
+              // keyboard={{
+              //   enabled: true,
+              // }}
+              // mousewheel={{
+              //   thresholdDelta: 70,
+              // }}
+              initialSlide={1}
               breakpoints={{
-                640: {
-                  slidesPerView: 2,
+                3900: {
+                  slidesPerView: 3,
+                },
+                1000: {
+                  slidesPerView: 3,
+                },
+                700: {
+                  slidesPerView: 3,
+                },
+                400: {
+                  slidesPerView: 3,
                 },
               }}
-              className="swiper-content"
+              className="swiper-custom"
             >
               {dataProduct.images.map((image, index) => {
                 return (
