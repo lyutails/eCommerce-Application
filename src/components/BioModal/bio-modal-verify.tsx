@@ -34,6 +34,7 @@ export const handleUpdateBio = (
   ) {
     updateCustomer(updateBioData.token, data).then((response) => {
       if (response) {
+        alert('Personal information change was successful');
         dispatch(changeVersion(response.body.version));
       }
     });

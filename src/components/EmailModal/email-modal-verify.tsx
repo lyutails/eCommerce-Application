@@ -15,6 +15,7 @@ export const handleUpdateEmail = (
   if (emailCheck) {
     updateCustomer(token, data).then((response) => {
       if (response) {
+        alert('Email change was successful');
         dispatch(changeVersion(response.body.version));
       }
     });
