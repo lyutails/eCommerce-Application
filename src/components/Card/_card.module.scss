@@ -70,4 +70,15 @@
     transform: translateY(100px);
     width: 15vw;
   }
+
+  &_to_cart {
+    background-color: transparent;
+    border: none;
+    color: $font-color-primary-one;
+    font-size: 2rem;
+    align-self: flex-start;
+    font-weight: 700;
+    padding-left: 20%;
+    transform: translateY(50%);
+  }
 }
