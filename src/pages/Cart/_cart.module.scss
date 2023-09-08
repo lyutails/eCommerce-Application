@@ -1,10 +1,115 @@
-.container{
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
+@import '../../style/variables';
 
-  .title{
-    font-size: 50px;
+.cart {
+  &_wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 90vw;
+  }
+
+  &_title {
+    font-size: 5rem;
+    text-align: center;
+  }
+
+  &_price_wrapper {
+    width: 30vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  &_price_name {
+    font-size: 3rem;
+  }
+
+  &_price_amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: $glow-green;
+  }
+
+  &_discount_codes {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_discount {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 3rem;
+  }
+
+  &_discount_wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 20vw;
+    justify-content: space-between;
+  }
+
+  &_discount_amount {
+    font-size: 3rem;
+  }
+
+  &_discount_name {
+    font-size: 3rem;
+    color: $glow-green;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    text-shadow: 0 0 10px $glow-green;
+    background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: $glow-violet;
+      text-shadow:
+        0 0 5px $glow-violet,
+        0 0 10px $glow-violet;
+    }
+  }
+
+  &_applied_discount {
+    display: flex;
+    flex-direction: row;
+    width: 50vw;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 50px;
+  }
+
+  &_discount_price {
+    font-size: 3rem;
+    color: $glow-green;
+    font-weight: 700;
+  }
+
+  &_buy {
+    width: 30vw;
+    aspect-ratio: 1 / 0.3;
+    background-image: url('../../../public/ui-kit/cart_buy_green_blue.svg');
+    background-color: transparent;
+    border: none;
+    background-repeat: no-repeat;
+    font-size: 5rem;
+    color: $font-color-primary-one;
+    text-shadow:  0 0 5px $glow-green, 0 0 10px $glow-green;
+    margin: 0 auto;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      text-shadow:  0 0 5px $glow-violet, 0 0 10px $glow-violet;
+      background-image: url('../../../public/ui-kit/cart_buy_purple.svg');
+    }
+
+    &:active {
+      cursor: pointer;
+      text-shadow:  0 0 5px $glow-violet, 0 0 10px $glow-violet;
+      background-image: url('../../../public/ui-kit/cart_buy_green_purple.svg');
+    }
   }
 }

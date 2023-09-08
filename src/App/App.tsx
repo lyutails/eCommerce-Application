@@ -54,40 +54,40 @@ function App(): JSX.Element {
   //     return customerCart;
   //   })
   // );
-  console.log(
-    loginCustomerThroughMe(
-      {
-        email: 'ianatestAPI@example.com',
-        password: 'fshHJKL2365',
-      },
-      dispatch
-    ).then((response) => {
-      let customerCart;
-      if (response) {
-        console.log(response.body.cart?.version);
-        customerCart = updateCartThroughMe(
-          {
-            email: 'ianatestAPI@example.com',
-            password: 'fshHJKL2365',
-          },
-          response.body.cart?.id ? response.body.cart?.id : '',
-          {
-            version: response.body.cart?.version
-              ? response.body.cart?.version
-              : 1,
-            actions: [
-              {
-                action: 'addLineItem',
-                sku: 'RSSchool Hoodie Love Black',
-                quantity: 1,
-              },
-            ],
-          }
-        );
-      }
-      return customerCart;
-    })
-  );
+  // console.log(
+  //   loginCustomerThroughMe(
+  //     {
+  //       email: 'ianatestAPI@example.com',
+  //       password: 'fshHJKL2365',
+  //     },
+  //     dispatch
+  //   ).then((response) => {
+  //     let customerCart;
+  //     if (response) {
+  //       console.log(response.body.cart?.version);
+  //       customerCart = updateCartThroughMe(
+  //         {
+  //           email: 'ianatestAPI@example.com',
+  //           password: 'fshHJKL2365',
+  //         },
+  //         response.body.cart?.id ? response.body.cart?.id : '',
+  //         {
+  //           version: response.body.cart?.version
+  //             ? response.body.cart?.version
+  //             : 1,
+  //           actions: [
+  //             {
+  //               action: 'addLineItem',
+  //               sku: 'RSSchool Hoodie Love Black',
+  //               quantity: 1,
+  //             },
+  //           ],
+  //         }
+  //       );
+  //     }
+  //     return customerCart;
+  //   })
+  // );
   // f4beb394-487a-4127-8aa5-d0b4da38a144
   // {
   //   "action": "addLineItem",
