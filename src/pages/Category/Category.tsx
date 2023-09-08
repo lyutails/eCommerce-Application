@@ -52,6 +52,7 @@ function CategoryPage(): JSX.Element {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
+  const [isNoSort, setIsNoSort] = useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -595,6 +596,10 @@ function CategoryPage(): JSX.Element {
     setBestseller(!bestseller);
   }
 
+  function onChangeNoSort(): void {
+    setIsNoSort(!isNoSort);
+  }
+
   function onChangeSale(): void {
     setSale(!sale);
   }
@@ -1027,72 +1032,78 @@ function CategoryPage(): JSX.Element {
             </button>
           </div>
           <div className={style.category_pagination_customize}>
-            <div className={style.category_pagination}>
-              <div className={style.category_cards_wrapper}>
-                {allCards.map((card) => {
-                  let productPrice = 0;
-                  let productDiscount;
-                  let ifProductDiscount = 0;
-                  card.prices
-                    ? (productPrice = card.prices[0].value.centAmount / 100)
-                    : 0;
+            <div className={style.category_cards_pagination}>
+              <div className={style.category_pagination}>
+                <div className={style.category_cards_background_top}></div>
+                <div className={style.category_cards_wrapper}>
+                  {allCards.map((card) => {
+                    let productPrice = 0;
+                    let productDiscount;
+                    let ifProductDiscount = 0;
+                    card.prices
+                      ? (productPrice = card.prices[0].value.centAmount / 100)
+                      : 0;
 
-                  const variantDescription = allParents.find(
-                    (parent) => parent.key && card.key?.startsWith(parent.key)
-                  );
-                  card.prices && card.prices[0].discounted?.value.centAmount
-                    ? ((ifProductDiscount =
-                        card.prices[0].discounted?.value.centAmount / 100),
-                      (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
-                    : '';
-                  return (
-                    <Link
-                      to={`/category/${category}/${card.key}`}
-                      className={style.category_card}
-                      key={card.key}
-                    >
-                      <Card
-                        description={
-                          variantDescription?.description['en-US'] ?? ' '
-                        }
-                        keyCard={card.key ? card.key : ''}
-                        images={card.images}
-                        prices={productPrice.toFixed(2)}
-                        discounted={productDiscount}
-                        sku={card.sku ? card.sku : ''}
-                      />
-                    </Link>
-                  );
-                })}
-              </div>
-              <div className={style.category_pagination_buttons}>
-                <button
-                  className={`${style.category_pagination_button} ${style.previous}`}
-                  onClick={(): void => {
-                    currentPage > 1
-                      ? setCurrentPage(currentPage - 1)
-                      : setCurrentPage(1);
-                    currentOffset > 0
-                      ? setCurrentOffset(currentOffset - 1)
-                      : setCurrentOffset(0);
-                  }}
-                ></button>
-                <div
-                  className={`${style.category_pagination_number} ${style.current}`}
-                >
-                  {currentPage}
+                    const variantDescription = allParents.find(
+                      (parent) => parent.key && card.key?.startsWith(parent.key)
+                    );
+                    card.prices && card.prices[0].discounted?.value.centAmount
+                      ? ((ifProductDiscount =
+                          card.prices[0].discounted?.value.centAmount / 100),
+                        (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+                      : '';
+                    return (
+                      <Link
+                        to={`/category/${category}/${card.key}`}
+                        className={style.category_card}
+                        key={card.key}
+                      >
+                        <Card
+                          description={
+                            variantDescription?.description['en-US'] ?? ' '
+                          }
+                          keyCard={card.key ? card.key : ''}
+                          images={card.images}
+                          prices={productPrice.toFixed(2)}
+                          discounted={productDiscount}
+                          sku={card.sku ? card.sku : ''}
+                        />
+                      </Link>
+                    );
+                  })}
                 </div>
-                <button
-                  className={`${style.category_pagination_button} ${style.next}`}
-                  onClick={(): void => {
-                    currentPage !== maxPage
-                      ? setCurrentPage(currentPage + 1)
-                      : setCurrentPage(maxPage);
-                    currentOffset !== maxPage - 1
-                      ? setCurrentOffset(currentOffset + 1)
-                      : setCurrentOffset(maxPage - 1);
-                  }}
-                ></button>
+                <div className={style.category_cards_background_bottom}></div>
+                <div className={style.category_pagination_buttons}>
+                  <button
+                    className={`${style.category_pagination_button} ${style.previous}`}
+                    onClick={(): void => {
+                      currentPage > 1
+                        ? setCurrentPage(currentPage - 1)
+                        : setCurrentPage(1);
+                      currentOffset > 0
+                        ? setCurrentOffset(currentOffset - 1)
+                        : setCurrentOffset(0);
+                    }}
+                  ></button>
+                  <div
+                    className={`${style.category_pagination_number} ${style.current}`}
+                  >
+                    {currentPage}
+                  </div>
+                  <button
+                    className={`${style.category_pagination_button} ${style.next}`}
+                    onClick={(): void => {
+                      currentPage !== maxPage
+                        ? setCurrentPage(currentPage + 1)
+                        : setCurrentPage(maxPage);
+                      currentOffset !== maxPage - 1
+                        ? setCurrentOffset(currentOffset + 1)
+                        : setCurrentOffset(maxPage - 1);
+                    }}
+                  ></button>
+                  <div className={style.category_number_circle}></div>
+                  <div className={style.category_number_inner_circle}></div>
+                </div>
               </div>
               <Link to="/customize">
                 <div
