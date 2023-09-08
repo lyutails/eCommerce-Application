@@ -2,7 +2,11 @@
 import { getProductProjectionsByVariantKey } from '../../api/getProducts';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
-import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
+import {
+  Cart,
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,6 +23,10 @@ import { IProductState } from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
+import {
+  loginCustomerThroughMe,
+  updateCartThroughMe,
+} from '../../api/passwordFlowSession';
 
 interface IDataProduct {
   name: string;
@@ -34,6 +42,19 @@ interface IDataProduct {
 
 function ProductPage(): JSX.Element {
   const dispatch = useDispatch();
+  const [cart, setCart] = useState<Cart | undefined>(undefined);
+
+  useEffect(() => {
+    loginCustomerThroughMe(
+      {
+        email: 'ianatestAPI@example.com',
+        password: 'fshHJKL2365',
+      },
+      dispatch
+    ).then((response) => {
+      setCart(response?.body.cart);
+    });
+  }, [cart?.id, cart?.version, dispatch]);
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
@@ -350,7 +371,33 @@ function ProductPage(): JSX.Element {
               </div>
               {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
-            <button className="wrapper-characteristics_button">To Cart</button>
+            <button
+              className="wrapper-characteristics_button"
+              onClick={(): void => {
+                updateCartThroughMe(
+                  {
+                    email: 'ianatestAPI@example.com',
+                    password: 'fshHJKL2365',
+                  },
+                  cart?.id ? cart.id : '',
+                  {
+                    version: cart?.version ? cart.version : 1,
+                    actions: [
+                      {
+                        action: 'addLineItem',
+                        // for variant
+                        sku: 'RSSchool T-Shirt Git Red',
+                        // for master
+                        productId: '28026697-93db-46da-b154-dd8328b10937',
+                        quantity: 1,
+                      },
+                    ],
+                  }
+                );
+              }}
+            >
+              To Cart
+            </button>
           </div>
         </div>
       </div>
