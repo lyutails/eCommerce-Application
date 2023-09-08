@@ -1,0 +1,37 @@
+@import '../../style/variables';
+
+.cartproduct {
+  &_wrapper {
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  &_item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: $background-gradient-two;
+  }
+
+  &_pic {
+    width: 20vw;
+    aspect-ratio: 1 / 1;
+    background-repeat: no-repeat;
+  }
+
+  &_delete {
+    width: 5vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/assets/icons/trash_cart.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    resize: both;
+  }
+
+  &_product_counter {
+    display: flex;
+    flex-direction: row;
+    width: 20vw;
+    justify-content: space-between;
+  }
+}
