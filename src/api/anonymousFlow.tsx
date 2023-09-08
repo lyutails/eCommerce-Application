@@ -4,7 +4,11 @@ import {
   ClientBuilder,
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import {
+  Cart,
+  ClientResponse,
+  createApiBuilderFromCtpClient,
+} from '@commercetools/platform-sdk';
 
 if (typeof process.env.CLIENT_ID !== 'string') {
   throw new Error('no client id found');
@@ -33,9 +37,30 @@ const anonymousClient = new ClientBuilder()
   /* .withLoggerMiddleware() */
   .build();
 
-export const apiRootAnonymous = createApiBuilderFromCtpClient(
-  anonymousClient,
-  'https://auth.us-central1.gcp.commercetools.com/'
-).withProjectKey({
-  projectKey: PROJECT_KEY,
-});
+export const createAnonymousCart = async (
+  id?: string
+): Promise<ClientResponse<Cart> | undefined> => {
+  const apiRootAnonymous = createApiBuilderFromCtpClient(
+    anonymousClient,
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRootAnonymous
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    return customer;
+  } catch {
+    console.error('no anon customer');
+  }
+};

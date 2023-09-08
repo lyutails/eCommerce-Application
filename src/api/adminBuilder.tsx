@@ -78,3 +78,14 @@ export const refreshTokenFlow = async (
   const customer = await authClient.refreshTokenFlow(token);
   return customer;
 };
+
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export const anonymousSessionFlow = async (id?: string): Promise<any> => {
+  let customer;
+  if (id) {
+    customer = authClient.anonymousFlow(id);
+  } else {
+    customer = authClient.anonymousFlow();
+  }
+  return customer;
+};
