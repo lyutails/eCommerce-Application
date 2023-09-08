@@ -27,4 +27,11 @@
     background-size: contain;
     resize: both;
   }
+
+  &_product_counter {
+    display: flex;
+    flex-direction: row;
+    width: 20vw;
+    justify-content: space-between;
+  }
 }
