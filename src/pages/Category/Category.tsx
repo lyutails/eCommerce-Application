@@ -1118,6 +1118,7 @@ function CategoryPage(): JSX.Element {
                 </div>
               </Link>
             </div>
+            <div className={style.category_cybersloth}></div>
           </div>
         </div>
       </div>

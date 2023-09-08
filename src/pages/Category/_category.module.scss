@@ -700,6 +700,14 @@ input[type='checkbox'] {
     font-size: 3rem;
     user-select: none;
   }
+
+  &_cybersloth {
+    width: 30vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/assets/backgrounds/cybersloth_01.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 }
 
 @keyframes number_circle_anim {
