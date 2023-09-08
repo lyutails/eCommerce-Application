@@ -13,9 +13,9 @@ export const handleUpdateEmail = (
   dispatch: Dispatch<AnyAction>
 ): void => {
   if (emailCheck) {
-    console.log(data.version, 'mail');
     updateCustomer(token, data).then((response) => {
       if (response) {
+        alert('Email change was successful');
         dispatch(changeVersion(response.body.version));
       }
     });

@@ -32,9 +32,9 @@ export const handleUpdateBio = (
     updateBioData.lastnameError &&
     updateBioData.birthdayError
   ) {
-    console.log(data.version, 'bio');
     updateCustomer(updateBioData.token, data).then((response) => {
       if (response) {
+        alert('Personal information change was successful');
         dispatch(changeVersion(response.body.version));
       }
     });

@@ -28,7 +28,6 @@ export const handleUpdatePassword = (
       passwordUpdateData.passwordNewField ===
       passwordUpdateData.passwordRepeatField
     ) {
-      console.log(data.version, 'password');
       updatePassword(
         passwordUpdateData.token,
         data,
@@ -37,6 +36,7 @@ export const handleUpdatePassword = (
       )
         .then((response) => {
           if (response) {
+            alert('Password change was successful');
             setClickedPasswordUpdate(false);
             setShowModal(false);
             const token = getCustomerToken(
@@ -48,7 +48,6 @@ export const handleUpdatePassword = (
           }
         })
         .then((response) => {
-          console.log(response);
           localStorage.setItem('refreshToken', response.refresh_token);
           passwordUpdateData.dispatch(
             setRefreshTokenStatus(response.refresh_token)
@@ -56,6 +55,7 @@ export const handleUpdatePassword = (
         })
         .catch((error) => {
           if (error) {
+            alert('Password change was failed');
             passwordUpdateData.dispatch(
               changePassword({
                 currentPassword: {

@@ -49,7 +49,6 @@ function AuthPage(): JSX.Element {
       setCheckmarkPassword(false);
     }
   }
-  console.log(passwordError);
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>

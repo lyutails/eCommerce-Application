@@ -232,11 +232,9 @@
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
-  html {
-    font-size: 8px;
-  }
-
   .catalog {
+    font-size: 8px;
+
     &_category {
       aspect-ratio: 1 / 1.2;
       width: 48%;
@@ -269,11 +267,9 @@
 }
 
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
-  html {
-    font-size: 6px;
-  }
-
   .catalog {
+    font-size: 6px;
+
     &_title {
       text-align: center;
     }
