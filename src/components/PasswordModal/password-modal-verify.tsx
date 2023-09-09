@@ -37,6 +37,7 @@ export const handleUpdatePassword = (
       )
         .then((response) => {
           if (response) {
+            alert('Password change was successful');
             setClickedPasswordUpdate(false);
             setShowModal(false);
             const token = getCustomerToken(
@@ -56,6 +57,7 @@ export const handleUpdatePassword = (
         })
         .catch((error) => {
           if (error) {
+            alert('Password change was failed');
             passwordUpdateData.dispatch(
               changePassword({
                 currentPassword: {

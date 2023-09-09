@@ -49,9 +49,8 @@ export const handleUpdateAddress = (
     updateAddressData.countryError
   ) {
     if (isAdd) {
-      console.log(data.version, 'add');
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           const id = response?.body.addresses.filter(
             (item) => item.key === `address${version}`
           );
@@ -62,6 +61,7 @@ export const handleUpdateAddress = (
               addAddressStatusData as MyCustomerUpdate
             ).then((response) => {
               if (response) {
+                alert('New address creation was successful');
                 dispatch(
                   changeAddress({
                     addressStore: response.body.addresses,
@@ -79,13 +79,18 @@ export const handleUpdateAddress = (
               }
             });
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('New address creation was failed');
+          }
+        });
     } else {
       console.log(data.version, 'update');
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           if (response) {
+            alert('Address change was successful');
             dispatch(
               changeAddress({
                 addressStore: response.body.addresses,
@@ -101,8 +106,12 @@ export const handleUpdateAddress = (
             );
             dispatch(changeVersion(response.body.version));
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('Address change was failed');
+          }
+        });
     }
     setClickedAddressUpdate(false);
     setShowModal(false);
