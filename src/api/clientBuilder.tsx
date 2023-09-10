@@ -5,13 +5,14 @@ import {
 } from '@commercetools/sdk-client-v2';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
+import { throwNewError } from '../utils/throwNewError';
 
 if (typeof process.env.CLIENT_ID !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no client id found');
 }
 
 if (typeof process.env.CLIENT_SECRET !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no client secret found');
 }
 
 /* Configure authMiddlewareOptions */

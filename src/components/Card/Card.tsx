@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CategoryCardProps } from '../../types/types';
 import style from './_card.module.scss';
+import { throwNewError } from '../../utils/throwNewError';
 
 function Card(props: CategoryCardProps): JSX.Element {
   const [currentImage, setCurrentImage] = useState<string>('');
@@ -9,28 +10,21 @@ function Card(props: CategoryCardProps): JSX.Element {
 
   useEffect(() => {
     if (!props.images) {
-      throw new Error('no images found');
+      throwNewError('no images for catalog card found');
     }
     setCurrentImage(props.images[0].url);
   }, [props.images]);
-
-  // useEffect(() => {
-  //   if (!props.description) {
-  //     throw new Error('no description found');
-  //   }
-  //   setDescription(props.description);
-  // }, [props.description]);
 
   return (
     <div
       className={style.card_wrapper}
       onMouseEnter={(): void => {
         if (!props.description) {
-          throw new Error('no description found');
+          throwNewError('no catalog card description found');
         }
         setDescription(props.description);
         if (!props.images) {
-          throw new Error('no pic found');
+          throwNewError('no catalog card pic found');
         }
         setCurrentSecondImage(props.images[1].url);
       }}

@@ -6,6 +6,7 @@ import {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
+import { throwNewError } from '../utils/throwNewError';
 
 export async function GetCategories(): Promise<string[]> {
   try {
@@ -18,7 +19,7 @@ export async function GetCategories(): Promise<string[]> {
     );
     return categoryNameArray;
   } catch {
-    throw new Error('no categories found');
+    throwNewError('no categories found');
   }
 }
 
@@ -34,7 +35,7 @@ export async function GetCategory(): Promise<ClientResponse<Category>> {
 
     return category;
   } catch {
-    throw new Error('no categories found');
+    throwNewError('no category found');
   }
 }
 
@@ -52,7 +53,7 @@ export async function GetParentCategory(): Promise<
       .execute();
     return categoriesAncestors;
   } catch {
-    throw new Error('no categories found');
+    throwNewError('no category parent found');
   }
 }
 
@@ -67,7 +68,7 @@ export async function returnProductsByCategoryKey(
       .execute();
     return byCategoryKey;
   } catch {
-    throw new Error('no products in category found');
+    throwNewError('no products in category found');
   }
 }
 
@@ -85,7 +86,7 @@ export async function getSubCategory(): Promise<
       .execute();
     return subcategory;
   } catch {
-    throw new Error('no subcategories found');
+    throwNewError('no subcategories found');
   }
 }
 
@@ -104,6 +105,6 @@ export async function getSubtreeCategory(
       .execute();
     return subtree;
   } catch {
-    throw new Error('no subtrees found');
+    throwNewError('no subtrees found');
   }
 }

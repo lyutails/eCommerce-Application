@@ -6,13 +6,14 @@ import {
 import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
+import { throwNewError } from '../utils/throwNewError';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no admin client id found');
 }
 
 if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no admin client secret found');
 }
 
 /* Configure authMiddlewareOptions */

@@ -21,6 +21,7 @@ import {
   SubcategoriesIDs,
 } from '../../types/enums';
 import Card from '../../components/Card/Card';
+import { throwNewError } from '../../utils/throwNewError';
 
 function CategoryPage(): JSX.Element {
   const pageLimit = 8;
@@ -53,6 +54,8 @@ function CategoryPage(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [isNoSort, setIsNoSort] = useState(false);
+  const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
+    useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -155,7 +158,7 @@ function CategoryPage(): JSX.Element {
 
   useEffect(() => {
     if (!category) {
-      throw new Error(`no categories found`);
+      throwNewError(`no categories found`);
     }
     returnProductsByCategoryKey(category?.toLowerCase())
       .then((response) => {
@@ -510,7 +513,7 @@ function CategoryPage(): JSX.Element {
               filteredVariantsPrices.sort(
                 (a: ProductVariant, b: ProductVariant): number => {
                   if (!a.prices || !b.prices) {
-                    throw new Error('no prices found');
+                    throwNewError('no category prices found');
                   }
                   return (
                     a.prices[0].value.centAmount - b.prices[0].value.centAmount
@@ -525,7 +528,7 @@ function CategoryPage(): JSX.Element {
               filteredVariantsPrices.sort(
                 (a: ProductVariant, b: ProductVariant): number => {
                   if (!a.prices || !b.prices) {
-                    throw new Error('no prices found');
+                    throwNewError('no category variant prices found');
                   }
                   return (
                     b.prices[0].value.centAmount - a.prices[0].value.centAmount
@@ -1077,6 +1080,8 @@ function CategoryPage(): JSX.Element {
                   <button
                     className={`${style.category_pagination_button} ${style.previous}`}
                     onClick={(): void => {
+                      setIsPaginationNumberAnimPlaying(true);
+                      console.log(isPaginationNumberAnimPlaying);
                       currentPage > 1
                         ? setCurrentPage(currentPage - 1)
                         : setCurrentPage(1);
@@ -1093,6 +1098,7 @@ function CategoryPage(): JSX.Element {
                   <button
                     className={`${style.category_pagination_button} ${style.next}`}
                     onClick={(): void => {
+                      setIsPaginationNumberAnimPlaying(true);
                       currentPage !== maxPage
                         ? setCurrentPage(currentPage + 1)
                         : setCurrentPage(maxPage);
@@ -1102,7 +1108,19 @@ function CategoryPage(): JSX.Element {
                     }}
                   ></button>
                   <div className={style.category_number_circle}></div>
-                  <div className={style.category_number_inner_circle}></div>
+                  <div
+                    className={style.category_number_inner_circle}
+                    style={{
+                      animationPlayState:
+                        isPaginationNumberAnimPlaying === true
+                          ? 'running'
+                          : 'paused',
+                    }}
+                    onAnimationEnd={(): void => {
+                      setIsPaginationNumberAnimPlaying(false);
+                      console.log('end anim');
+                    }}
+                  ></div>
                 </div>
               </div>
               <Link to="/customize">

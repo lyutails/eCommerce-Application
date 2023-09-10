@@ -15,18 +15,18 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import { PROJECT_KEY } from '../constants';
 import { httpMiddlewareOptions } from './clientBuilder';
-import { NavigateFunction } from 'react-router-dom';
 import { IMyCustomerLoginDraft } from '../types/interfaces';
+import { throwNewError } from '../utils/throwNewError';
 
 const authMiddlewareOptionsForPasswordFlow = (
   username: string,
   password: string
 ): PasswordAuthMiddlewareOptions => {
   if (typeof process.env.CLIENT_ID !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client id found');
   }
   if (typeof process.env.CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client secret found');
   }
   const options: PasswordAuthMiddlewareOptions = {
     host: 'https://auth.us-central1.gcp.commercetools.com/',
