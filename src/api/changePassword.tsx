@@ -3,7 +3,6 @@ import {
   ClientResponse,
   createApiBuilderFromCtpClient,
   Customer,
-  MyCustomerUpdate,
 } from '@commercetools/platform-sdk';
 import {
   Client,
@@ -12,16 +11,17 @@ import {
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
 import { AnyAction } from 'redux';
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch } from 'react';
 import { changePassword } from '../store/reducers/profileReducer';
 import { IPasswordUpdateData } from '../components/PasswordModal/PasswordModal';
+import { throwNewError } from '../utils/throwNewError';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no client id found');
 }
 
 if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no client secret found');
 }
 
 export function loginUserCTPClient(
@@ -50,10 +50,10 @@ const authMiddlewareOptionsForPasswordFlow = (
   fetch?: any;
 } => {
   if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no admin client id found');
   }
   if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no admin client secret found');
   }
   const options = {
     host: 'https://auth.us-central1.gcp.commercetools.com/',

@@ -1,5 +1,6 @@
 import { ClientResponse, Customer } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClientAdmin';
+import { throwNewError } from '../utils/throwNewError';
 
 export async function getCustomerById(customerId: {
   ID: string;
@@ -12,6 +13,6 @@ export async function getCustomerById(customerId: {
       .execute();
     return customer;
   } catch {
-    throw new Error('cannot get a customer');
+    throwNewError('cannot get a customer by id');
   }
 }

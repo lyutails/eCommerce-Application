@@ -10,6 +10,8 @@ import {
   ClientResponse,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
+import { throwNewError } from '../utils/throwNewError';
+
 
 export function anonymousFlowOptions(
   anonID: string
@@ -20,7 +22,7 @@ export function anonymousFlowOptions(
 
 
   if (typeof process.env.CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client secret found');
   }
   const options: AnonymousAuthMiddlewareOptions = {
     host: 'https://auth.us-central1.gcp.commercetools.com/',
@@ -105,6 +107,7 @@ export const createAnonymousCart = async (
       .execute();
     return customer;
   } catch {
-    console.error('no anon customer');
+    throwNewError('no anon customer found');
+    // console.error('no anon customer');
   }
 };

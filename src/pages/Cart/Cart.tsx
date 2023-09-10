@@ -1,4 +1,4 @@
-import { CartProduct } from '../../components/CartProduct/CartProduct';
+// import { CartProduct } from '../../components/CartProduct/CartProduct';
 import style from './_cart.module.scss';
 
 function CartPage(): JSX.Element {

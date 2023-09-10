@@ -1,6 +1,6 @@
 import style from './_app.module.scss';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
 import RegistrationPage from '../pages/Registration/Registration';
 import NotFoundPage from '../pages/NotFound/NotFound';
@@ -8,7 +8,7 @@ import MainPage from '../pages/Main/Main';
 import AboutUsPage from '../pages/AboutUs/AboutUs';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
-import { IProfileState, IRootState } from '../types/interfaces';
+import { IRootState } from '../types/interfaces';
 import { Layout } from '../components/Layout/Layout';
 import CartPage from '../pages/Cart/Cart';
 import CatalogPage from '../pages/Catalog/Catalog';

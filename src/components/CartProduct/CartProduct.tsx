@@ -1,9 +1,10 @@
+import { throwNewError } from '../../utils/throwNewError';
 import { CartProductProps } from '../../types/types';
 import style from './_cart_product.module.scss';
 
 export function CartProduct(props: CartProductProps): JSX.Element {
   if (!props.images) {
-    throw new Error('no images found');
+    throwNewError('no product images for cart product found');
   }
   return (
     <div className={style.cartproduct_wrapper}>

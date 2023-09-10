@@ -1,3 +1,5 @@
+@use '../../style/mixins.scss' as *;
+
 @import '../../style/variables';
 
 input[type='checkbox'] {
@@ -5,20 +7,7 @@ input[type='checkbox'] {
 }
 
 .category {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-
-  width: 100%;
-
-  background-color: $background-color-primary-one;
-
-  &_wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 90vw;
-    margin: 0 auto;
-  }
+  @include page-layout-container;
 
   &_filters_cards_wrapper {
     display: flex;
@@ -48,6 +37,7 @@ input[type='checkbox'] {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    align-self: center;
 
     aspect-ratio: 1 / 0.2;
     width: 70%;
@@ -172,7 +162,9 @@ input[type='checkbox'] {
     }
 
     &:active {
-      box-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
+      box-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green;
     }
 
     &.previous {
@@ -229,8 +221,7 @@ input[type='checkbox'] {
     animation-duration: 2s;
     animation-iteration-count: 1;
     animation-timing-function: linear;
-    transform-origin: 2vw center;
-    animation-play-state: paused;
+    transform-origin: center;
   }
 
   &_filters_sizes {
@@ -253,10 +244,11 @@ input[type='checkbox'] {
     width: 100%;
     aspect-ratio: 1 / 0.4;
     padding-left: 2vw;
-    padding-top: 8px;
+    padding-top: 12px;
     transition: all 0.2s ease-in-out;
     text-shadow: 0 0 5px $glow-green;
     user-select: none;
+    font-family: "No Signal";
 
     &:hover {
       background-image: url('../../../public/ui-kit/subtree_green_blue.svg');
@@ -280,10 +272,11 @@ input[type='checkbox'] {
     width: 100%;
     height: 100%;
     padding-left: 2vw;
-    padding-top: 8px;
+    padding-top: 12px;
     transition: all 0.2s ease-in-out;
     text-shadow: 0 0 5px $glow-green;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/bestseller_input_green_blue.svg');
@@ -314,20 +307,22 @@ input[type='checkbox'] {
 
   &_filters_sale_red {
     margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     text-shadow:
       0 0 5px,
       0 0 10px $glow-green;
-      user-select: none;
+    user-select: none;
+    font-family: 'No Signal';
   }
 
   &_filters_sale_winter {
     margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     text-shadow:
       0 0 5px,
       0 0 10px $glow-green;
-      user-select: none;
+    user-select: none;
+    font-family: 'No Signal';
   }
 
   &_filter_button {
@@ -495,6 +490,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -522,6 +518,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -549,6 +546,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -576,6 +574,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -603,6 +602,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -630,6 +630,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -657,6 +658,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -689,6 +691,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -704,7 +707,7 @@ input[type='checkbox'] {
   &_cybersloth {
     width: 30vw;
     aspect-ratio: 1 / 1;
-    background-image: url('../../../public/assets/backgrounds/cybersloth_01.png');
+    background-image: url('../../../public/assets/cybersloths/cybersloth_01.png');
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -712,23 +715,28 @@ input[type='checkbox'] {
 
 @keyframes number_circle_anim {
   0% {
+    transform-origin: center;
     transform: translate(5.5vw, 0);
-    width: 6vw;
+    width: 4vw;
   }
   25% {
+    transform-origin: center;
     width: 4vw;
-    transform: translate(5.5vw, 0) rotate(360deg);
+    transform: rotate(185deg);
   }
   50% {
-    width: 7vw;
-    transform: translate(5.5vw, 0) rotate(-360deg);
+    transform-origin: center;
+    width: 6vw;
+    transform: translate(5.5vw, 0) rotate(-185deg);
   }
   75% {
+    transform-origin: center;
     transform: translate(5.5vw, 0);
     width: 5vw;
   }
   100% {
-    width: 6vw;
+    transform-origin: center;
+    width: 4vw;
     transform: translate(5.5vw, 0);
   }
 }
