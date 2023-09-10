@@ -79,8 +79,12 @@ export const handleUpdateAddress = (
               }
             });
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('New address creation was failed');
+          }
+        });
     } else {
       updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
         (response) => {
@@ -101,8 +105,12 @@ export const handleUpdateAddress = (
             );
             dispatch(changeVersion(response.body.version));
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('Address change was failed');
+          }
+        });
     }
     setClickedAddressUpdate(false);
     setShowModal(false);

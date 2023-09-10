@@ -1,3 +1,9 @@
 {
-    "liveServer.settings.port": 5501
+    "files.autoSave": "afterDelay",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "code-runner.saveAllFilesBeforeRun": true,
+    "liveServer.settings.port": 5501,
+    "eslint.codeActionsOnSave.rules": null,
+    "editor.formatOnSave": true
 }
