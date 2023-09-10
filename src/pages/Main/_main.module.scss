@@ -327,11 +327,9 @@
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
-  html {
-    font-size: 8px;
-  }
-
   .main {
+    font-size: 8px;
+
     &_advertisment {
       width: 100%;
       margin-top: 20px;
@@ -357,11 +355,9 @@
 }
 
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
-  html {
-    font-size: 6px;
-  }
-
   .main {
+    font-size: 6px;
+
     &_title {
       font-size: 3.5rem;
       text-align: center;
