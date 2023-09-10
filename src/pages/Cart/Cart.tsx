@@ -20,6 +20,7 @@ function CartPage(): JSX.Element {
           <div className={style.cart_discount_amount}>30%</div>
           <button className={style.cart_discount_name}>trinity</button>
         </div>
+        <input type="text" placeholder="type discount here"></input>
       </div>
       <div className={style.cart_applied_discount}>
         <div className={style.cart_price_name}>

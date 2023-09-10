@@ -28,7 +28,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   fetch,
 };
 
-const authClient = new SdkAuth({
+export const authClient = new SdkAuth({
   host: 'https://auth.us-central1.gcp.commercetools.com/',
   projectKey: PROJECT_KEY,
   disableRefreshToken: false,
