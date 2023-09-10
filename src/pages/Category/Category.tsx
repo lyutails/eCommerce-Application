@@ -53,7 +53,6 @@ function CategoryPage(): JSX.Element {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
-  const [isNoSort, setIsNoSort] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -597,10 +596,6 @@ function CategoryPage(): JSX.Element {
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
-  }
-
-  function onChangeNoSort(): void {
-    setIsNoSort(!isNoSort);
   }
 
   function onChangeSale(): void {
