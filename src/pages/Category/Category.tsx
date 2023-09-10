@@ -22,8 +22,22 @@ import {
 } from '../../types/enums';
 import Card from '../../components/Card/Card';
 import { throwNewError } from '../../utils/throwNewError';
+import {
+  anonymousSessionFlowTwo,
+  updateAnonCart,
+} from '../../api/anonymousFlow';
+import { useDispatch, useSelector } from 'react-redux';
+import { ICartState } from '../../types/interfaces';
+import {
+  changeAnonymousID,
+  changeVersionCart,
+} from '../../store/reducers/cartReducer';
 
 function CategoryPage(): JSX.Element {
+  const dispatch = useDispatch();
+  const { versionCart, anonymousID, cartID } = useSelector(
+    (state: ICartState) => state.cart
+  );
   const pageLimit = 8;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
@@ -139,6 +153,18 @@ function CategoryPage(): JSX.Element {
     name: Sizes.universal,
     flag: false,
   });
+
+  const updateAnonCartData = {
+    version: versionCart,
+    actions: [
+      {
+        action: 'addLineItem',
+        productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
+        // variantSKU for child
+        quantity: 1,
+      },
+    ],
+  };
 
   useEffect(() => {
     getProductType().then((response) => {
@@ -1051,22 +1077,76 @@ function CategoryPage(): JSX.Element {
                         (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
                       : '';
                     return (
-                      <Link
-                        to={`/category/${category}/${card.key}`}
-                        className={style.category_card}
-                        key={card.key}
-                      >
-                        <Card
-                          description={
-                            variantDescription?.description['en-US'] ?? ' '
-                          }
-                          keyCard={card.key ? card.key : ''}
-                          images={card.images}
-                          prices={productPrice.toFixed(2)}
-                          discounted={productDiscount}
-                          sku={card.sku ? card.sku : ''}
-                        />
-                      </Link>
+                      <div key={card.key} className={style.category_whole_card}>
+                        <button
+                          className={style.category_to_cart}
+                          onClick={(): void => {
+                            anonymousID
+                              ? updateAnonCart(
+                                  cartID,
+                                  anonymousID,
+                                  updateAnonCartData
+                                ).then((response) => {
+                                  if (response) {
+                                    dispatch(
+                                      changeVersionCart(response.body.version)
+                                    );
+                                  }
+                                })
+                              : anonymousSessionFlowTwo().then((response) => {
+                                  console.log(response);
+                                  if (
+                                    response &&
+                                    response?.body.id &&
+                                    response.body.anonymousId
+                                  ) {
+                                    dispatch(
+                                      changeAnonymousID(
+                                        response.body.anonymousId
+                                      )
+                                    );
+                                    updateAnonCart(
+                                      response.body.anonymousId,
+                                      response?.body.id,
+                                      updateAnonCartData
+                                    ).then((response) => {
+                                      console.log(response);
+                                      if (response) {
+                                        dispatch(
+                                          changeVersionCart(
+                                            response.body.version
+                                          )
+                                        );
+                                        dispatch(
+                                          changeAnonymousID(
+                                            response.body.anonymousId
+                                          )
+                                        );
+                                      }
+                                    });
+                                  }
+                                });
+                          }}
+                        >
+                          to Cart
+                        </button>
+                        <Link
+                          to={`/category/${category}/${card.key}`}
+                          className={style.category_card}
+                          key={card.key}
+                        >
+                          <Card
+                            description={
+                              variantDescription?.description['en-US'] ?? ' '
+                            }
+                            keyCard={card.key ? card.key : ''}
+                            images={card.images}
+                            prices={productPrice.toFixed(2)}
+                            discounted={productDiscount}
+                            sku={card.sku ? card.sku : ''}
+                          />
+                        </Link>
+                      </div>
                     );
                   })}
                 </div>

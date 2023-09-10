@@ -127,8 +127,16 @@ input[type='checkbox'] {
     width: 100%;
   }
 
-  &_card {
+  &_whole_card {
     width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &_card {
+    width: 100%;
+    // aspect-ratio: 1 / 0.8;
   }
 
   &_pagination_buttons {
@@ -710,6 +718,30 @@ input[type='checkbox'] {
     background-image: url('../../../public/assets/cybersloths/cybersloth_01.png');
     background-repeat: no-repeat;
     background-size: contain;
+  }
+
+  &_to_cart {
+    background-color: transparent;
+    border: none;
+    color: $font-color-primary-one;
+    font-size: 2rem;
+    align-self: flex-start;
+    font-weight: 700;
+    padding-left: 20%;
+    transform: translateY(50%);
+    border: 1px solid $glow-green;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 10vw;
+    aspect-ratio: 1 / 0.2;
+    z-index: 200;
+    margin-bottom: 10px;
+    position: relative;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

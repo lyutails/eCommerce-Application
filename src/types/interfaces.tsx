@@ -202,3 +202,11 @@ export interface ICategoryState {
     category: string[];
   };
 }
+
+export interface ICartState {
+  cart: {
+    anonymousID: string;
+    versionCart: number;
+    cartID: string;
+  };
+}

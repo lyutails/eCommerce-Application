@@ -33,7 +33,14 @@ function Card(props: CategoryCardProps): JSX.Element {
         setCurrentSecondImage('');
       }}
     >
-      <button className={style.card_to_cart}>to Cart</button>
+      {/* <button
+        className={style.card_to_cart}
+        onClick={(): void => {
+          console.log('cart clicked');
+        }}
+      >
+        to Cart
+      </button> */}
       <h2 className={style.card_name} id={props.keyCard}>
         <span>{props.sku}</span>
       </h2>
