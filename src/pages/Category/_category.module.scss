@@ -1,3 +1,5 @@
+@use '../../style/mixins.scss' as *;
+
 @import '../../style/variables';
 
 input[type='checkbox'] {
@@ -5,20 +7,7 @@ input[type='checkbox'] {
 }
 
 .category {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-
-  width: 100%;
-
-  background-color: $background-color-primary-one;
-
-  &_wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 90vw;
-    margin: 0 auto;
-  }
+  @include page-layout-container;
 
   &_filters_cards_wrapper {
     display: flex;
