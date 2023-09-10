@@ -100,12 +100,13 @@ export const anonymousSessionFlowTwo = async (): Promise<
 // }
 
 export async function updateAnonCart(
+  anonymousId: string,
   id: string,
   data: MyCartUpdate
 ): Promise<ClientResponse<Cart> | undefined> {
   try {
     const customer = await authClient
-      .anonymousFlow(id)
+      .anonymousFlow(anonymousId)
       .me()
       .carts()
       .withId({
