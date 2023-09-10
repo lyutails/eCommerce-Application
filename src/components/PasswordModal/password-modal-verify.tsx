@@ -28,7 +28,6 @@ export const handleUpdatePassword = (
       passwordUpdateData.passwordNewField ===
       passwordUpdateData.passwordRepeatField
     ) {
-      console.log(data.version, 'password');
       updatePassword(
         passwordUpdateData.token,
         data,
@@ -49,7 +48,6 @@ export const handleUpdatePassword = (
           }
         })
         .then((response) => {
-          console.log(response);
           localStorage.setItem('refreshToken', response.refresh_token);
           passwordUpdateData.dispatch(
             setRefreshTokenStatus(response.refresh_token)

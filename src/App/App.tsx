@@ -8,7 +8,7 @@ import MainPage from '../pages/Main/Main';
 import AboutUsPage from '../pages/AboutUs/AboutUs';
 import CustomizePage from '../pages/Customize/Customize';
 import ProfilePage from '../pages/Profile/Profile';
-import { IRootState } from '../types/interfaces';
+import { IProfileState, IRootState } from '../types/interfaces';
 import { Layout } from '../components/Layout/Layout';
 import CartPage from '../pages/Cart/Cart';
 import CatalogPage from '../pages/Catalog/Catalog';

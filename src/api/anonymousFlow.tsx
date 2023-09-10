@@ -18,6 +18,7 @@ export function anonymousFlowOptions(
     throw new Error('no client id found');
   }
 
+
   if (typeof process.env.CLIENT_SECRET !== 'string') {
     throw new Error('no client id found');
   }
@@ -71,5 +72,39 @@ export const anonymousSessionFlowTwo = async (
     return customer;
   } catch (error) {
     console.error(error);
+  }
+};
+
+const anonymousClient = new ClientBuilder()
+  .withAnonymousSessionFlow(options)
+  .withHttpMiddleware(httpMiddlewareOptions)
+  /* .withLoggerMiddleware() */
+  .build();
+
+export const createAnonymousCart = async (
+  id?: string
+): Promise<ClientResponse<Cart> | undefined> => {
+  const apiRootAnonymous = createApiBuilderFromCtpClient(
+    anonymousClient,
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRootAnonymous
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    return customer;
+  } catch {
+    console.error('no anon customer');
   }
 };

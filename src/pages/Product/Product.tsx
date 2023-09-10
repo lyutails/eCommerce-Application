@@ -2,12 +2,16 @@
 import { getProductProjectionsByVariantKey } from '../../api/getProducts';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
-import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
+import {
+  Cart,
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
+import { EffectCoverflow } from 'swiper/modules';
+
 import 'swiper/css/navigation';
 
 import {
@@ -17,6 +21,12 @@ import {
 import ModalWindow from './ModalWindow/ModalWindow';
 import { IProductState } from '../../types/interfaces';
 import '../Product/_product.scss';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import {
+  loginCustomerThroughMe,
+  updateCartThroughMe,
+} from '../../api/passwordFlowSession';
 
 interface IDataProduct {
   name: string;
@@ -32,6 +42,19 @@ interface IDataProduct {
 
 function ProductPage(): JSX.Element {
   const dispatch = useDispatch();
+  const [cart, setCart] = useState<Cart | undefined>(undefined);
+
+  useEffect(() => {
+    loginCustomerThroughMe(
+      {
+        email: 'ianatestAPI@example.com',
+        password: 'fshHJKL2365',
+      },
+      dispatch
+    ).then((response) => {
+      setCart(response?.body.cart);
+    });
+  }, [cart?.id, cart?.version, dispatch]);
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
@@ -203,28 +226,60 @@ function ProductPage(): JSX.Element {
   function openModalWindow(): void {
     dispatch(changeflagInModalWindow(true));
   }
-  console.log(dataProduct.sale);
   return (
     <section className="showcase">
-      <h2 className="showcase_header">{dataProduct.name}</h2>
+      <div className="showcase_header">
+        <h2 className="showcase_header-title">{dataProduct.name}</h2>
+        <div
+          className={
+            dataProduct.bestseller
+              ? 'showcase_carousel-bestSellerOn'
+              : 'showcase_carousel-bestSellerOff'
+          }
+        >
+          BestSeller!!!
+        </div>
+      </div>
       <div className="showcase__content-wrapper">
         <div className="showcase_content">
           <div className="showcase_carousel">
-            <div
-              className={
-                dataProduct.bestseller
-                  ? 'showcase_carousel-bestSellerOn'
-                  : 'showcase_carousel-bestSellerOff'
-              }
-            >
-              BestSeller!!!
-            </div>
             <Swiper
-              loop={true}
-              navigation={true}
               grabCursor={true}
-              modules={[Navigation]}
-              className="swiper-wrapper"
+              // loop={true}
+              effect={'coverflow'}
+              centeredSlides={true}
+              spaceBetween={100}
+              slidesPerView={3}
+              coverflowEffect={{
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 4,
+                slideShadows: false,
+              }}
+              modules={[EffectCoverflow]}
+              // keyboard={{
+              //   enabled: true,
+              // }}
+              // mousewheel={{
+              //   thresholdDelta: 70,
+              // }}
+              initialSlide={1}
+              breakpoints={{
+                3900: {
+                  slidesPerView: 3,
+                },
+                1000: {
+                  slidesPerView: 3,
+                },
+                700: {
+                  slidesPerView: 3,
+                },
+                400: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="swiper-custom"
             >
               {dataProduct.images.map((image, index) => {
                 return (
@@ -269,7 +324,7 @@ function ProductPage(): JSX.Element {
           <div className="wrapper-characteristics">
             <div className="specifications">
               <div className="specifications-item">
-                <span className="specifications-item-span1">prace:</span>
+                <span className="specifications-item-span1">price:</span>
                 <span
                   className={
                     dataProduct.sale === 0
@@ -316,7 +371,33 @@ function ProductPage(): JSX.Element {
               </div>
               {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
-            <button className="wrapper-characteristics_button">To Cart</button>
+            <button
+              className="wrapper-characteristics_button"
+              onClick={(): void => {
+                updateCartThroughMe(
+                  {
+                    email: 'ianatestAPI@example.com',
+                    password: 'fshHJKL2365',
+                  },
+                  cart?.id ? cart.id : '',
+                  {
+                    version: cart?.version ? cart.version : 1,
+                    actions: [
+                      {
+                        action: 'addLineItem',
+                        // for variant
+                        sku: 'RSSchool T-Shirt Git Red',
+                        // for master
+                        productId: '28026697-93db-46da-b154-dd8328b10937',
+                        quantity: 1,
+                      },
+                    ],
+                  }
+                );
+              }}
+            >
+              To Cart
+            </button>
           </div>
         </div>
       </div>

@@ -60,7 +60,6 @@ export const handleСreationAuth = (
         return token;
       })
       .then((response) => {
-        console.log(response);
         localStorage.setItem('refreshToken', response.refresh_token);
         dispatch(setRefreshTokenStatus(response.refresh_token));
       })

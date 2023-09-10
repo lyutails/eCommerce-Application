@@ -32,7 +32,6 @@ export const handleUpdateBio = (
     updateBioData.lastnameError &&
     updateBioData.birthdayError
   ) {
-    console.log(data.version, 'bio');
     updateCustomer(updateBioData.token, data)
       .then((response) => {
         if (response) {

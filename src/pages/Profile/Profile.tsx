@@ -76,12 +76,9 @@ function ProfilePage(): JSX.Element {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    console.log(refreshToken);
     if (!refreshToken) {
-      console.log('old');
       checkRefreshToken();
     } else {
-      console.log('young');
       refreshTokenFlow(refreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
@@ -123,7 +120,6 @@ function ProfilePage(): JSX.Element {
   }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
 
   const handleLogOut = (): void => {
-    console.log('logout');
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
@@ -300,7 +296,6 @@ function ProfilePage(): JSX.Element {
       </div>
     );
   });
-  console.log(version);
   return (
     <div className={style.profile} data-testid="profile-component">
       <div className={style.profile_top}>
@@ -569,6 +564,10 @@ export default ProfilePage;
 
 // "yanatestprofile@mail.com"
 // "2327Ybv!"
+
+// Единственный рабочий!
+// kukushka@mail.ru
+// 123qweQWE
 
 // tycteam:cn-qqCLdwzkJaZFsOw4IlgdqftWdZkbtPWTO2Bi4W_c
 

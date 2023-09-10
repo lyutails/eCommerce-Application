@@ -80,6 +80,7 @@ export const refreshTokenFlow = async (
   return customer;
 };
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export const anonymousSessionFlow = async (id?: string): Promise<any> => {
   let customer;
   if (id) {

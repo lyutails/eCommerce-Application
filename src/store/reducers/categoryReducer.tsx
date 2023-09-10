@@ -1,9 +1,10 @@
+import { ICategoryState } from '../../types/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ICategoryState } from '../../types/interfaces';
-
 const initialState: ICategoryState = {
-  category: [],
+  category: {
+    category: [],
+  },
 };
 
 const categoryReducer = createSlice({

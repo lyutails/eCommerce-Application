@@ -96,7 +96,6 @@ function BioModal(props: IBioModalProps): JSX.Element {
     birthdayError: !bio.birthday.error,
     token: refreshToken,
   };
-  console.log(refreshToken);
   return (
     <div className={`${style.modal} ${props.modalClass}`}>
       <ButtonForm classNames={style.modal_close} onClick={props.onClick}>
