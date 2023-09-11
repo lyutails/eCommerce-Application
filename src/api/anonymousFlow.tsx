@@ -12,7 +12,6 @@ import {
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
 import { throwNewError } from '../utils/throwNewError';
-import { apiRoot } from './createClientAdmin';
 import { authClient } from './adminBuilder';
 
 export function anonymousFlowOptions(): AnonymousAuthMiddlewareOptions {

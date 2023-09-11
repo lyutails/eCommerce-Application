@@ -12,10 +12,10 @@ import {
 } from 'react';
 
 export const mainPageOffersSlides = [
-  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase.',
-  'HOT SALES 20% OFF on all red t-shirts and caps during hot summer and autumn!',
-  'Winter is coming so get the 10% OFF on all white hoodies, mugs and mice.',
-  '2 = 1 !!! two t-shirts of the same colour by price of one!',
+  'RSSchool is infinitely working DISCOUNT code giving you 10% OFF per one purchase.',
+  'HOT SALES 10% OFF for all red t-shirts and caps during hot summer and autumn!',
+  'Winter is coming - so get the 10% OFF for all white hoodies, mugs and mice.',
+  '2 = 1 !!! Back to black... all designers favourite colour - Two Black t-shirts by the price of One!',
 ];
 
 function MainPage(): JSX.Element {

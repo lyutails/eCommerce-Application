@@ -10,20 +10,21 @@
   }
 
   &_title {
-    font-size: 5rem;
+    font-size: 4rem;
     text-align: center;
   }
 
   &_price_wrapper {
-    width: 30vw;
+    width: 90vw;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 30px;
   }
 
   &_price_name {
     font-size: 3rem;
+    margin-right: 2vw;
   }
 
   &_price_amount {
@@ -96,20 +97,61 @@
     background-repeat: no-repeat;
     font-size: 5rem;
     color: $font-color-primary-one;
-    text-shadow:  0 0 5px $glow-green, 0 0 10px $glow-green;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
     margin: 0 auto;
     transition: all 0.2s ease-in-out;
+    min-width: 200px;
+    max-width: 500px;
 
     &:hover {
       cursor: pointer;
-      text-shadow:  0 0 5px $glow-violet, 0 0 10px $glow-violet;
+      text-shadow:
+        0 0 5px $glow-violet,
+        0 0 10px $glow-violet;
       background-image: url('../../../public/ui-kit/cart_buy_purple.svg');
     }
 
     &:active {
       cursor: pointer;
-      text-shadow:  0 0 5px $glow-violet, 0 0 10px $glow-violet;
+      text-shadow:
+        0 0 5px $glow-violet,
+        0 0 10px $glow-violet;
       background-image: url('../../../public/ui-kit/cart_buy_green_purple.svg');
+    }
+  }
+
+  &_discount_black {
+    font-size: 1.5rem;
+    margin-top: 30px;
+  }
+
+  &_discount_input {
+    margin-top: 30px;
+    background: transparent;
+    border-radius: 5px;
+    border: 1px solid $glow-green;
+    outline: none;
+    width: 300px;
+    height: 30px;
+    font-size: 1.5rem;
+    color: $font-color-primary-one;
+    padding-left: 5px;
+
+    &:focus {
+      border: 1px solid $glow-violet;
+    }
+
+    &::placeholder {
+      font-size: 1.5rem;
+      color: $font-color-primary-one;
+      padding-left: 5px;
+    }
+
+    &:focus::placeholder {
+      outline: none;
+      color: transparent;
     }
   }
 }
