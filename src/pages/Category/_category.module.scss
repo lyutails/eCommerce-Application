@@ -722,25 +722,26 @@ input[type='checkbox'] {
 
   &_to_cart {
     background-color: transparent;
-    border: none;
     color: $font-color-primary-one;
     font-size: 2rem;
     align-self: flex-start;
     font-weight: 700;
-    padding-left: 20%;
-    transform: translateY(50%);
-    border: 1px solid $glow-green;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 10vw;
+    justify-content: center;
+    width: 8vw;
     aspect-ratio: 1 / 0.2;
     z-index: 200;
-    margin-bottom: 10px;
-    position: relative;
+    position: absolute;
+    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
+    margin-top: 15px;
+    margin-left: 30px;
+    border: none;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       cursor: pointer;
+      text-shadow: 0 0 5px $glow-violet, 0 0 10px $glow-violet;
     }
   }
 }
