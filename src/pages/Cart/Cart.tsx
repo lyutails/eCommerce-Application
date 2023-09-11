@@ -36,7 +36,10 @@ function CartPage(): JSX.Element {
         </div>
         <div className={style.cart_discount_price}>total price paste here</div>
       </div>
-      <button className={style.cart_buy}>Buy</button>
+      <div className={style.cart_buy_sloth}>
+        <button className={style.cart_buy}>Buy</button>
+        <div className={style.cart_cybersloth}></div>
+      </div>
     </div>
   );
 }
