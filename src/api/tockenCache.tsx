@@ -31,4 +31,4 @@ class MyTokenCache implements TokenCache {
   }
 }
 
-export const myTokemCache = new MyTokenCache();
+export const myTokenCache = new MyTokenCache();

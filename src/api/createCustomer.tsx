@@ -27,26 +27,3 @@ export async function createCustomerMe(
     console.log('cannot create customer');
   }
 }
-
-export const customerOne = {
-  email: 'johnIanaTestAddress@example.com',
-  firstName: 'Iana',
-  lastName: 'Belousova',
-  password: 'snmthjs',
-  addresses: [
-    {
-      streetName: 'Hhdjlzld',
-      streetNumber: '45',
-      postalCode: '30100',
-      city: 'hbcbjisne',
-      country: 'usa',
-    },
-    {
-      streetName: 'PPPPPPPP',
-      streetNumber: '45',
-      postalCode: '30100',
-      city: 'PPPPPPP',
-      country: 'canada',
-    },
-  ],
-};

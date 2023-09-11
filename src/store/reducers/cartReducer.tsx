@@ -6,6 +6,8 @@ const cartReducer = createSlice({
     anonymousID: '',
     versionCart: 1,
     cartID: '',
+    anonymousRefreshToken: '',
+    anonymousAccessToken: '',
   },
   reducers: {
     changeAnonymousID(state, action) {
@@ -17,10 +19,21 @@ const cartReducer = createSlice({
     changeCartID(state, action) {
       state.cartID = action.payload;
     },
+    changeAnonymousRefreshToken(state, action) {
+      state.anonymousRefreshToken = action.payload;
+    },
+    changeAnonymousAccessToken(state, action) {
+      state.anonymousAccessToken = action.payload;
+    },
   },
 });
 
-export const { changeAnonymousID, changeVersionCart, changeCartID } =
-  cartReducer.actions;
+export const {
+  changeAnonymousID,
+  changeVersionCart,
+  changeCartID,
+  changeAnonymousRefreshToken,
+  changeAnonymousAccessToken,
+} = cartReducer.actions;
 
 export default cartReducer.reducer;

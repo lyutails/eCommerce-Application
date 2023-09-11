@@ -208,5 +208,7 @@ export interface ICartState {
     anonymousID: string;
     versionCart: number;
     cartID: string;
+    anonymousRefreshToken: string;
+    anonymousAccessToken: string;
   };
 }

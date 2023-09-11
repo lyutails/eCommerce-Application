@@ -22,22 +22,29 @@ import {
 } from '../../types/enums';
 import Card from '../../components/Card/Card';
 import { throwNewError } from '../../utils/throwNewError';
-import {
-  anonymousSessionFlowTwo,
-  updateAnonCart,
-} from '../../api/anonymousFlow';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICartState } from '../../types/interfaces';
 import {
+  changeAnonymousAccessToken,
   changeAnonymousID,
+  changeAnonymousRefreshToken,
+  changeCartID,
   changeVersionCart,
 } from '../../store/reducers/cartReducer';
+import { createAnonCart, updateAnonCart } from '../../api/existTokenFlow';
+import { anonymousSessionFlow } from '../../api/adminBuilder';
+import { anonymousSessionFlowTwo } from '../../api/anonymousFlow';
+import { myTokemCache } from '../../api/tockenCache';
 
 function CategoryPage(): JSX.Element {
   const dispatch = useDispatch();
-  const { versionCart, anonymousID, cartID } = useSelector(
-    (state: ICartState) => state.cart
-  );
+  const {
+    versionCart,
+    anonymousID,
+    cartID,
+    anonymousRefreshToken,
+    anonymousAccessToken,
+  } = useSelector((state: ICartState) => state.cart);
   const pageLimit = 8;
   const productsForSearchClothes = 'Cap Hoodie T-Shirt';
   const productsForSearchPC = 'Mouse Pad';
@@ -159,8 +166,9 @@ function CategoryPage(): JSX.Element {
     actions: [
       {
         action: 'addLineItem',
-        productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
+        //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
         // variantSKU for child
+        sku: 'RSSchool Hoodie Black S',
         quantity: 1,
       },
     ],
@@ -179,7 +187,7 @@ function CategoryPage(): JSX.Element {
         }
       });
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!category) {
@@ -1084,47 +1092,52 @@ function CategoryPage(): JSX.Element {
                             anonymousID
                               ? updateAnonCart(
                                   cartID,
-                                  anonymousID,
-                                  updateAnonCartData
-                                ).then((response) => {
-                                  if (response) {
-                                    dispatch(
-                                      changeVersionCart(response.body.version)
-                                    );
-                                  }
-                                })
-                              : anonymousSessionFlowTwo().then((response) => {
-                                  console.log(response);
-                                  if (
-                                    response &&
-                                    response?.body.id &&
-                                    response.body.anonymousId
-                                  ) {
-                                    dispatch(
-                                      changeAnonymousID(
-                                        response.body.anonymousId
-                                      )
-                                    );
-                                    updateAnonCart(
-                                      response.body.anonymousId,
-                                      response?.body.id,
-                                      updateAnonCartData
-                                    ).then((response) => {
-                                      console.log(response);
-                                      if (response) {
+                                  updateAnonCartData,
+                                  anonymousAccessToken
+                                )
+                              : anonymousSessionFlow().then((response) => {
+                                  const accessToken = response.access_token;
+                                  const anonID = response.scope
+                                    .split(' ')[2]
+                                    .slice(13);
+                                  dispatch(changeAnonymousID(anonID));
+                                  dispatch(
+                                    changeAnonymousAccessToken(
+                                      response.access_token
+                                    )
+                                  );
+                                  dispatch(
+                                    changeAnonymousRefreshToken(
+                                      response.refresh_token
+                                    )
+                                  );
+                                  createAnonCart(accessToken).then(
+                                    (responseTwo) => {
+                                      console.log(anonymousAccessToken), 2;
+                                      if (responseTwo) {
+                                        const idCart = responseTwo.body.id;
+                                        dispatch(changeCartID(idCart));
                                         dispatch(
                                           changeVersionCart(
-                                            response.body.version
+                                            responseTwo.body.version
                                           )
                                         );
-                                        dispatch(
-                                          changeAnonymousID(
-                                            response.body.anonymousId
-                                          )
-                                        );
+                                        updateAnonCart(
+                                          idCart,
+                                          updateAnonCartData,
+                                          accessToken
+                                        ).then((response) => {
+                                          if (response) {
+                                            dispatch(
+                                              changeVersionCart(
+                                                response.body.version
+                                              )
+                                            );
+                                          }
+                                        });
                                       }
-                                    });
-                                  }
+                                    }
+                                  );
                                 });
                           }}
                         >
