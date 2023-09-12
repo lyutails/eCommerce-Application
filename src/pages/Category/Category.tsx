@@ -622,15 +622,40 @@ function CategoryPage(): JSX.Element {
     priceSliderValue,
   ]);
 
-  let searchCharacter = 0;
-  const placeholder: string = '';
-  const searchPlaceholderText = 'search for...';
-  const speed = 180;
-  function typeSearch(placeholder: string): void {
-    placeholder += searchPlaceholderText.charAt(searchCharacter);
-    searchCharacter++;
-    setTimeout(typeSearch, speed);
-  }
+  // let searchCharacter = 0;
+  // const searchPlaceholderText = 'search for...';
+  // const speed = 180;
+  // function typeSearch(placeholder: string): void {
+  //   placeholder += searchPlaceholderText.charAt(searchCharacter);
+  //   searchCharacter++;
+  //   setTimeout(typeSearch, speed);
+  // }
+
+  const AnimatedInput = ({
+    placeholder: passedPlaceholder = '',
+    ...passedProps
+  }): JSX.Element => {
+    const [placeholder, setPlaceholder] = useState(
+      passedPlaceholder.slice(0, 0)
+    );
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+    useEffect(() => {
+      const intr = setInterval(() => {
+        setPlaceholder(passedPlaceholder.slice(0, placeholderIndex));
+        if (placeholderIndex + 1 > passedPlaceholder.length) {
+          setPlaceholderIndex(0);
+        } else {
+          setPlaceholderIndex(placeholderIndex + 1);
+        }
+      }, 200);
+      return () => {
+        clearInterval(intr);
+      };
+    });
+
+    return <input {...passedProps} placeholder={placeholder} />;
+  };
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
@@ -802,14 +827,14 @@ function CategoryPage(): JSX.Element {
           </div>
           <div className={style.category_filters_search}>
             <div>
-              <input
+              <AnimatedInput
                 name="filterSearch"
                 type="text"
                 className={style.category_search_input}
-                placeholder="🔎Search For..."
-                onChange={(e): void => {
-                  setSearchValue(e.target.value);
-                  typeSearch(placeholder);
+                placeholder="Search For..."
+                onChange={(e: Event): void => {
+                  if (!e.target) return;
+                  setSearchValue((e.target as HTMLInputElement).value);
                 }}
               />
             </div>
