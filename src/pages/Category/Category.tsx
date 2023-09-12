@@ -7,7 +7,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
+  Cart,
   Category,
+  ClientResponse,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -23,37 +25,34 @@ import {
 import Card from '../../components/Card/Card';
 import { throwNewError } from '../../utils/throwNewError';
 import { useDispatch, useSelector } from 'react-redux';
-import { ICartState } from '../../types/interfaces';
+import { ICartState, IRootState } from '../../types/interfaces';
 import {
-  changeAnonymousAccessToken,
-  changeAnonymousID,
-  changeAnonymousRefreshToken,
-  changeCartID,
-  changeVersionCart,
+  changeAnonymousCart,
+  changeUserCart,
 } from '../../store/reducers/cartReducer';
-import { createAnonCart, updateAnonCart } from '../../api/existTokenFlow';
-import { anonymousSessionFlow } from '../../api/adminBuilder';
-import { anonymousSessionFlowTwo } from '../../api/anonymousFlow';
-import { myTokemCache } from '../../api/tockenCache';
+import { createAnonCart, updateCart } from '../../api/existTokenFlow';
+import { anonymousSessionFlow, refreshTokenFlow } from '../../api/adminBuilder';
 
+const pageLimit = 8;
+const productsForSearchClothes = 'Cap Hoodie T-Shirt';
+const productsForSearchPC = 'Mouse Pad';
+const productsForSearchSouvenirs = 'Mug Notepad';
+const productsForSearchStickers = 'Sticker';
+const allBrands = ['RSSchool', 'Logitech'];
+const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
 function CategoryPage(): JSX.Element {
   const dispatch = useDispatch();
-  const {
-    versionCart,
-    anonymousID,
-    cartID,
-    anonymousRefreshToken,
-    anonymousAccessToken,
-  } = useSelector((state: ICartState) => state.cart);
-  const pageLimit = 8;
-  const productsForSearchClothes = 'Cap Hoodie T-Shirt';
-  const productsForSearchPC = 'Mouse Pad';
-  const productsForSearchSouvenirs = 'Mug Notepad';
-  const productsForSearchStickers = 'Sticker';
+  const { anonymousCart, userCart, cartItems } = useSelector(
+    (state: ICartState) => state.cart
+  );
+  const { customerId, customerRefreshToken, accessToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+
   const { category } = useParams();
   const { query } = useParams();
-  const allBrands = ['RSSchool', 'Logitech'];
-  const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
+
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
@@ -161,17 +160,91 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
+  if (!isAuth && !anonymousCart.anonymousID) {
+    anonymousSessionFlow().then((response) => {
+      const accessToken = response.access_token;
+      const anonID = response.scope.split(' ')[2].slice(13);
+      localStorage.setItem('anonymousID', anonID);
+      localStorage.setItem('refreshAnonToken', response.refresh_token);
+      dispatch(
+        changeAnonymousCart({
+          anonymousID: anonID,
+          anonymousRefreshToken: response.refresh_token,
+          anonymousAccessToken: response.access_token,
+        })
+      );
+      createAnonCart(accessToken).then((responseTwo) => {
+        if (responseTwo) {
+          const idCart = responseTwo.body.id;
+          dispatch(
+            changeAnonymousCart({
+              versionAnonCart: responseTwo.body.version,
+              cartID: idCart,
+            })
+          );
+        }
+      });
+    });
+  }
+  // TODO: WRITE THIS OBJECT TO THE END
   const updateAnonCartData = {
-    version: versionCart,
+    version: anonymousCart.anonymousID
+      ? anonymousCart.versionCart
+      : userCart.versionUserCart,
     actions: [
       {
         action: 'addLineItem',
         //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
         // variantSKU for child
-        sku: 'RSSchool Hoodie Black S',
+        sku: 'RSSchool T-Shirt Git White XS',
         quantity: 1,
       },
     ],
+  };
+
+  // const updateCustomerCartServer = (
+  //   refreshToken: string,
+  //   cartId: string
+  // ): Promise<ClientResponse<Cart> | undefined> => {
+  //   return refreshTokenFlow(refreshToken).then((response) => {
+  //     updateCart(cartId, updateAnonCartData, response.access_token);
+  //   });
+  // };
+
+  const updateCustomerCart = (): void => {
+    if (anonymousCart.anonymousID) {
+      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        updateCart(
+          anonymousCart.cartID,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: updatedCart.body.version,
+              })
+            );
+          }
+        });
+      });
+    } else if (isAuth) {
+      refreshTokenFlow(customerRefreshToken).then((response) => {
+        updateCart(
+          userCart.userCartId,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeUserCart({
+                versionUserCart: updatedCart.body.version,
+              })
+            );
+          }
+        });
+      });
+    }
   };
 
   useEffect(() => {
@@ -279,15 +352,7 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [
-    category,
-    idCategory,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
-    searchValue,
-  ]);
+  }, [category, idCategory, searchValue]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -602,10 +667,6 @@ function CategoryPage(): JSX.Element {
     createQuerySubtreeString,
     idCategory,
     priceSort,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
     querySizesQueryString,
     sale,
     searchPriceFinish,
@@ -1088,58 +1149,7 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void => {
-                            anonymousID
-                              ? updateAnonCart(
-                                  cartID,
-                                  updateAnonCartData,
-                                  anonymousAccessToken
-                                )
-                              : anonymousSessionFlow().then((response) => {
-                                  const accessToken = response.access_token;
-                                  const anonID = response.scope
-                                    .split(' ')[2]
-                                    .slice(13);
-                                  dispatch(changeAnonymousID(anonID));
-                                  dispatch(
-                                    changeAnonymousAccessToken(
-                                      response.access_token
-                                    )
-                                  );
-                                  dispatch(
-                                    changeAnonymousRefreshToken(
-                                      response.refresh_token
-                                    )
-                                  );
-                                  createAnonCart(accessToken).then(
-                                    (responseTwo) => {
-                                      console.log(anonymousAccessToken), 2;
-                                      if (responseTwo) {
-                                        const idCart = responseTwo.body.id;
-                                        dispatch(changeCartID(idCart));
-                                        dispatch(
-                                          changeVersionCart(
-                                            responseTwo.body.version
-                                          )
-                                        );
-                                        updateAnonCart(
-                                          idCart,
-                                          updateAnonCartData,
-                                          accessToken
-                                        ).then((response) => {
-                                          if (response) {
-                                            dispatch(
-                                              changeVersionCart(
-                                                response.body.version
-                                              )
-                                            );
-                                          }
-                                        });
-                                      }
-                                    }
-                                  );
-                                });
-                          }}
+                          onClick={(): void => updateCustomerCart()}
                         >
                           to Cart
                         </button>

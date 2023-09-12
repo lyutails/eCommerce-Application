@@ -17,4 +17,6 @@ export type CartProductProps = {
   prices?: number | string;
   discounted?: number | string;
   sku: string;
+  onDelete: () => void;
+  quantity: number;
 };

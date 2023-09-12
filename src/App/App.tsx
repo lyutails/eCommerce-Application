@@ -15,21 +15,9 @@ import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { ParhRoute } from '../types/enums';
-import { anonymousSessionFlowTwo } from '../api/anonymousFlow';
-import { anonymousSessionFlow } from '../api/adminBuilder';
-import { useEffect, useState } from 'react';
-import { responsePathAsArray } from 'graphql';
 
 function App(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  // const [anonID, setAnonID] = useState('');
-  // useEffect(() => {
-  //   anonymousSessionFlow().then((response) => {
-  //     const smth = response.scope.split(' ')[2].slice(13);
-  //     setAnonID(smth);
-  //   });
-  // }, [setAnonID]);
-  // anonymousSessionFlowTwo(anonID).then((response) => console.log(response));
   return (
     <section className={style.app}>
       <Routes>

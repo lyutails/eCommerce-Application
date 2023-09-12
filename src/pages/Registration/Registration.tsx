@@ -14,15 +14,31 @@ import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
-import { IRootState } from '../../types/interfaces';
+import { ICartState, IRootState } from '../../types/interfaces';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 
+export interface IAnonymousCartData {
+  anonymousID: string;
+  versionCart: number;
+  cartID: string;
+  anonymousRefreshToken: string;
+  anonymousAccessToken: string;
+}
 function RegistrationPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { anonymousCart } = useSelector((state: ICartState) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleToLogin = (): void => {
     navigate('/login');
+  };
+
+  const anonymousCartData: IAnonymousCartData = {
+    versionCart: anonymousCart.versionCart,
+    anonymousID: anonymousCart.anonymousID,
+    cartID: anonymousCart.cartID,
+    anonymousRefreshToken: anonymousCart.anonymousRefreshToken,
+    anonymousAccessToken: anonymousCart.anonymousAccessToken,
   };
 
   const [login, setLogin] = useState('');
@@ -730,7 +746,8 @@ function RegistrationPage(): JSX.Element {
                 setInvalidCredentials,
                 checkedShipping,
                 checkedBilling,
-                setSuccessfulMessage
+                setSuccessfulMessage,
+                anonymousCartData
               )
             }
             classNames={style.registration_button}

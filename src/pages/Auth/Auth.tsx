@@ -9,11 +9,13 @@ import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
 import { useState } from 'react';
 import { handlePasswordInput, inputHandler } from '../verification';
-import { IRootState } from '../../types/interfaces';
+import { ICartState, IRootState } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
+import { IAnonymousCartData } from '../Registration/Registration';
 
 function AuthPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { anonymousCart } = useSelector((state: ICartState) => state.cart);
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -23,6 +25,14 @@ function AuthPage(): JSX.Element {
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
 
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+
+  const anonymousCartData: IAnonymousCartData = {
+    versionCart: anonymousCart.versionCart,
+    anonymousID: anonymousCart.anonymousID,
+    cartID: anonymousCart.cartID,
+    anonymousRefreshToken: anonymousCart.anonymousRefreshToken,
+    anonymousAccessToken: anonymousCart.anonymousAccessToken,
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -114,7 +124,8 @@ function AuthPage(): JSX.Element {
                   isAuth,
                   dispatch,
                   setCheckmarkLogin,
-                  setInvalidCredentials
+                  setInvalidCredentials,
+                  anonymousCartData
                 )
               }
               classNames={style.authorization_button}

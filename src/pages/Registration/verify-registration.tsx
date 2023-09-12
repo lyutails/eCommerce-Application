@@ -23,12 +23,15 @@ import {
 import { AnyAction, Dispatch } from 'redux';
 import {
   createCustomerId,
+  setAccessTokenStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { getCustomerToken } from '../../api/adminBuilder';
 import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
+import { ICartState } from '../../types/interfaces';
+import { IAnonymousCartData } from './Registration';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -107,7 +110,8 @@ export const handleСreationReg = (
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
   checkedShipping: boolean,
   checkedBilling: boolean,
-  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>,
+  anonymousCartData: IAnonymousCartData
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -220,37 +224,37 @@ export const handleСreationReg = (
     setCheckmarkBirthday
   );
 
-  const dataBill = {
-    email: loginField,
-    firstName: fistnameField,
-    lastName: lastnameField,
-    password: passwordField,
-    dateOfBirth: parseDateToServer(birthdayField),
-    addresses: [
-      {
-        streetName: streetShipField,
-        building: buildingShipField,
-        apartment: apartmentShipField,
-        postalCode: postalShipField,
-        city: cityShipField,
-        country: countryShipField === 'usa' ? 'US' : 'CA',
-      },
-      {
-        streetName: streetBillField,
-        building: buildingBillField,
-        apartment: apartmentBillField,
-        postalCode: postalBillField,
-        city: postalBillField,
-        country: countryBillField === 'usa' ? 'US' : 'CA',
-      },
-    ],
-    defaultShippingAddress: checkedShipping ? 0 : undefined,
-    shippingAddresses: [0],
-    defaultBillingAddress: checkedBilling ? 1 : undefined,
-    billingAddresses: [1],
-  };
+  // const dataBill = {
+  //   email: loginField,
+  //   firstName: fistnameField,
+  //   lastName: lastnameField,
+  //   password: passwordField,
+  //   dateOfBirth: parseDateToServer(birthdayField),
+  //   addresses: [
+  //     {
+  //       streetName: streetShipField,
+  //       building: buildingShipField,
+  //       apartment: apartmentShipField,
+  //       postalCode: postalShipField,
+  //       city: cityShipField,
+  //       country: countryShipField === 'usa' ? 'US' : 'CA',
+  //     },
+  //     {
+  //       streetName: streetBillField,
+  //       building: buildingBillField,
+  //       apartment: apartmentBillField,
+  //       postalCode: postalBillField,
+  //       city: postalBillField,
+  //       country: countryBillField === 'usa' ? 'US' : 'CA',
+  //     },
+  //   ],
+  //   defaultShippingAddress: checkedShipping ? 0 : undefined,
+  //   shippingAddresses: [0],
+  //   defaultBillingAddress: checkedBilling ? 1 : undefined,
+  //   billingAddresses: [1],
+  // };
 
-  const dataShip = {
+  const createCustomerData = {
     email: loginField,
     firstName: fistnameField,
     lastName: lastnameField,
@@ -270,6 +274,25 @@ export const handleСreationReg = (
     shippingAddresses: [0],
     billingAddresses: [0],
   };
+
+  if (anonymousCartData.anonymousID) {
+    createCustomerData.anonymousCart = {
+      id: anonymousCartData.cartID,
+      typeId: 'cart',
+    };
+  }
+
+  if (checkedBill) {
+    createCustomerData.addresses.push({
+      streetName: streetBillField,
+      building: buildingBillField,
+      apartment: apartmentBillField,
+      postalCode: postalBillField,
+      city: postalBillField,
+      country: countryBillField === 'usa' ? 'US' : 'CA',
+    });
+  }
+
   if (checkedBill) {
     if (
       loginСheck === true &&
@@ -290,10 +313,16 @@ export const handleСreationReg = (
       apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataBill, setSuccessfulMessage)
+      createCustomerMe(
+        createCustomerData,
+        setSuccessfulMessage,
+        anonymousCartData,
+        dispatch
+      )
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
+            localStorage.removeItem('anonymousID');
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));
           }
@@ -305,6 +334,7 @@ export const handleСreationReg = (
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
           dispatch(setRefreshTokenStatus(response.refresh_token));
+          dispatch(setAccessTokenStatus(response.access_token));
         })
         .catch((error) => {
           if (error) {
@@ -328,9 +358,15 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataShip, setSuccessfulMessage)
+      createCustomerMe(
+        createCustomerData,
+        setSuccessfulMessage,
+        anonymousCartData,
+        dispatch
+      )
         .then((response) => {
           if (response) {
+            localStorage.removeItem('anonymousID');
             localStorage.setItem('customerId', response.body.customer.id);
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));
@@ -343,6 +379,7 @@ export const handleСreationReg = (
         .then((response) => {
           localStorage.setItem('refreshToken', response.refresh_token);
           dispatch(setRefreshTokenStatus(response.refresh_token));
+          dispatch(setAccessTokenStatus(response.access_token));
         })
         .catch((error) => {
           if (error) {

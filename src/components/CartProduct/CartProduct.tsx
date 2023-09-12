@@ -15,7 +15,9 @@ export function CartProduct(props: CartProductProps): JSX.Element {
           // id={brand}
           onChange={(): void => {}}
         />
-        <div className={style.cartproduct_name}>{props.sku}Name Here</div>
+        <div
+          className={style.cartproduct_name}
+        >{`${props.sku} ${props.name}`}</div>
         <img
           className={style.cartproduct_pic}
           src={props.images[0].url}
@@ -23,13 +25,18 @@ export function CartProduct(props: CartProductProps): JSX.Element {
         />
         <div className={style.cartproduct_product_counter}>
           <button className={style.cartproduct_minus}>-</button>
-          <div className={style.cartproduct_product_amount}>0</div>
+          <div className={style.cartproduct_product_amount}>
+            {props.quantity}
+          </div>
           <button className={style.cartproduct_plus}>+</button>
         </div>
         <div className={style.cartproduct_product_price}>
           {props.discounted ? props.discounted : props.prices}
         </div>
-        <button className={style.cartproduct_delete}></button>
+        <button
+          onClick={props.onDelete}
+          className={style.cartproduct_delete}
+        ></button>
       </div>
     </div>
   );
