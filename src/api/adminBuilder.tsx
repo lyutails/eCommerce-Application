@@ -91,3 +91,12 @@ export const anonymousSessionFlow = async (id?: string): Promise<any> => {
   }
   return customer;
 };
+
+// export function refreshAccessToken () {
+// const refreshUserAccessToken = new Promise((resolve, reject) => {
+//   if(refreshToken) {
+//     refreshTokenFlow(anonRefresh).th
+//     resolve();
+//   } else if()
+// });
+// }

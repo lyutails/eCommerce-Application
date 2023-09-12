@@ -8,6 +8,7 @@ const userReducer = createSlice({
     isAuth,
     customerId: localStorage.getItem('customerId'),
     refreshToken: localStorage.getItem('refreshToken'),
+    accessToken: '',
   },
   reducers: {
     createCustomerId(state, action) {
@@ -19,9 +20,16 @@ const userReducer = createSlice({
     setRefreshTokenStatus(state, action) {
       state.refreshToken = action.payload;
     },
+    setAccessTokenStatus(state, action) {
+      state.accessToken = action.payload;
+    },
   },
 });
 
-export const { setAuthStatus, createCustomerId, setRefreshTokenStatus } =
-  userReducer.actions;
+export const {
+  setAuthStatus,
+  createCustomerId,
+  setRefreshTokenStatus,
+  setAccessTokenStatus,
+} = userReducer.actions;
 export default userReducer.reducer;

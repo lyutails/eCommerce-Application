@@ -49,8 +49,8 @@ export const handleUpdateAddress = (
     updateAddressData.countryError
   ) {
     if (isAdd) {
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           const id = response?.body.addresses.filter(
             (item) => item.key === `address${version}`
           );
@@ -86,8 +86,8 @@ export const handleUpdateAddress = (
           }
         });
     } else {
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           if (response) {
             alert('Address change was successful');
             dispatch(

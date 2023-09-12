@@ -1,4 +1,8 @@
-import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
+import {
+  AddressDraft,
+  BaseAddress,
+  LineItem,
+} from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
 
 export interface ICustomerFields {
@@ -109,7 +113,8 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
-    refreshToken: string;
+    customerRefreshToken: string;
+    accessToken: string;
   };
 }
 
@@ -190,11 +195,21 @@ export interface IMyCustomerDraft {
   shippingAddresses: number[];
   defaultBillingAddress?: number | undefined;
   billingAddresses: number[];
+  anonymousCart?: {
+    id: string;
+    typeId: string;
+  };
 }
 
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
+  anonymousCart?: {
+    id: string;
+    typeId: string;
+  };
+  anonymousCartSignInMode?: string;
+  anonymousID?: string;
 }
 
 export interface ICategoryState {
@@ -205,8 +220,18 @@ export interface ICategoryState {
 
 export interface ICartState {
   cart: {
-    anonymousID: string;
-    versionCart: number;
-    cartID: string;
+    anonymousCart: {
+      anonymousID: string;
+      versionCart: number;
+      cartID: string;
+      anonymousRefreshToken: string;
+      anonymousAccessToken: string;
+    };
+    discountCodes: string[];
+    userCart: {
+      userCartId: string;
+      versionUserCart: number;
+    };
+    cartItems: LineItem[];
   };
 }
