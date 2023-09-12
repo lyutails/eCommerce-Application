@@ -3,7 +3,13 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  AriaAttributes,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
@@ -32,6 +38,10 @@ import {
 } from '../../store/reducers/cartReducer';
 import { createAnonCart, updateCart } from '../../api/existTokenFlow';
 import { anonymousSessionFlow, refreshTokenFlow } from '../../api/adminBuilder';
+
+import '../../../global.d.ts';
+import ReactSlider from 'react-slider';
+// const { ReactSlider } = require('react-slider');
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -63,8 +73,8 @@ function CategoryPage(): JSX.Element {
   const [sale, setSale] = useState<boolean>(false);
   const [winter, setWinter] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState('');
-  const [searchPriceStart, setSearchPriceStart] = useState('');
-  const [searchPriceFinish, setSearchPriceFinish] = useState('');
+  // const [searchPriceStart, setSearchPriceStart] = useState('');
+  // const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [isSubtreeChecked, setIsSubtreeChecked] = useState(false);
@@ -73,6 +83,7 @@ function CategoryPage(): JSX.Element {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
+  const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -290,8 +301,10 @@ function CategoryPage(): JSX.Element {
         const priceDESC = 'price desc';
         const nameASC = 'name.en-us asc';
         const queryStringPriceNameSort = [`${priceDESC}`, `${nameASC}`];
-        const queryStringPriceRangeStart = `0`;
-        const queryStringPriceRangeFinish = `*`;
+        // const queryStringPriceRangeStart = `0`;
+        // const queryStringPriceRangeFinish = `*`;
+        const queryStringPriceRangeStart = String(+priceSliderValue[0] * 100);
+        const queryStringPriceRangeFinish = String(+priceSliderValue[1] * 100);
         let fuzzylevel = 0;
         const queryLimitStart = 8;
         const queryOffsetStart = 0;
@@ -352,7 +365,16 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [category, idCategory, searchValue]);
+  }, [
+    category,
+    idCategory,
+    priceSliderValue,
+    productsForSearchClothes,
+    productsForSearchPC,
+    productsForSearchSouvenirs,
+    productsForSearchStickers,
+    searchValue,
+  ]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -486,14 +508,14 @@ function CategoryPage(): JSX.Element {
         ? (queryBrandString = queryStringAllBrands)
         : queryBrandString;
 
-      let queryPriceRangeStart = '0';
-      let queryPriceRangeFinish = '*';
-      searchPriceStart === ''
-        ? queryPriceRangeStart
-        : (queryPriceRangeStart = String(+searchPriceStart * 100)),
-        searchPriceFinish === ''
-          ? queryPriceRangeFinish
-          : (queryPriceRangeFinish = String(+searchPriceFinish * 100));
+      const queryPriceRangeStart = String(+priceSliderValue[0] * 100);
+      const queryPriceRangeFinish = String(+priceSliderValue[1] * 100);
+      // searchPriceStart === ''
+      //   ? queryPriceRangeStart
+      //   : (queryPriceRangeStart = String(+priceSliderValue[0] * 100)),
+      //   searchPriceFinish === ''
+      //     ? queryPriceRangeFinish
+      //     : (queryPriceRangeFinish = String(+priceSliderValue[1] * 100));
 
       let querySearchValue = '';
       searchValue === '' && category === 'Clothes'
@@ -669,14 +691,13 @@ function CategoryPage(): JSX.Element {
     priceSort,
     querySizesQueryString,
     sale,
-    searchPriceFinish,
-    searchPriceStart,
     searchValue,
     currentPage,
     currentOffset,
     winter,
     query,
     nameSort,
+    priceSliderValue,
   ]);
 
   let searchCharacter = 0;
@@ -1073,7 +1094,30 @@ function CategoryPage(): JSX.Element {
                 </div>
               </div>
             </div>
-            <div className={style.category_filters_priceStart}>
+            <div className={style.priceslider_values}>
+              <div className={style.priceslider_value_one}>
+                $ start: {priceSliderValue[0]}
+              </div>
+              <div className={style.priceslider_value_two}>
+                $ finish: {priceSliderValue[1]}
+              </div>
+            </div>
+            <ReactSlider
+              className={style.horizontal_slider}
+              thumbClassName={style.slider_thumb}
+              trackClassName={style.slider_track}
+              defaultValue={[0, 100]}
+              min={0}
+              max={100}
+              // renderThumb={(props: number[], state) => (
+              //   <div {...props}>{state.valueNow}</div>
+              // )}
+              onChange={(value: number[], index: number): void => {
+                setPriceSliderValue(value);
+                // setSearchPriceStart(e.target.value)
+              }}
+            />
+            {/* <div className={style.category_filters_priceStart}>
               <div>
                 <input
                   name="filterPriceStart"
@@ -1094,7 +1138,7 @@ function CategoryPage(): JSX.Element {
                   onChange={(e): void => setSearchPriceFinish(e.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
