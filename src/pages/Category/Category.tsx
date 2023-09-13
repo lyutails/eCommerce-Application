@@ -16,6 +16,7 @@ import {
   Cart,
   Category,
   ClientResponse,
+  MyCartUpdate,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -35,6 +36,7 @@ import { ICartState, IRootState } from '../../types/interfaces';
 import {
   changeAnonymousCart,
   changeUserCart,
+  setCartItems,
 } from '../../store/reducers/cartReducer';
 import { createAnonCart, updateCart } from '../../api/existTokenFlow';
 import { anonymousSessionFlow, refreshTokenFlow } from '../../api/adminBuilder';
@@ -173,18 +175,24 @@ function CategoryPage(): JSX.Element {
   });
 
   // TODO: WRITE THIS OBJECT TO THE END
-  const updateAnonCartData = {
-    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
-    actions: [
-      {
-        action: 'addLineItem',
-        //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
-        // variantSKU for child
-        sku: 'RSSchool T-Shirt Git White XS',
-        quantity: 1,
-      },
-    ],
-  };
+  // const updateAnonCartData = {
+  //   version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
+  //   actions: [
+  //     {
+  //       action: 'addLineItem',
+  //       //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
+  //       // variantSKU for child
+  //       sku: 'RSSchool T-Shirt Git White XS',
+  //       quantity: 1,
+  //     },
+  //   ],
+  // };
+
+  // if(master) {
+  //   updateAnonCartData.actions[0].productID = 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e'
+  // } else {
+  // updateAnonCartData.actions[0].sku = 'RSSchool T-Shirt Git White XS'
+  //}
 
   const updateCustomerCartServer = (
     refreshToken: string,
@@ -212,7 +220,7 @@ function CategoryPage(): JSX.Element {
     });
   };
 
-  const updateCustomerCart = (): void => {
+  const updateCustomerCart = (updateAnonCartData: MyCartUpdate): void => {
     if (!isAuth) {
       // updateCustomerCartServer(
       //   anonymousCart.anonymousRefreshToken,
@@ -221,12 +229,14 @@ function CategoryPage(): JSX.Element {
       //   'versionAnonCart'
       // );
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        console.log(anonymousCart.cartID);
         updateCart(
           anonymousCart.cartID,
           updateAnonCartData,
           response.access_token
         ).then((updatedCart) => {
           if (updatedCart) {
+            dispatch(setCartItems(updatedCart?.body.lineItems));
             dispatch(
               changeAnonymousCart({
                 versionAnonCart: updatedCart.body.version,
@@ -249,6 +259,7 @@ function CategoryPage(): JSX.Element {
           response.access_token
         ).then((updatedCart) => {
           if (updatedCart) {
+            dispatch(setCartItems(updatedCart?.body.lineItems));
             dispatch(
               changeUserCart({
                 versionUserCart: updatedCart.body.version,
@@ -587,6 +598,7 @@ function CategoryPage(): JSX.Element {
             querySizesString === queryStringAllSizes ||
             querySizesString === `"no"`
           ) {
+            // MASTERS
             master = parentCategory.map((item) => item.masterVariant);
             setAllCards(master);
             filterByAttributes(
@@ -674,6 +686,7 @@ function CategoryPage(): JSX.Element {
                 lastNumberSlice
               );
             }
+            // VARIANTS
             setAllCards(pageVariants);
           }
         })
@@ -1176,6 +1189,22 @@ function CategoryPage(): JSX.Element {
                 <div className={style.category_cards_background_top}></div>
                 <div className={style.category_cards_wrapper}>
                   {allCards.map((card) => {
+                    ///console.log(card);
+                    /////////////////////////////////////////////////////////////////////////
+                    const updateAnonCartData = {
+                      version: !isAuth
+                        ? anonymousCart.versionAnonCart
+                        : userCart.versionUserCart,
+                      actions: [
+                        {
+                          action: 'addLineItem',
+                          //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
+                          // variantSKU for child
+                          sku: card.sku,
+                          quantity: 1,
+                        },
+                      ],
+                    };
                     let productPrice = 0;
                     let productDiscount;
                     let ifProductDiscount = 0;
@@ -1195,7 +1224,9 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void => updateCustomerCart()}
+                          onClick={(): void =>
+                            updateCustomerCart(updateAnonCartData)
+                          }
                         >
                           to Cart
                         </button>

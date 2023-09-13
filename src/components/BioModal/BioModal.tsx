@@ -33,7 +33,9 @@ export interface IBioUpdateData {
 function BioModal(props: IBioModalProps): JSX.Element {
   const dispatch = useDispatch();
   const { version, bio } = useSelector((state: IProfileState) => state.profile);
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
   // const [token, setToken] = useState('');
 
   // useEffect(() => {
@@ -94,7 +96,7 @@ function BioModal(props: IBioModalProps): JSX.Element {
     firstnameError: !bio.firstname.error,
     lastnameError: !bio.lastname.error,
     birthdayError: !bio.birthday.error,
-    token: refreshToken,
+    token: customerRefreshToken,
   };
   return (
     <div className={`${style.modal} ${props.modalClass}`}>

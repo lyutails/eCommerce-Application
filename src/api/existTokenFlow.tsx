@@ -70,10 +70,9 @@ export const getAnonCart = async (
   });
   try {
     const cart = await apiRoot.me().activeCart().get().execute();
-    console.log(cart);
     return cart;
   } catch (error) {
-    console.log(error);
+    console.log('error');
   }
 };
 
@@ -117,7 +116,8 @@ export const updateCart = async (
 export const loginAnonUser = async (
   authorization: string,
   request: IMyCustomerLoginDraft,
-  dispatch: Dispatch<AnyAction>
+  dispatch: Dispatch<AnyAction>,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<ClientResponse<CustomerSignInResult> | undefined> => {
   try {
     const apiRoot = createApiBuilderFromCtpClient(
@@ -141,6 +141,7 @@ export const loginAnonUser = async (
       .execute();
     dispatch(setAuthStatus(true));
     localStorage.setItem('isAuth', 'true');
+    setSuccessfulMessage(true);
     return cart;
   } catch (error) {
     console.log(error);

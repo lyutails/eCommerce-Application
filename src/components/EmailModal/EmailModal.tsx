@@ -34,7 +34,9 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
   const { email, version } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
   const [emailError, setEmailError] = useState('');
   const [emailCheck, setEmailCheck] = useState(false);
   const [checkmarkEmail, setCheckmarkEmail] = useState(true);
@@ -96,7 +98,7 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
         onClick={(): void =>
           handleUpdateEmail(
             !email.error,
-            refreshToken,
+            customerRefreshToken,
             customerUpdateData,
             props.setClickedEmailUpdate,
             props.setShowModal,

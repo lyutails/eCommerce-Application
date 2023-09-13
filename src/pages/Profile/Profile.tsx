@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setAuthStatus } from '../../store/reducers/userReducer';
+import {
+  setAuthStatus,
+  setRefreshTokenStatus,
+} from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
 import {
   IPersonalState,
@@ -123,6 +126,7 @@ function ProfilePage(): JSX.Element {
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
+    dispatch(setRefreshTokenStatus(''));
     dispatch(setAuthStatus(false));
     dispatch(changeVersion(1));
     navigate('/');

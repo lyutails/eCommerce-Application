@@ -26,12 +26,15 @@ import {
   setAccessTokenStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
-import { getCustomerToken } from '../../api/adminBuilder';
+import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { ICartState, IMyCustomerDraft } from '../../types/interfaces';
 import { IAnonymousCartData } from './Registration';
+import { loginAnonUser } from '../../api/existTokenFlow';
+import { changeAnonymousCart } from '../../store/reducers/cartReducer';
+import { updateAnonAccessToken } from '../../utils/updateAccessToken';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -224,6 +227,9 @@ export const handleСreationReg = (
     setCheckmarkBirthday
   );
 
+  console.log(anonymousCartData.cartID);
+  console.log(anonymousCartData.anonymousID);
+
   const createCustomerData: IMyCustomerDraft = {
     email: loginField,
     firstName: fistnameField,
@@ -282,11 +288,19 @@ export const handleСreationReg = (
       apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
+      updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
+      // refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      //   (response) => {
+      //     dispatch(
+      //       changeAnonymousCart({ anonymousAccessToken: response.access_token })
+      //     );
+      //   }
+      // );
       createCustomerMe(
         createCustomerData,
-        setSuccessfulMessage,
-        anonymousCartData,
-        dispatch
+        anonymousCartData.anonymousAccessToken,
+        dispatch,
+        setSuccessfulMessage
       )
         .then((response) => {
           if (response) {
@@ -305,6 +319,12 @@ export const handleСreationReg = (
           localStorage.setItem('refreshToken', response.refresh_token);
           dispatch(setRefreshTokenStatus(response.refresh_token));
           dispatch(setAccessTokenStatus(response.access_token));
+          loginAnonUser(
+            response.access_token,
+            createCustomerData,
+            dispatch,
+            setSuccessfulMessage
+          );
         })
         .catch((error) => {
           if (error) {
@@ -328,22 +348,29 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
+      updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
+      // refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      //   (response) => {
+      //     dispatch(
+      //       changeAnonymousCart({ anonymousAccessToken: response.access_token })
+      //     );
+      //   }
+      // );
       createCustomerMe(
         createCustomerData,
-        setSuccessfulMessage,
-        anonymousCartData,
-        dispatch
+        anonymousCartData.anonymousAccessToken,
+        dispatch,
+        setSuccessfulMessage
       )
         .then((response) => {
           if (response) {
             localStorage.removeItem('anonymousID');
             localStorage.removeItem('refreshAnonToken');
             localStorage.setItem('customerId', response.body.customer.id);
+            dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));
           }
-        })
-        .then(() => {
           const token = getCustomerToken(loginField, passwordField);
           return token;
         })

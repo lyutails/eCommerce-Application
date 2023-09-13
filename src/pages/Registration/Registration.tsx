@@ -19,7 +19,7 @@ import { setAuthStatus } from '../../store/reducers/userReducer';
 
 export interface IAnonymousCartData {
   anonymousID: string;
-  versionCart: number;
+  versionAnonCart: number;
   cartID: string;
   anonymousRefreshToken: string;
   anonymousAccessToken: string;
@@ -31,14 +31,6 @@ function RegistrationPage(): JSX.Element {
   const dispatch = useDispatch();
   const handleToLogin = (): void => {
     navigate('/login');
-  };
-
-  const anonymousCartData: IAnonymousCartData = {
-    versionCart: anonymousCart.versionCart,
-    anonymousID: anonymousCart.anonymousID,
-    cartID: anonymousCart.cartID,
-    anonymousRefreshToken: anonymousCart.anonymousRefreshToken,
-    anonymousAccessToken: anonymousCart.anonymousAccessToken,
   };
 
   const [login, setLogin] = useState('');
@@ -747,7 +739,7 @@ function RegistrationPage(): JSX.Element {
                 checkedShipping,
                 checkedBilling,
                 setSuccessfulMessage,
-                anonymousCartData
+                anonymousCart
               )
             }
             classNames={style.registration_button}

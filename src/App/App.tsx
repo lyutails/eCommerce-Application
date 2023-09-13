@@ -15,7 +15,11 @@ import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { ParhRoute } from '../types/enums';
-import { anonymousSessionFlow, refreshTokenFlow } from '../api/adminBuilder';
+import {
+  anonymousSessionFlow,
+  refreshAccessToken,
+  refreshTokenFlow,
+} from '../api/adminBuilder';
 import {
   changeAnonymousCart,
   changeUserCart,
@@ -29,96 +33,99 @@ import {
 } from '../api/existTokenFlow';
 import { useEffect } from 'react';
 import { setAccessTokenStatus } from '../store/reducers/userReducer';
+import { updateAnonAccessToken } from '../utils/updateAccessToken';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const { anonymousCart, userCart } = useSelector(
+  const { anonymousCart, userCart, cartItems } = useSelector(
     (state: ICartState) => state.cart
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const { customerId, customerRefreshToken, accessToken } = useSelector(
     (state: IRootState) => state.user
   );
-  if (!isAuth && !anonymousCart.anonymousID) {
-    anonymousSessionFlow().then((response) => {
-      const accessToken = response.access_token;
-      const anonID = response.scope.split(' ')[2].slice(13);
-      localStorage.setItem('anonymousID', anonID);
-      localStorage.setItem('refreshAnonToken', response.refresh_token);
-      dispatch(
-        changeAnonymousCart({
-          anonymousID: anonID,
-          anonymousRefreshToken: response.refresh_token,
-          anonymousAccessToken: response.access_token,
-        })
-      );
-      createAnonCart(accessToken).then((responseTwo) => {
-        if (responseTwo) {
-          const idCart = responseTwo.body.id;
-          dispatch(
-            changeAnonymousCart({
-              versionAnonCart: responseTwo.body.version,
-              cartID: idCart,
-            })
-          );
-        }
+
+  useEffect(() => {
+    if (!isAuth && !anonymousCart.anonymousID) {
+      anonymousSessionFlow().then((response) => {
+        const anonID = response.scope.split(' ')[2].slice(13);
+        localStorage.setItem('anonymousID', anonID);
+        localStorage.setItem('refreshAnonToken', response.refresh_token);
+        dispatch(
+          changeAnonymousCart({
+            anonymousID: anonID,
+            anonymousRefreshToken: response.refresh_token,
+            anonymousAccessToken: response.access_token,
+          })
+        );
+        createAnonCart(response.access_token).then((responseTwo) => {
+          if (responseTwo) {
+            const idCart = responseTwo.body.id;
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: responseTwo.body.version,
+                cartID: idCart,
+              })
+            );
+          }
+        });
       });
-    });
-  }
+    }
+  }, [anonymousCart.anonymousID, dispatch, isAuth]);
 
   useEffect(() => {
     if (!isAuth) {
-      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
-        if (response) {
-          dispatch(
-            changeAnonymousCart({
-              anonymousAccessToken: response.access_token,
-            })
-          );
-          getAnonCart(response.access_token).then((response) => {
-            dispatch(setCartItems(response?.body.lineItems));
-            dispatch(
-              changeAnonymousCart({
-                versionAnonCart: response?.body.version,
-                cartID: response?.body.id,
-              })
-            );
-          });
-          getDiscountCodes(response.access_token).then((response) => {
+      if (anonymousCart.anonymousRefreshToken) {
+        refreshTokenFlow(anonymousCart.anonymousRefreshToken).then(
+          (response) => {
             if (response) {
-              dispatch(setDiscountCodes(response.body.results));
+              getAnonCart(response.access_token).then((response) => {
+                dispatch(
+                  changeAnonymousCart({
+                    versionAnonCart: response?.body.version,
+                    cartID: response?.body.id,
+                  })
+                );
+                dispatch(setCartItems(response?.body.lineItems));
+              });
+              getDiscountCodes(response.access_token).then((response) => {
+                if (response) {
+                  dispatch(setDiscountCodes(response.body.results));
+                }
+              });
             }
-          });
-        }
-      });
+          }
+        );
+      }
     } else {
-      refreshTokenFlow(customerRefreshToken).then((response) => {
-        if (response) {
-          dispatch(setAccessTokenStatus(response.access_token));
-          getAnonCart(response.access_token).then((response) => {
-            dispatch(setCartItems(response?.body.lineItems));
-            dispatch(
-              changeUserCart({
-                versionUserCart: response?.body.version,
-                userCartId: response?.body.id,
-              })
-            );
-          });
-          getDiscountCodes(response.access_token).then((response) => {
-            if (response) {
-              dispatch(setDiscountCodes(response.body.results));
-            }
-          });
-        }
-      });
+      if (customerRefreshToken) {
+        refreshTokenFlow(customerRefreshToken).then((response) => {
+          if (response) {
+            getAnonCart(response.access_token).then((responseTwo) => {
+              dispatch(setCartItems(responseTwo?.body.lineItems));
+              dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                  userCartId: responseTwo?.body.id,
+                })
+              );
+            });
+            getDiscountCodes(response.access_token).then((response) => {
+              if (response) {
+                dispatch(setDiscountCodes(response.body.results));
+              }
+            });
+          }
+        });
+      }
     }
   }, [
-    dispatch,
-    customerRefreshToken,
-    anonymousCart.anonymousID,
     anonymousCart.anonymousRefreshToken,
+    customerRefreshToken,
+    dispatch,
     isAuth,
   ]);
+
   return (
     <section className={style.app}>
       <Routes>

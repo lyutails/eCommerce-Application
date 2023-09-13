@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { handlePasswordInput, inputHandler } from '../verification';
 import { ICartState, IRootState } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
 import { IAnonymousCartData } from '../Registration/Registration';
 
 function AuthPage(): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const { anonymousCart } = useSelector((state: ICartState) => state.cart);
 
@@ -23,24 +25,38 @@ function AuthPage(): JSX.Element {
   const [loginError, setLoginError] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [checkmarkLogin, setCheckmarkLogin] = useState(false);
+  const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
+  const [successfulMessage, setSuccessfulMessage] = useState(false);
 
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
-  const anonymousCartData: IAnonymousCartData = {
-    versionCart: anonymousCart.versionCart,
-    anonymousID: anonymousCart.anonymousID,
-    cartID: anonymousCart.cartID,
-    anonymousRefreshToken: anonymousCart.anonymousRefreshToken,
-    anonymousAccessToken: anonymousCart.anonymousAccessToken,
+  const createModal = (): JSX.Element => {
+    return (
+      <div className={`${style.overlay}`}>
+        <div className={`${style.modal_visible} ${style.modal}`}>
+          Dear user,
+          <br /> your Profile was successfully created,
+          <br /> we&apos;re glad you joined us
+        </div>
+      </div>
+    );
   };
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handlerReg = (): void => {
     dispatch(setAuthStatus(false));
     navigate('/registration');
   };
+
+  useEffect(() => {
+    if (successfulMessage === true) {
+      setModal(createModal());
+      setTimeout(() => {
+        dispatch(setAuthStatus(true));
+        localStorage.setItem('isAuth', 'true');
+        navigate('/');
+      }, 5300);
+    }
+  }, [dispatch, isAuth, navigate, successfulMessage]);
 
   function checkInputError(
     passwordField: string,
@@ -125,7 +141,8 @@ function AuthPage(): JSX.Element {
                   dispatch,
                   setCheckmarkLogin,
                   setInvalidCredentials,
-                  anonymousCartData
+                  anonymousCart,
+                  setSuccessfulMessage
                 )
               }
               classNames={style.authorization_button}
@@ -145,6 +162,7 @@ function AuthPage(): JSX.Element {
           </ButtonForm>
         </div>
       </div>
+      <div>{modal}</div>
     </div>
   );
 }

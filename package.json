@@ -10,7 +10,9 @@
     "test-watch": "jest --config jest.config.js --setupFiles dotenv/config --watchAll",
     "clear": "rd /s /q dist",
     "lint": "eslint ./src --color",
-    "lint:fix": "eslint ./src --fix --color"
+    "lint:fix": "eslint ./src --fix --color",
+    "format": "prettier --write --config ./.prettierrc.js ./src",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
