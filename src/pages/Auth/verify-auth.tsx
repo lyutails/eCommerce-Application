@@ -49,63 +49,38 @@ export const handleСreationAuth = (
   const request: IMyCustomerLoginDraft = {
     email: loginField,
     password: passwordField,
+    anonymousCart: {
+      id: anonymousCartData.cartID,
+      typeId: 'cart',
+    },
+    anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    anonymousID: anonymousCartData.anonymousID,
   };
 
   if (loginСheck === true && passwordСheck === true) {
-    if (anonymousCartData.anonymousID) {
-      request.anonymousCart = {
-        id: anonymousCartData.cartID,
-        typeId: 'cart',
-      };
-      request.anonymousCartSignInMode = 'MergeWithExistingCustomerCart';
-      request.anonymousID = anonymousCartData.anonymousID;
-      loginAnonUser(anonymousCartData.anonymousAccessToken, request, dispatch)
-        .then((response) => {
-          if (response) {
-            localStorage.removeItem('anonymousID');
-            localStorage.setItem('customerId', response.body.customer.id);
-            dispatch(createCustomerId(response.body.customer.id));
-            dispatch(changeVersion(response.body.customer.version));
-          }
-        })
-        .then(() => {
-          const token = getCustomerToken(loginField, passwordField);
-          return token;
-        })
-        .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
-          dispatch(setRefreshTokenStatus(response.refresh_token));
-          dispatch(setAccessTokenStatus(response.access_token));
-        })
-        .catch((error) => {
-          if (error) {
-            setInvalidCredentials(true);
-          }
-        });
-    } else {
-      loginCustomerThroughMe(request, dispatch)
-        .then((response) => {
-          if (response) {
-            localStorage.removeItem('anonymousID');
-            localStorage.setItem('customerId', response.body.customer.id);
-            dispatch(createCustomerId(response.body.customer.id));
-            dispatch(changeVersion(response.body.customer.version));
-          }
-        })
-        .then(() => {
-          const token = getCustomerToken(loginField, passwordField);
-          return token;
-        })
-        .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
-          dispatch(setRefreshTokenStatus(response.refresh_token));
-          dispatch(setAccessTokenStatus(response.access_token));
-        })
-        .catch((error) => {
-          if (error) {
-            setInvalidCredentials(true);
-          }
-        });
-    }
+    loginAnonUser(anonymousCartData.anonymousAccessToken, request, dispatch)
+      .then((response) => {
+        if (response) {
+          localStorage.removeItem('anonymousID');
+          localStorage.removeItem('refreshAnonToken');
+          localStorage.setItem('customerId', response.body.customer.id);
+          dispatch(createCustomerId(response.body.customer.id));
+          dispatch(changeVersion(response.body.customer.version));
+        }
+      })
+      .then(() => {
+        const token = getCustomerToken(loginField, passwordField);
+        return token;
+      })
+      .then((response) => {
+        localStorage.setItem('refreshToken', response.refresh_token);
+        dispatch(setRefreshTokenStatus(response.refresh_token));
+        dispatch(setAccessTokenStatus(response.access_token));
+      })
+      .catch((error) => {
+        if (error) {
+          setInvalidCredentials(true);
+        }
+      });
   }
 };

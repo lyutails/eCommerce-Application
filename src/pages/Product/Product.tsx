@@ -19,7 +19,7 @@ import {
   createProductImgArr,
 } from '../../store/reducers/productReduser';
 import ModalWindow from './ModalWindow/ModalWindow';
-import { IProductState } from '../../types/interfaces';
+import { ICartState, IProductState, IRootState } from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -27,6 +27,19 @@ import {
   loginCustomerThroughMe,
   updateCartThroughMe,
 } from '../../api/passwordFlowSession';
+import { refreshTokenFlow } from '../../api/adminBuilder';
+import {
+  changeAnonymousCart,
+  changeUserCart,
+  setCartItems,
+  setDiscountCodes,
+} from '../../store/reducers/cartReducer';
+import {
+  getAnonCart,
+  getDiscountCodes,
+  updateCart,
+} from '../../api/existTokenFlow';
+import { setAccessTokenStatus } from '../../store/reducers/userReducer';
 
 interface IDataProduct {
   name: string;
@@ -42,19 +55,64 @@ interface IDataProduct {
 
 function ProductPage(): JSX.Element {
   const dispatch = useDispatch();
-  const [cart, setCart] = useState<Cart | undefined>(undefined);
+  const { anonymousCart, userCart } = useSelector(
+    (state: ICartState) => state.cart
+  );
+  const { customerId, customerRefreshToken, accessToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
 
-  useEffect(() => {
-    loginCustomerThroughMe(
+  const updateCustomerCart = (): void => {
+    if (!isAuth) {
+      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        updateCart(
+          anonymousCart.cartID,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: updatedCart.body.version,
+              })
+            );
+          }
+        });
+      });
+    } else {
+      refreshTokenFlow(customerRefreshToken).then((response) => {
+        updateCart(
+          userCart.userCartId,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeUserCart({
+                versionUserCart: updatedCart.body.version,
+              })
+            );
+          }
+        });
+      });
+    }
+  };
+
+  // TODO: WRITE THIS OBJECT TO THE END
+  const updateAnonCartData = {
+    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
+    actions: [
       {
-        email: 'ianatestAPI@example.com',
-        password: 'fshHJKL2365',
+        action: 'addLineItem',
+        //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
+        // variantSKU for child
+        sku: 'RSSchool T-Shirt Git White XS',
+        quantity: 1,
       },
-      dispatch
-    ).then((response) => {
-      setCart(response?.body.cart);
-    });
-  }, [cart?.id, cart?.version, dispatch]);
+    ],
+  };
+
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
@@ -374,26 +432,7 @@ function ProductPage(): JSX.Element {
             <button
               className="wrapper-characteristics_button"
               onClick={(): void => {
-                updateCartThroughMe(
-                  {
-                    email: 'ianatestAPI@example.com',
-                    password: 'fshHJKL2365',
-                  },
-                  cart?.id ? cart.id : '',
-                  {
-                    version: cart?.version ? cart.version : 1,
-                    actions: [
-                      {
-                        action: 'addLineItem',
-                        // for variant
-                        sku: 'RSSchool T-Shirt Git Red',
-                        // for master
-                        productId: '28026697-93db-46da-b154-dd8328b10937',
-                        quantity: 1,
-                      },
-                    ],
-                  }
-                );
+                updateCustomerCart();
               }}
             >
               To Cart

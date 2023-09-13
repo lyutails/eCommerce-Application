@@ -7,7 +7,7 @@ const userReducer = createSlice({
   initialState: {
     isAuth,
     customerId: localStorage.getItem('customerId'),
-    refreshToken: localStorage.getItem('refreshToken'),
+    customerRefreshToken: localStorage.getItem('refreshToken'),
     accessToken: '',
   },
   reducers: {
@@ -18,7 +18,7 @@ const userReducer = createSlice({
       state.isAuth = action.payload;
     },
     setRefreshTokenStatus(state, action) {
-      state.refreshToken = action.payload;
+      state.customerRefreshToken = action.payload;
     },
     setAccessTokenStatus(state, action) {
       state.accessToken = action.payload;
