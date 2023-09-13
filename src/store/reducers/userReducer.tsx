@@ -5,7 +5,7 @@ language && language === 'true' ? (isAuth = true) : (isAuth = false);
 const userReducer = createSlice({
   name: 'user',
   initialState: {
-    isAuth,
+    isAuth: false,
     customerId: localStorage.getItem('customerId'),
     customerRefreshToken: localStorage.getItem('refreshToken'),
     accessToken: '',

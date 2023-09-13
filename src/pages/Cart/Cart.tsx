@@ -46,7 +46,9 @@ function CartPage(): JSX.Element {
       anonymousCart.anonymousID
         ? anonymousCart.anonymousAccessToken
         : accessToken
-    );
+    ).then((response) => {
+      dispatch(setCartItems(response?.body.lineItems));
+    });
   };
   const itemCartCards = cartItems.map((card, i) => {
     return (
@@ -55,7 +57,7 @@ function CartPage(): JSX.Element {
         key={`card_${i}`}
         sku={card.variant.sku ? card.variant.sku : ''}
         images={card.variant.images}
-        discounted={card.discountedPricePerQuantity}
+        discounted={card.variant.prices[0].value?.discounted}
         prices={card.variant.prices[0].value.centAmount}
         onDelete={(): void => {
           deleteItem(card.id, card.quantity);

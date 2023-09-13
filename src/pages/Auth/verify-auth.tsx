@@ -12,6 +12,7 @@ import { changeVersion } from '../../store/reducers/profileReducer';
 import { IAnonymousCartData } from '../Registration/Registration';
 import { loginAnonUser } from '../../api/existTokenFlow';
 import { IMyCustomerLoginDraft } from '../../types/interfaces';
+import { changeAnonymousCart } from '../../store/reducers/cartReducer';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -27,7 +28,8 @@ export const handleСreationAuth = (
   dispatch: Dispatch<AnyAction>,
   setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
-  anonymousCartData: IAnonymousCartData
+  anonymousCartData: IAnonymousCartData,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   loginСheck = handleLoginInput(
@@ -58,12 +60,19 @@ export const handleСreationAuth = (
   };
 
   if (loginСheck === true && passwordСheck === true) {
-    loginAnonUser(anonymousCartData.anonymousAccessToken, request, dispatch)
+    loginAnonUser(
+      anonymousCartData.anonymousAccessToken,
+      request,
+      dispatch,
+      setSuccessfulMessage
+    )
       .then((response) => {
         if (response) {
           localStorage.removeItem('anonymousID');
           localStorage.removeItem('refreshAnonToken');
           localStorage.setItem('customerId', response.body.customer.id);
+          dispatch(changeAnonymousCart({ anonymousID: '' }));
+          dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
           dispatch(createCustomerId(response.body.customer.id));
           dispatch(changeVersion(response.body.customer.version));
         }

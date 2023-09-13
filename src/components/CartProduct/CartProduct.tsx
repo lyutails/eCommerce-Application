@@ -31,7 +31,10 @@ export function CartProduct(props: CartProductProps): JSX.Element {
           <button className={style.cartproduct_plus}>+</button>
         </div>
         <div className={style.cartproduct_product_price}>
-          {props.discounted ? props.discounted : props.prices}
+          {props.discounted
+            ? Number(props.discounted) / 100
+            : Number(props.prices) / 100}
+          $
         </div>
         <button
           onClick={props.onDelete}

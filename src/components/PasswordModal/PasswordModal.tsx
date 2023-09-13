@@ -39,7 +39,9 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
   const { version, password, email } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
 
   const customerUpdateData = {
     version: version,
@@ -50,7 +52,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
     currentError: password.currentPassword.error,
     newError: password.newPassword.error,
     repeateError: password.repeatePassword.error,
-    token: refreshToken,
+    token: customerRefreshToken,
     passwordNewField: password.newPassword.value,
     passwordRepeatField: password.repeatePassword.value,
     dispatch: dispatch,

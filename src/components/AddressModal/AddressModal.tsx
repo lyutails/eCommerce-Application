@@ -123,7 +123,9 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
   const { address, version } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
 
   const addAddressData: IAddAddressData = {
     version: version,
@@ -239,7 +241,7 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
     apartmentError: !address.apartment.error,
     postalError: !address.postal.error,
     countryError: !address.country.error,
-    token: refreshToken,
+    token: customerRefreshToken,
   };
   const addressFormData = {
     title: 'Update address',
