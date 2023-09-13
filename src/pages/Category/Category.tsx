@@ -32,6 +32,7 @@ import {
 } from '../../store/reducers/cartReducer';
 import { createAnonCart, updateCart } from '../../api/existTokenFlow';
 import { anonymousSessionFlow, refreshTokenFlow } from '../../api/adminBuilder';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -42,7 +43,7 @@ const allBrands = ['RSSchool', 'Logitech'];
 const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
 function CategoryPage(): JSX.Element {
   const dispatch = useDispatch();
-  const { anonymousCart, userCart, cartItems } = useSelector(
+  const { anonymousCart, userCart } = useSelector(
     (state: ICartState) => state.cart
   );
   const { customerId, customerRefreshToken, accessToken } = useSelector(
@@ -160,37 +161,9 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
-  if (!isAuth && !anonymousCart.anonymousID) {
-    anonymousSessionFlow().then((response) => {
-      const accessToken = response.access_token;
-      const anonID = response.scope.split(' ')[2].slice(13);
-      localStorage.setItem('anonymousID', anonID);
-      localStorage.setItem('refreshAnonToken', response.refresh_token);
-      dispatch(
-        changeAnonymousCart({
-          anonymousID: anonID,
-          anonymousRefreshToken: response.refresh_token,
-          anonymousAccessToken: response.access_token,
-        })
-      );
-      createAnonCart(accessToken).then((responseTwo) => {
-        if (responseTwo) {
-          const idCart = responseTwo.body.id;
-          dispatch(
-            changeAnonymousCart({
-              versionAnonCart: responseTwo.body.version,
-              cartID: idCart,
-            })
-          );
-        }
-      });
-    });
-  }
   // TODO: WRITE THIS OBJECT TO THE END
   const updateAnonCartData = {
-    version: anonymousCart.anonymousID
-      ? anonymousCart.versionCart
-      : userCart.versionUserCart,
+    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
     actions: [
       {
         action: 'addLineItem',
@@ -202,17 +175,40 @@ function CategoryPage(): JSX.Element {
     ],
   };
 
-  // const updateCustomerCartServer = (
-  //   refreshToken: string,
-  //   cartId: string
-  // ): Promise<ClientResponse<Cart> | undefined> => {
-  //   return refreshTokenFlow(refreshToken).then((response) => {
-  //     updateCart(cartId, updateAnonCartData, response.access_token);
-  //   });
-  // };
+  const updateCustomerCartServer = (
+    refreshToken: string,
+    cartId: string,
+
+    changeCart: ActionCreatorWithPayload<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      any,
+      'cart/changeAnonymousCart' | 'cart/changeUserCart'
+    >,
+    versionCart: string
+  ): Promise<void> => {
+    return refreshTokenFlow(refreshToken).then((response) => {
+      updateCart(cartId, updateAnonCartData, response.access_token).then(
+        (updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeCart({
+                [versionCart]: updatedCart.body.version,
+              })
+            );
+          }
+        }
+      );
+    });
+  };
 
   const updateCustomerCart = (): void => {
-    if (anonymousCart.anonymousID) {
+    if (!isAuth) {
+      // updateCustomerCartServer(
+      //   anonymousCart.anonymousRefreshToken,
+      //   anonymousCart.cartID,
+      //   changeAnonymousCart,
+      //   'versionAnonCart'
+      // );
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
         updateCart(
           anonymousCart.cartID,
@@ -228,7 +224,13 @@ function CategoryPage(): JSX.Element {
           }
         });
       });
-    } else if (isAuth) {
+    } else {
+      // updateCustomerCartServer(
+      //   customerRefreshToken,
+      //   userCart.userCartId,
+      //   changeUserCart,
+      //   'versionUserCart'
+      // );
       refreshTokenFlow(customerRefreshToken).then((response) => {
         updateCart(
           userCart.userCartId,

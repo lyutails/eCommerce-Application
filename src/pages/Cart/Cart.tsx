@@ -24,47 +24,13 @@ function CartPage(): JSX.Element {
   const { customerId, customerRefreshToken, accessToken } = useSelector(
     (state: IRootState) => state.user
   );
-  useEffect(() => {
-    if (anonymousCart.anonymousID) {
-      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
-        if (response) {
-          dispatch(
-            changeAnonymousCart({
-              anonymousAccessToken: response.access_token,
-            })
-          );
-          getAnonCart(response.access_token).then((response) => {
-            dispatch(setCartItems(response?.body.lineItems));
-          });
-          getDiscountCodes(response.access_token).then((response) => {
-            if (response) {
-              dispatch(setDiscountCodes(response.body.results));
-            }
-          });
-        }
-      });
-    } else {
-      refreshTokenFlow(customerRefreshToken).then((response) => {
-        if (response) {
-          dispatch(setAccessTokenStatus(response.access_token));
-          getAnonCart(response.access_token).then((response) => {
-            dispatch(setCartItems(response?.body.lineItems));
-          });
-          getDiscountCodes(response.access_token).then((response) => {
-            if (response) {
-              dispatch(setDiscountCodes(response.body.results));
-            }
-          });
-        }
-      });
-    }
-  }, [dispatch, customerRefreshToken]);
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
 
   // DELETE ITEM FROM CART
   const deleteItem = (itemId: string, quantity: number): void => {
     const deleteItemData = {
       version: anonymousCart.anonymousID
-        ? anonymousCart.versionCart
+        ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
       actions: [
         {

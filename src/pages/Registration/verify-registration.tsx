@@ -30,7 +30,7 @@ import { getCustomerToken } from '../../api/adminBuilder';
 import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
-import { ICartState } from '../../types/interfaces';
+import { ICartState, IMyCustomerDraft } from '../../types/interfaces';
 import { IAnonymousCartData } from './Registration';
 
 let loginСheck = false;
@@ -224,37 +224,7 @@ export const handleСreationReg = (
     setCheckmarkBirthday
   );
 
-  // const dataBill = {
-  //   email: loginField,
-  //   firstName: fistnameField,
-  //   lastName: lastnameField,
-  //   password: passwordField,
-  //   dateOfBirth: parseDateToServer(birthdayField),
-  //   addresses: [
-  //     {
-  //       streetName: streetShipField,
-  //       building: buildingShipField,
-  //       apartment: apartmentShipField,
-  //       postalCode: postalShipField,
-  //       city: cityShipField,
-  //       country: countryShipField === 'usa' ? 'US' : 'CA',
-  //     },
-  //     {
-  //       streetName: streetBillField,
-  //       building: buildingBillField,
-  //       apartment: apartmentBillField,
-  //       postalCode: postalBillField,
-  //       city: postalBillField,
-  //       country: countryBillField === 'usa' ? 'US' : 'CA',
-  //     },
-  //   ],
-  //   defaultShippingAddress: checkedShipping ? 0 : undefined,
-  //   shippingAddresses: [0],
-  //   defaultBillingAddress: checkedBilling ? 1 : undefined,
-  //   billingAddresses: [1],
-  // };
-
-  const createCustomerData = {
+  const createCustomerData: IMyCustomerDraft = {
     email: loginField,
     firstName: fistnameField,
     lastName: lastnameField,
@@ -273,14 +243,13 @@ export const handleСreationReg = (
     defaultShippingAddress: checkedShipping ? 0 : undefined,
     shippingAddresses: [0],
     billingAddresses: [0],
-  };
-
-  if (anonymousCartData.anonymousID) {
-    createCustomerData.anonymousCart = {
+    anonymousCart: {
       id: anonymousCartData.cartID,
       typeId: 'cart',
-    };
-  }
+    },
+    anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    anonymousID: anonymousCartData.anonymousID,
+  };
 
   if (checkedBill) {
     createCustomerData.addresses.push({
@@ -323,6 +292,7 @@ export const handleСreationReg = (
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
             localStorage.removeItem('anonymousID');
+            localStorage.removeItem('refreshAnonToken');
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));
           }
@@ -367,6 +337,7 @@ export const handleСreationReg = (
         .then((response) => {
           if (response) {
             localStorage.removeItem('anonymousID');
+            localStorage.removeItem('refreshAnonToken');
             localStorage.setItem('customerId', response.body.customer.id);
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));

@@ -199,6 +199,8 @@ export interface IMyCustomerDraft {
     id: string;
     typeId: string;
   };
+  anonymousCartSignInMode?: string;
+  anonymousID?: string;
 }
 
 export interface IMyCustomerLoginDraft {
@@ -222,7 +224,7 @@ export interface ICartState {
   cart: {
     anonymousCart: {
       anonymousID: string;
-      versionCart: number;
+      versionAnonCart: number;
       cartID: string;
       anonymousRefreshToken: string;
       anonymousAccessToken: string;
