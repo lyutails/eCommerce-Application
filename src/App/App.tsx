@@ -24,6 +24,7 @@ import {
   setCartPriceDiscount,
   setCartQuantity,
   setDiscountCodes,
+  setDiscountCodesCart,
 } from '../store/reducers/cartReducer';
 import {
   createAnonCart,
@@ -77,7 +78,6 @@ function App(): JSX.Element {
           (response) => {
             if (response) {
               getAnonCart(response.access_token).then((response) => {
-                console.log(response.body);
                 dispatch(
                   changeAnonymousCart({
                     versionAnonCart: response?.body.version,
@@ -97,6 +97,7 @@ function App(): JSX.Element {
                   return totalPrice;
                 });
                 dispatch(setCartPrice(totalPrice));
+                dispatch(setDiscountCodesCart(response?.body.discountCodes));
               });
               getDiscountCodes(response.access_token).then((response) => {
                 if (response) {

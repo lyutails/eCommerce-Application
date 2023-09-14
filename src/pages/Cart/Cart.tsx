@@ -9,10 +9,12 @@ import {
   setCartPrice,
   setCartPriceDiscount,
   setCartQuantity,
+  setDiscountCodesCart,
   setPromocode,
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
+import { MyCartUpdate } from '@commercetools/platform-sdk';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ function CartPage(): JSX.Element {
     cartPrice,
     promocode,
     cartPriceDiscount,
+    discountCodesCart,
   } = useSelector((state: ICartState) => state.cart);
   const { customerId, customerRefreshToken, accessToken } = useSelector(
     (state: IRootState) => state.user
@@ -140,8 +143,7 @@ function CartPage(): JSX.Element {
     const code = event.target.value;
     dispatch(setPromocode(code));
   };
-  console.log(discountCodes);
-  console.log(promocode);
+
   const setPromocodeToCart = (refreshToken: string): void => {
     const addPromocodeData = {
       version: !isAuth
@@ -163,7 +165,7 @@ function CartPage(): JSX.Element {
           action: 'removeDiscountCode',
           discountCode: {
             typeId: 'discount-code',
-            id: '41a71dab-738a-4a69-a79d-0c2d5663b0ae',
+            id: discountCodesCart ? discountCodesCart[0].discountCode.id : '',
           },
         },
       ],
@@ -173,15 +175,15 @@ function CartPage(): JSX.Element {
         if (response) {
           updateCart(
             !isAuth ? anonymousCart.cartID : userCart.userCartId,
-            deletePromocodeData,
+            addPromocodeData,
             response.access_token
           ).then((responseTwo) => {
-            console.log(responseTwo?.body.lineItems);
             dispatch(setCartItems(responseTwo?.body.lineItems));
             dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
             dispatch(
               setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
             );
+            dispatch(setDiscountCodesCart(response?.body.discountCodes));
             isAuth
               ? dispatch(
                   changeUserCart({
@@ -201,15 +203,15 @@ function CartPage(): JSX.Element {
         if (response) {
           updateCart(
             !isAuth ? anonymousCart.cartID : userCart.userCartId,
-            addPromocodeData,
+            deletePromocodeData,
             response.access_token
           ).then((responseTwo) => {
-            console.log(responseTwo?.body.lineItems);
             dispatch(setCartItems(responseTwo?.body.lineItems));
             dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
             dispatch(
               setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
             );
+            dispatch(setDiscountCodesCart(response?.body.discountCodes));
             isAuth
               ? dispatch(
                   changeUserCart({
@@ -225,6 +227,56 @@ function CartPage(): JSX.Element {
         }
       });
     }
+  };
+
+  const deleteAllProducts = (refreshToken: string): void => {
+    const deleteItemData: MyCartUpdate = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [],
+    };
+    cartItems.map((item) => {
+      return deleteItemData.actions.push({
+        action: 'removeLineItem',
+        lineItemId: item.id,
+        quantity: item.quantity,
+      });
+    });
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          !isAuth ? anonymousCart.cartID : userCart.userCartId,
+          deleteItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
   };
 
   const itemCartCards = cartItems.map((card, i) => {
@@ -277,15 +329,6 @@ function CartPage(): JSX.Element {
         </div>
       </div>
       <div className={style.cart_discount_codes}>
-        {/* <div className={style.cart_discount}>Discount Codes</div>
-        <div className={style.cart_discount_wrapper}>
-          <div className={style.cart_discount_amount}>10%</div>
-          <button className={style.cart_discount_name}>RSSchool</button>
-        </div>
-        <div className={style.cart_discount_wrapper}>
-          <div className={style.cart_discount_amount}>30%</div>
-          <button className={style.cart_discount_name}>trinity</button>
-        </div> */}
         <div className={style.cart_discount}>
           <input
             onChange={(event): void => addDiscountCode(event)}
@@ -321,6 +364,21 @@ function CartPage(): JSX.Element {
           $
         </div>
       </div>
+      <div className={style.cart_clear}>
+        <button
+          onClick={(): void =>
+            deleteAllProducts(
+              !isAuth
+                ? anonymousCart.anonymousRefreshToken
+                : customerRefreshToken
+            )
+          }
+          className={style.cart_buy}
+        >
+          Delete all products
+        </button>
+      </div>
+
       <div className={style.cart_buy_sloth}>
         <button className={style.cart_buy}>Buy</button>
         <div className={style.cart_cybersloth}></div>
