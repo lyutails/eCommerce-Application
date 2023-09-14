@@ -306,7 +306,11 @@ function CartPage(): JSX.Element {
           </button>
         </div>
       </div>
-      <div className={style.cart_applied_discount}>
+      <div className={style.cart_discount_black}>
+        *If you have a black T-Shirt in your cart make sure to add one more and
+        to get them by cost of one.
+      </div>
+      <div className={style.cart_price_wrapper}>
         <div className={style.cart_price_name}>
           Total Price with applied Discount
         </div>
@@ -317,7 +321,10 @@ function CartPage(): JSX.Element {
           $
         </div>
       </div>
-      <button className={style.cart_buy}>Buy</button>
+      <div className={style.cart_buy_sloth}>
+        <button className={style.cart_buy}>Buy</button>
+        <div className={style.cart_cybersloth}></div>
+      </div>
     </div>
   );
 }
