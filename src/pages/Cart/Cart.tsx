@@ -1,35 +1,43 @@
 import { ICartState, IRootState } from '../../types/interfaces';
-import { useEffect } from 'react';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAnonCart,
-  getDiscountCodes,
-  updateCart,
-} from '../../api/existTokenFlow';
-import { refreshTokenFlow } from '../../api/adminBuilder';
-import { setAccessTokenStatus } from '../../store/reducers/userReducer';
+import { updateCart } from '../../api/existTokenFlow';
 import {
   changeAnonymousCart,
+  changeUserCart,
   setCartItems,
-  setDiscountCodes,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
+  setPromocode,
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
+import { refreshTokenFlow } from '../../api/adminBuilder';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
-  const { anonymousCart, userCart, cartItems, discountCodes } = useSelector(
-    (state: ICartState) => state.cart
-  );
+  const {
+    anonymousCart,
+    userCart,
+    cartItems,
+    discountCodes,
+    cartPrice,
+    promocode,
+    cartPriceDiscount,
+  } = useSelector((state: ICartState) => state.cart);
   const { customerId, customerRefreshToken, accessToken } = useSelector(
     (state: IRootState) => state.user
   );
-  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
 
   // DELETE ITEM FROM CART
-  const deleteItem = (itemId: string, quantity: number): void => {
+  const deleteItem = (
+    itemId: string,
+    quantity: number,
+    refreshToken: string
+  ): void => {
     const deleteItemData = {
-      version: anonymousCart.anonymousID
+      version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
       actions: [
@@ -40,16 +48,185 @@ function CartPage(): JSX.Element {
         },
       ],
     };
-    updateCart(
-      anonymousCart.anonymousID ? anonymousCart.cartID : userCart.userCartId,
-      deleteItemData,
-      anonymousCart.anonymousID
-        ? anonymousCart.anonymousAccessToken
-        : accessToken
-    ).then((response) => {
-      dispatch(setCartItems(response?.body.lineItems));
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          !isAuth ? anonymousCart.cartID : userCart.userCartId,
+          deleteItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
     });
   };
+
+  // INCREASE ITEM FROM CART
+  const increaseItem = (itemId: string, refreshToken: string): void => {
+    const increaseItemData = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'addLineItem',
+          sku: itemId,
+          quantity: 1,
+        },
+      ],
+    };
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          isAuth ? userCart.userCartId : anonymousCart.cartID,
+          increaseItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
+  };
+
+  const addDiscountCode = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const code = event.target.value;
+    dispatch(setPromocode(code));
+  };
+  console.log(discountCodes);
+  console.log(promocode);
+  const setPromocodeToCart = (refreshToken: string): void => {
+    const addPromocodeData = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'addDiscountCode',
+          code: promocode.toLowerCase(),
+        },
+      ],
+    };
+    const deletePromocodeData = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'removeDiscountCode',
+          discountCode: {
+            typeId: 'discount-code',
+            id: '41a71dab-738a-4a69-a79d-0c2d5663b0ae',
+          },
+        },
+      ],
+    };
+    if (discountCodes.includes(promocode.toLowerCase())) {
+      refreshTokenFlow(refreshToken).then((response) => {
+        if (response) {
+          updateCart(
+            !isAuth ? anonymousCart.cartID : userCart.userCartId,
+            deletePromocodeData,
+            response.access_token
+          ).then((responseTwo) => {
+            console.log(responseTwo?.body.lineItems);
+            dispatch(setCartItems(responseTwo?.body.lineItems));
+            dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+            );
+            isAuth
+              ? dispatch(
+                  changeUserCart({
+                    versionUserCart: responseTwo?.body.version,
+                  })
+                )
+              : dispatch(
+                  changeAnonymousCart({
+                    versionAnonCart: responseTwo?.body.version,
+                  })
+                );
+          });
+        }
+      });
+    } else if (promocode === '') {
+      refreshTokenFlow(refreshToken).then((response) => {
+        if (response) {
+          updateCart(
+            !isAuth ? anonymousCart.cartID : userCart.userCartId,
+            addPromocodeData,
+            response.access_token
+          ).then((responseTwo) => {
+            console.log(responseTwo?.body.lineItems);
+            dispatch(setCartItems(responseTwo?.body.lineItems));
+            dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+            );
+            isAuth
+              ? dispatch(
+                  changeUserCart({
+                    versionUserCart: responseTwo?.body.version,
+                  })
+                )
+              : dispatch(
+                  changeAnonymousCart({
+                    versionAnonCart: responseTwo?.body.version,
+                  })
+                );
+          });
+        }
+      });
+    }
+  };
+
   const itemCartCards = cartItems.map((card, i) => {
     return (
       <CartProduct
@@ -57,12 +234,35 @@ function CartPage(): JSX.Element {
         key={`card_${i}`}
         sku={card.variant.sku ? card.variant.sku : ''}
         images={card.variant.images}
-        discounted={card.variant.prices[0].value?.discounted}
-        prices={card.variant.prices[0].value.centAmount}
+        discounted={
+          card.variant.prices && card.variant.prices[0]
+            ? card.variant.prices[0].discounted?.value.centAmount
+            : 0
+        }
+        prices={
+          card.variant.prices ? card.variant.prices[0].value.centAmount : 0
+        }
         onDelete={(): void => {
-          deleteItem(card.id, card.quantity);
+          deleteItem(
+            card.id,
+            card.quantity,
+            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+          );
         }}
         quantity={card.quantity}
+        reduceQuantity={(): void =>
+          deleteItem(
+            card.id,
+            1,
+            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+          )
+        }
+        increaseQuantity={(): void =>
+          increaseItem(
+            card.variant.sku ? card.variant.sku : '',
+            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+          )
+        }
       ></CartProduct>
     );
   });
@@ -72,10 +272,12 @@ function CartPage(): JSX.Element {
       <div className={style.cards}>{itemCartCards}</div>
       <div className={style.cart_price_wrapper}>
         <div className={style.cart_price_name}>Total Price</div>
-        <div className={style.cart_price_amount}>total price paste here</div>
+        <div className={style.cart_price_amount}>
+          {(cartPrice / 100).toFixed(2)}$
+        </div>
       </div>
       <div className={style.cart_discount_codes}>
-        <div className={style.cart_discount}>Discount Codes</div>
+        {/* <div className={style.cart_discount}>Discount Codes</div>
         <div className={style.cart_discount_wrapper}>
           <div className={style.cart_discount_amount}>10%</div>
           <button className={style.cart_discount_name}>RSSchool</button>
@@ -83,14 +285,37 @@ function CartPage(): JSX.Element {
         <div className={style.cart_discount_wrapper}>
           <div className={style.cart_discount_amount}>30%</div>
           <button className={style.cart_discount_name}>trinity</button>
+        </div> */}
+        <div className={style.cart_discount}>
+          <input
+            onChange={(event): void => addDiscountCode(event)}
+            type="text"
+            placeholder="type discount here"
+          />
+          <button
+            onClick={(): void =>
+              setPromocodeToCart(
+                !isAuth
+                  ? anonymousCart.anonymousRefreshToken
+                  : customerRefreshToken
+              )
+            }
+            className={style.cart_discount_button}
+          >
+            Apply
+          </button>
         </div>
-        <input type="text" placeholder="type discount here"></input>
       </div>
       <div className={style.cart_applied_discount}>
         <div className={style.cart_price_name}>
           Total Price with applied Discount
         </div>
-        <div className={style.cart_discount_price}>total price paste here</div>
+        <div className={style.cart_discount_price}>
+          {cartPriceDiscount
+            ? (cartPriceDiscount / 100).toFixed(2)
+            : (cartPrice / 100).toFixed(2)}
+          $
+        </div>
       </div>
       <button className={style.cart_buy}>Buy</button>
     </div>

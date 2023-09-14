@@ -19,4 +19,6 @@ export type CartProductProps = {
   sku: string;
   onDelete: () => void;
   quantity: number;
+  reduceQuantity: () => void;
+  increaseQuantity: () => void;
 };

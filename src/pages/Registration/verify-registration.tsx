@@ -26,11 +26,10 @@ import {
   setAccessTokenStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
-import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
-import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
+import { getCustomerToken } from '../../api/adminBuilder';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
-import { ICartState, IMyCustomerDraft } from '../../types/interfaces';
+import { IMyCustomerDraft } from '../../types/interfaces';
 import { IAnonymousCartData } from './Registration';
 import { loginAnonUser } from '../../api/existTokenFlow';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';

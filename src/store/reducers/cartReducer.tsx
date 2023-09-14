@@ -11,11 +11,15 @@ const cartReducer = createSlice({
       anonymousAccessToken: '',
     },
     discountCodes: [],
+    promocode: '',
     userCart: {
       userCartId: '',
       versionUserCart: 1,
     },
     cartItems: [],
+    cartPrice: 0,
+    cartPriceDiscount: 0,
+    cartQuantity: 0,
   },
   reducers: {
     changeAnonymousCart(state, action) {
@@ -30,6 +34,18 @@ const cartReducer = createSlice({
     setCartItems(state, action) {
       state.cartItems = action.payload;
     },
+    setCartPrice(state, action) {
+      state.cartPrice = action.payload;
+    },
+    setCartPriceDiscount(state, action) {
+      state.cartPriceDiscount = action.payload;
+    },
+    setCartQuantity(state, action) {
+      state.cartQuantity = action.payload;
+    },
+    setPromocode(state, action) {
+      state.promocode = action.payload;
+    },
   },
 });
 
@@ -38,6 +54,10 @@ export const {
   changeUserCart,
   setDiscountCodes,
   setCartItems,
+  setCartPrice,
+  setCartQuantity,
+  setPromocode,
+  setCartPriceDiscount,
 } = cartReducer.actions;
 
 export default cartReducer.reducer;

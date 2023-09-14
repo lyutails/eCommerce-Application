@@ -24,16 +24,26 @@ export function CartProduct(props: CartProductProps): JSX.Element {
           alt=""
         />
         <div className={style.cartproduct_product_counter}>
-          <button className={style.cartproduct_minus}>-</button>
+          <button
+            onClick={props.reduceQuantity}
+            className={style.cartproduct_minus}
+          >
+            -
+          </button>
           <div className={style.cartproduct_product_amount}>
             {props.quantity}
           </div>
-          <button className={style.cartproduct_plus}>+</button>
+          <button
+            onClick={props.increaseQuantity}
+            className={style.cartproduct_plus}
+          >
+            +
+          </button>
         </div>
         <div className={style.cartproduct_product_price}>
           {props.discounted
-            ? Number(props.discounted) / 100
-            : Number(props.prices) / 100}
+            ? (Number(props.discounted) / 100).toFixed(2)
+            : (Number(props.prices) / 100).toFixed(2)}
           $
         </div>
         <button

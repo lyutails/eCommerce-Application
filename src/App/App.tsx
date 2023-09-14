@@ -15,15 +15,14 @@ import CatalogPage from '../pages/Catalog/Catalog';
 import CategoryPage from '../pages/Category/Category';
 import ProductPage from '../pages/Product/Product';
 import { ParhRoute } from '../types/enums';
-import {
-  anonymousSessionFlow,
-  refreshAccessToken,
-  refreshTokenFlow,
-} from '../api/adminBuilder';
+import { anonymousSessionFlow, refreshTokenFlow } from '../api/adminBuilder';
 import {
   changeAnonymousCart,
   changeUserCart,
   setCartItems,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
   setDiscountCodes,
 } from '../store/reducers/cartReducer';
 import {
@@ -32,8 +31,6 @@ import {
   getDiscountCodes,
 } from '../api/existTokenFlow';
 import { useEffect } from 'react';
-import { setAccessTokenStatus } from '../store/reducers/userReducer';
-import { updateAnonAccessToken } from '../utils/updateAccessToken';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -80,6 +77,7 @@ function App(): JSX.Element {
           (response) => {
             if (response) {
               getAnonCart(response.access_token).then((response) => {
+                console.log(response.body);
                 dispatch(
                   changeAnonymousCart({
                     versionAnonCart: response?.body.version,
@@ -87,10 +85,31 @@ function App(): JSX.Element {
                   })
                 );
                 dispatch(setCartItems(response?.body.lineItems));
+                dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+                dispatch(
+                  setCartPriceDiscount(response?.body.totalPrice.centAmount)
+                );
+                let totalPrice = 0;
+                response?.body.lineItems.map((item) => {
+                  if (item) {
+                    totalPrice += item.price.value.centAmount * item.quantity;
+                  }
+                  return totalPrice;
+                });
+                dispatch(setCartPrice(totalPrice));
               });
               getDiscountCodes(response.access_token).then((response) => {
                 if (response) {
-                  dispatch(setDiscountCodes(response.body.results));
+                  const codeDiscountArray = response.body.results.map(
+                    (code) => {
+                      let codeName;
+                      if (code.code) {
+                        codeName = code.code;
+                      }
+                      return codeName;
+                    }
+                  );
+                  dispatch(setDiscountCodes(codeDiscountArray));
                 }
               });
             }
@@ -109,6 +128,9 @@ function App(): JSX.Element {
                   userCartId: responseTwo?.body.id,
                 })
               );
+              console.log(response?.body);
+              dispatch(setCartPrice(response?.body.totalPrice.centAmount));
+              dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {

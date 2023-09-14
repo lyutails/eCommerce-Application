@@ -7,9 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
-  Cart,
   Category,
-  ClientResponse,
   MyCartUpdate,
   ProductProjection,
   ProductVariant,
@@ -31,10 +29,12 @@ import {
   changeAnonymousCart,
   changeUserCart,
   setCartItems,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
 } from '../../store/reducers/cartReducer';
-import { createAnonCart, updateCart } from '../../api/existTokenFlow';
-import { anonymousSessionFlow, refreshTokenFlow } from '../../api/adminBuilder';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { updateCart } from '../../api/existTokenFlow';
+import { refreshTokenFlow } from '../../api/adminBuilder';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -163,60 +163,8 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
-  // TODO: WRITE THIS OBJECT TO THE END
-  // const updateAnonCartData = {
-  //   version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
-  //   actions: [
-  //     {
-  //       action: 'addLineItem',
-  //       //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
-  //       // variantSKU for child
-  //       sku: 'RSSchool T-Shirt Git White XS',
-  //       quantity: 1,
-  //     },
-  //   ],
-  // };
-
-  // if(master) {
-  //   updateAnonCartData.actions[0].productID = 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e'
-  // } else {
-  // updateAnonCartData.actions[0].sku = 'RSSchool T-Shirt Git White XS'
-  //}
-
-  const updateCustomerCartServer = (
-    refreshToken: string,
-    cartId: string,
-
-    changeCart: ActionCreatorWithPayload<
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      any,
-      'cart/changeAnonymousCart' | 'cart/changeUserCart'
-    >,
-    versionCart: string
-  ): Promise<void> => {
-    return refreshTokenFlow(refreshToken).then((response) => {
-      updateCart(cartId, updateAnonCartData, response.access_token).then(
-        (updatedCart) => {
-          if (updatedCart) {
-            dispatch(
-              changeCart({
-                [versionCart]: updatedCart.body.version,
-              })
-            );
-          }
-        }
-      );
-    });
-  };
-
   const updateCustomerCart = (updateAnonCartData: MyCartUpdate): void => {
     if (!isAuth) {
-      // updateCustomerCartServer(
-      //   anonymousCart.anonymousRefreshToken,
-      //   anonymousCart.cartID,
-      //   changeAnonymousCart,
-      //   'versionAnonCart'
-      // );
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
         console.log(anonymousCart.cartID);
         updateCart(
@@ -231,16 +179,22 @@ function CategoryPage(): JSX.Element {
                 versionAnonCart: updatedCart.body.version,
               })
             );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
           }
         });
       });
     } else {
-      // updateCustomerCartServer(
-      //   customerRefreshToken,
-      //   userCart.userCartId,
-      //   changeUserCart,
-      //   'versionUserCart'
-      // );
       refreshTokenFlow(customerRefreshToken).then((response) => {
         updateCart(
           userCart.userCartId,
@@ -254,6 +208,18 @@ function CategoryPage(): JSX.Element {
                 versionUserCart: updatedCart.body.version,
               })
             );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
           }
         });
       });
@@ -1145,8 +1111,6 @@ function CategoryPage(): JSX.Element {
                 <div className={style.category_cards_background_top}></div>
                 <div className={style.category_cards_wrapper}>
                   {allCards.map((card) => {
-                    ///console.log(card);
-                    /////////////////////////////////////////////////////////////////////////
                     const updateAnonCartData = {
                       version: !isAuth
                         ? anonymousCart.versionAnonCart
@@ -1154,8 +1118,6 @@ function CategoryPage(): JSX.Element {
                       actions: [
                         {
                           action: 'addLineItem',
-                          //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
-                          // variantSKU for child
                           sku: card.sku,
                           quantity: 1,
                         },
@@ -1193,7 +1155,9 @@ function CategoryPage(): JSX.Element {
                         >
                           <Card
                             description={
-                              variantDescription?.description['en-US'] ?? ' '
+                              variantDescription?.description
+                                ? variantDescription?.description['en-US']
+                                : ' '
                             }
                             keyCard={card.key ? card.key : ''}
                             images={card.images}

@@ -1,7 +1,6 @@
 import { setAuthStatus } from '../store/reducers/userReducer';
 import {
   Cart,
-  CartPagedQueryResponse,
   ClientResponse,
   createApiBuilderFromCtpClient,
   CustomerSignInResult,
