@@ -1,6 +1,7 @@
 import {
   AddressDraft,
   BaseAddress,
+  DiscountCodeInfo,
   LineItem,
 } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
@@ -239,5 +240,6 @@ export interface ICartState {
     cartQuantity: number;
     promocode: string;
     cartPriceDiscount: number;
+    discountCodesCart: DiscountCodeInfo[] | undefined;
   };
 }
