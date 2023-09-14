@@ -225,11 +225,14 @@ input[type='checkbox'] {
     background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
     background-repeat: no-repeat;
     transform: translate(5.5vw, 0);
-    animation-name: number_circle_anim;
-    animation-duration: 2s;
-    animation-iteration-count: 1;
-    animation-timing-function: linear;
-    transform-origin: center;
+
+    &.anim {
+      animation-name: number_circle_anim;
+      animation-duration: 2s;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      transform-origin: center;
+    }
   }
 
   &_filters_sizes {
@@ -256,7 +259,7 @@ input[type='checkbox'] {
     transition: all 0.2s ease-in-out;
     text-shadow: 0 0 5px $glow-green;
     user-select: none;
-    font-family: "No Signal";
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/subtree_green_blue.svg');
@@ -342,26 +345,6 @@ input[type='checkbox'] {
     &:hover {
       cursor: pointer;
     }
-  }
-
-  &_search_input {
-    resize: both;
-
-    aspect-ratio: 1 / 0.36;
-    width: 20vw;
-    min-width: 300px;
-    max-width: 420px;
-    padding-left: 2vw;
-
-    font-family: Assassin;
-    font-size: 2.5rem;
-    color: $glow-green;
-
-    background-color: transparent;
-    background-image: url('../../../public/ui-kit/search_purple_blue.svg');
-    background-repeat: no-repeat;
-    border: none;
-    outline: none;
   }
 
   &_search_input_price {
@@ -733,7 +716,9 @@ input[type='checkbox'] {
     aspect-ratio: 1 / 0.2;
     z-index: 200;
     position: absolute;
-    text-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
     margin-top: 15px;
     margin-left: 30px;
     border: none;
@@ -741,7 +726,9 @@ input[type='checkbox'] {
 
     &:hover {
       cursor: pointer;
-      text-shadow: 0 0 5px $glow-violet, 0 0 10px $glow-violet;
+      text-shadow:
+        0 0 5px $glow-violet,
+        0 0 10px $glow-violet;
     }
   }
 }
@@ -1181,17 +1168,36 @@ input#price-sort {
   font-size: 2rem;
 }
 
-.category_search_input::placeholder {
+.category_filters_search {
+  width: 30vw;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.category_search_input {
+  resize: both;
+
+  aspect-ratio: 1 / 0.36;
+  width: 100%;
+  min-width: 200px;
+  max-width: 420px;
+  padding-left: 3vw;
+
   font-family: Assassin;
   font-size: 2.8rem;
   color: $glow-green;
 
-  opacity: 1;
+  background-color: transparent;
+  background-image: url('../../../public/ui-kit/search_purple_blue.svg');
+  background-repeat: no-repeat;
+  border: none;
+  outline: none;
+}
 
-  animation-name: search-anim;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+.category_search_input::placeholder {
+  font-family: Assassin;
+  font-size: 2.8rem;
+  color: $glow-green;
 }
 
 .category_search_input:focus::placeholder {
@@ -1203,21 +1209,13 @@ input#price-sort {
   outline: none;
 }
 
-@keyframes search-anim {
-  0% {
-    color: transparent;
-    opacity: 0.1;
-  }
-
-  50% {
-    color: $glow-green;
-    opacity: 1;
-  }
-
-  100% {
-    color: transparent;
-    opacity: 0.1;
-  }
+.anim_input::placeholder {
+  font-family: Assassin;
+  font-size: 2.8rem;
+  color: $glow-green;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 .horizontal_slider {
