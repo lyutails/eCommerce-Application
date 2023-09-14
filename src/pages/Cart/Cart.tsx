@@ -345,6 +345,9 @@ function CartPage(): JSX.Element {
               )
             }
             className={style.cart_discount_button}
+            disabled={
+              discountCodesCart?.length ? true : !promocode ? true : false
+            }
           >
             Apply
           </button>
