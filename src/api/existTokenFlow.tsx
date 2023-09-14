@@ -8,7 +8,6 @@ import {
   MyCartUpdate,
 } from '@commercetools/platform-sdk';
 import {
-  Client,
   ClientBuilder,
   ExistingTokenMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';

@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { handlePasswordInput, inputHandler } from '../verification';
 import { ICartState, IRootState } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
-import { IAnonymousCartData } from '../Registration/Registration';
 
 function AuthPage(): JSX.Element {
   const navigate = useNavigate();

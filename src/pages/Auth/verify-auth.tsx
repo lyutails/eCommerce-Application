@@ -4,9 +4,8 @@ import {
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
-import { handleLoginInput, handlePasswordInput, clue } from '../verification';
+import { handleLoginInput, handlePasswordInput } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
 import { getCustomerToken } from '../../api/adminBuilder';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { IAnonymousCartData } from '../Registration/Registration';

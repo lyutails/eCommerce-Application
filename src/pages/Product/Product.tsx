@@ -2,11 +2,7 @@
 import { getProductProjectionsByVariantKey } from '../../api/getProducts';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
-import {
-  Cart,
-  ProductProjection,
-  ProductVariant,
-} from '@commercetools/platform-sdk';
+import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -23,23 +19,15 @@ import { ICartState, IProductState, IRootState } from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
-import {
-  loginCustomerThroughMe,
-  updateCartThroughMe,
-} from '../../api/passwordFlowSession';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import {
   changeAnonymousCart,
   changeUserCart,
-  setCartItems,
-  setDiscountCodes,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
 } from '../../store/reducers/cartReducer';
-import {
-  getAnonCart,
-  getDiscountCodes,
-  updateCart,
-} from '../../api/existTokenFlow';
-import { setAccessTokenStatus } from '../../store/reducers/userReducer';
+import { updateCart } from '../../api/existTokenFlow';
 
 interface IDataProduct {
   name: string;
@@ -77,6 +65,18 @@ function ProductPage(): JSX.Element {
                 versionAnonCart: updatedCart.body.version,
               })
             );
+            dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(response?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
           }
         });
       });
@@ -93,6 +93,18 @@ function ProductPage(): JSX.Element {
                 versionUserCart: updatedCart.body.version,
               })
             );
+            dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(response?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
           }
         });
       });

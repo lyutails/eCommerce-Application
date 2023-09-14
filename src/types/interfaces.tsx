@@ -235,5 +235,9 @@ export interface ICartState {
       versionUserCart: number;
     };
     cartItems: LineItem[];
+    cartPrice: number;
+    cartQuantity: number;
+    promocode: string;
+    cartPriceDiscount: number;
   };
 }
