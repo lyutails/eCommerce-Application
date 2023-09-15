@@ -1,6 +1,9 @@
 @import '../../style/variables';
 
 .cart {
+  &_content {
+    flex-direction: column;
+  }
   &_wrapper {
     display: flex;
     flex: 1 1 auto;
@@ -236,9 +239,7 @@
     border: none;
     background-repeat: no-repeat;
     background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
-    transition: all 0.2s ease-in-out;
-
-    
+    transition: all 0.2s ease-in-out;  
 
     &:hover {
       cursor: pointer;
@@ -374,6 +375,14 @@
       cursor: pointer;
     }
   }
+}
+
+.shown {
+  display: flex;
+}
+
+.hidden {
+  display: none;
 }
 
 @keyframes apply_promo_anim {
