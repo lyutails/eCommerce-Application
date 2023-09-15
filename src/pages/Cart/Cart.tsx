@@ -2,6 +2,7 @@ import { ICartState, IRootState } from '../../types/interfaces';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../api/existTokenFlow';
+import { debounce } from 'lodash';
 import {
   changeAnonymousCart,
   changeUserCart,
@@ -325,27 +326,35 @@ function CartPage(): JSX.Element {
         prices={
           card.variant.prices ? card.variant.prices[0].value.centAmount : 0
         }
-        onDelete={(): void => {
+        onDelete={debounce((): void => {
           deleteItem(
             card.id,
             card.quantity,
             !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
           );
-        }}
+        }, 500)}
         quantity={card.quantity}
-        reduceQuantity={(): void =>
-          deleteItem(
-            card.id,
-            1,
-            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
-          )
-        }
-        increaseQuantity={(): void =>
-          increaseItem(
-            card.variant.sku ? card.variant.sku : '',
-            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
-          )
-        }
+        reduceQuantity={debounce(
+          (): void =>
+            deleteItem(
+              card.id,
+              1,
+              !isAuth
+                ? anonymousCart.anonymousRefreshToken
+                : customerRefreshToken
+            ),
+          500
+        )}
+        increaseQuantity={debounce(
+          (): void =>
+            increaseItem(
+              card.variant.sku ? card.variant.sku : '',
+              !isAuth
+                ? anonymousCart.anonymousRefreshToken
+                : customerRefreshToken
+            ),
+          500
+        )}
       ></CartProduct>
     );
   });
@@ -368,13 +377,15 @@ function CartPage(): JSX.Element {
             value={promocode}
           />
           <button
-            onClick={(): void =>
-              setPromocodeToCart(
-                !isAuth
-                  ? anonymousCart.anonymousRefreshToken
-                  : customerRefreshToken
-              )
-            }
+            onClick={debounce(
+              (): void =>
+                setPromocodeToCart(
+                  !isAuth
+                    ? anonymousCart.anonymousRefreshToken
+                    : customerRefreshToken
+                ),
+              500
+            )}
             className={style.cart_discount_button}
             disabled={
               discountCodesCart?.length ? true : !promocode ? true : false
@@ -383,13 +394,15 @@ function CartPage(): JSX.Element {
             Apply
           </button>
           <button
-            onClick={(): void =>
-              deletePromocodeFromCart(
-                !isAuth
-                  ? anonymousCart.anonymousRefreshToken
-                  : customerRefreshToken
-              )
-            }
+            onClick={debounce(
+              (): void =>
+                deletePromocodeFromCart(
+                  !isAuth
+                    ? anonymousCart.anonymousRefreshToken
+                    : customerRefreshToken
+                ),
+              500
+            )}
             className={style.cart_discount_button}
             // disabled={
             //   discountCodesCart?.length ? true : !promocode ? true : false

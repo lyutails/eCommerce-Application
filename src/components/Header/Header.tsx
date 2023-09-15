@@ -43,6 +43,7 @@ function Header(): JSX.Element {
   const handleToBurgerOff = (): void => {
     SetActiveBurger(false);
   };
+  console.log(cartPriceDiscount);
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>
@@ -88,7 +89,10 @@ function Header(): JSX.Element {
                   className={`${style.header_menu_item} ${style.sum}`}
                   key={item}
                 >
-                  {(cartPriceDiscount / 100).toFixed(2)}$
+                  {cartPriceDiscount
+                    ? (cartPriceDiscount / 100).toFixed(2)
+                    : (cartPrice / 100).toFixed(2)}
+                  $
                 </li>
               ) : (
                 <li className={style.header_menu_item} key={item}>

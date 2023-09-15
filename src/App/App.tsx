@@ -142,10 +142,11 @@ function App(): JSX.Element {
                   userCartId: responseTwo?.body.id,
                 })
               );
-              console.log(response?.body);
-              dispatch(setCartPrice(response?.body.totalPrice.centAmount));
-              dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
-              dispatch(setDiscountCodesCart(response?.body.discountCodes));
+              dispatch(setCartPrice(responseTwo?.body?.totalPrice.centAmount));
+              dispatch(
+                setCartQuantity(responseTwo?.body?.totalLineItemQuantity)
+              );
+              dispatch(setDiscountCodesCart(responseTwo?.body?.discountCodes));
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {
