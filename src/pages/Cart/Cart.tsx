@@ -453,21 +453,21 @@ function CartPage(): JSX.Element {
                   }, 1000);
                 }}
               ></span>
-              <button
-                onClick={debounce(
-                  (): void =>
-                    deletePromocodeFromCart(
-                      !isAuth
-                        ? anonymousCart.anonymousRefreshToken
-                        : customerRefreshToken
-                    ),
-                  500
-                )}
-                className={style.cart_discount_delete}
-              >
-                Delete
-              </button>
             </div>
+            <button
+              onClick={debounce(
+                (): void =>
+                  deletePromocodeFromCart(
+                    !isAuth
+                      ? anonymousCart.anonymousRefreshToken
+                      : customerRefreshToken
+                  ),
+                500
+              )}
+              className={style.cart_discount_delete}
+            >
+              Delete promo code
+            </button>
           </div>
         </div>
         <div className={style.cart_discount_names}>
