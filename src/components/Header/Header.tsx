@@ -9,15 +9,9 @@ import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
 
 function Header(): JSX.Element {
   const { isAuth, customerId } = useSelector((state: IRootState) => state.user);
-  const {
-    anonymousCart,
-    userCart,
-    cartItems,
-    discountCodes,
-    cartPrice,
-    cartQuantity,
-    cartPriceDiscount,
-  } = useSelector((state: ICartState) => state.cart);
+  const { cartPrice, cartQuantity, cartPriceDiscount } = useSelector(
+    (state: ICartState) => state.cart
+  );
   const nameRouteHeader = [
     'Main',
     'Catalog',
@@ -43,7 +37,6 @@ function Header(): JSX.Element {
   const handleToBurgerOff = (): void => {
     SetActiveBurger(false);
   };
-  console.log(cartPriceDiscount);
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>

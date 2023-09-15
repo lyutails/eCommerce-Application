@@ -239,7 +239,7 @@
     border: none;
     background-repeat: no-repeat;
     background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
-    transition: all 0.2s ease-in-out;  
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       cursor: pointer;
@@ -355,6 +355,7 @@
     align-items: center;
     justify-content: center;
     padding: 10px 20px;
+    margin: 0 auto;
   }
 
   &_empty_message {
@@ -370,9 +371,16 @@
     font-size: 5rem;
     text-underline-offset: 5px;
     font-family: 'No Signal', cursive;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       cursor: pointer;
+      text-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green;
     }
   }
 }
