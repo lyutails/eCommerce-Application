@@ -256,28 +256,33 @@ export type IMyCartUpdateAction =
   | IMyCartDeleteDiscountCodeAction;
 
 export interface IMyCartAddLineItemAction {
-  action: string;
+  action: 'addLineItem';
   sku: string;
+  quantity: number;
+}
+export interface IMyCartRemoveLineItemAction {
+  action: 'removeLineItem';
+  lineItemId: string;
   quantity: number;
 }
 
 export interface IMyCartAddDiscountCodeAction {
-  action: string;
+  action: 'addDiscountCode';
   code: string;
 }
 export interface IMyCartDeleteDiscountCodeAction {
-  action: string;
+  action: 'removeDiscountCode';
   discountCode: {
-    typeId: string;
+    typeId: 'discount-code';
     id: string;
   };
 }
 
-export interface IMyCartRemoveLineItemAction {
-  action: string;
-  lineItemId: string;
-  quantity: number;
-}
+// export interface IMyCartRemoveLineItemAction {
+//   action: string;
+//   lineItemId: string;
+//   quantity: number;
+// }
 
 // yana3@mail.com
 // 22327Ybv!

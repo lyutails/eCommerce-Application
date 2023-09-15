@@ -24,7 +24,7 @@ import {
 import Card from '../../components/Card/Card';
 import { throwNewError } from '../../utils/throwNewError';
 import { useDispatch, useSelector } from 'react-redux';
-import { ICartState, IRootState } from '../../types/interfaces';
+import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
 import {
   changeAnonymousCart,
   changeUserCart,
@@ -168,7 +168,7 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
-  const updateCustomerCart = (updateAnonCartData: MyCartUpdate): void => {
+  const updateCustomerCart = (updateAnonCartData: IMyCartUpdate): void => {
     if (!isAuth) {
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
         updateCart(
@@ -1150,14 +1150,14 @@ function CategoryPage(): JSX.Element {
                 <div className={style.category_cards_background_top}></div>
                 <div className={style.category_cards_wrapper}>
                   {allCards.map((card) => {
-                    const updateAnonCartData = {
+                    const updateAnonCartData: IMyCartUpdate = {
                       version: !isAuth
                         ? anonymousCart.versionAnonCart
                         : userCart.versionUserCart,
                       actions: [
                         {
                           action: 'addLineItem',
-                          sku: card.sku,
+                          sku: card.sku ? card.sku : '',
                           quantity: 1,
                         },
                       ],

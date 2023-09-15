@@ -15,7 +15,12 @@ import {
   createProductImgArr,
 } from '../../store/reducers/productReduser';
 import ModalWindow from './ModalWindow/ModalWindow';
-import { ICartState, IProductState, IRootState } from '../../types/interfaces';
+import {
+  ICartState,
+  IMyCartUpdate,
+  IProductState,
+  IRootState,
+} from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -276,7 +281,7 @@ function ProductPage(): JSX.Element {
     [dispatch]
   );
 
-  const updateAnonCartData = {
+  const updateAnonCartData: IMyCartUpdate = {
     version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
     actions: [
       {

@@ -1,4 +1,9 @@
-import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
+import {
+  ICartState,
+  IMyCartRemoveLineItemAction,
+  IMyCartUpdate,
+  IRootState,
+} from '../../types/interfaces';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../api/existTokenFlow';
@@ -43,7 +48,7 @@ function CartPage(): JSX.Element {
     quantity: number,
     refreshToken: string
   ): void => {
-    const deleteItemData = {
+    const deleteItemData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
@@ -93,7 +98,7 @@ function CartPage(): JSX.Element {
 
   // INCREASE ITEM FROM CART
   const increaseItem = (itemId: string, refreshToken: string): void => {
-    const increaseItemData = {
+    const increaseItemData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
