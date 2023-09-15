@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ClientBuilder,
   type AuthMiddlewareOptions,
@@ -8,6 +7,7 @@ import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
 import { throwNewError } from '../utils/throwNewError';
+import { IRefreshTokenData } from '../types/interfaces';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
   throwNewError('no admin client id found');
@@ -17,7 +17,6 @@ if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
   throwNewError('no admin client secret found');
 }
 
-/* Configure authMiddlewareOptions */
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
   projectKey: PROJECT_KEY,
@@ -42,25 +41,20 @@ export const authClient = new SdkAuth({
 });
 
 export const tokenAdmin = authClient.clientCredentialsFlow();
-
-/* Configure httpMiddlewareOptions */
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: 'https://api.us-central1.gcp.commercetools.com',
   fetch,
 };
 
-/* Export the ClientBuilder */
 export const ctpClient = new ClientBuilder()
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
-  /* .withLoggerMiddleware() */
   .build();
 
 export const getCustomerToken = async (
   username: string,
   password: string
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-): Promise<any> => {
+): Promise<IRefreshTokenData> => {
   const customer = await authClient.customerPasswordFlow(
     {
       username,
@@ -75,19 +69,20 @@ export const getCustomerToken = async (
 
 export const refreshTokenFlow = async (
   token: string
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-): Promise<any> => {
+): Promise<IRefreshTokenData> => {
   const customer = await authClient.refreshTokenFlow(token);
   return customer;
 };
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-export const anonymousSessionFlow = async (id?: string): Promise<any> => {
+export const anonymousSessionFlow = async (
+  id?: string
+): Promise<IRefreshTokenData> => {
   let customer;
   if (id) {
     customer = authClient.anonymousFlow(id);
   } else {
     customer = authClient.anonymousFlow();
   }
+  console.log(customer);
   return customer;
 };

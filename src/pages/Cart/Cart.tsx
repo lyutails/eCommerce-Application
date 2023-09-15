@@ -1,4 +1,9 @@
-import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
+import {
+  ICartState,
+  IMyCartUpdate,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../api/existTokenFlow';
@@ -15,9 +20,7 @@ import {
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
-import { MyCartUpdate } from '@commercetools/platform-sdk';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function CartPage(): JSX.Element {
@@ -32,8 +35,11 @@ function CartPage(): JSX.Element {
     cartPriceDiscount,
     discountCodesCart,
   } = useSelector((state: ICartState) => state.cart);
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
+  );
+  const { address, version, bio, email, password } = useSelector(
+    (state: IProfileState) => state.profile
   );
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
@@ -363,7 +369,10 @@ function CartPage(): JSX.Element {
   });
   return (
     <div className={style.cart_wrapper}>
-      <h2 className={style.cart_title}>Your cart, dear - customer name here</h2>
+      <h2 className={style.cart_title}>
+        Your cart, dear{' '}
+        {isAuth ? `${bio.firstname?.value} ${bio.lastname?.value}` : `customer`}
+      </h2>
       <div
         className={`${style.cart_content} ${
           cartItems.length ? style.shown : style.hidden

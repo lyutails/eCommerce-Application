@@ -1,38 +1,17 @@
-import { Dispatch } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import style from '../PasswordModal/_passwordModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import { handleUpdatePassword } from './password-modal-verify';
-import { IProfileState, IRootState } from '../../types/interfaces';
+import {
+  IPasswordModalProps,
+  IPasswordUpdateData,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { checkPasswordError } from '../../pages/verificationTwo';
 import InputPasswordTwo from '../Input/inputPasswordTwo';
 import { changePassword } from '../../store/reducers/profileReducer';
-import { AnyAction } from 'redux';
-
-export interface IPasswordModalProps {
-  modalClass: string;
-  token: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  setClickedPasswordUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface IPasswordUpdateData {
-  currentError: boolean;
-  newError: boolean;
-  repeateError: boolean;
-  token: string;
-  passwordNewField: string;
-  passwordRepeatField: string;
-  dispatch: Dispatch<AnyAction>;
-  login: string;
-  currentPassword: {
-    value: string;
-    error: boolean;
-    isChecked: boolean;
-  };
-}
 
 function PasswordModal(props: IPasswordModalProps): JSX.Element {
   const dispatch = useDispatch();

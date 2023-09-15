@@ -1,5 +1,5 @@
 import style from './_app.module.scss';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthPage from '../pages/Auth/Auth';
 import RegistrationPage from '../pages/Registration/Registration';
@@ -31,28 +31,94 @@ import {
   getAnonCart,
   getDiscountCodes,
 } from '../api/existTokenFlow';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { setAuthStatus } from '../store/reducers/userReducer';
+import {
+  changeAddress,
+  changeBio,
+  changeEmail,
+  changePassword,
+  changeVersion,
+} from '../store/reducers/profileReducer';
+import { getCustomerById } from '../api/getCustomer';
+import { parseDateToWeb } from '../utils/parseDate';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const {
-    anonymousCart,
-    userCart,
-    cartItems,
-    discountCodes,
-    discountCodesCart,
-  } = useSelector((state: ICartState) => state.cart);
+  const navigate = useNavigate();
+  const { anonymousCart } = useSelector((state: ICartState) => state.cart);
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerId, customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
+
+  const checkRefreshToken = useCallback((): void => {
+    dispatch(setAuthStatus(false));
+    navigate('/login');
+    localStorage.removeItem('customerId');
+    localStorage.removeItem('isAuth');
+    dispatch(changeVersion(1));
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    if (!customerRefreshToken) {
+      checkRefreshToken();
+    } else {
+      refreshTokenFlow(customerRefreshToken)
+        .then(() => {
+          getCustomerById({ ID: customerId }).then((response) => {
+            dispatch(
+              changePassword({
+                currentPassword: {
+                  value: response.body.password ? response.body.password : '',
+                },
+              })
+            );
+            dispatch(changeVersion(response.body.version));
+            dispatch(
+              changeBio({
+                firstname: {
+                  value: response.body.firstName,
+                },
+                lastname: {
+                  value: response.body.lastName,
+                },
+                birthday: {
+                  value: parseDateToWeb(
+                    response.body.dateOfBirth ? response.body.dateOfBirth : ''
+                  ),
+                },
+              })
+            );
+            dispatch(changeEmail({ value: response.body.email }));
+            dispatch(
+              changeAddress({
+                addressStore: response.body.addresses,
+                defaultShippingId: response.body.defaultShippingAddressId,
+                defaultBillingId: response.body.defaultBillingAddressId,
+                shippingAddressesId: response.body.shippingAddressIds,
+                billingAddressesId: response.body.billingAddressIds,
+              })
+            );
+          });
+        })
+        .catch(() => {
+          console.log('error');
+          checkRefreshToken();
+          localStorage.removeItem('refreshToken');
+        });
+    }
+  }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
 
   useEffect(() => {
     if (!isAuth && !anonymousCart.anonymousID) {
       anonymousSessionFlow().then((response) => {
         const anonID = response.scope.split(' ')[2].slice(13);
         localStorage.setItem('anonymousID', anonID);
-        localStorage.setItem('refreshAnonToken', response.refresh_token);
+        localStorage.setItem(
+          'refreshAnonToken',
+          response.refresh_token ? response.refresh_token : ''
+        );
         dispatch(
           changeAnonymousCart({
             anonymousID: anonID,
