@@ -243,3 +243,6 @@ export interface ICartState {
     discountCodesCart: DiscountCodeInfo[] | undefined;
   };
 }
+
+// yana3@mail.com
+// 22327Ybv!
