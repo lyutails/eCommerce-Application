@@ -251,12 +251,26 @@ export interface IMyCartUpdate {
 
 export type IMyCartUpdateAction =
   | IMyCartAddLineItemAction
-  | IMyCartRemoveLineItemAction;
+  | IMyCartRemoveLineItemAction
+  | IMyCartAddDiscountCodeAction
+  | IMyCartDeleteDiscountCodeAction;
 
 export interface IMyCartAddLineItemAction {
   action: string;
   sku: string;
   quantity: number;
+}
+
+export interface IMyCartAddDiscountCodeAction {
+  action: string;
+  code: string;
+}
+export interface IMyCartDeleteDiscountCodeAction {
+  action: string;
+  discountCode: {
+    typeId: string;
+    id: string;
+  };
 }
 
 export interface IMyCartRemoveLineItemAction {

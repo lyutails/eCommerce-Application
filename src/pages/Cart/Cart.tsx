@@ -1,4 +1,4 @@
-import { ICartState, IRootState } from '../../types/interfaces';
+import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../api/existTokenFlow';
@@ -150,7 +150,7 @@ function CartPage(): JSX.Element {
   };
 
   const setPromocodeToCart = (refreshToken: string): void => {
-    const addPromocodeData = {
+    const addPromocodeData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
@@ -209,7 +209,7 @@ function CartPage(): JSX.Element {
   }, [discountCodes, discountCodesCart, dispatch]);
 
   const deletePromocodeFromCart = (refreshToken: string): void => {
-    const deletePromocodeData = {
+    const deletePromocodeData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
@@ -265,7 +265,7 @@ function CartPage(): JSX.Element {
   }
 
   const deleteAllProducts = (refreshToken: string): void => {
-    const deleteItemData: MyCartUpdate = {
+    const deleteItemData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
