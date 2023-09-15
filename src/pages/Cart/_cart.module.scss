@@ -238,9 +238,20 @@
     background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
     transition: all 0.2s ease-in-out;
 
+    
+
     &:hover {
       cursor: pointer;
       background-image: url('../../../public/ui-kit/apply_promo_green_blue.svg');
+    }
+    &_discount_delete {
+      width: 40vw;
+      // aspect-ratio: 1 / 0.25;
+      // background-color: transparent;
+      // border: none;
+      // background-repeat: no-repeat;
+      // background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
+      // transition: all 0.2s ease-in-out;
     }
   }
 

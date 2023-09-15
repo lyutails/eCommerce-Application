@@ -394,41 +394,22 @@ function CartPage(): JSX.Element {
             placeholder="Type discount code here..."
             value={promocode}
           />
-           <div className={style.cart_discount_button_wrapper}>
-          <button
-            onClick={debounce(
-              (): void =>
-                setPromocodeToCart(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                ),
-              500
-            )}
-            className={style.cart_discount_button}
-            disabled={
-              discountCodesCart?.length ? true : !promocode ? true : false
-            }
-          >
-            Apply
-          </button>
-          <button
-            onClick={debounce(
-              (): void =>
-                deletePromocodeFromCart(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                ),
-              500
-            )}
-            className={style.cart_discount_button}
-            // disabled={
-            //   discountCodesCart?.length ? true : !promocode ? true : false
-            // }
-          >
-            Delete
-          </button>
+          <div className={style.cart_discount_button_wrapper}>
+            <button
+              onClick={debounce(
+                (): void =>
+                  setPromocodeToCart(
+                    !isAuth
+                      ? anonymousCart.anonymousRefreshToken
+                      : customerRefreshToken
+                  ),
+                500
+              )}
+              className={style.cart_discount_button}
+              disabled={
+                discountCodesCart?.length ? true : !promocode ? true : false
+              }
+            ></button>
             <span
               className={`${style.cart_discount_button_section} ${style.one} ${
                 !applyButtonLoadingAnim ? style.anim : ''
@@ -462,6 +443,20 @@ function CartPage(): JSX.Element {
                 }, 1000);
               }}
             ></span>
+            <button
+              onClick={debounce(
+                (): void =>
+                  deletePromocodeFromCart(
+                    !isAuth
+                      ? anonymousCart.anonymousRefreshToken
+                      : customerRefreshToken
+                  ),
+                500
+              )}
+              className={style.cart_discount_delete}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
