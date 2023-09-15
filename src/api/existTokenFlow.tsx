@@ -12,7 +12,7 @@ import {
   ExistingTokenMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
-import { IMyCustomerLoginDraft } from '../types/interfaces';
+import { IMyCartUpdate, IMyCustomerLoginDraft } from '../types/interfaces';
 import { setAuthStatus } from '../store/reducers/userReducer';
 import { AnyAction, Dispatch } from 'redux';
 
@@ -78,7 +78,7 @@ export const getAnonCart = async (
 // UPDATE ANON'S CART
 export const updateCart = async (
   id: string,
-  data: MyCartUpdate,
+  data: IMyCartUpdate,
   authorization: string
 ): Promise<ClientResponse<Cart> | undefined> => {
   const apiRoot = createApiBuilderFromCtpClient(
