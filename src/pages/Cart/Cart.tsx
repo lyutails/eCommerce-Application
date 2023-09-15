@@ -16,6 +16,7 @@ import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { MyCartUpdate } from '@commercetools/platform-sdk';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function CartPage(): JSX.Element {
     (state: IRootState) => state.user
   );
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
+  const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
 
   // DELETE ITEM FROM CART
   const deleteItem = (
@@ -354,19 +356,35 @@ function CartPage(): JSX.Element {
       <h2 className={style.cart_title}>Your cart, dear - customer name here</h2>
       <div className={style.cards}>{itemCartCards}</div>
       <div className={style.cart_price_wrapper}>
-        <div className={style.cart_price_name}>Total Price</div>
-        <div className={style.cart_price_amount}>
-          {(cartPrice / 100).toFixed(2)}$
+        <div className={style.cart_totalprice}>
+          <div className={style.cart_price_name}>Total Price</div>
+          <div className={style.cart_price_amount}>
+            {(cartPrice / 100).toFixed(2)}$
+          </div>
         </div>
+        <button
+          onClick={(): void =>
+            deleteAllProducts(
+              !isAuth
+                ? anonymousCart.anonymousRefreshToken
+                : customerRefreshToken
+            )
+          }
+          className={style.cart_clear}
+        >
+          Delete All Products
+        </button>
       </div>
       <div className={style.cart_discount_codes}>
         <div className={style.cart_discount}>
           <input
+            className={style.cart_discount_input}
             onChange={(event): void => addDiscountCode(event)}
             type="text"
-            placeholder="type discount here"
+            placeholder="Type discount code here..."
             value={promocode}
           />
+           <div className={style.cart_discount_button_wrapper}>
           <button
             onClick={(): void =>
               setPromocodeToCart(
@@ -397,13 +415,52 @@ function CartPage(): JSX.Element {
           >
             Delete
           </button>
+            <span
+              className={`${style.cart_discount_button_section} ${style.one} ${
+                !applyButtonLoadingAnim ? style.anim : ''
+              }`}
+            ></span>
+            <span
+              className={`${style.cart_discount_button_section} ${style.two} ${
+                !applyButtonLoadingAnim ? style.anim : ''
+              }`}
+            ></span>
+            <span
+              className={`${style.cart_discount_button_section} ${
+                style.three
+              } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+            ></span>
+            <span
+              className={`${style.cart_discount_button_section} ${style.four} ${
+                !applyButtonLoadingAnim ? style.anim : ''
+              }`}
+            ></span>
+            <span
+              className={`${style.cart_discount_button_section} ${style.five} ${
+                !applyButtonLoadingAnim ? style.anim : ''
+              }`}
+              onAnimationEnd={(): void => {
+                setTimeout(() => {
+                  setApplyButtonLoadingAnim(true);
+                }, 500);
+                setTimeout(() => {
+                  setApplyButtonLoadingAnim(false);
+                }, 1000);
+              }}
+            ></span>
+          </div>
         </div>
+      </div>
+      <div className={style.cart_discount_names}>
+        *Available promo codes are RSSchool and Trinity giving you 10% OFF and
+        30% OFF total cart price respectively, you can apply one code per one
+        purchase.
       </div>
       <div className={style.cart_discount_black}>
         *If you have a black T-Shirt in your cart make sure to add one more and
         to get them by cost of one.
       </div>
-      <div className={style.cart_price_wrapper}>
+      <div className={style.cart_discount_price_wrapper}>
         <div className={style.cart_price_name}>
           Total Price with applied Discount
         </div>
@@ -414,21 +471,6 @@ function CartPage(): JSX.Element {
           $
         </div>
       </div>
-      <div className={style.cart_clear}>
-        <button
-          onClick={(): void =>
-            deleteAllProducts(
-              !isAuth
-                ? anonymousCart.anonymousRefreshToken
-                : customerRefreshToken
-            )
-          }
-          className={style.cart_buy}
-        >
-          Delete all products
-        </button>
-      </div>
-
       <div className={style.cart_buy_sloth}>
         <button className={style.cart_buy}>Buy</button>
         <div className={style.cart_cybersloth}></div>

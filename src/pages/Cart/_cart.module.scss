@@ -12,29 +12,49 @@
   &_title {
     font-size: 4rem;
     text-align: center;
-    font-family: "No Signal", cursive;
+    font-family: 'No Signal', cursive;
     color: $font-color-primary-one;
-    text-shadow: 0 0 5px $glow-violet, 0 0 15px $glow-violet;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 15px $glow-violet;
+    user-select: none;
   }
 
   &_price_wrapper {
     width: 90vw;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 30px;
     margin-top: 30px;
   }
 
+  &_discount_price_wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+
+  &_totalprice {
+    display: flex;
+  }
+
   &_price_name {
     font-size: 3rem;
-    margin-right: 2vw;
+    margin-right: 3vw;
+    user-select: none;
   }
 
   &_price_amount {
     font-size: 3rem;
-    font-weight: 700;
-    color: $glow-green;
+    font-family: 'No Signal', cursive;
+    color: $font-color-primary-one;
+    user-select: none;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
   }
 
   &_discount_codes {
@@ -45,6 +65,7 @@
   &_discount {
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     font-size: 3rem;
   }
@@ -87,9 +108,13 @@
   }
 
   &_discount_price {
-    font-size: 3rem;
-    color: $glow-green;
+    font-size: 4rem;
+    color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
     font-weight: 700;
+    font-family: 'No Signal', cursive;
   }
 
   &_buy_sloth {
@@ -143,39 +168,182 @@
     background-size: contain;
   }
 
-  &_discount_black {
-    font-size: 1.5rem;
-    margin-top: 30px;
-  }
-
   &_discount_input {
     margin-top: 30px;
-    background: transparent;
+    background: $background-gradient-one;
     border-radius: 5px;
     border: 1px solid $glow-green;
     outline: none;
-    width: 300px;
-    min-width: 280px;
-    height: 30px;
-    font-size: 1.5rem;
+    width: 30vw;
+    height: 50px;
+    font-size: 2.8rem;
     color: $font-color-primary-one;
     padding-left: 5px;
+    text-overflow: ellipsis;
+    user-select: none;
 
     &:focus {
       border: 1px solid $glow-violet;
     }
 
     &::placeholder {
-      font-size: 1.5rem;
+      font-size: 2.8rem;
       color: $font-color-primary-one;
       padding-left: 5px;
-      background: $background-gradient-one;
+      user-select: none;
+      text-overflow: ellipsis;
     }
 
     &:focus::placeholder {
       outline: none;
       color: transparent;
     }
+  }
+
+  &_clear {
+    background-color: transparent;
+    border: 1px solid $glow-green;
+    border-radius: 5px;
+    font-size: 2rem;
+    color: $font-color-primary-one;
+    background: $background-gradient-one;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $glow-violet;
+    }
+  }
+
+  &_discount_black {
+    font-size: 1.6rem;
+    margin-top: 30px;
+  }
+
+  &_discount_names {
+    font-size: 1.6rem;
+    margin-top: 30px;
+  }
+
+  &_discount_button_wrapper {
+    width: 40vw;
+  }
+
+  &_discount_button {
+    width: 40vw;
+    aspect-ratio: 1 / 0.25;
+    background-color: transparent;
+    border: none;
+    background-repeat: no-repeat;
+    background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-image: url('../../../public/ui-kit/apply_promo_green_blue.svg');
+    }
+  }
+
+  &_discount_button_section {
+    position: absolute;
+    display: inline-block;
+    width: 2.5vw;
+    aspect-ratio: 1 / 2;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &.one {
+      background-image: url('../../../public/ui-kit/apply_promo_section_blue_01.svg');
+      transform: translate(-12.8vw, 100%);
+      opacity: 0;
+    }
+
+    &.one.anim {
+      animation-name: apply_promo_anim;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-duration: 1s;
+      animation-delay: 0s;
+      animation-fill-mode: forwards;
+    }
+
+    &.two {
+      background-image: url('../../../public/ui-kit/apply_promo_section_blue_02.svg');
+      transform: translate(-10.6vw, 100%);
+      opacity: 0;
+    }
+
+    &.two.anim {
+      animation-name: apply_promo_anim;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-duration: 1s;
+      animation-delay: 1s;
+      animation-fill-mode: forwards;
+    }
+
+    &.three {
+      background-image: url('../../../public/ui-kit/apply_promo_section_blue_03.svg');
+      transform: translate(-8.4vw, 100%);
+      opacity: 0;
+    }
+
+    &.three.anim {
+      animation-name: apply_promo_anim;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-duration: 1s;
+      animation-delay: 2s;
+      animation-fill-mode: forwards;
+    }
+
+    &.four {
+      background-image: url('../../../public/ui-kit/apply_promo_section_blue_04.svg');
+      transform: translate(-6.2vw, 100%);
+      opacity: 0;
+    }
+
+    &.four.anim {
+      animation-name: apply_promo_anim;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-duration: 1s;
+      animation-delay: 3s;
+      animation-fill-mode: forwards;
+    }
+
+    &.five {
+      background-image: url('../../../public/ui-kit/apply_promo_section_blue_05.svg');
+      transform: translate(-4vw, 100%);
+      opacity: 0;
+    }
+
+    &.five.anim {
+      animation-name: apply_promo_anim;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-duration: 1s;
+      animation-delay: 4s;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+
+@keyframes apply_promo_anim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes buy_text_anim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
@@ -188,6 +356,57 @@
     &_cybersloth {
       width: 80vw;
       margin-top: 30px;
+    }
+
+    &_discount {
+      flex-direction: column;
+      justify-content: center;
+      align-items: unset;
+    }
+
+    &_discount_input {
+      width: 80vw;
+      margin-bottom: 30px;
+      align-self: center;
+    }
+
+    &_discount_button_wrapper {
+      width: 80vw;
+      align-self: center;
+    }
+
+    &_discount_button {
+      width: 80vw;
+      align-self: center;
+    }
+
+    &_discount_button_section {
+      position: absolute;
+      display: inline-block;
+      width: 5vw;
+      aspect-ratio: 1 / 2;
+      background-repeat: no-repeat;
+      background-size: contain;
+
+      &.one {
+        transform: translate(-25.8vw, 100%);
+      }
+
+      &.two {
+        transform: translate(-21.6vw, 100%);
+      }
+
+      &.three {
+        transform: translate(-17.4vw, 100%);
+      }
+
+      &.four {
+        transform: translate(-13.2vw, 100%);
+      }
+
+      &.five {
+        transform: translate(-9vw, 100%);
+      }
     }
   }
 }

@@ -218,20 +218,28 @@ input[type='checkbox'] {
     transform: translate(4.5vw, 0);
   }
 
+  &_inner_circle_wrapper {
+    position: absolute;
+    width: 6vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(4.5vw, 0);
+  }
+
   &_number_inner_circle {
     position: absolute;
     width: 4vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
     background-repeat: no-repeat;
-    transform: translate(5.5vw, 0);
 
     &.anim {
       animation-name: number_circle_anim;
       animation-duration: 2s;
       animation-iteration-count: 1;
       animation-timing-function: linear;
-      transform-origin: center;
     }
   }
 
@@ -696,11 +704,13 @@ input[type='checkbox'] {
   }
 
   &_cybersloth {
-    width: 30vw;
+    width: 50vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/assets/cybersloths/cybersloth_01.png');
     background-repeat: no-repeat;
     background-size: contain;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   &_to_cart {
@@ -731,33 +741,55 @@ input[type='checkbox'] {
         0 0 10px $glow-violet;
     }
   }
+
+  &_real_search_input {
+    position: absolute;
+    width: 25vw;
+    aspect-ratio: 1 / 0.14;
+    background-color: transparent;
+    font-family: Assassin;
+    font-size: 3rem;
+    color: $glow-green;
+    border: none;
+    outline: none;
+    padding-left: 1vw;
+
+    &::placeholder {
+      font-family: Assassin;
+      font-size: 3rem;
+      color: $glow-green;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      color: $glow-green;
+      outline: none;
+    }
+  }
 }
 
 @keyframes number_circle_anim {
   0% {
-    transform-origin: center;
-    transform: translate(5.5vw, 0);
     width: 4vw;
+    transform: rotate(0deg);
   }
   25% {
-    transform-origin: center;
-    width: 4vw;
-    transform: rotate(185deg);
+    width: 6vw;
+    transform: rotate(190deg);
   }
   50% {
-    transform-origin: center;
-    width: 6vw;
-    transform: translate(5.5vw, 0) rotate(-185deg);
+    transform: rotate(-220deg);
   }
   75% {
-    transform-origin: center;
-    transform: translate(5.5vw, 0);
+    transform: rotate(30deg);
     width: 5vw;
   }
   100% {
-    transform-origin: center;
     width: 4vw;
-    transform: translate(5.5vw, 0);
+    transform: rotate(0deg);
   }
 }
 
@@ -1171,7 +1203,8 @@ input#price-sort {
 .category_filters_search {
   width: 30vw;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .category_search_input {
@@ -1184,7 +1217,7 @@ input#price-sort {
   padding-left: 3vw;
 
   font-family: Assassin;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: $glow-green;
 
   background-color: transparent;
@@ -1196,7 +1229,7 @@ input#price-sort {
 
 .category_search_input::placeholder {
   font-family: Assassin;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: $glow-green;
 }
 
@@ -1290,12 +1323,23 @@ input#price-sort {
     width: 100%;
   }
 
+  .category_filters_search {
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .category_cards_wrapper {
     width: 100%;
   }
 
   .category_pagination_buttons {
     width: 50%;
+  }
+
+  .category_pagination_number {
+    font-size: 4rem;
   }
 
   .pricesort_switch {
@@ -1379,10 +1423,11 @@ input#price-sort {
   }
 
   .category_search_input {
-    width: 60vw;
+    width: 80vw;
     min-width: 150px;
     padding-left: 30px;
     max-width: 320px;
+    align-self: center;
   }
 
   .category_search_input_price {
@@ -1412,6 +1457,66 @@ input#price-sort {
     font-size: 3rem;
     padding-left: 5vw;
     padding-top: 15px;
+  }
+
+  .category_cybersloth {
+    width: 80vw;
+  }
+
+  .category_number_circle {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_1.svg');
+    background-repeat: no-repeat;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_inner_circle_wrapper {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_number_inner_circle {
+    position: absolute;
+    width: 13vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
+    background-repeat: no-repeat;
+
+    &.anim {
+      animation-name: number_circle_anim;
+      animation-duration: 2s;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+    }
+  }
+
+  @keyframes number_circle_anim {
+    0% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
+    25% {
+      width: 16vw;
+      transform: rotate(190deg);
+    }
+    50% {
+      transform: rotate(-220deg);
+    }
+    75% {
+      transform: rotate(30deg);
+      width: 14vw;
+    }
+    100% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
   }
 }
 
