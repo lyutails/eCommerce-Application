@@ -867,6 +867,11 @@ function CategoryPage(): JSX.Element {
     }
   }
 
+  const [
+    searchInputPlaceholderVisibility,
+    setSearchInputPlaceholderVisibility,
+  ] = useState(false);
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -884,16 +889,21 @@ function CategoryPage(): JSX.Element {
             {category}
           </div>
           <div className={style.category_filters_search}>
+            <input
+              className={style.category_real_search_input}
+              onChange={(e): void => {
+                setSearchValue(e.target.value);
+              }}
+              onFocus={(): void => setSearchInputPlaceholderVisibility(true)}
+              onBlur={(): void => setSearchInputPlaceholderVisibility(false)}
+            ></input>
             <AnimatedInput
               name="filterSearch"
               type="text"
               className={style.category_search_input}
-              placeholder="Search For..."
-              onChange={(e: Event): void => {
-                if (!e.target) return;
-                setSearchValue((e.target as HTMLInputElement).value);
-              }}
-              // onFocus={(e): void => (e.target.placeholder = '')}
+              placeholder={
+                searchInputPlaceholderVisibility ? '' : 'Search For...'
+              }
             />
           </div>
         </div>

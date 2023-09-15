@@ -741,6 +741,33 @@ input[type='checkbox'] {
         0 0 10px $glow-violet;
     }
   }
+
+  &_real_search_input {
+    position: absolute;
+    width: 25vw;
+    aspect-ratio: 1 / 0.14;
+    background-color: transparent;
+    font-family: Assassin;
+    font-size: 3rem;
+    color: $glow-green;
+    border: none;
+    outline: none;
+
+    &::placeholder {
+      font-family: Assassin;
+      font-size: 3rem;
+      color: $glow-green;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      color: $glow-green;
+      outline: none;
+    }
+  }
 }
 
 @keyframes number_circle_anim {
@@ -1175,7 +1202,8 @@ input#price-sort {
 .category_filters_search {
   width: 30vw;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .category_search_input {
