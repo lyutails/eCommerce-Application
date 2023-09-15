@@ -364,132 +364,138 @@ function CartPage(): JSX.Element {
   return (
     <div className={style.cart_wrapper}>
       <h2 className={style.cart_title}>Your cart, dear - customer name here</h2>
-      <div className={style.cards}>{itemCartCards}</div>
-      <div className={style.cart_price_wrapper}>
-        <div className={style.cart_totalprice}>
-          <div className={style.cart_price_name}>Total Price</div>
-          <div className={style.cart_price_amount}>
-            {(cartPrice / 100).toFixed(2)}$
+      <div
+        className={`${style.cart_content} ${
+          cartItems.length ? style.shown : style.hidden
+        }`}
+      >
+        <div className={style.cards}>{itemCartCards}</div>
+        <div className={style.cart_price_wrapper}>
+          <div className={style.cart_totalprice}>
+            <div className={style.cart_price_name}>Total Price</div>
+            <div className={style.cart_price_amount}>
+              {(cartPrice / 100).toFixed(2)}$
+            </div>
           </div>
-        </div>
-        <button
-          onClick={(): void =>
-            deleteAllProducts(
-              !isAuth
-                ? anonymousCart.anonymousRefreshToken
-                : customerRefreshToken
-            )
-          }
-          className={style.cart_clear}
-        >
-          Delete All Products
-        </button>
-      </div>
-      <div className={style.cart_discount_codes}>
-        <div className={style.cart_discount}>
-          <input
-            className={style.cart_discount_input}
-            onChange={(event): void => addDiscountCode(event)}
-            type="text"
-            placeholder="Type discount code here..."
-            value={promocode}
-          />
-           <div className={style.cart_discount_button_wrapper}>
           <button
-            onClick={debounce(
-              (): void =>
-                setPromocodeToCart(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                ),
-              500
-            )}
-            className={style.cart_discount_button}
-            disabled={
-              discountCodesCart?.length ? true : !promocode ? true : false
+            onClick={(): void =>
+              deleteAllProducts(
+                !isAuth
+                  ? anonymousCart.anonymousRefreshToken
+                  : customerRefreshToken
+              )
             }
+            className={style.cart_clear}
           >
-            Apply
+            Delete All Products
           </button>
-          <button
-            onClick={debounce(
-              (): void =>
-                deletePromocodeFromCart(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                ),
-              500
-            )}
-            className={style.cart_discount_button}
-            // disabled={
-            //   discountCodesCart?.length ? true : !promocode ? true : false
-            // }
-          >
-            Delete
-          </button>
-            <span
-              className={`${style.cart_discount_button_section} ${style.one} ${
-                !applyButtonLoadingAnim ? style.anim : ''
-              }`}
-            ></span>
-            <span
-              className={`${style.cart_discount_button_section} ${style.two} ${
-                !applyButtonLoadingAnim ? style.anim : ''
-              }`}
-            ></span>
-            <span
-              className={`${style.cart_discount_button_section} ${
-                style.three
-              } ${!applyButtonLoadingAnim ? style.anim : ''}`}
-            ></span>
-            <span
-              className={`${style.cart_discount_button_section} ${style.four} ${
-                !applyButtonLoadingAnim ? style.anim : ''
-              }`}
-            ></span>
-            <span
-              className={`${style.cart_discount_button_section} ${style.five} ${
-                !applyButtonLoadingAnim ? style.anim : ''
-              }`}
-              onAnimationEnd={(): void => {
-                setTimeout(() => {
-                  setApplyButtonLoadingAnim(true);
-                }, 500);
-                setTimeout(() => {
-                  setApplyButtonLoadingAnim(false);
-                }, 1000);
-              }}
-            ></span>
+        </div>
+        <div className={style.cart_discount_codes}>
+          <div className={style.cart_discount}>
+            <input
+              className={style.cart_discount_input}
+              onChange={(event): void => addDiscountCode(event)}
+              type="text"
+              placeholder="Type discount code here..."
+              value={promocode}
+            />
+            <div className={style.cart_discount_button_wrapper}>
+              <button
+                onClick={debounce(
+                  (): void =>
+                    setPromocodeToCart(
+                      !isAuth
+                        ? anonymousCart.anonymousRefreshToken
+                        : customerRefreshToken
+                    ),
+                  500
+                )}
+                className={style.cart_discount_button}
+                disabled={
+                  discountCodesCart?.length ? true : !promocode ? true : false
+                }
+              ></button>
+              <span
+                className={`${style.cart_discount_button_section} ${
+                  style.one
+                } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+              ></span>
+              <span
+                className={`${style.cart_discount_button_section} ${
+                  style.two
+                } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+              ></span>
+              <span
+                className={`${style.cart_discount_button_section} ${
+                  style.three
+                } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+              ></span>
+              <span
+                className={`${style.cart_discount_button_section} ${
+                  style.four
+                } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+              ></span>
+              <span
+                className={`${style.cart_discount_button_section} ${
+                  style.five
+                } ${!applyButtonLoadingAnim ? style.anim : ''}`}
+                onAnimationEnd={(): void => {
+                  setTimeout(() => {
+                    setApplyButtonLoadingAnim(true);
+                  }, 500);
+                  setTimeout(() => {
+                    setApplyButtonLoadingAnim(false);
+                  }, 1000);
+                }}
+              ></span>
+              <button
+                onClick={debounce(
+                  (): void =>
+                    deletePromocodeFromCart(
+                      !isAuth
+                        ? anonymousCart.anonymousRefreshToken
+                        : customerRefreshToken
+                    ),
+                  500
+                )}
+                className={style.cart_discount_delete}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={style.cart_discount_names}>
-        *Available promo codes are RSSchool and Trinity giving you 10% OFF and
-        30% OFF total cart price respectively, you can apply one code per one
-        purchase.
-      </div>
-      <div className={style.cart_discount_black}>
-        *If you have a black T-Shirt in your cart make sure to add one more and
-        to get them by cost of one.
-      </div>
-      <div className={style.cart_discount_price_wrapper}>
-        <div className={style.cart_price_name}>
-          Total Price with applied Discount
+        <div className={style.cart_discount_names}>
+          *Available promo codes are RSSchool and Trinity giving you 10% OFF and
+          30% OFF total cart price respectively, you can apply one code per one
+          purchase.
         </div>
-        <div className={style.cart_discount_price}>
-          {cartPriceDiscount
-            ? (cartPriceDiscount / 100).toFixed(2)
-            : (cartPrice / 100).toFixed(2)}
-          $
+        <div className={style.cart_discount_black}>
+          *If you have a black T-Shirt in your cart make sure to add one more
+          and to get them by cost of one.
+        </div>
+        <div className={style.cart_discount_price_wrapper}>
+          <div className={style.cart_price_name}>
+            Total Price with applied Discount
+          </div>
+          <div className={style.cart_discount_price}>
+            {cartPriceDiscount
+              ? (cartPriceDiscount / 100).toFixed(2)
+              : (cartPrice / 100).toFixed(2)}
+            $
+          </div>
+        </div>
+        <div className={style.cart_buy_sloth}>
+          <button className={style.cart_buy}>Buy</button>
+          <div className={style.cart_cybersloth}></div>
         </div>
       </div>
-      <div className={style.cart_buy_sloth}>
-        <button className={style.cart_buy}>Buy</button>
-        <div className={style.cart_cybersloth}></div>
-      </div>
-      <div className={style.cart_empty}>
+
+      <div
+        className={`${style.cart_empty} ${
+          !cartItems.length ? style.shown : style.hidden
+        }`}
+      >
         <div className={style.cart_empty_message}>
           Dear user, your cart is currently empty, we would be glad you continue
           shopping by following the link.

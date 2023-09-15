@@ -244,5 +244,26 @@ export interface ICartState {
   };
 }
 
+export interface IMyCartUpdate {
+  version: number;
+  actions: IMyCartUpdateAction[];
+}
+
+export type IMyCartUpdateAction =
+  | IMyCartAddLineItemAction
+  | IMyCartRemoveLineItemAction;
+
+export interface IMyCartAddLineItemAction {
+  action: string;
+  sku: string;
+  quantity: number;
+}
+
+export interface IMyCartRemoveLineItemAction {
+  action: string;
+  lineItemId: string;
+  quantity: number;
+}
+
 // yana3@mail.com
 // 22327Ybv!
