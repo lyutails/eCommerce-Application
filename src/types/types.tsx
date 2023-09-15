@@ -21,4 +21,5 @@ export type CartProductProps = {
   quantity: number;
   reduceQuantity: () => void;
   increaseQuantity: () => void;
+  idCard: string;
 };

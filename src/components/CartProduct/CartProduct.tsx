@@ -1,6 +1,7 @@
 import { throwNewError } from '../../utils/throwNewError';
 import { CartProductProps } from '../../types/types';
 import style from './_cart_product.module.scss';
+import { Link } from 'react-router-dom';
 
 export function CartProduct(props: CartProductProps): JSX.Element {
   if (!props.images) {
@@ -9,12 +10,22 @@ export function CartProduct(props: CartProductProps): JSX.Element {
   return (
     <div className={style.cartproduct_wrapper}>
       <div className={style.cartproduct_item}>
-        <div className={style.cartproduct_name}>{`${props.sku}`}</div>
-        <img
-          className={style.cartproduct_pic}
-          src={props.images[0].url}
-          alt=""
-        />
+        <Link
+          to={`/${props.idCard}`}
+          className={style.cartproduct_link_to_product}
+        >
+          <div className={style.cartproduct_name}>{`${props.sku}`}</div>
+        </Link>
+        <Link
+          to={`/${props.idCard}`}
+          className={style.cartproduct_link_to_product}
+        >
+          <img
+            className={style.cartproduct_pic}
+            src={props.images[0].url}
+            alt=""
+          />
+        </Link>
         <div className={style.cartproduct_product_counter}>
           <button
             onClick={props.reduceQuantity}

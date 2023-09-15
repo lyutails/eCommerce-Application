@@ -16,8 +16,7 @@ import {
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { MyCartUpdate } from '@commercetools/platform-sdk';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function CartPage(): JSX.Element {
@@ -32,7 +31,7 @@ function CartPage(): JSX.Element {
     cartPriceDiscount,
     discountCodesCart,
   } = useSelector((state: ICartState) => state.cart);
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
@@ -258,7 +257,7 @@ function CartPage(): JSX.Element {
     }
   };
 
-  if (cartItems.length === 0 && discountCodesCart && discountCodesCart[0]) {
+  if (cartItems?.length === 0 && discountCodesCart && discountCodesCart[0]) {
     deletePromocodeFromCart(
       !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
     );
@@ -317,6 +316,7 @@ function CartPage(): JSX.Element {
   const itemCartCards = cartItems.map((card, i) => {
     return (
       <CartProduct
+        idCard={card?.productKey ? card?.productKey : ''}
         name={card.name['en-US']}
         key={`card_${i}`}
         sku={card.variant.sku ? card.variant.sku : ''}

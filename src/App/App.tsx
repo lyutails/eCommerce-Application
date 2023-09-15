@@ -35,15 +35,9 @@ import { useEffect } from 'react';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const {
-    anonymousCart,
-    userCart,
-    cartItems,
-    discountCodes,
-    discountCodesCart,
-  } = useSelector((state: ICartState) => state.cart);
+  const { anonymousCart } = useSelector((state: ICartState) => state.cart);
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
 
@@ -93,16 +87,11 @@ function App(): JSX.Element {
                 dispatch(
                   setCartPriceDiscount(response?.body.totalPrice.centAmount)
                 );
-                console.log(response?.body.lineItems);
                 let totalPrice = 0;
                 response?.body.lineItems.map((item) => {
-                  if (item.price.discounted) {
-                    totalPrice +=
-                      item.price.discounted.value.centAmount * item.quantity;
-                  } else {
+                  if (item) {
                     totalPrice += item.price.value.centAmount * item.quantity;
                   }
-
                   return totalPrice;
                 });
                 dispatch(setCartPrice(totalPrice));
@@ -112,13 +101,9 @@ function App(): JSX.Element {
                 if (response) {
                   const codeDiscountArray = response.body.results.map(
                     (code) => {
-                      const codeName = {
-                        name: '',
-                        id: '',
-                      };
+                      let codeName;
                       if (code.code) {
-                        codeName.name = code.code;
-                        codeName.id = code.id;
+                        codeName = code.code;
                       }
                       return codeName;
                     }
@@ -142,26 +127,12 @@ function App(): JSX.Element {
                   userCartId: responseTwo?.body.id,
                 })
               );
-              dispatch(setCartPrice(responseTwo?.body?.totalPrice.centAmount));
-              dispatch(
-                setCartQuantity(responseTwo?.body?.totalLineItemQuantity)
-              );
-              dispatch(setDiscountCodesCart(responseTwo?.body?.discountCodes));
+              dispatch(setCartPrice(response?.body.totalPrice.centAmount));
+              dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {
-                const codeDiscountArray = response.body.results.map((code) => {
-                  const codeName = {
-                    name: '',
-                    id: '',
-                  };
-                  if (code.code) {
-                    codeName.name = code.code;
-                    codeName.id = code.id;
-                  }
-                  return codeName;
-                });
-                dispatch(setDiscountCodes(codeDiscountArray));
+                dispatch(setDiscountCodes(response.body.results));
               }
             });
           }
@@ -191,6 +162,7 @@ function App(): JSX.Element {
             element={<CategoryPage />}
           />
           <Route path={ParhRoute.ProductPage} element={<ProductPage />} />
+          <Route path={ParhRoute.ProductPageCart} element={<ProductPage />} />
           <Route
             path={ParhRoute.CategoryPageQueryProductPage}
             element={<ProductPage />}

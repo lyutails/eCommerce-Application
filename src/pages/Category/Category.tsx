@@ -3,13 +3,7 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import {
-  AriaAttributes,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
@@ -58,7 +52,7 @@ function CategoryPage(): JSX.Element {
   const { anonymousCart, userCart } = useSelector(
     (state: ICartState) => state.cart
   );
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -343,16 +337,7 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [
-    category,
-    idCategory,
-    priceSliderValue,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
-    searchValue,
-  ]);
+  }, [category, idCategory, priceSliderValue, searchValue]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -1126,7 +1111,7 @@ function CategoryPage(): JSX.Element {
               // renderThumb={(props: number[], state) => (
               //   <div {...props}>{state.valueNow}</div>
               // )}
-              onChange={(value: number[], index: number): void => {
+              onChange={(value: number[]): void => {
                 setPriceSliderValue(value);
               }}
             />
