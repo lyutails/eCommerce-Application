@@ -104,3 +104,9 @@
     }
   }
 }
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .cartproduct_name {
+    font-size: 1.8rem;
+  }
+}

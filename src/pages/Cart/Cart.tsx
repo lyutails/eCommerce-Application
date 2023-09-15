@@ -390,11 +390,9 @@ function CartPage(): JSX.Element {
               onAnimationEnd={(): void => {
                 setTimeout(() => {
                   setApplyButtonLoadingAnim(true);
-                  console.log('end anim');
                 }, 500);
                 setTimeout(() => {
                   setApplyButtonLoadingAnim(false);
-                  console.log('start anim');
                 }, 1000);
               }}
             ></span>
@@ -410,7 +408,7 @@ function CartPage(): JSX.Element {
         *If you have a black T-Shirt in your cart make sure to add one more and
         to get them by cost of one.
       </div>
-      <div className={style.cart_price_wrapper}>
+      <div className={style.cart_discount_price_wrapper}>
         <div className={style.cart_price_name}>
           Total Price with applied Discount
         </div>
