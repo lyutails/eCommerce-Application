@@ -884,20 +884,17 @@ function CategoryPage(): JSX.Element {
             {category}
           </div>
           <div className={style.category_filters_search}>
-            <div>
-              <AnimatedInput
-                name="filterSearch"
-                type="text"
-                className={style.category_search_input}
-                placeholder="Search For..."
-                onChange={(e: Event): void => {
-                  if (!e.target) return;
-                  setSearchValue((e.target as HTMLInputElement).value);
-                  // clearInterval();
-                }}
-                // onFocus={(e): void => (e.target.placeholder = '')}
-              />
-            </div>
+            <AnimatedInput
+              name="filterSearch"
+              type="text"
+              className={style.category_search_input}
+              placeholder="Search For..."
+              onChange={(e: Event): void => {
+                if (!e.target) return;
+                setSearchValue((e.target as HTMLInputElement).value);
+              }}
+              // onFocus={(e): void => (e.target.placeholder = '')}
+            />
           </div>
         </div>
         <div className={style.category_filters_cards_wrapper}>
@@ -1121,31 +1118,8 @@ function CategoryPage(): JSX.Element {
               // )}
               onChange={(value: number[], index: number): void => {
                 setPriceSliderValue(value);
-                // setSearchPriceStart(e.target.value)
               }}
             />
-            {/* <div className={style.category_filters_priceStart}>
-              <div>
-                <input
-                  name="filterPriceStart"
-                  type="number"
-                  className={style.category_search_input_price}
-                  placeholder="price from"
-                  onChange={(e): void => setSearchPriceStart(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className={style.category_filters_priceFinish}>
-              <div>
-                <input
-                  name="filterPriceFinish"
-                  type="number"
-                  className={style.category_search_input_price}
-                  placeholder="price to"
-                  onChange={(e): void => setSearchPriceFinish(e.target.value)}
-                />
-              </div>
-            </div> */}
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
@@ -1272,28 +1246,18 @@ function CategoryPage(): JSX.Element {
                     }}
                   ></button>
                   <div className={style.category_number_circle}></div>
-                  <div
-                    className={`${style.category_number_inner_circle} ${
-                      isPaginationNumberAnimPlaying ? style.anim : ''
-                    }`}
-                    onAnimationEnd={(): void => {
-                      setIsPaginationNumberAnimPlaying(false);
-                    }}
-                  ></div>
+                  <div className={style.category_inner_circle_wrapper}>
+                    <div
+                      className={`${style.category_number_inner_circle} ${
+                        isPaginationNumberAnimPlaying ? style.anim : ''
+                      }`}
+                      onAnimationEnd={(): void => {
+                        setIsPaginationNumberAnimPlaying(false);
+                      }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-              <Link to="/customize">
-                <div
-                  className={`${style.catalog_advertisment} ${style.customize}`}
-                >
-                  <div className={style.catalog_sloth_left}></div>
-                  <div className={style.catalog_advertisment_text}>
-                    Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
-                    your own with RSSchool amazing merch... have fun \o/
-                  </div>
-                  <div className={style.catalog_sloth_right}></div>
-                </div>
-              </Link>
             </div>
             <div className={style.category_cybersloth}></div>
           </div>

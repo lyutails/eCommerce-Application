@@ -218,20 +218,28 @@ input[type='checkbox'] {
     transform: translate(4.5vw, 0);
   }
 
+  &_inner_circle_wrapper {
+    position: absolute;
+    width: 6vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(4.5vw, 0);
+  }
+
   &_number_inner_circle {
     position: absolute;
     width: 4vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
     background-repeat: no-repeat;
-    transform: translate(5.5vw, 0);
 
     &.anim {
       animation-name: number_circle_anim;
       animation-duration: 2s;
       animation-iteration-count: 1;
       animation-timing-function: linear;
-      transform-origin: center;
     }
   }
 
@@ -696,11 +704,13 @@ input[type='checkbox'] {
   }
 
   &_cybersloth {
-    width: 30vw;
+    width: 50vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/assets/cybersloths/cybersloth_01.png');
     background-repeat: no-repeat;
     background-size: contain;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   &_to_cart {
@@ -735,29 +745,23 @@ input[type='checkbox'] {
 
 @keyframes number_circle_anim {
   0% {
-    transform-origin: center;
-    transform: translate(5.5vw, 0);
     width: 4vw;
+    transform: rotate(0deg);
   }
   25% {
-    transform-origin: center;
-    width: 4vw;
-    transform: rotate(185deg);
+    width: 6vw;
+    transform: rotate(190deg);
   }
   50% {
-    transform-origin: center;
-    width: 6vw;
-    transform: translate(5.5vw, 0) rotate(-185deg);
+    transform: rotate(-220deg);
   }
   75% {
-    transform-origin: center;
-    transform: translate(5.5vw, 0);
+    transform: rotate(30deg);
     width: 5vw;
   }
   100% {
-    transform-origin: center;
     width: 4vw;
-    transform: translate(5.5vw, 0);
+    transform: rotate(0deg);
   }
 }
 
@@ -1184,7 +1188,7 @@ input#price-sort {
   padding-left: 3vw;
 
   font-family: Assassin;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: $glow-green;
 
   background-color: transparent;
@@ -1196,7 +1200,7 @@ input#price-sort {
 
 .category_search_input::placeholder {
   font-family: Assassin;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: $glow-green;
 }
 
@@ -1290,6 +1294,13 @@ input#price-sort {
     width: 100%;
   }
 
+  .category_filters_search {
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .category_cards_wrapper {
     width: 100%;
   }
@@ -1379,10 +1390,11 @@ input#price-sort {
   }
 
   .category_search_input {
-    width: 60vw;
+    width: 80vw;
     min-width: 150px;
     padding-left: 30px;
     max-width: 320px;
+    align-self: center;
   }
 
   .category_search_input_price {
@@ -1412,6 +1424,10 @@ input#price-sort {
     font-size: 3rem;
     padding-left: 5vw;
     padding-top: 15px;
+  }
+
+  .category_cybersloth {
+    width: 80vw;
   }
 }
 
