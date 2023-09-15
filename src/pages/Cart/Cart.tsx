@@ -15,6 +15,7 @@ import {
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { MyCartUpdate } from '@commercetools/platform-sdk';
+import { useEffect } from 'react';
 import { useState } from 'react';
 
 function CartPage(): JSX.Element {
@@ -158,55 +159,18 @@ function CartPage(): JSX.Element {
         },
       ],
     };
-    const deletePromocodeData = {
-      version: !isAuth
-        ? anonymousCart.versionAnonCart
-        : userCart.versionUserCart,
-      actions: [
-        {
-          action: 'removeDiscountCode',
-          discountCode: {
-            typeId: 'discount-code',
-            id: discountCodesCart ? discountCodesCart[0]?.discountCode.id : '',
-          },
-        },
-      ],
-    };
-    if (discountCodes.includes(promocode.toLowerCase())) {
+    const existPromo = discountCodes.map((code) => {
+      if (code.name === promocode.toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+    if (existPromo.includes(true)) {
       refreshTokenFlow(refreshToken).then((response) => {
         if (response) {
           updateCart(
             !isAuth ? anonymousCart.cartID : userCart.userCartId,
             addPromocodeData,
-            response.access_token
-          ).then((responseTwo) => {
-            console.log(responseTwo);
-            dispatch(setCartItems(responseTwo?.body.lineItems));
-            dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
-            dispatch(
-              setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
-            );
-            dispatch(setDiscountCodesCart(responseTwo?.body.discountCodes));
-            isAuth
-              ? dispatch(
-                  changeUserCart({
-                    versionUserCart: responseTwo?.body.version,
-                  })
-                )
-              : dispatch(
-                  changeAnonymousCart({
-                    versionAnonCart: responseTwo?.body.version,
-                  })
-                );
-          });
-        }
-      });
-    } else if (promocode === '') {
-      refreshTokenFlow(refreshToken).then((response) => {
-        if (response) {
-          updateCart(
-            !isAuth ? anonymousCart.cartID : userCart.userCartId,
-            deletePromocodeData,
             response.access_token
           ).then((responseTwo) => {
             dispatch(setCartItems(responseTwo?.body.lineItems));
@@ -231,6 +195,72 @@ function CartPage(): JSX.Element {
       });
     }
   };
+  useEffect(() => {
+    discountCodes.map((code) => {
+      if (
+        discountCodesCart &&
+        code.id === discountCodesCart[0]?.discountCode.id
+      ) {
+        dispatch(setPromocode(code.name));
+      }
+    });
+  }, [discountCodes, discountCodesCart, dispatch]);
+
+  const deletePromocodeFromCart = (refreshToken: string): void => {
+    const deletePromocodeData = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'removeDiscountCode',
+          discountCode: {
+            typeId: 'discount-code',
+            id:
+              discountCodesCart && discountCodesCart[0]
+                ? discountCodesCart[0].discountCode.id
+                : '',
+          },
+        },
+      ],
+    };
+    if (discountCodesCart && discountCodesCart[0]) {
+      refreshTokenFlow(refreshToken).then((response) => {
+        if (response) {
+          updateCart(
+            !isAuth ? anonymousCart.cartID : userCart.userCartId,
+            deletePromocodeData,
+            response.access_token
+          ).then((responseTwo) => {
+            dispatch(setCartItems(responseTwo?.body.lineItems));
+            dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+            );
+            dispatch(setDiscountCodesCart(responseTwo?.body.discountCodes));
+            dispatch(setPromocode(''));
+            isAuth
+              ? dispatch(
+                  changeUserCart({
+                    versionUserCart: responseTwo?.body.version,
+                  })
+                )
+              : dispatch(
+                  changeAnonymousCart({
+                    versionAnonCart: responseTwo?.body.version,
+                  })
+                );
+          });
+        }
+      });
+    }
+  };
+
+  if (cartItems.length === 0 && discountCodesCart && discountCodesCart[0]) {
+    deletePromocodeFromCart(
+      !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+    );
+  }
 
   const deleteAllProducts = (refreshToken: string): void => {
     const deleteItemData: MyCartUpdate = {
@@ -352,18 +382,39 @@ function CartPage(): JSX.Element {
             onChange={(event): void => addDiscountCode(event)}
             type="text"
             placeholder="Type discount code here..."
+            value={promocode}
           />
-          <div className={style.cart_discount_button_wrapper}>
-            <button
-              onClick={(): void =>
-                setPromocodeToCart(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                )
-              }
-              className={style.cart_discount_button}
-            ></button>
+           <div className={style.cart_discount_button_wrapper}>
+          <button
+            onClick={(): void =>
+              setPromocodeToCart(
+                !isAuth
+                  ? anonymousCart.anonymousRefreshToken
+                  : customerRefreshToken
+              )
+            }
+            className={style.cart_discount_button}
+            disabled={
+              discountCodesCart?.length ? true : !promocode ? true : false
+            }
+          >
+            Apply
+          </button>
+          <button
+            onClick={(): void =>
+              deletePromocodeFromCart(
+                !isAuth
+                  ? anonymousCart.anonymousRefreshToken
+                  : customerRefreshToken
+              )
+            }
+            className={style.cart_discount_button}
+            // disabled={
+            //   discountCodesCart?.length ? true : !promocode ? true : false
+            // }
+          >
+            Delete
+          </button>
             <span
               className={`${style.cart_discount_button_section} ${style.one} ${
                 !applyButtonLoadingAnim ? style.anim : ''

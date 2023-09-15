@@ -23,6 +23,7 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import {
   changeAnonymousCart,
   changeUserCart,
+  setCartItems,
   setCartPrice,
   setCartPriceDiscount,
   setCartQuantity,
@@ -39,6 +40,7 @@ interface IDataProduct {
   size: string;
   brand: string;
   bestseller: boolean;
+  sku: string;
 }
 
 function ProductPage(): JSX.Element {
@@ -65,6 +67,7 @@ function ProductPage(): JSX.Element {
                 versionAnonCart: updatedCart.body.version,
               })
             );
+            dispatch(setCartItems(updatedCart?.body.lineItems));
             dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
             dispatch(
               setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
@@ -111,20 +114,6 @@ function ProductPage(): JSX.Element {
     }
   };
 
-  // TODO: WRITE THIS OBJECT TO THE END
-  const updateAnonCartData = {
-    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
-    actions: [
-      {
-        action: 'addLineItem',
-        //productID: 'de31fb57-4d84-4a5f-b529-2ae67b8b6e0e',
-        // variantSKU for child
-        sku: 'RSSchool T-Shirt Git White XS',
-        quantity: 1,
-      },
-    ],
-  };
-
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
@@ -139,6 +128,7 @@ function ProductPage(): JSX.Element {
     size: '',
     brand: '',
     bestseller: false,
+    sku: '',
   });
 
   const creatingQueryForMaster = useCallback(
@@ -153,6 +143,7 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       product.name ? (intermediateProduct.name = product.name['en-US']) : '';
 
@@ -167,6 +158,9 @@ function ProductPage(): JSX.Element {
         intermediateProduct.images = imagesArr;
         dispatch(createProductImgArr(imagesArr));
       }
+      product.masterVariant.sku
+        ? (intermediateProduct.sku = product.masterVariant.sku)
+        : '';
 
       product.masterVariant.prices
         ? (intermediateProduct.price =
@@ -210,7 +204,7 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
-
+  console.log(dataProduct);
   const creatingQueryForVariant = useCallback(
     (product: ProductProjection, variant: ProductVariant): void => {
       const intermediateProduct: IDataProduct = {
@@ -223,8 +217,11 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       variant.sku ? (intermediateProduct.name = variant.sku) : '';
+
+      variant.sku ? (intermediateProduct.sku = variant.sku) : '';
 
       product.description
         ? (intermediateProduct.description = product.description['en-US'])
@@ -278,6 +275,18 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
+
+  const updateAnonCartData = {
+    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
+    actions: [
+      {
+        action: 'addLineItem',
+        sku: dataProduct.sku,
+        quantity: 1,
+      },
+    ],
+  };
+
   useEffect(() => {
     id &&
       getProductProjectionsByVariantKey(id).then((response) => {
