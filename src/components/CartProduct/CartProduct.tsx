@@ -9,15 +9,7 @@ export function CartProduct(props: CartProductProps): JSX.Element {
   return (
     <div className={style.cartproduct_wrapper}>
       <div className={style.cartproduct_item}>
-        <input
-          name="cartproductItem"
-          type="checkbox"
-          // id={brand}
-          onChange={(): void => {}}
-        />
-        <div
-          className={style.cartproduct_name}
-        >{`${props.sku} ${props.name}`}</div>
+        <div className={style.cartproduct_name}>{`${props.sku}`}</div>
         <img
           className={style.cartproduct_pic}
           src={props.images[0].url}
@@ -26,19 +18,15 @@ export function CartProduct(props: CartProductProps): JSX.Element {
         <div className={style.cartproduct_product_counter}>
           <button
             onClick={props.reduceQuantity}
-            className={style.cartproduct_minus}
-          >
-            -
-          </button>
+            className={`${style.cartproduct_counter_button} ${style.minus}`}
+          ></button>
           <div className={style.cartproduct_product_amount}>
             {props.quantity}
           </div>
           <button
             onClick={props.increaseQuantity}
-            className={style.cartproduct_plus}
-          >
-            +
-          </button>
+            className={`${style.cartproduct_counter_button} ${style.plus}`}
+          ></button>
         </div>
         <div className={style.cartproduct_product_price}>
           {props.discounted

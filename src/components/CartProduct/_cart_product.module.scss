@@ -9,29 +9,98 @@
   &_item {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    background: $background-gradient-two;
+    align-items: center;
+    justify-content: space-around;
+    background: $background-gradient-one;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  &_name {
+    width: 20vw;
+    font-size: 2.5rem;
   }
 
   &_pic {
     width: 20vw;
     aspect-ratio: 1 / 1;
     background-repeat: no-repeat;
+    user-select: none;
+    filter: drop-shadow(0 0 10px $glow-violet);
+  }
+
+  &_product_counter {
+    width: 10vw;
+    aspect-ratio: 1 / 0.4;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_product_amount {
+    font-size: 3rem;
+    user-select: none;
+  }
+
+  &_counter_button {
+    background-color: transparent;
+    border: none;
+    background-repeat: no-repeat;
+    width: 25%;
+    aspect-ratio: 1 / 1;
+    filter: invert(1);
+    background-size: contain;
+    transition: all 0.3s ease-in-out;
+
+    &.minus {
+      background-image: url('../../../public/assets/icons/minus.svg');
+    }
+
+    &.plus {
+      background-image: url('../../../public/assets/icons/plus.svg');
+    }
+
+    &:hover {
+      cursor: pointer;
+      filter: invert(1) drop-shadow(0 0 5px $glow-violet)
+        drop-shadow(0 0 10px $glow-violet);
+    }
+
+    &:active {
+      cursor: pointer;
+      filter: invert(1) drop-shadow(0 0 5px $glow-green)
+        drop-shadow(0 0 10px $glow-green);
+    }
+  }
+
+  &_product_price {
+    font-size: 2rem;
+    user-select: none;
   }
 
   &_delete {
-    width: 5vw;
+    width: 4vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/assets/icons/trash_cart.svg');
     background-repeat: no-repeat;
     background-size: contain;
     resize: both;
-  }
+    filter: invert(1);
+    border: none;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
 
-  &_product_counter {
-    display: flex;
-    flex-direction: row;
-    width: 20vw;
-    justify-content: space-between;
+    &:hover {
+      cursor: pointer;
+      filter: invert(1) drop-shadow(0 0 5px $glow-violet)
+        drop-shadow(0 0 10px $glow-violet);
+    }
+
+    &:active {
+      cursor: pointer;
+      filter: invert(1) drop-shadow(0 0 5px $glow-green)
+        drop-shadow(0 0 10px $glow-green);
+    }
   }
 }

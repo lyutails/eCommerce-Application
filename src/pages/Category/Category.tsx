@@ -177,7 +177,6 @@ function CategoryPage(): JSX.Element {
   const updateCustomerCart = (updateAnonCartData: MyCartUpdate): void => {
     if (!isAuth) {
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
-        console.log(anonymousCart.cartID);
         updateCart(
           anonymousCart.cartID,
           updateAnonCartData,
@@ -1247,7 +1246,6 @@ function CategoryPage(): JSX.Element {
                     className={`${style.category_pagination_button} ${style.previous}`}
                     onClick={(): void => {
                       setIsPaginationNumberAnimPlaying(true);
-                      console.log(isPaginationNumberAnimPlaying);
                       currentPage > 1
                         ? setCurrentPage(currentPage - 1)
                         : setCurrentPage(1);
@@ -1280,8 +1278,6 @@ function CategoryPage(): JSX.Element {
                     }`}
                     onAnimationEnd={(): void => {
                       setIsPaginationNumberAnimPlaying(false);
-                      console.log(isPaginationNumberAnimPlaying);
-                      console.log('end anim');
                     }}
                   ></div>
                 </div>
