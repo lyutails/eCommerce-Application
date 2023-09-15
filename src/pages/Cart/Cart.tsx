@@ -17,6 +17,7 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import { MyCartUpdate } from '@commercetools/platform-sdk';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
@@ -474,6 +475,15 @@ function CartPage(): JSX.Element {
       <div className={style.cart_buy_sloth}>
         <button className={style.cart_buy}>Buy</button>
         <div className={style.cart_cybersloth}></div>
+      </div>
+      <div className={style.cart_empty}>
+        <div className={style.cart_empty_message}>
+          Dear user, your cart is currently empty, we would be glad you continue
+          shopping by following the link.
+        </div>
+        <Link to={'/catalog'} className={style.cart_catalog_link}>
+          Catalog
+        </Link>
       </div>
     </div>
   );
