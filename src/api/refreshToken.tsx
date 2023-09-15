@@ -8,6 +8,8 @@ import { httpMiddlewareOptions } from './clientBuilder';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { throwNewError } from '../utils/throwNewError';
 
+// i don't need that
+
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
 ): RefreshAuthMiddlewareOptions => {

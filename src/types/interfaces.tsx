@@ -3,8 +3,10 @@ import {
   BaseAddress,
   DiscountCodeInfo,
   LineItem,
+  MyCustomerChangeEmailAction,
 } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
+import { AnyAction, Dispatch } from 'redux';
 
 export interface ICustomerFields {
   email: string;
@@ -89,8 +91,7 @@ export interface IInputPropsMask {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onAccept?: any;
+  onAccept?: (value: string) => void;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;
@@ -283,6 +284,189 @@ export interface IMyCartDeleteDiscountCodeAction {
 //   lineItemId: string;
 //   quantity: number;
 // }
+
+export interface IRefreshTokenData {
+  access_token: string;
+  expires_at: number;
+  expires_in: number;
+  scope: string;
+  token_type: string;
+  refresh_token?: string;
+}
+
+export interface IAddressFormProps {
+  addBillingAddress?: ReactNode;
+  addressData: IAddressDataObject;
+  setDefault?: ReactNode;
+  setAddressStatus?: ReactNode;
+  titleStyle: string;
+}
+
+export interface IAddressDataObject {
+  title: string;
+  checboxId: string;
+}
+
+export interface IAddressModalProps {
+  modalClass: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  version: number;
+  token?: string;
+  setClickedAddressesUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IAddressUpdateData {
+  streetError: boolean;
+  buildingError: boolean;
+  cityError: boolean;
+  apartmentError: boolean;
+  postalError: boolean;
+  countryError: boolean;
+  token: string;
+}
+
+export interface IChangeAddressData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      addressId: string;
+      address: {
+        streetName: string;
+        building: string;
+        apartment: string;
+        postalCode: string;
+        city: string;
+        country: string;
+      };
+    },
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+  ];
+}
+
+export interface IAddAddressData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      address: {
+        key: string;
+        streetName: string;
+        building: string;
+        apartment: string;
+        postalCode: string;
+        city: string;
+        country: string;
+      };
+    },
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+    {
+      action: string;
+      addressKey: string;
+    }?,
+  ];
+}
+
+export interface IAddAddressStatusData {
+  version: number;
+  actions: [
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      addressId: string;
+    }?,
+    {
+      action: string;
+      key: string;
+    }?,
+  ];
+}
+
+export interface IBioModalProps {
+  modalClass: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  token?: string;
+  setClickedBioUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IBioUpdateData {
+  firstnameError: boolean;
+  lastnameError: boolean;
+  birthdayError: boolean;
+  token: string;
+}
+
+export interface IEmailModalProps {
+  modalClass: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  token?: string;
+  setClickedEmailUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IMyCustomerEmailUpdate {
+  version: number;
+  actions: [MyCustomerChangeEmailAction];
+}
+
+export interface IPasswordModalProps {
+  modalClass: string;
+  token: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  setClickedPasswordUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IPasswordUpdateData {
+  currentError: boolean;
+  newError: boolean;
+  repeateError: boolean;
+  token: string;
+  passwordNewField: string;
+  passwordRepeatField: string;
+  dispatch: Dispatch<AnyAction>;
+  login: string;
+  currentPassword: {
+    value: string;
+    error: boolean;
+    isChecked: boolean;
+  };
+}
 
 // yana3@mail.com
 // 22327Ybv!

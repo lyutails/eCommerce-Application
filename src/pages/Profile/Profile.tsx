@@ -54,10 +54,13 @@ function ProfilePage(): JSX.Element {
   const [clickedPasswordUpdate, setClickedPasswordUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [clickedAddressesUpdate, setClickedAddressesUpdate] = useState(false);
-  const { address, version, bio, email } = useSelector(
+  const { address, version, bio, email, password } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const [password, setPassword] = useState('');
+  const { customerId, customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  // const [password, setPassword] = useState('');
 
   const clickedPersonal = useSelector(
     (state: IPersonalState) => state.personal.information
@@ -66,61 +69,61 @@ function ProfilePage(): JSX.Element {
     (state: IPersonalState) => state.personal.addresses
   );
 
-  const { customerId, customerRefreshToken } = useSelector(
-    (state: IRootState) => state.user
-  );
+  // const { customerId, customerRefreshToken } = useSelector(
+  //   (state: IRootState) => state.user
+  // );
 
-  const checkRefreshToken = useCallback((): void => {
-    dispatch(setAuthStatus(false));
-    navigate('/login');
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('isAuth');
-    dispatch(changeVersion(1));
-  }, [dispatch, navigate]);
+  // const checkRefreshToken = useCallback((): void => {
+  //   dispatch(setAuthStatus(false));
+  //   navigate('/login');
+  //   localStorage.removeItem('customerId');
+  //   localStorage.removeItem('isAuth');
+  //   dispatch(changeVersion(1));
+  // }, [dispatch, navigate]);
 
-  useEffect(() => {
-    if (!customerRefreshToken) {
-      checkRefreshToken();
-    } else {
-      refreshTokenFlow(customerRefreshToken)
-        .then(() => {
-          getCustomerById({ ID: customerId }).then((response) => {
-            setPassword(response.body.password ? response.body.password : '');
-            dispatch(changeVersion(response.body.version));
-            dispatch(
-              changeBio({
-                firstname: {
-                  value: response.body.firstName,
-                },
-                lastname: {
-                  value: response.body.lastName,
-                },
-                birthday: {
-                  value: parseDateToWeb(
-                    response.body.dateOfBirth ? response.body.dateOfBirth : ''
-                  ),
-                },
-              })
-            );
-            dispatch(changeEmail({ value: response.body.email }));
-            dispatch(
-              changeAddress({
-                addressStore: response.body.addresses,
-                defaultShippingId: response.body.defaultShippingAddressId,
-                defaultBillingId: response.body.defaultBillingAddressId,
-                shippingAddressesId: response.body.shippingAddressIds,
-                billingAddressesId: response.body.billingAddressIds,
-              })
-            );
-          });
-        })
-        .catch(() => {
-          console.log('error');
-          checkRefreshToken();
-          localStorage.removeItem('refreshToken');
-        });
-    }
-  }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
+  // useEffect(() => {
+  //   if (!customerRefreshToken) {
+  //     checkRefreshToken();
+  //   } else {
+  //     refreshTokenFlow(customerRefreshToken)
+  //       .then(() => {
+  //         getCustomerById({ ID: customerId }).then((response) => {
+  //           setPassword(response.body.password ? response.body.password : '');
+  //           dispatch(changeVersion(response.body.version));
+  //           dispatch(
+  //             changeBio({
+  //               firstname: {
+  //                 value: response.body.firstName,
+  //               },
+  //               lastname: {
+  //                 value: response.body.lastName,
+  //               },
+  //               birthday: {
+  //                 value: parseDateToWeb(
+  //                   response.body.dateOfBirth ? response.body.dateOfBirth : ''
+  //                 ),
+  //               },
+  //             })
+  //           );
+  //           dispatch(changeEmail({ value: response.body.email }));
+  //           dispatch(
+  //             changeAddress({
+  //               addressStore: response.body.addresses,
+  //               defaultShippingId: response.body.defaultShippingAddressId,
+  //               defaultBillingId: response.body.defaultBillingAddressId,
+  //               shippingAddressesId: response.body.shippingAddressIds,
+  //               billingAddressesId: response.body.billingAddressIds,
+  //             })
+  //           );
+  //         });
+  //       })
+  //       .catch(() => {
+  //         console.log('error');
+  //         checkRefreshToken();
+  //         localStorage.removeItem('refreshToken');
+  //       });
+  //   }
+  // }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
 
   const handleLogOut = (): void => {
     localStorage.removeItem('customerId');
@@ -423,7 +426,9 @@ function ProfilePage(): JSX.Element {
                   <h4 className={style.profile_personal_title}>
                     Your password
                   </h4>
-                  <p className={style.profile_personal_describe}>{password}</p>
+                  <p className={style.profile_personal_describe}>
+                    {password.currentPassword.value}
+                  </p>
                 </div>
                 <ButtonForm
                   onClick={(): void => {
