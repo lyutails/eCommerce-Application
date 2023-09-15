@@ -37,7 +37,6 @@ function Header(): JSX.Element {
   const handleToBurgerOff = (): void => {
     SetActiveBurger(false);
   };
-  console.log(cartPriceDiscount);
   return (
     <div className={style.header}>
       <div className={style.header_wrapper}>

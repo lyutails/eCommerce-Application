@@ -172,7 +172,6 @@
   }
 
   &_discount_input {
-    margin-top: 30px;
     background: $background-gradient-one;
     border-radius: 5px;
     border: 1px solid $glow-green;
@@ -204,6 +203,7 @@
   }
 
   &_clear {
+    width: 15vw;
     background-color: transparent;
     border: 1px solid $glow-green;
     border-radius: 5px;
@@ -239,20 +239,27 @@
     border: none;
     background-repeat: no-repeat;
     background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
-    transition: all 0.2s ease-in-out;  
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       cursor: pointer;
       background-image: url('../../../public/ui-kit/apply_promo_green_blue.svg');
     }
-    &_discount_delete {
-      width: 40vw;
-      // aspect-ratio: 1 / 0.25;
-      // background-color: transparent;
-      // border: none;
-      // background-repeat: no-repeat;
-      // background-image: url('../../../public/ui-kit/apply_promo_blue.svg');
-      // transition: all 0.2s ease-in-out;
+  }
+
+  &_discount_delete {
+    width: 15vw;
+    background-color: transparent;
+    border: 1px solid $glow-green;
+    color: $font-color-primary-one;
+    border-radius: 5px;
+    font-size: 2rem;
+    background: $background-gradient-one;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $glow-violet;
     }
   }
 
@@ -355,6 +362,7 @@
     align-items: center;
     justify-content: center;
     padding: 10px 20px;
+    margin: 0 auto;
   }
 
   &_empty_message {
@@ -370,9 +378,16 @@
     font-size: 5rem;
     text-underline-offset: 5px;
     font-family: 'No Signal', cursive;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       cursor: pointer;
+      text-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green;
     }
   }
 }
@@ -463,6 +478,15 @@
       &.five {
         transform: translate(-9vw, 100%);
       }
+    }
+
+    &_discount_delete {
+      width: 25vw;
+      align-self: flex-end;
+    }
+
+    &_clear {
+      width: 25vw;
     }
   }
 }

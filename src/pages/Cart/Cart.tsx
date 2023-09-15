@@ -2,6 +2,7 @@ import {
   ICartState,
   IMyCartUpdate,
   IProfileState,
+  IMyCartRemoveLineItemAction,
   IRootState,
 } from '../../types/interfaces';
 import style from './_cart.module.scss';
@@ -20,6 +21,7 @@ import {
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
+import { MyCartUpdate } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -50,7 +52,7 @@ function CartPage(): JSX.Element {
     quantity: number,
     refreshToken: string
   ): void => {
-    const deleteItemData = {
+    const deleteItemData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
@@ -100,7 +102,7 @@ function CartPage(): JSX.Element {
 
   // INCREASE ITEM FROM CART
   const increaseItem = (itemId: string, refreshToken: string): void => {
-    const increaseItemData = {
+    const increaseItemData: IMyCartUpdate = {
       version: !isAuth
         ? anonymousCart.versionAnonCart
         : userCart.versionUserCart,
@@ -264,7 +266,7 @@ function CartPage(): JSX.Element {
     }
   };
 
-  if (cartItems.length === 0 && discountCodesCart && discountCodesCart[0]) {
+  if (cartItems?.length === 0 && discountCodesCart && discountCodesCart[0]) {
     deletePromocodeFromCart(
       !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
     );
@@ -323,6 +325,7 @@ function CartPage(): JSX.Element {
   const itemCartCards = cartItems.map((card, i) => {
     return (
       <CartProduct
+        idCard={card?.productKey ? card?.productKey : ''}
         name={card.name['en-US']}
         key={`card_${i}`}
         sku={card.variant.sku ? card.variant.sku : ''}
@@ -457,21 +460,21 @@ function CartPage(): JSX.Element {
                   }, 1000);
                 }}
               ></span>
-              <button
-                onClick={debounce(
-                  (): void =>
-                    deletePromocodeFromCart(
-                      !isAuth
-                        ? anonymousCart.anonymousRefreshToken
-                        : customerRefreshToken
-                    ),
-                  500
-                )}
-                className={style.cart_discount_delete}
-              >
-                Delete
-              </button>
             </div>
+            <button
+              onClick={debounce(
+                (): void =>
+                  deletePromocodeFromCart(
+                    !isAuth
+                      ? anonymousCart.anonymousRefreshToken
+                      : customerRefreshToken
+                  ),
+                500
+              )}
+              className={style.cart_discount_delete}
+            >
+              Delete promo code
+            </button>
           </div>
         </div>
         <div className={style.cart_discount_names}>

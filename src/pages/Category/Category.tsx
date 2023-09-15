@@ -3,13 +3,7 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import {
-  AriaAttributes,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
@@ -30,7 +24,7 @@ import {
 import Card from '../../components/Card/Card';
 import { throwNewError } from '../../utils/throwNewError';
 import { useDispatch, useSelector } from 'react-redux';
-import { ICartState, IRootState } from '../../types/interfaces';
+import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
 import {
   changeAnonymousCart,
   changeUserCart,
@@ -58,7 +52,7 @@ function CategoryPage(): JSX.Element {
   const { anonymousCart, userCart } = useSelector(
     (state: ICartState) => state.cart
   );
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -174,7 +168,7 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
-  const updateCustomerCart = (updateAnonCartData: MyCartUpdate): void => {
+  const updateCustomerCart = (updateAnonCartData: IMyCartUpdate): void => {
     if (!isAuth) {
       refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
         updateCart(
@@ -343,16 +337,7 @@ function CategoryPage(): JSX.Element {
           setAllCards(allSubTreeArray);
         });
       });
-  }, [
-    category,
-    idCategory,
-    priceSliderValue,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
-    searchValue,
-  ]);
+  }, [category, idCategory, priceSliderValue, searchValue]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -1126,7 +1111,7 @@ function CategoryPage(): JSX.Element {
               // renderThumb={(props: number[], state) => (
               //   <div {...props}>{state.valueNow}</div>
               // )}
-              onChange={(value: number[], index: number): void => {
+              onChange={(value: number[]): void => {
                 setPriceSliderValue(value);
               }}
             />
@@ -1165,14 +1150,14 @@ function CategoryPage(): JSX.Element {
                 <div className={style.category_cards_background_top}></div>
                 <div className={style.category_cards_wrapper}>
                   {allCards.map((card) => {
-                    const updateAnonCartData = {
+                    const updateAnonCartData: IMyCartUpdate = {
                       version: !isAuth
                         ? anonymousCart.versionAnonCart
                         : userCart.versionUserCart,
                       actions: [
                         {
                           action: 'addLineItem',
-                          sku: card.sku,
+                          sku: card.sku ? card.sku : '',
                           quantity: 1,
                         },
                       ],
