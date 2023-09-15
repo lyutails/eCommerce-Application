@@ -65,9 +65,9 @@ function ProductPage(): JSX.Element {
                 versionAnonCart: updatedCart.body.version,
               })
             );
-            dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
             dispatch(
-              setCartPriceDiscount(response?.body.totalPrice.centAmount)
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
             );
             let totalPrice = 0;
             updatedCart?.body.lineItems.map((item) => {
@@ -93,9 +93,9 @@ function ProductPage(): JSX.Element {
                 versionUserCart: updatedCart.body.version,
               })
             );
-            dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
             dispatch(
-              setCartPriceDiscount(response?.body.totalPrice.centAmount)
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
             );
             let totalPrice = 0;
             updatedCart?.body.lineItems.map((item) => {

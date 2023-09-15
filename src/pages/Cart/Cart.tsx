@@ -180,12 +180,13 @@ function CartPage(): JSX.Element {
             addPromocodeData,
             response.access_token
           ).then((responseTwo) => {
+            console.log(responseTwo);
             dispatch(setCartItems(responseTwo?.body.lineItems));
             dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
             dispatch(
               setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
             );
-            dispatch(setDiscountCodesCart(response?.body?.discountCodes));
+            dispatch(setDiscountCodesCart(responseTwo?.body.discountCodes));
             isAuth
               ? dispatch(
                   changeUserCart({
@@ -213,7 +214,7 @@ function CartPage(): JSX.Element {
             dispatch(
               setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
             );
-            dispatch(setDiscountCodesCart(response?.body.discountCodes));
+            dispatch(setDiscountCodesCart(responseTwo?.body.discountCodes));
             isAuth
               ? dispatch(
                   changeUserCart({
