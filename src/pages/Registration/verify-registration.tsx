@@ -26,7 +26,7 @@ import {
   setAccessTokenStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
-import { getCustomerToken } from '../../api/adminBuilder';
+import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { IMyCustomerDraft } from '../../types/interfaces';
@@ -347,44 +347,44 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
-      updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
-      // refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
-      //   (response) => {
-      //     dispatch(
-      //       changeAnonymousCart({ anonymousAccessToken: response.access_token })
-      //     );
-      //   }
-      // );
-      createCustomerMe(
-        createCustomerData,
-        anonymousCartData.anonymousAccessToken,
-        dispatch,
-        setSuccessfulMessage
-      )
-        .then((response) => {
-          if (response) {
-            localStorage.removeItem('anonymousID');
-            localStorage.removeItem('refreshAnonToken');
-            localStorage.setItem('customerId', response.body.customer.id);
-            dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
-            dispatch(createCustomerId(response.body.customer.id));
-            dispatch(changeVersion(response.body.customer.version));
-          }
-          const token = getCustomerToken(loginField, passwordField);
-          return token;
-        })
-        .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
-          dispatch(setRefreshTokenStatus(response.refresh_token));
-          dispatch(setAccessTokenStatus(response.access_token));
-        })
-        .catch((error) => {
-          if (error) {
-            setErrorLogin('Invalid email or password');
-            setCheckmarkLogin(false);
-            setInvalidCredentials(true);
-          }
-        });
+      // updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
+      refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+        (response) => {
+          createCustomerMe(
+            createCustomerData,
+            response.access_token,
+            dispatch,
+            setSuccessfulMessage
+          )
+            .then((responseTwo) => {
+              if (responseTwo) {
+                localStorage.removeItem('anonymousID');
+                localStorage.removeItem('refreshAnonToken');
+                localStorage.setItem(
+                  'customerId',
+                  responseTwo.body.customer.id
+                );
+                dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
+                dispatch(createCustomerId(responseTwo.body.customer.id));
+                dispatch(changeVersion(responseTwo.body.customer.version));
+              }
+              const token = getCustomerToken(loginField, passwordField);
+              return token;
+            })
+            .then((responseThree) => {
+              localStorage.setItem('refreshToken', responseThree.refresh_token);
+              dispatch(setRefreshTokenStatus(responseThree.refresh_token));
+              dispatch(setAccessTokenStatus(responseThree.access_token));
+            })
+            .catch((error) => {
+              if (error) {
+                setErrorLogin('Invalid email or password');
+                setCheckmarkLogin(false);
+                setInvalidCredentials(true);
+              }
+            });
+        }
+      );
     }
   }
 };

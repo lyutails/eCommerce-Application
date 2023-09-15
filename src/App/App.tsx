@@ -35,9 +35,13 @@ import { useEffect } from 'react';
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const { anonymousCart, userCart, cartItems } = useSelector(
-    (state: ICartState) => state.cart
-  );
+  const {
+    anonymousCart,
+    userCart,
+    cartItems,
+    discountCodes,
+    discountCodesCart,
+  } = useSelector((state: ICartState) => state.cart);
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const { customerId, customerRefreshToken, accessToken } = useSelector(
     (state: IRootState) => state.user
@@ -89,11 +93,16 @@ function App(): JSX.Element {
                 dispatch(
                   setCartPriceDiscount(response?.body.totalPrice.centAmount)
                 );
+                console.log(response?.body.lineItems);
                 let totalPrice = 0;
                 response?.body.lineItems.map((item) => {
-                  if (item) {
+                  if (item.price.discounted) {
+                    totalPrice +=
+                      item.price.discounted.value.centAmount * item.quantity;
+                  } else {
                     totalPrice += item.price.value.centAmount * item.quantity;
                   }
+
                   return totalPrice;
                 });
                 dispatch(setCartPrice(totalPrice));
@@ -103,9 +112,13 @@ function App(): JSX.Element {
                 if (response) {
                   const codeDiscountArray = response.body.results.map(
                     (code) => {
-                      let codeName;
+                      const codeName = {
+                        name: '',
+                        id: '',
+                      };
                       if (code.code) {
-                        codeName = code.code;
+                        codeName.name = code.code;
+                        codeName.id = code.id;
                       }
                       return codeName;
                     }
@@ -132,10 +145,22 @@ function App(): JSX.Element {
               console.log(response?.body);
               dispatch(setCartPrice(response?.body.totalPrice.centAmount));
               dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+              dispatch(setDiscountCodesCart(response?.body.discountCodes));
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {
-                dispatch(setDiscountCodes(response.body.results));
+                const codeDiscountArray = response.body.results.map((code) => {
+                  const codeName = {
+                    name: '',
+                    id: '',
+                  };
+                  if (code.code) {
+                    codeName.name = code.code;
+                    codeName.id = code.id;
+                  }
+                  return codeName;
+                });
+                dispatch(setDiscountCodes(codeDiscountArray));
               }
             });
           }

@@ -230,7 +230,7 @@ export interface ICartState {
       anonymousRefreshToken: string;
       anonymousAccessToken: string;
     };
-    discountCodes: string[];
+    discountCodes: [{ name: string; id: string }];
     userCart: {
       userCartId: string;
       versionUserCart: number;

@@ -16,6 +16,7 @@ function Header(): JSX.Element {
     discountCodes,
     cartPrice,
     cartQuantity,
+    cartPriceDiscount,
   } = useSelector((state: ICartState) => state.cart);
   const nameRouteHeader = [
     'Main',
@@ -87,7 +88,7 @@ function Header(): JSX.Element {
                   className={`${style.header_menu_item} ${style.sum}`}
                   key={item}
                 >
-                  {(cartPrice / 100).toFixed(2)}$
+                  {(cartPriceDiscount / 100).toFixed(2)}$
                 </li>
               ) : (
                 <li className={style.header_menu_item} key={item}>

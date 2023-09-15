@@ -6,7 +6,7 @@ import {
 import { NavigateFunction } from 'react-router-dom';
 import { handleLoginInput, handlePasswordInput } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { getCustomerToken } from '../../api/adminBuilder';
+import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { IAnonymousCartData } from '../Registration/Registration';
 import { loginAnonUser } from '../../api/existTokenFlow';
@@ -59,36 +59,40 @@ export const handleСreationAuth = (
   };
 
   if (loginСheck === true && passwordСheck === true) {
-    loginAnonUser(
-      anonymousCartData.anonymousAccessToken,
-      request,
-      dispatch,
-      setSuccessfulMessage
-    )
-      .then((response) => {
-        if (response) {
-          localStorage.removeItem('anonymousID');
-          localStorage.removeItem('refreshAnonToken');
-          localStorage.setItem('customerId', response.body.customer.id);
-          dispatch(changeAnonymousCart({ anonymousID: '' }));
-          dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
-          dispatch(createCustomerId(response.body.customer.id));
-          dispatch(changeVersion(response.body.customer.version));
-        }
-      })
-      .then(() => {
-        const token = getCustomerToken(loginField, passwordField);
-        return token;
-      })
-      .then((response) => {
-        localStorage.setItem('refreshToken', response.refresh_token);
-        dispatch(setRefreshTokenStatus(response.refresh_token));
-        dispatch(setAccessTokenStatus(response.access_token));
-      })
-      .catch((error) => {
-        if (error) {
-          setInvalidCredentials(true);
-        }
-      });
+    refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      (response) => {
+        loginAnonUser(
+          response.access_token,
+          request,
+          dispatch,
+          setSuccessfulMessage
+        )
+          .then((responseTwo) => {
+            if (responseTwo) {
+              localStorage.removeItem('anonymousID');
+              localStorage.removeItem('refreshAnonToken');
+              localStorage.setItem('customerId', responseTwo.body.customer.id);
+              dispatch(changeAnonymousCart({ anonymousID: '' }));
+              dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
+              dispatch(createCustomerId(responseTwo.body.customer.id));
+              dispatch(changeVersion(responseTwo.body.customer.version));
+            }
+          })
+          .then(() => {
+            const token = getCustomerToken(loginField, passwordField);
+            return token;
+          })
+          .then((responseThree) => {
+            localStorage.setItem('refreshToken', responseThree.refresh_token);
+            dispatch(setRefreshTokenStatus(responseThree.refresh_token));
+            dispatch(setAccessTokenStatus(responseThree.access_token));
+          })
+          .catch((error) => {
+            if (error) {
+              setInvalidCredentials(true);
+            }
+          });
+      }
+    );
   }
 };
