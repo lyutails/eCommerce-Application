@@ -752,6 +752,7 @@ input[type='checkbox'] {
     color: $glow-green;
     border: none;
     outline: none;
+    padding-left: 1vw;
 
     &::placeholder {
       font-family: Assassin;
@@ -1337,6 +1338,10 @@ input#price-sort {
     width: 50%;
   }
 
+  .category_pagination_number {
+    font-size: 4rem;
+  }
+
   .pricesort_switch {
     width: 50vw;
     padding-top: 25%;
@@ -1456,6 +1461,62 @@ input#price-sort {
 
   .category_cybersloth {
     width: 80vw;
+  }
+
+  .category_number_circle {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_1.svg');
+    background-repeat: no-repeat;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_inner_circle_wrapper {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_number_inner_circle {
+    position: absolute;
+    width: 13vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
+    background-repeat: no-repeat;
+
+    &.anim {
+      animation-name: number_circle_anim;
+      animation-duration: 2s;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+    }
+  }
+
+  @keyframes number_circle_anim {
+    0% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
+    25% {
+      width: 16vw;
+      transform: rotate(190deg);
+    }
+    50% {
+      transform: rotate(-220deg);
+    }
+    75% {
+      transform: rotate(30deg);
+      width: 14vw;
+    }
+    100% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
   }
 }
 
