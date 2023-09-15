@@ -1,10 +1,26 @@
-.container{
+@import '../../style/variables';
+
+.container {
   display: flex;
   flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  width: 90vw;
+  margin: 0 auto;
+}
 
-  .title{
-    font-size: 50px;
-  }
+.title {
+  font-size: 4rem;
+  text-align: center;
+  font-family: 'No Signal', cursive;
+  color: $font-color-primary-one;
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 15px $glow-violet;
+  user-select: none;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 2rem;
+  text-align: center;
 }
