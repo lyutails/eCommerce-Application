@@ -1,4 +1,10 @@
-import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
+import {
+  ICartState,
+  IMyCartUpdate,
+  IProfileState,
+  IMyCartRemoveLineItemAction,
+  IRootState,
+} from '../../types/interfaces';
 import style from './_cart.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../api/existTokenFlow';
@@ -32,6 +38,9 @@ function CartPage(): JSX.Element {
   } = useSelector((state: ICartState) => state.cart);
   const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
+  );
+  const { address, version, bio, email, password } = useSelector(
+    (state: IProfileState) => state.profile
   );
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
@@ -362,7 +371,10 @@ function CartPage(): JSX.Element {
   });
   return (
     <div className={style.cart_wrapper}>
-      <h2 className={style.cart_title}>Your cart, dear - customer name here</h2>
+      <h2 className={style.cart_title}>
+        Your cart, dear{' '}
+        {isAuth ? `${bio.firstname?.value} ${bio.lastname?.value}` : `customer`}
+      </h2>
       <div
         className={`${style.cart_content} ${
           cartItems.length ? style.shown : style.hidden

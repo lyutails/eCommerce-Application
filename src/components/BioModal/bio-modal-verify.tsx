@@ -4,12 +4,10 @@ import {
   MyCustomerSetFirstNameAction,
   MyCustomerSetLastNameAction,
 } from '@commercetools/platform-sdk';
-import { IPersonalData } from '../../pages/Profile/Profile';
-import { parseDateToWeb } from '../../utils/parseDate';
-import { IBioUpdateData } from './BioModal';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
+import { IBioUpdateData } from '../../types/interfaces';
 
 export interface IMyCustomerBioUpdate {
   version: number;

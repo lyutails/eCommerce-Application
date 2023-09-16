@@ -6,18 +6,18 @@ import {
   MyCustomerSetDefaultShippingAddressAction,
   MyCustomerUpdate,
 } from '@commercetools/platform-sdk';
-import {
-  IAddAddressData,
-  IAddAddressStatusData,
-  IAddressUpdateData,
-  IChangeAddressData,
-} from './AddressModal';
 import { updateCustomer } from '../../api/updateBio';
 import { AnyAction, Dispatch } from 'redux';
 import {
   changeAddress,
   changeVersion,
 } from '../../store/reducers/profileReducer';
+import {
+  IAddAddressData,
+  IAddAddressStatusData,
+  IAddressUpdateData,
+  IChangeAddressData,
+} from '../../types/interfaces';
 
 export interface IMyCustomerAddressUpdate {
   version: number;

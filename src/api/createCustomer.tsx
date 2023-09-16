@@ -4,13 +4,8 @@ import {
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
-import {
-  createCartThroughMe,
-  loginCustomerThroughReg,
-} from './passwordFlowSession';
 import { AnyAction, Dispatch } from 'redux';
 import { loginAnonUser } from './existTokenFlow';
-import { IAnonymousCartData } from '../pages/Registration/Registration';
 
 export async function createCustomerMe(
   data: IMyCustomerDraft,

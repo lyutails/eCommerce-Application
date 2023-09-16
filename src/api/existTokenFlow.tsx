@@ -20,12 +20,6 @@ const options: ExistingTokenMiddlewareOptions = {
   force: true,
 };
 
-// const clientAnonymous = new ClientBuilder()
-//   .withExistingTokenFlow(authorization, options)
-//   .withHttpMiddleware(httpMiddlewareOptions)
-//   .build();
-
-// CREATE ANON'S CART
 export const createAnonCart = async (
   authorization: string
 ): Promise<ClientResponse<Cart> | undefined> => {
@@ -54,7 +48,6 @@ export const createAnonCart = async (
   }
 };
 
-// Get ANON'S CART
 export const getAnonCart = async (
   authorization: string
 ): Promise<ClientResponse<Cart> | undefined> => {
@@ -75,7 +68,6 @@ export const getAnonCart = async (
   }
 };
 
-// UPDATE ANON'S CART
 export const updateCart = async (
   id: string,
   data: IMyCartUpdate,

@@ -13,14 +13,6 @@ import {
 import { httpMiddlewareOptions } from './clientBuilder';
 import { throwNewError } from '../utils/throwNewError';
 
-if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-  throwNewError('no client id found');
-}
-
-if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-  throwNewError('no client secret found');
-}
-
 export function loginUserCTPClient(
   token: RefreshAuthMiddlewareOptions
 ): Client {
@@ -43,8 +35,6 @@ const authMiddlewareOptionsForPasswordFlow = (
   };
   refreshToken: string;
   scopes: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fetch?: any;
 } => {
   if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
     throwNewError('no client id found');
