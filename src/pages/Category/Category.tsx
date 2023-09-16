@@ -39,6 +39,8 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import '../../../global.d.ts';
 import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
+import _debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -857,6 +859,31 @@ function CategoryPage(): JSX.Element {
     setSearchInputPlaceholderVisibility,
   ] = useState(false);
 
+  // const debounceSearchInput = useCallback(
+  //   _debounce((e) => setSearchValue(e.target.value), 500, { trailing: true }),
+  //   []
+  // );
+
+  // const debounceSearchInput = debounce(async (criteria) => {
+  //   setSearchValue(await criteria);
+  // }, 500);
+
+  const debounceSearchInput = useMemo(
+    () =>
+      debounce((e) => {
+        setSearchValue(e);
+      }, 1000),
+    []
+  );
+
+  const debouncePriceRange = useMemo(
+    () =>
+      debounce((e) => {
+        setSearchValue(e);
+      }, 1000),
+    []
+  );
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -876,9 +903,17 @@ function CategoryPage(): JSX.Element {
           <div className={style.category_filters_search}>
             <input
               className={style.category_real_search_input}
+              // onChange={(e): void => {
+              //   setSearchValue(e.target.value);
+              // }}
               onChange={(e): void => {
-                setSearchValue(e.target.value);
+                debounceSearchInput(e.target.value);
               }}
+              // onChange={(): void => {
+              //   _debounce((e) => setSearchValue(e.target.value), 500, {
+              //     trailing: true,
+              //   });
+              // }}
               onFocus={(): void => setSearchInputPlaceholderVisibility(true)}
               onBlur={(): void => setSearchInputPlaceholderVisibility(false)}
             ></input>
