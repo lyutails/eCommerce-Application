@@ -9,7 +9,7 @@ import 'swiper/css/zoom';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './_modal-window.scss';
-import iconModal from '../../../../public/portal/circle_14.svg';
+import iconModal from '../../../../public/assets/productPage/circle_14.svg';
 import { changeflagInModalWindow } from '../../../store/reducers/productReduser';
 
 function ModalWindow(): JSX.Element {

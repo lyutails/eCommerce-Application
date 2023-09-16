@@ -52,7 +52,7 @@
       text-align: center;
       padding: 15px 0 0 0;
       transform: rotate(20deg);
-      background: url(../../../public/portal/profile_log_out_purple.svg);
+      background: url(../../../public/assets/productPage/profile_log_out_purple.svg);
       background-repeat: no-repeat;
       background-position: 0;
       background-size: auto;
@@ -70,7 +70,7 @@
     height: 500px;
     margin: 0 auto;
 
-    background-image: url('../../../public/portal/portal_04.png');
+    background-image: url('../../../public/assets/productPage/portal_04.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto 100%;
@@ -148,7 +148,7 @@
     width: 100%;
     height: 100%;
 
-    background-image: url('../../../public/portal/glow.png');
+    background-image: url('../../../public/assets/productPage/glow.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -182,7 +182,7 @@
         font-size: 3rem;
         text-align: center;
         padding: 15px 0 0 0;
-        background: url(../../../public/portal/profile_log_out_purple.svg);
+        background: url(../../../public/assets/productPage/profile_log_out_purple.svg);
         background-repeat: no-repeat;
         background-position: 0;
         background-size: auto;
@@ -195,8 +195,8 @@
         width: 390px;
         padding: 20px 0;
         margin: 10px 20px;
-        background: url(../../../public/portal/header_title_green_blue.svg) 30%/220%
-          no-repeat;
+        background: url(../../../public/assets/productPage/header_title_green_blue.svg)
+          30%/220% no-repeat;
         .wrapper-desc {
           margin: 20px;
           width: 350px;
@@ -217,51 +217,124 @@
         }
       }
       &-characteristics {
-        &_button {
-          cursor: pointer;
+        &_buttons {
+          display: flex;
+          justify-content: flex-start;
+          .wrapper-characteristics_button {
+            cursor: pointer;
 
-          aspect-ratio: 1 / 0.27;
-          width: 80%;
-          max-width: 300px;
-          margin-bottom: 20px;
+            aspect-ratio: 1 / 0.27;
+            width: 80%;
+            max-width: 300px;
+            margin-bottom: 20px;
 
-          font-family: 'No Signal', cursive;
-          font-size: 3rem;
-          color: white;
-          text-align: center;
-          text-shadow:
-            0 0 5px #63b6bf,
-            0 0 10px #2ea4cf,
-            0 0 20px #4dafbc;
+            font-family: 'No Signal', cursive;
+            font-size: 3rem;
+            color: white;
+            text-align: center;
+            text-shadow:
+              0 0 5px #63b6bf,
+              0 0 10px #2ea4cf,
+              0 0 20px #4dafbc;
 
-          background-color: transparent;
-          background-image: url('../../../public/portal/profile_menu_green_blue.svg');
-          background-repeat: no-repeat;
-          background-position: 0 0;
-          background-size: cover;
-          border: none;
+            background-color: transparent;
+            background-image: url('../../../public/assets/productPage/profile_menu_green_blue.svg');
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: cover;
+            border: none;
 
-          transition: background-image 0.3s ease-in-out;
+            transition: background-image 0.3s ease-in-out;
 
-          &:focus {
-            background-image: url('../../../public/portal/profile_menu_purple_green.svg');
+            &:focus {
+              background-image: url('../../../public/assets/productPage/profile_menu_purple_green.svg');
+            }
+
+            &:hover {
+              background-image: url('../../../public/assets/productPage/profile_menu_purple_green.svg');
+            }
+
+            &:active {
+              background-image: url('../../../public/assets/productPage/profile_menu_purple.svg');
+            }
           }
-
-          &:hover {
-            background-image: url('../../../public/portal/profile_menu_purple_green.svg');
-          }
-
-          &:active {
-            background-image: url('../../../public/portal/profile_menu_purple.svg');
+          .wrapper-characteristics-delete_button {
+            cursor: pointer;
+            border: none;
+            width: 70px;
+            height: 70px;
+            margin-left: 20px;
+            background: url(../../../public/assets/productPage/free-icon-bin-5661832.png);
+            background-repeat: no-repeat;
+            background-position: 0 0;
+            background-size: cover;
           }
         }
+        .block-buttons-quantity {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          max-width: 150px;
+          padding: 10px;
+          .quantity {
+            font-size: 2rem;
+            color: rgb(81, 224, 237);
+            font-weight: 900;
+          }
+          .quantity-minus,
+          .quantity-plus {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: url(../../../public/assets/productPage/circle_number_blue_inner.svg);
+            // -webkit-mask: url(../../../public/assets/productPage/circle_number_blue_inner.svg)
+            //   0 0/cover no-repeat;
+            // mask: url(../../../public/assets/productPage/circle_number_blue_inner.svg)
+              // 0 0/cover no-repeat;
+            background-repeat: no-repeat;
+            background-position: 0;
+            background-size: cover;
+            position: relative;
+            border-radius: 50%;
+          }
+          .quantity-minus::after,
+          .quantity-plus::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            width: 15px;
+            height: 5px;
+            border: solid 1px rgb(81, 224, 237);
+            border-radius: 5px;
+            background-color: rgb(81, 224, 237);
+            left: 7.5px;
+            top: 12.5px;
+          }
+          .quantity-plus::before {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 15px;
+            border: solid 1px rgb(81, 224, 237);
+            border-radius: 5px;
+            background-color: rgb(81, 224, 237);
+            left: 12.5px;
+            top: 7.5px;
+          }
+          .quantity-minus:hover,
+          .quantity-plus:hover {
+            background: url(../../../public/assets/productPage/circle_number_blue_inner.svg),#4d61bc,;
+          }
+        }
+
         .specifications {
           &-item {
             width: 340px;
             height: 40px;
             padding: 0 0 0 10rem;
             font-size: 20px;
-            background: url(../../../public/portal/product_top_green_blue.svg);
+            background: url(../../../public/assets/productPage/product_top_green_blue.svg);
             background-repeat: no-repeat;
             background-position: 0;
             background-size: 10rem;
@@ -306,6 +379,56 @@
             display: none;
           }
         }
+      }
+    }
+  }
+  .modal {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 2;
+    width: 80vw;
+    min-width: 300px;
+    max-width: 1200px;
+    margin-right: -50%;
+    padding: 0 8vw;
+
+    font-family: 'No Signal', cursive;
+    font-size: 3rem;
+    color: $font-color-primary-one;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+
+    background: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg'), rgba(0, 0, 0, 0.8);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    border-radius: 10px;
+
+    transition: 2s;
+
+    &_visible {
+      animation: open-modal 2s forwards;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes open-modal {
+      from {
+        top: -100%;
+      }
+
+      to {
+        top: 50%;
       }
     }
   }
@@ -414,7 +537,7 @@
           width: 390px;
           padding: 20px 0;
           margin: 10px 20px;
-          background: url(../../../public/portal/header_title_green_blue.svg)
+          background: url(../../../public/assets/productPage/header_title_green_blue.svg)
             30%/180% no-repeat;
         }
         &-characteristics {
@@ -470,7 +593,7 @@
           width: 390px;
           padding: 20px 0;
           margin: 10px 20px;
-          background: url(../../../public/portal/header_title_green_blue.svg)
+          background: url(../../../public/assets/productPage/header_title_green_blue.svg)
             25%/175% no-repeat;
         }
         &-characteristics {
@@ -492,7 +615,7 @@
       .showcase_carousel-bestSellerOn,
       .showcase_carousel-bestSellerOff {
         right: 20%;
-        top:50px;
+        top: 50px;
         width: 150px;
       }
     }
@@ -503,7 +626,7 @@
       height: 350px;
       margin: 0 auto;
 
-      background-image: url('../../../public/portal/portal_04.png');
+      background-image: url('../../../public/assets/productPage/portal_04.png');
       background-repeat: no-repeat;
       background-position: center;
       background-size: auto 100%;
@@ -541,7 +664,7 @@
           width: 300px;
           padding: 20px 0;
           margin: 10px 20px;
-          background: url(../../../public/portal/header_title_green_blue.svg)
+          background: url(../../../public/assets/productPage/header_title_green_blue.svg)
             25%/170% no-repeat;
           .wrapper-desc {
             width: 280px;

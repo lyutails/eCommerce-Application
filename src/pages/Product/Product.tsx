@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { getProductProjectionsByVariantKey } from '../../api/getProducts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +34,7 @@ import {
   setCartQuantity,
 } from '../../store/reducers/cartReducer';
 import { updateCart } from '../../api/existTokenFlow';
+import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
 
 interface IDataProduct {
   name: string;
@@ -49,11 +50,17 @@ interface IDataProduct {
 }
 
 function ProductPage(): JSX.Element {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [quantityProduct, setQuantityProduct] = useState(1);
+  const [productExistence, setProductExistence] = useState(false);
+  const [productId, setProductId] = useState('');
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-  const { anonymousCart, userCart } = useSelector(
+  const { anonymousCart, userCart, cartItems } = useSelector(
     (state: ICartState) => state.cart
   );
-  const { customerId, customerRefreshToken, accessToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
@@ -66,6 +73,7 @@ function ProductPage(): JSX.Element {
           updateAnonCartData,
           response.access_token
         ).then((updatedCart) => {
+          //вся корзина
           if (updatedCart) {
             dispatch(
               changeAnonymousCart({
@@ -122,7 +130,6 @@ function ProductPage(): JSX.Element {
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
-  const { id } = useParams();
   const [dataProduct, setDataProduct] = useState<IDataProduct>({
     name: '',
     description: '',
@@ -209,7 +216,6 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
-  console.log(dataProduct);
   const creatingQueryForVariant = useCallback(
     (product: ProductProjection, variant: ProductVariant): void => {
       const intermediateProduct: IDataProduct = {
@@ -287,10 +293,148 @@ function ProductPage(): JSX.Element {
       {
         action: 'addLineItem',
         sku: dataProduct.sku,
-        quantity: 1,
+        quantity: quantityProduct,
       },
     ],
   };
+
+  //добавить
+  const increaseItem = (itemId: string, refreshToken: string): void => {
+    const increaseItemData: IMyCartUpdate = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'addLineItem',
+          sku: itemId,
+          quantity: 1,
+        },
+      ],
+    };
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          isAuth ? userCart.userCartId : anonymousCart.cartID,
+          increaseItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
+  };
+  // DELETE ITEM FROM CART
+  const deleteItem = (
+    itemId: string,
+    quantity: number,
+    refreshToken: string
+  ): void => {
+    const deleteItemData: IMyCartUpdate = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          //dataProduck.sku quantity
+          action: 'removeLineItem',
+          lineItemId: itemId,
+          quantity: quantity,
+        },
+      ],
+    };
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          !isAuth ? anonymousCart.cartID : userCart.userCartId,
+          deleteItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
+  };
+
+  function openModalWindow(): void {
+    dispatch(changeflagInModalWindow(true));
+  }
+
+  function deleteProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    deleteItem(productId, quantityProduct, refreshTokenProduct);
+    setProductExistence(false);
+    setQuantityProduct(1);
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 3000);
+  }
+  function addOneProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    setQuantityProduct(quantityProduct + 1);
+    increaseItem(dataProduct.sku, refreshTokenProduct);
+  }
+  function deleteOneProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    if (quantityProduct > 1) {
+      setQuantityProduct(quantityProduct - 1);
+      const quantity = 1;
+      deleteItem(productId, quantity, refreshTokenProduct);
+    }
+  }
 
   useEffect(() => {
     id &&
@@ -307,9 +451,20 @@ function ProductPage(): JSX.Element {
         }
       });
   }, [creatingQueryForMaster, creatingQueryForVariant, id]);
-  function openModalWindow(): void {
-    dispatch(changeflagInModalWindow(true));
-  }
+
+  useEffect(() => {
+    console.log(id, cartItems);
+    if (cartItems.length) {
+      cartItems.map((item) => {
+        if (item.variant.key === id) {
+          setProductExistence(true);
+          setQuantityProduct(item.quantity);
+          setProductId(item.id);
+        }
+      });
+    }
+  }, [cartItems, id]);
+
   return (
     <section className="showcase">
       <div className="showcase_header">
@@ -455,18 +610,41 @@ function ProductPage(): JSX.Element {
               </div>
               {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
-            <button
-              className="wrapper-characteristics_button"
-              onClick={(): void => {
-                updateCustomerCart();
-              }}
-            >
-              To Cart
-            </button>
+            {productExistence && (
+              <div className="block-buttons-quantity">
+                <button
+                  onClick={deleteOneProduct}
+                  className="quantity-minus"
+                ></button>
+                <div className="quantity">{quantityProduct}</div>
+                <button
+                  onClick={addOneProduct}
+                  className="quantity-plus"
+                ></button>
+              </div>
+            )}
+
+            <div className="wrapper-characteristics_buttons">
+              <button
+                className="wrapper-characteristics_button"
+                onClick={(): void =>
+                  productExistence ? navigate('/cart') : updateCustomerCart()
+                }
+              >
+                {productExistence ? 'Go To Cart' : 'Add To Card'}
+              </button>
+              {productExistence && (
+                <button
+                  onClick={deleteProduct}
+                  className="wrapper-characteristics-delete_button"
+                ></button>
+              )}
+            </div>
           </div>
         </div>
       </div>
       <div>{flagModalWindow ? <ModalWindow /> : ''}</div>
+      <div>{modal ? <SistemModalWindow /> : ''}</div>
     </section>
   );
 }

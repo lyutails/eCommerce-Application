@@ -1188,7 +1188,7 @@ function CategoryPage(): JSX.Element {
                           to Cart
                         </button>
                         <Link
-                          to={`/category/${category}/${card.key}`}
+                          to={`/catalog/${category}/${card.key}`}
                           className={style.category_card}
                           key={card.key}
                         >

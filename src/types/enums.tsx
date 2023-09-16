@@ -15,8 +15,6 @@ export enum ParhRoute {
   CartPage = 'cart',
   CatalogPage = 'catalog',
   CategoryPage = 'catalog/:category',
-  CategoryPageQuery = 'catalog/:category/:query',
-  CategoryPageQueryProductPage = 'catalog/:category/:query/:id',
   ProductPage = 'catalog/:category/:id',
   ProductPageCart = '/:id',
   ProfilePage = '/profile/:customerId',
