@@ -21,7 +21,6 @@ import {
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
-import { MyCartUpdate } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -325,7 +324,7 @@ function CartPage(): JSX.Element {
   const itemCartCards = cartItems.map((card, i) => {
     return (
       <CartProduct
-        idCard={card?.productKey ? card?.productKey : ''}
+        idCard={card?.variant.key ? card?.variant.key : ''}
         name={card.name['en-US']}
         key={`card_${i}`}
         sku={card.variant.sku ? card.variant.sku : ''}

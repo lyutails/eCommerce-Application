@@ -229,16 +229,8 @@ function App(): JSX.Element {
           <Route path={ParhRoute.CartPage} element={<CartPage />} />
           <Route path={ParhRoute.CatalogPage} element={<CatalogPage />} />
           <Route path={ParhRoute.CategoryPage} element={<CategoryPage />} />
-          <Route
-            path={ParhRoute.CategoryPageQuery}
-            element={<CategoryPage />}
-          />
           <Route path={ParhRoute.ProductPage} element={<ProductPage />} />
           <Route path={ParhRoute.ProductPageCart} element={<ProductPage />} />
-          <Route
-            path={ParhRoute.CategoryPageQueryProductPage}
-            element={<ProductPage />}
-          />
           <Route path={ParhRoute.NotFoundPage} element={<NotFoundPage />} />
           {isAuth ? (
             <>
