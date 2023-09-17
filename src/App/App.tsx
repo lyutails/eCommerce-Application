@@ -127,8 +127,10 @@ function App(): JSX.Element {
                   userCartId: responseTwo?.body.id,
                 })
               );
-              dispatch(setCartPrice(response?.body.totalPrice.centAmount));
-              dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+              dispatch(setCartPrice(responseTwo?.body.totalPrice.centAmount));
+              dispatch(
+                setCartQuantity(responseTwo?.body.totalLineItemQuantity)
+              );
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {

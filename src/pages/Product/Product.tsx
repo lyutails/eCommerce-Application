@@ -73,7 +73,6 @@ function ProductPage(): JSX.Element {
           updateAnonCartData,
           response.access_token
         ).then((updatedCart) => {
-          //вся корзина
           if (updatedCart) {
             dispatch(
               changeAnonymousCart({
@@ -298,7 +297,6 @@ function ProductPage(): JSX.Element {
     ],
   };
 
-  //добавить
   const increaseItem = (itemId: string, refreshToken: string): void => {
     const increaseItemData: IMyCartUpdate = {
       version: !isAuth
@@ -347,7 +345,6 @@ function ProductPage(): JSX.Element {
       }
     });
   };
-  // DELETE ITEM FROM CART
   const deleteItem = (
     itemId: string,
     quantity: number,
@@ -359,7 +356,6 @@ function ProductPage(): JSX.Element {
         : userCart.versionUserCart,
       actions: [
         {
-          //dataProduck.sku quantity
           action: 'removeLineItem',
           lineItemId: itemId,
           quantity: quantity,
@@ -484,7 +480,6 @@ function ProductPage(): JSX.Element {
           <div className="showcase_carousel">
             <Swiper
               grabCursor={true}
-              // loop={true}
               effect={'coverflow'}
               centeredSlides={true}
               spaceBetween={100}
@@ -497,12 +492,6 @@ function ProductPage(): JSX.Element {
                 slideShadows: false,
               }}
               modules={[EffectCoverflow]}
-              // keyboard={{
-              //   enabled: true,
-              // }}
-              // mousewheel={{
-              //   thresholdDelta: 70,
-              // }}
               initialSlide={1}
               breakpoints={{
                 3900: {
@@ -536,8 +525,6 @@ function ProductPage(): JSX.Element {
                 );
               })}
             </Swiper>
-            {/* <div className="showcase-navigation_prev"></div>
-            <div className="showcase-navigation_next"></div> */}
           </div>
         </div>
       </div>
@@ -608,7 +595,6 @@ function ProductPage(): JSX.Element {
                   {dataProduct.size}
                 </span>
               </div>
-              {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
             {productExistence && (
               <div className="block-buttons-quantity">
