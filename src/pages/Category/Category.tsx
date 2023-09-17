@@ -39,6 +39,8 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import '../../../global.d.ts';
 import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
+import _debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -323,12 +325,12 @@ function CategoryPage(): JSX.Element {
             : searchValue === '' && category === 'Stickers'
             ? productsForSearchStickers
             : searchValue,
-          fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
           queryLimitStart,
           queryOffsetStart,
-          winterSale
+          winterSale,
+          fuzzylevel
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -493,8 +495,11 @@ function CategoryPage(): JSX.Element {
 
       let fuzzylevel = 0;
 
-      if (searchValue.length > 5) {
-        fuzzylevel = 2;
+      if (searchValue.length === 1) {
+        fuzzylevel = 0;
+      }
+      if (searchValue.length === 2) {
+        fuzzylevel = 0;
       }
       if (searchValue.length === 3) {
         fuzzylevel = 1;
@@ -505,8 +510,8 @@ function CategoryPage(): JSX.Element {
       if (searchValue.length === 5) {
         fuzzylevel = 1;
       }
-      if (searchValue.length === 1 || searchValue.length === 2) {
-        fuzzylevel = 0;
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
       }
 
       const queryLimit =
@@ -533,12 +538,12 @@ function CategoryPage(): JSX.Element {
         queryBrandString,
         queryStringPriceNameSort,
         querySearchValue,
-        fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
         queryLimit,
         queryOffset,
-        winterSale
+        winterSale,
+        fuzzylevel
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -560,12 +565,12 @@ function CategoryPage(): JSX.Element {
               queryBrandString,
               queryStringPriceNameSort,
               querySearchValue,
-              fuzzylevel,
               queryPriceRangeStart,
               queryPriceRangeFinish,
               100,
               0,
-              winterSale
+              winterSale,
+              fuzzylevel
             ).then((response) => {
               const parentResults = response.body.results;
               const maxPageParent = Math.ceil(parentResults.length / pageLimit);
@@ -857,6 +862,31 @@ function CategoryPage(): JSX.Element {
     setSearchInputPlaceholderVisibility,
   ] = useState(false);
 
+  // const debounceSearchInput = useCallback(
+  //   _debounce((e) => setSearchValue(e.target.value), 500, { trailing: true }),
+  //   []
+  // );
+
+  // const debounceSearchInput = debounce(async (criteria) => {
+  //   setSearchValue(await criteria);
+  // }, 500);
+
+  const debounceSearchInput = useMemo(
+    () =>
+      debounce((e) => {
+        setSearchValue(e);
+      }, 500),
+    []
+  );
+
+  const debouncePriceRange = useMemo(
+    () =>
+      debounce((e) => {
+        setPriceSliderValue(e);
+      }, 500),
+    []
+  );
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -879,6 +909,17 @@ function CategoryPage(): JSX.Element {
               onChange={(e): void => {
                 setSearchValue(e.target.value);
               }}
+              // onChange={debounce((e): void => {
+              //   setSearchValue(e.target.value);
+              // }, 500)}
+              // onChange={(e): void => {
+              //   debounceSearchInput(e.target.value);
+              // }}
+              // onChange={(): void => {
+              //   _debounce((e) => setSearchValue(e.target.value), 500, {
+              //     trailing: true,
+              //   });
+              // }}
               onFocus={(): void => setSearchInputPlaceholderVisibility(true)}
               onBlur={(): void => setSearchInputPlaceholderVisibility(false)}
             ></input>
@@ -1111,6 +1152,9 @@ function CategoryPage(): JSX.Element {
               // renderThumb={(props: number[], state) => (
               //   <div {...props}>{state.valueNow}</div>
               // )}
+              // onChange={(value: number[]): void => {
+              //   debouncePriceRange(value);
+              // }}
               onChange={(value: number[]): void => {
                 setPriceSliderValue(value);
               }}

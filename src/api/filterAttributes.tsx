@@ -16,12 +16,12 @@ export async function filterByAttributes(
   brand: string,
   sortpricename: string | string[],
   search: string,
-  fuzzylevel: number,
   priceRangeStart: string,
   priceRangeFinish: string,
   limit: number,
   offset: number,
-  winter: string
+  winter: string,
+  fuzzylevel?: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
