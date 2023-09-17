@@ -1,6 +1,7 @@
 import {
   createCustomerId,
   setAccessTokenStatus,
+  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
@@ -77,8 +78,6 @@ export const handleСreationAuth = (
               dispatch(createCustomerId(responseTwo.body.customer.id));
               dispatch(changeVersion(responseTwo.body.customer.version));
             }
-          })
-          .then(() => {
             const token = getCustomerToken(loginField, passwordField);
             return token;
           })
@@ -86,6 +85,8 @@ export const handleСreationAuth = (
             localStorage.setItem('refreshToken', responseThree.refresh_token);
             dispatch(setRefreshTokenStatus(responseThree.refresh_token));
             dispatch(setAccessTokenStatus(responseThree.access_token));
+            dispatch(setAuthStatus(true));
+            localStorage.setItem('isAuth', 'true');
           })
           .catch((error) => {
             if (error) {

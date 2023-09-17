@@ -343,7 +343,7 @@ function CartPage(): JSX.Element {
             card.quantity,
             !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
           );
-        }, 500)}
+        }, 800)}
         quantity={card.quantity}
         reduceQuantity={debounce(
           (): void =>
@@ -354,7 +354,7 @@ function CartPage(): JSX.Element {
                 ? anonymousCart.anonymousRefreshToken
                 : customerRefreshToken
             ),
-          500
+          800
         )}
         increaseQuantity={debounce(
           (): void =>
@@ -364,7 +364,7 @@ function CartPage(): JSX.Element {
                 ? anonymousCart.anonymousRefreshToken
                 : customerRefreshToken
             ),
-          500
+          800
         )}
       ></CartProduct>
     );
@@ -423,7 +423,7 @@ function CartPage(): JSX.Element {
                         ? anonymousCart.anonymousRefreshToken
                         : customerRefreshToken
                     ),
-                  500
+                  800
                 )}
                 className={style.cart_discount_button}
                 disabled={
@@ -472,7 +472,7 @@ function CartPage(): JSX.Element {
                       ? anonymousCart.anonymousRefreshToken
                       : customerRefreshToken
                   ),
-                500
+                800
               )}
               className={style.cart_discount_delete}
             >

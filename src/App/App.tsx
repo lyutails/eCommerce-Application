@@ -54,11 +54,10 @@ function App(): JSX.Element {
 
   const checkRefreshToken = useCallback((): void => {
     dispatch(setAuthStatus(false));
-    navigate('/login');
     localStorage.removeItem('customerId');
     localStorage.removeItem('isAuth');
     dispatch(changeVersion(1));
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!customerRefreshToken) {
@@ -108,7 +107,7 @@ function App(): JSX.Element {
           localStorage.removeItem('refreshToken');
         });
     }
-  }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
+  }, [customerId, dispatch, navigate, customerRefreshToken, checkRefreshToken]);
 
   useEffect(() => {
     if (!isAuth && !anonymousCart.anonymousID) {
@@ -173,9 +172,13 @@ function App(): JSX.Element {
                 if (response) {
                   const codeDiscountArray = response.body.results.map(
                     (code) => {
-                      let codeName;
+                      const codeName = {
+                        name: '',
+                        id: '',
+                      };
                       if (code.code) {
-                        codeName = code.code;
+                        codeName.name = code.code;
+                        codeName.id = code.id;
                       }
                       return codeName;
                     }
@@ -206,7 +209,18 @@ function App(): JSX.Element {
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {
-                dispatch(setDiscountCodes(response.body.results));
+                const codeDiscountArray = response.body.results.map((code) => {
+                  const codeName = {
+                    name: '',
+                    id: '',
+                  };
+                  if (code.code) {
+                    codeName.name = code.code;
+                    codeName.id = code.id;
+                  }
+                  return codeName;
+                });
+                dispatch(setDiscountCodes(codeDiscountArray));
               }
             });
           }
@@ -250,6 +264,10 @@ function App(): JSX.Element {
             <>
               <Route
                 path={ParhRoute.ProfilePage}
+                element={<Navigate to={ParhRoute.AuthPage} replace />}
+              />
+              <Route
+                path={ParhRoute.ProfilePageNull}
                 element={<Navigate to={ParhRoute.AuthPage} replace />}
               />
               <Route

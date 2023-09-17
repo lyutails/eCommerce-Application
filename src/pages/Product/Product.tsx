@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow } from 'swiper/modules';
@@ -401,6 +402,7 @@ function ProductPage(): JSX.Element {
   function openModalWindow(): void {
     dispatch(changeflagInModalWindow(true));
   }
+  console.log(productExistence);
 
   function deleteProduct(): void {
     const refreshTokenProduct = !isAuth
@@ -431,12 +433,14 @@ function ProductPage(): JSX.Element {
       deleteItem(productId, quantity, refreshTokenProduct);
     }
   }
+ 
 
   useEffect(() => {
+    console.log(id, 456);
     id &&
       getProductProjectionsByVariantKey(id).then((response) => {
         const productObtained = response.body.results[0];
-
+        console.log(id, 123);
         if (productObtained.masterVariant.key === id) {
           creatingQueryForMaster(productObtained);
         } else {
@@ -599,12 +603,12 @@ function ProductPage(): JSX.Element {
             {productExistence && (
               <div className="block-buttons-quantity">
                 <button
-                  onClick={deleteOneProduct}
+                  onClick={debounce(deleteOneProduct, 800)}
                   className="quantity-minus"
                 ></button>
                 <div className="quantity">{quantityProduct}</div>
                 <button
-                  onClick={addOneProduct}
+                  onClick={debounce(addOneProduct, 800)}
                   className="quantity-plus"
                 ></button>
               </div>
@@ -613,15 +617,17 @@ function ProductPage(): JSX.Element {
             <div className="wrapper-characteristics_buttons">
               <button
                 className="wrapper-characteristics_button"
-                onClick={(): void =>
-                  productExistence ? navigate('/cart') : updateCustomerCart()
-                }
+                onClick={debounce(
+                  (): void =>
+                    productExistence ? navigate('/cart') : updateCustomerCart(),
+                  300
+                )}
               >
                 {productExistence ? 'Go To Cart' : 'Add To Card'}
               </button>
               {productExistence && (
                 <button
-                  onClick={deleteProduct}
+                  onClick={debounce(deleteProduct, 500)}
                   className="wrapper-characteristics-delete_button"
                 ></button>
               )}

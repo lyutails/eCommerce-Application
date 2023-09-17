@@ -53,8 +53,8 @@ function Header(): JSX.Element {
                 : `${style.header_menu} `
             }
           >
-            {nameRouteHeader.map((item, index) =>
-              item === 'Profile' ? (
+            {nameRouteHeader.map((item, index) => {
+              return item === 'Profile' ? (
                 <li className={style.header_menu_item} key={item}>
                   <NavLink
                     onClick={handleToBurgerOff}
@@ -97,8 +97,8 @@ function Header(): JSX.Element {
                     {item}
                   </NavLink>
                 </li>
-              )
-            )}
+              );
+            })}
           </ul>
         </nav>
         <button

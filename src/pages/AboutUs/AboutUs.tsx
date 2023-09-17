@@ -19,6 +19,13 @@ function AboutUsPage(): JSX.Element {
             <div>коронная фраза</div>
           </div>
         </div>
+        <div className={style.map_block}>
+          <h3 className={style.map_block_title}>A map of the world and our cities</h3>
+          <div className={style.map}>
+            <div className={style.map_children}></div>
+            <div className={style.map_children2}></div>
+          </div>
+        </div>
       </div>
     </section>
   );
