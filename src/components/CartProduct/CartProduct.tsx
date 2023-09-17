@@ -11,13 +11,13 @@ export function CartProduct(props: CartProductProps): JSX.Element {
     <div className={style.cartproduct_wrapper}>
       <div className={style.cartproduct_item}>
         <Link
-          to={`/${props.idCard}`}
+          to={`/cart/${props.idCard}`}
           className={style.cartproduct_link_to_product}
         >
           <div className={style.cartproduct_name}>{`${props.sku}`}</div>
         </Link>
         <Link
-          to={`/${props.idCard}`}
+          to={`/cart/${props.idCard}`}
           className={style.cartproduct_link_to_product}
         >
           <img

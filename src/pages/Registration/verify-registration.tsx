@@ -24,6 +24,7 @@ import { AnyAction, Dispatch } from 'redux';
 import {
   createCustomerId,
   setAccessTokenStatus,
+  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
@@ -375,6 +376,8 @@ export const handleСreationReg = (
               localStorage.setItem('refreshToken', responseThree.refresh_token);
               dispatch(setRefreshTokenStatus(responseThree.refresh_token));
               dispatch(setAccessTokenStatus(responseThree.access_token));
+              dispatch(setAuthStatus(true));
+              localStorage.setItem('isAuth', 'true');
             })
             .catch((error) => {
               if (error) {

@@ -130,8 +130,6 @@ export const loginAnonUser = async (
         },
       })
       .execute();
-    dispatch(setAuthStatus(true));
-    localStorage.setItem('isAuth', 'true');
     setSuccessfulMessage(true);
     return cart;
   } catch (error) {
