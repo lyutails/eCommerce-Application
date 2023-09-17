@@ -31,17 +31,19 @@ function CatalogPage(): JSX.Element {
           </h1>
           <div className={style.catalog_categories}>
             {allCategories.map((category) => {
-              return (
-                <Link
-                  to={category.name['en-US']}
-                  className={style.catalog_category}
-                  key={category.name['en-US']}
-                >
-                  <div className={style.catalog_category_title}>
-                    {category.name['en-US']}
-                  </div>
-                </Link>
-              );
+              if (category.name['en-US'] !== 'Custom') {
+                return (
+                  <Link
+                    to={category.name['en-US']}
+                    className={style.catalog_category}
+                    key={category.name['en-US']}
+                  >
+                    <div className={style.catalog_category_title}>
+                      {category.name['en-US']}
+                    </div>
+                  </Link>
+                );
+              }
             })}
           </div>
         </div>

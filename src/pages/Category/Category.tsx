@@ -61,6 +61,7 @@ function CategoryPage(): JSX.Element {
 
   const { category } = useParams();
   const { query } = useParams();
+  const { cartItems } = useSelector((state: ICartState) => state.cart);
 
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
@@ -1225,9 +1226,24 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void =>
-                            updateCustomerCart(updateAnonCartData)
-                          }
+                          onClick={(): void => {
+                            if (cartItems.length > 0) {
+                              console.log('popali');
+                              const foundProduct = cartItems.find(
+                                (item) => card.sku === item.name['en-US']
+                              );
+                              if (foundProduct) {
+                                alert('already in cart');
+                                console.log('product already in cart');
+                              } else {
+                                updateCustomerCart(updateAnonCartData);
+                                console.log('add to cart, cart is full');
+                              }
+                            } else {
+                              updateCustomerCart(updateAnonCartData);
+                              console.log('add to cart, cart is empty');
+                            }
+                          }}
                         >
                           to Cart
                         </button>
