@@ -325,12 +325,12 @@ function CategoryPage(): JSX.Element {
             : searchValue === '' && category === 'Stickers'
             ? productsForSearchStickers
             : searchValue,
-          fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
           queryLimitStart,
           queryOffsetStart,
-          winterSale
+          winterSale,
+          fuzzylevel
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -495,8 +495,11 @@ function CategoryPage(): JSX.Element {
 
       let fuzzylevel = 0;
 
-      if (searchValue.length > 5) {
-        fuzzylevel = 2;
+      if (searchValue.length === 1) {
+        fuzzylevel = 0;
+      }
+      if (searchValue.length === 2) {
+        fuzzylevel = 0;
       }
       if (searchValue.length === 3) {
         fuzzylevel = 1;
@@ -507,8 +510,8 @@ function CategoryPage(): JSX.Element {
       if (searchValue.length === 5) {
         fuzzylevel = 1;
       }
-      if (searchValue.length === 1 || searchValue.length === 2) {
-        fuzzylevel = 0;
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
       }
 
       const queryLimit =
@@ -535,12 +538,12 @@ function CategoryPage(): JSX.Element {
         queryBrandString,
         queryStringPriceNameSort,
         querySearchValue,
-        fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
         queryLimit,
         queryOffset,
-        winterSale
+        winterSale,
+        fuzzylevel
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -562,12 +565,12 @@ function CategoryPage(): JSX.Element {
               queryBrandString,
               queryStringPriceNameSort,
               querySearchValue,
-              fuzzylevel,
               queryPriceRangeStart,
               queryPriceRangeFinish,
               100,
               0,
-              winterSale
+              winterSale,
+              fuzzylevel
             ).then((response) => {
               const parentResults = response.body.results;
               const maxPageParent = Math.ceil(parentResults.length / pageLimit);
@@ -903,12 +906,15 @@ function CategoryPage(): JSX.Element {
           <div className={style.category_filters_search}>
             <input
               className={style.category_real_search_input}
-              // onChange={(e): void => {
-              //   setSearchValue(e.target.value);
-              // }}
               onChange={(e): void => {
-                debounceSearchInput(e.target.value);
+                setSearchValue(e.target.value);
               }}
+              // onChange={debounce((e): void => {
+              //   setSearchValue(e.target.value);
+              // }, 500)}
+              // onChange={(e): void => {
+              //   debounceSearchInput(e.target.value);
+              // }}
               // onChange={(): void => {
               //   _debounce((e) => setSearchValue(e.target.value), 500, {
               //     trailing: true,
@@ -1146,8 +1152,11 @@ function CategoryPage(): JSX.Element {
               // renderThumb={(props: number[], state) => (
               //   <div {...props}>{state.valueNow}</div>
               // )}
+              // onChange={(value: number[]): void => {
+              //   debouncePriceRange(value);
+              // }}
               onChange={(value: number[]): void => {
-                debouncePriceRange(value);
+                setPriceSliderValue(value);
               }}
             />
             <div className={style.category_filters_brand}>

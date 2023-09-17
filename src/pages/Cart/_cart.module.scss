@@ -48,6 +48,7 @@
     font-size: 3rem;
     margin-right: 3vw;
     user-select: none;
+    font-weight: 800;
   }
 
   &_price_amount {
@@ -499,4 +500,7 @@
   text-shadow:
     0 0 5px $glow-green,
     0 0 10px $glow-green;
+  text-decoration: line-through;
+  text-decoration-color: $glow-violet;
+  text-decoration-thickness: 6px;
 }
