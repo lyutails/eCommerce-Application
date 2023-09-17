@@ -3,120 +3,17 @@ import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import AddressForm from '../AddressForm/AddressForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState, IRootState } from '../../types/interfaces';
+import {
+  IAddAddressData,
+  IAddAddressStatusData,
+  IAddressModalProps,
+  IAddressUpdateData,
+  IChangeAddressData,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { handleUpdateAddress } from './address-modal-verify';
 import { changeAddress } from '../../store/reducers/profileReducer';
-// import { updateBio } from './bio-update';
-
-export interface IAddressModalProps {
-  modalClass: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  version: number;
-  token?: string;
-  // addressData: IAddressesCardData | null;
-  setClickedAddressesUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface IAddressUpdateData {
-  streetError: boolean;
-  buildingError: boolean;
-  cityError: boolean;
-  apartmentError: boolean;
-  postalError: boolean;
-  countryError: boolean;
-  token: string;
-}
-
-export interface IChangeAddressData {
-  version: number;
-  actions: [
-    {
-      action: string;
-      addressId: string;
-      address: {
-        streetName: string;
-        building: string;
-        apartment: string;
-        postalCode: string;
-        city: string;
-        country: string;
-      };
-    },
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      addressId: string;
-    }?,
-  ];
-}
-
-export interface IAddAddressData {
-  version: number;
-  actions: [
-    {
-      action: string;
-      address: {
-        key: string;
-        streetName: string;
-        building: string;
-        apartment: string;
-        postalCode: string;
-        city: string;
-        country: string;
-      };
-    },
-    {
-      action: string;
-      addressKey: string;
-    }?,
-    {
-      action: string;
-      addressKey: string;
-    }?,
-    {
-      action: string;
-      addressKey: string;
-    }?,
-    {
-      action: string;
-      addressKey: string;
-    }?,
-  ];
-}
-
-export interface IAddAddressStatusData {
-  version: number;
-  actions: [
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      addressId: string;
-    }?,
-    {
-      action: string;
-      key: string;
-    }?,
-  ];
-}
 
 function AddressModal(props: IAddressModalProps): JSX.Element {
   const dispatch = useDispatch();

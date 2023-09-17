@@ -15,7 +15,6 @@ if (typeof process.env.CLIENT_SECRET !== 'string') {
   throwNewError('no client secret found');
 }
 
-/* Configure authMiddlewareOptions */
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: 'https://auth.us-central1.gcp.commercetools.com',
   projectKey: PROJECT_KEY,
@@ -29,15 +28,12 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   fetch,
 };
 
-/* Configure httpMiddlewareOptions */
 export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: 'https://api.us-central1.gcp.commercetools.com',
   fetch,
 };
 
-/* Export the ClientBuilder */
 export const ctpClient = new ClientBuilder()
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
-  /* .withLoggerMiddleware() */
   .build();

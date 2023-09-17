@@ -7,7 +7,6 @@ import iconError from '../../../public/assets/icons/error.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import iconEyeClose from '../../../public/assets/icons/eye-close.svg';
 import { IInputPropsPassword, IProfileState } from '../../types/interfaces';
-import { handlePasswordInput, inputHandler } from '../../pages/verification';
 import { hideTooltip, showTooltip } from '../../pages/showTooltip';
 import { useSelector } from 'react-redux';
 import { handlePasswordInputTwo } from '../../pages/verificationTwo';

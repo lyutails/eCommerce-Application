@@ -11,21 +11,12 @@ import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import style from '../AddressForm/_addressForm.module.scss';
 import Input from '../Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState } from '../../types/interfaces';
+import {
+  IAddressDataObject,
+  IAddressFormProps,
+  IProfileState,
+} from '../../types/interfaces';
 import { changeAddress } from '../../store/reducers/profileReducer';
-
-export interface IAddressFormProps {
-  addBillingAddress?: ReactNode;
-  addressData: IAddressDataObject;
-  setDefault?: ReactNode;
-  setAddressStatus?: ReactNode;
-  titleStyle: string;
-}
-
-interface IAddressDataObject {
-  title: string;
-  checboxId: string;
-}
 
 function AddressForm(props: IAddressFormProps): JSX.Element {
   const { address } = useSelector((state: IProfileState) => state.profile);

@@ -2,7 +2,7 @@ import { changeVersion } from '../../store/reducers/profileReducer';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { updateCustomer } from '../../api/updateBio';
-import { IMyCustomerEmailUpdate } from './EmailModal';
+import { IMyCustomerEmailUpdate } from '../../types/interfaces';
 
 export const handleUpdateEmail = (
   emailCheck: boolean,

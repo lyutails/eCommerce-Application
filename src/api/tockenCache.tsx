@@ -5,6 +5,7 @@ import {
   TokenStore,
 } from '@commercetools/sdk-client-v2';
 
+//// I DON'T NEED THAT
 class MyTokenCache implements TokenCache {
   public TokenStore: {
     token: string;
