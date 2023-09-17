@@ -371,7 +371,6 @@ function CartPage(): JSX.Element {
       ></CartProduct>
     );
   });
-  console.log('lalala', 'lalala');
   return (
     <div className={style.cart_wrapper}>
       <h2 className={style.cart_title}>
