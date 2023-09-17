@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-const language = localStorage.getItem('isAuth');
-let isAuth;
-language && language === 'true' ? (isAuth = true) : (isAuth = false);
+const local = localStorage.getItem('isAuth');
 const userReducer = createSlice({
   name: 'user',
   initialState: {
-    isAuth: false,
+    isAuth: local && local === 'true' ? true : false,
     customerId: localStorage.getItem('customerId'),
     customerRefreshToken: localStorage.getItem('refreshToken'),
     accessToken: '',
