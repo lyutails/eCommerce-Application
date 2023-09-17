@@ -872,15 +872,15 @@ function CategoryPage(): JSX.Element {
     () =>
       debounce((e) => {
         setSearchValue(e);
-      }, 1000),
+      }, 500),
     []
   );
 
   const debouncePriceRange = useMemo(
     () =>
       debounce((e) => {
-        setSearchValue(e);
-      }, 1000),
+        setPriceSliderValue(e);
+      }, 500),
     []
   );
 
@@ -1147,7 +1147,7 @@ function CategoryPage(): JSX.Element {
               //   <div {...props}>{state.valueNow}</div>
               // )}
               onChange={(value: number[]): void => {
-                setPriceSliderValue(value);
+                debouncePriceRange(value);
               }}
             />
             <div className={style.category_filters_brand}>
