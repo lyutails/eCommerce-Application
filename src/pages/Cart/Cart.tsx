@@ -363,7 +363,7 @@ function CartPage(): JSX.Element {
       ></CartProduct>
     );
   });
-  console.log('lalala');
+  console.log('lalala', 'lalala');
   return (
     <div className={style.cart_wrapper}>
       <h2 className={style.cart_title}>Your cart, dear - customer name here</h2>
