@@ -101,9 +101,13 @@ function App(): JSX.Element {
                 if (response) {
                   const codeDiscountArray = response.body.results.map(
                     (code) => {
-                      let codeName;
+                      const codeName = {
+                        name: '',
+                        id: '',
+                      };
                       if (code.code) {
-                        codeName = code.code;
+                        codeName.name = code.code;
+                        codeName.id = code.id;
                       }
                       return codeName;
                     }
@@ -127,12 +131,25 @@ function App(): JSX.Element {
                   userCartId: responseTwo?.body.id,
                 })
               );
-              dispatch(setCartPrice(response?.body.totalPrice.centAmount));
-              dispatch(setCartQuantity(response?.body.totalLineItemQuantity));
+              dispatch(setCartPrice(responseTwo?.body.totalPrice.centAmount));
+              dispatch(
+                setCartQuantity(responseTwo?.body.totalLineItemQuantity)
+              );
             });
             getDiscountCodes(response.access_token).then((response) => {
               if (response) {
-                dispatch(setDiscountCodes(response.body.results));
+                const codeDiscountArray = response.body.results.map((code) => {
+                  const codeName = {
+                    name: '',
+                    id: '',
+                  };
+                  if (code.code) {
+                    codeName.name = code.code;
+                    codeName.id = code.id;
+                  }
+                  return codeName;
+                });
+                dispatch(setDiscountCodes(codeDiscountArray));
               }
             });
           }

@@ -35,6 +35,12 @@
     background-repeat: no-repeat;
     user-select: none;
     filter: drop-shadow(0 0 10px $glow-violet);
+    transition: all 0.4s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      filter: drop-shadow(0 0 10px $glow-green);
+    }
   }
 
   &_product_counter {
@@ -89,6 +95,7 @@
 
   &_delete {
     width: 4vw;
+    max-width: 50px;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/assets/icons/trash_cart.svg');
     background-repeat: no-repeat;
