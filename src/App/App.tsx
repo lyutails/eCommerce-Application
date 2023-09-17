@@ -52,17 +52,17 @@ function App(): JSX.Element {
     (state: IRootState) => state.user
   );
 
-  const checkRefreshToken = useCallback((): void => {
-    dispatch(setAuthStatus(false));
-    navigate('/login');
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('isAuth');
-    dispatch(changeVersion(1));
-  }, [dispatch, navigate]);
+  // const checkRefreshToken = useCallback((): void => {
+  //   dispatch(setAuthStatus(false));
+  //   navigate('/login');
+  //   localStorage.removeItem('customerId');
+  //   localStorage.removeItem('isAuth');
+  //   dispatch(changeVersion(1));
+  // }, [dispatch, navigate]);
 
   useEffect(() => {
     if (!customerRefreshToken) {
-      checkRefreshToken();
+      // checkRefreshToken();
     } else {
       refreshTokenFlow(customerRefreshToken)
         .then(() => {
@@ -104,11 +104,11 @@ function App(): JSX.Element {
         })
         .catch(() => {
           console.log('error');
-          checkRefreshToken();
+          // checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });
     }
-  }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
+  }, [ customerId, dispatch, navigate, customerRefreshToken]);
 
   useEffect(() => {
     if (!isAuth && !anonymousCart.anonymousID) {

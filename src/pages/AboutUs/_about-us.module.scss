@@ -1,10 +1,65 @@
-.container{
+@import '../../style/variables';
+.about_us {
   display: flex;
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
+  background-color: black;
 
-  .title{
-    font-size: 50px;
+  .map_block{
+    .map_block_title{
+      font-size: 3rem;
+      color: $scroll-color;
+    }
+    .map {
+      width: 600px;
+      height: 400px;
+      background: url(../../../public/assets/about-us/map.png);
+      background-position: 0 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: drop-shadow( 0px 5px 5px rgb(48, 204, 243));
+      position: relative;
+    }
+    .map::before,
+    .map::after,
+    .map .map_children,
+    .map .map_children2{
+      content: '';
+      position: absolute;
+      top: 38%;
+      left: 55%;
+      width: 10px;
+      height: 10px;
+      background-color: rgb(198, 48, 243);
+      border-radius: 50%;
+      animation: pulse 2.5s linear infinite;
+    }
+    .map::after{
+      top: 45%;
+      left: 62%;
+    }
+    .map .map_children{
+      top: 45%;
+      left: 55%;
+    }
+    .map .map_children2{
+      top: 43%;
+      left: 52%;
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
   }
 }
