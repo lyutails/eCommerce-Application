@@ -373,7 +373,13 @@ function CartPage(): JSX.Element {
         <div className={style.cart_price_wrapper}>
           <div className={style.cart_totalprice}>
             <div className={style.cart_price_name}>Total Price</div>
-            <div className={style.cart_price_amount}>
+            <div
+              className={
+                discountCodesCart?.length
+                  ? style.cart_price_amount
+                  : style.linethrough
+              }
+            >
               {(cartPrice / 100).toFixed(2)}$
             </div>
           </div>

@@ -490,3 +490,13 @@
     }
   }
 }
+
+.linethrough {
+  font-size: 3rem;
+  font-family: 'No Signal', cursive;
+  color: $font-color-primary-one;
+  user-select: none;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
+}
