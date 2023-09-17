@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CategoryCardProps } from '../../types/types';
 import style from './_card.module.scss';
+import { throwNewError } from '../../utils/throwNewError';
 
 function Card(props: CategoryCardProps): JSX.Element {
   const [currentImage, setCurrentImage] = useState<string>('');
@@ -9,7 +10,7 @@ function Card(props: CategoryCardProps): JSX.Element {
 
   useEffect(() => {
     if (!props.images) {
-      throw new Error('no images found');
+      throwNewError('no images for catalog card found');
     }
     setCurrentImage(props.images[0].url);
   }, [props.images]);
@@ -19,11 +20,11 @@ function Card(props: CategoryCardProps): JSX.Element {
       className={style.card_wrapper}
       onMouseEnter={(): void => {
         if (!props.description) {
-          throw new Error('no description found');
+          throwNewError('no catalog card description found');
         }
         setDescription(props.description);
         if (!props.images) {
-          throw new Error('no pic found');
+          throwNewError('no catalog card pic found');
         }
         setCurrentSecondImage(props.images[1].url);
       }}
@@ -32,7 +33,6 @@ function Card(props: CategoryCardProps): JSX.Element {
         setCurrentSecondImage('');
       }}
     >
-      <button className={style.card_to_cart}>to Cart</button>
       <h2 className={style.card_name} id={props.keyCard}>
         <span>{props.sku}</span>
       </h2>
@@ -41,18 +41,13 @@ function Card(props: CategoryCardProps): JSX.Element {
         className={style.card_pic}
         src={currentSecondImage || currentImage}
         alt=""
-        // onMouseEnter={(): void => {
-        //   if (!props.images) {
-        //     throw new Error('no pic found');
-        //   }
-        //   setCurrentSecondImage(props.images[1].url);
-        // }}
-        // onMouseLeave={(): void => {
-        //   setCurrentSecondImage('');
-        // }}
       />
       <div className={style.card_buy}>
-        <span className={style.card_price}>{props.prices}$</span>
+        <span
+          className={!props.discounted ? style.card_price : style.linethrough}
+        >
+          {props.prices}$
+        </span>
         <span className={style.card_discount}>{props.discounted}</span>
       </div>
     </div>

@@ -15,10 +15,20 @@ import {
   createProductImgArr,
 } from '../../store/reducers/productReduser';
 import ModalWindow from './ModalWindow/ModalWindow';
-import { IProductState } from '../../types/interfaces';
+import { ICartState, IProductState, IRootState } from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
+import { refreshTokenFlow } from '../../api/adminBuilder';
+import {
+  changeAnonymousCart,
+  changeUserCart,
+  setCartItems,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
+} from '../../store/reducers/cartReducer';
+import { updateCart } from '../../api/existTokenFlow';
 
 interface IDataProduct {
   name: string;
@@ -30,10 +40,80 @@ interface IDataProduct {
   size: string;
   brand: string;
   bestseller: boolean;
+  sku: string;
 }
 
 function ProductPage(): JSX.Element {
   const dispatch = useDispatch();
+  const { anonymousCart, userCart } = useSelector(
+    (state: ICartState) => state.cart
+  );
+  const { customerId, customerRefreshToken, accessToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+
+  const updateCustomerCart = (): void => {
+    if (!isAuth) {
+      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        updateCart(
+          anonymousCart.cartID,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartItems(updatedCart?.body.lineItems));
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    } else {
+      refreshTokenFlow(customerRefreshToken).then((response) => {
+        updateCart(
+          userCart.userCartId,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeUserCart({
+                versionUserCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    }
+  };
+
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
@@ -48,6 +128,7 @@ function ProductPage(): JSX.Element {
     size: '',
     brand: '',
     bestseller: false,
+    sku: '',
   });
 
   const creatingQueryForMaster = useCallback(
@@ -62,6 +143,7 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       product.name ? (intermediateProduct.name = product.name['en-US']) : '';
 
@@ -76,6 +158,9 @@ function ProductPage(): JSX.Element {
         intermediateProduct.images = imagesArr;
         dispatch(createProductImgArr(imagesArr));
       }
+      product.masterVariant.sku
+        ? (intermediateProduct.sku = product.masterVariant.sku)
+        : '';
 
       product.masterVariant.prices
         ? (intermediateProduct.price =
@@ -119,7 +204,7 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
-
+  console.log(dataProduct);
   const creatingQueryForVariant = useCallback(
     (product: ProductProjection, variant: ProductVariant): void => {
       const intermediateProduct: IDataProduct = {
@@ -132,8 +217,11 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       variant.sku ? (intermediateProduct.name = variant.sku) : '';
+
+      variant.sku ? (intermediateProduct.sku = variant.sku) : '';
 
       product.description
         ? (intermediateProduct.description = product.description['en-US'])
@@ -187,6 +275,18 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
+
+  const updateAnonCartData = {
+    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
+    actions: [
+      {
+        action: 'addLineItem',
+        sku: dataProduct.sku,
+        quantity: 1,
+      },
+    ],
+  };
+
   useEffect(() => {
     id &&
       getProductProjectionsByVariantKey(id).then((response) => {
@@ -350,7 +450,14 @@ function ProductPage(): JSX.Element {
               </div>
               {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
-            <button className="wrapper-characteristics_button">To Cart</button>
+            <button
+              className="wrapper-characteristics_button"
+              onClick={(): void => {
+                updateCustomerCart();
+              }}
+            >
+              To Cart
+            </button>
           </div>
         </div>
       </div>

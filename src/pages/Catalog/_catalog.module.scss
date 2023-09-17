@@ -1,25 +1,11 @@
+@use '../../style/mixins.scss' as *;
+
 @import '../../style/variables';
 
 @import 'https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap';
 
 .catalog {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-
-  width: 100%;
-
-  background-color: $background-color-primary-one;
-
-  &_wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    width: 90vw;
-    height: 100%;
-    margin: 0 auto;
-  }
+  @include page-layout-container;
 
   &_title {
     flex: 0 1 auto;
@@ -232,11 +218,9 @@
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
-  html {
-    font-size: 8px;
-  }
-
   .catalog {
+    font-size: 8px;
+
     &_category {
       aspect-ratio: 1 / 1.2;
       width: 48%;
@@ -269,11 +253,9 @@
 }
 
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
-  html {
-    font-size: 6px;
-  }
-
   .catalog {
+    font-size: 6px;
+
     &_title {
       text-align: center;
     }

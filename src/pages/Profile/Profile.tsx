@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setAuthStatus } from '../../store/reducers/userReducer';
+import {
+  setAuthStatus,
+  setRefreshTokenStatus,
+} from '../../store/reducers/userReducer';
 import style from '../Profile/_profile.module.scss';
 import {
   IPersonalState,
@@ -63,7 +66,7 @@ function ProfilePage(): JSX.Element {
     (state: IPersonalState) => state.personal.addresses
   );
 
-  const { customerId, refreshToken } = useSelector(
+  const { customerId, customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
 
@@ -76,10 +79,10 @@ function ProfilePage(): JSX.Element {
   }, [dispatch, navigate]);
 
   useEffect(() => {
-    if (!refreshToken) {
+    if (!customerRefreshToken) {
       checkRefreshToken();
     } else {
-      refreshTokenFlow(refreshToken)
+      refreshTokenFlow(customerRefreshToken)
         .then(() => {
           getCustomerById({ ID: customerId }).then((response) => {
             setPassword(response.body.password ? response.body.password : '');
@@ -117,12 +120,13 @@ function ProfilePage(): JSX.Element {
           localStorage.removeItem('refreshToken');
         });
     }
-  }, [checkRefreshToken, customerId, dispatch, navigate, refreshToken]);
+  }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
 
   const handleLogOut = (): void => {
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isAuth');
+    dispatch(setRefreshTokenStatus(''));
     dispatch(setAuthStatus(false));
     dispatch(changeVersion(1));
     navigate('/');
@@ -221,7 +225,7 @@ function ProfilePage(): JSX.Element {
           <ButtonForm
             onClick={(): void => {
               updateCustomer(
-                refreshToken ? refreshToken : '',
+                customerRefreshToken ? customerRefreshToken : '',
                 deleteAddressData as MyCustomerUpdate
               ).then((response) => {
                 if (response) {
@@ -499,7 +503,7 @@ function ProfilePage(): JSX.Element {
         }
       >
         <BioModal
-          token={refreshToken ? refreshToken : ''}
+          token={customerRefreshToken ? customerRefreshToken : ''}
           onClick={(): void => {
             setClickedBioUpdate(false);
             setShowModal(false);
@@ -513,7 +517,7 @@ function ProfilePage(): JSX.Element {
             setClickedEmailUpdate(false);
             setShowModal(false);
           }}
-          token={refreshToken ? refreshToken : ''}
+          token={customerRefreshToken ? customerRefreshToken : ''}
           setClickedEmailUpdate={setClickedEmailUpdate}
           setShowModal={setShowModal}
           modalClass={clickedEmailUpdate ? style.visible : style.hidden}
@@ -525,7 +529,7 @@ function ProfilePage(): JSX.Element {
           }}
           setClickedPasswordUpdate={setClickedPasswordUpdate}
           setShowModal={setShowModal}
-          token={refreshToken ? refreshToken : ''}
+          token={customerRefreshToken ? customerRefreshToken : ''}
           modalClass={clickedPasswordUpdate ? style.visible : style.hidden}
         />
         <AddressModal
@@ -543,7 +547,7 @@ function ProfilePage(): JSX.Element {
           }}
           version={version}
           modalClass={clickedAddressesUpdate ? style.visible : style.hidden}
-          token={refreshToken ? refreshToken : ''}
+          token={customerRefreshToken ? customerRefreshToken : ''}
           setClickedAddressesUpdate={setClickedAddressesUpdate}
           setShowModal={setShowModal}
         />

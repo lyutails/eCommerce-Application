@@ -32,11 +32,18 @@ export const handleUpdateBio = (
     updateBioData.lastnameError &&
     updateBioData.birthdayError
   ) {
-    updateCustomer(updateBioData.token, data).then((response) => {
-      if (response) {
-        dispatch(changeVersion(response.body.version));
-      }
-    });
+    updateCustomer(updateBioData.token, data)
+      .then((response) => {
+        if (response) {
+          alert('Personal information change was successful');
+          dispatch(changeVersion(response.body.version));
+        }
+      })
+      .catch((error) => {
+        if (error) {
+          alert('Personal information change was failed');
+        }
+      });
     setClickedBioUpdate(false);
     setShowModal(false);
   }

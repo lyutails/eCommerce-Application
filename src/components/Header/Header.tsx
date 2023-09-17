@@ -2,15 +2,16 @@ import '../../style/variables.scss';
 import style from './_header.module.scss';
 import { logo } from './logo';
 import { Link, NavLink } from 'react-router-dom';
-import { IRootState } from '../../types/interfaces';
+import { ICartState, IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
 
 function Header(): JSX.Element {
   const { isAuth, customerId } = useSelector((state: IRootState) => state.user);
-  const cartCounter = 0;
-  const walletCost = 0;
+  const { cartPrice, cartQuantity, cartPriceDiscount } = useSelector(
+    (state: ICartState) => state.cart
+  );
   const nameRouteHeader = [
     'Main',
     'Catalog',
@@ -72,7 +73,7 @@ function Header(): JSX.Element {
                   >
                     <span className={style.header_cart_name}>Cart</span>
                     <span className={style.header_cart_counter}>
-                      {cartCounter}
+                      {cartQuantity ? cartQuantity : 0}
                     </span>
                   </NavLink>
                 </li>
@@ -81,7 +82,10 @@ function Header(): JSX.Element {
                   className={`${style.header_menu_item} ${style.sum}`}
                   key={item}
                 >
-                  {`${walletCost}`}$
+                  {cartPriceDiscount
+                    ? (cartPriceDiscount / 100).toFixed(2)
+                    : (cartPrice / 100).toFixed(2)}
+                  $
                 </li>
               ) : (
                 <li className={style.header_menu_item} key={item}>

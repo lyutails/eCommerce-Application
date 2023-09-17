@@ -5,6 +5,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
 import { apiRoot as apiRootAdmin } from './createClientAdmin';
+import { throwNewError } from '../utils/throwNewError';
 
 export async function filterByAttributes(
   colour: string,
@@ -15,12 +16,12 @@ export async function filterByAttributes(
   brand: string,
   sortpricename: string | string[],
   search: string,
-  fuzzylevel: number,
   priceRangeStart: string,
   priceRangeFinish: string,
   limit: number,
   offset: number,
-  winter: string
+  winter: string,
+  fuzzylevel?: number
 ): Promise<ClientResponse<ProductProjectionPagedSearchResponse>> {
   try {
     const productsByColour = await apiRoot
@@ -49,7 +50,7 @@ export async function filterByAttributes(
       .execute();
     return productsByColour;
   } catch {
-    throw new Error('no product by attribute or filter found');
+    throwNewError('no product by attribute or filter found');
   }
 }
 
@@ -62,7 +63,7 @@ export async function getProductType(): Promise<ClientResponse<ProductType>> {
       .execute();
     return productType;
   } catch {
-    throw new Error('no product type found');
+    throwNewError('no product type found');
   }
 }
 
@@ -77,6 +78,6 @@ export async function getProductTypeSizeAttribute(): Promise<
       .execute();
     return productType;
   } catch {
-    throw new Error('no product type found');
+    throwNewError('no product type size attribute found');
   }
 }

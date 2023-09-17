@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ClientBuilder,
   type AuthMiddlewareOptions,
@@ -6,13 +7,14 @@ import {
 import SdkAuth from '@commercetools/sdk-auth';
 import fetch from 'node-fetch';
 import { PROJECT_KEY } from '../constants';
+import { throwNewError } from '../utils/throwNewError';
 
 if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no admin client id found');
 }
 
 if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-  throw new Error('no client id found');
+  throwNewError('no admin client secret found');
 }
 
 /* Configure authMiddlewareOptions */
@@ -27,7 +29,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   fetch,
 };
 
-const authClient = new SdkAuth({
+export const authClient = new SdkAuth({
   host: 'https://auth.us-central1.gcp.commercetools.com/',
   projectKey: PROJECT_KEY,
   disableRefreshToken: false,
@@ -76,5 +78,16 @@ export const refreshTokenFlow = async (
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 ): Promise<any> => {
   const customer = await authClient.refreshTokenFlow(token);
+  return customer;
+};
+
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export const anonymousSessionFlow = async (id?: string): Promise<any> => {
+  let customer;
+  if (id) {
+    customer = authClient.anonymousFlow(id);
+  } else {
+    customer = authClient.anonymousFlow();
+  }
   return customer;
 };

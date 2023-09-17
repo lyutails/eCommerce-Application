@@ -4,6 +4,7 @@ import {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
+import { throwNewError } from '../utils/throwNewError';
 
 export async function getProducts(): Promise<ProductProjection[]> {
   try {
@@ -15,7 +16,7 @@ export async function getProducts(): Promise<ProductProjection[]> {
 
     return totalProductsCount;
   } catch {
-    throw new Error('no products found');
+    throwNewError('no products found');
   }
 }
 
@@ -34,7 +35,7 @@ export async function getProductProjectionsByKey(
       .execute();
     return productByIdKey;
   } catch (error) {
-    throw new Error('No products found with the specified key');
+    throwNewError('no products found with the specified key');
   }
 }
 
@@ -53,6 +54,6 @@ export async function getProductProjectionsByVariantKey(
       .execute();
     return productByVariantKey;
   } catch {
-    throw new Error('no product variant by key found');
+    throwNewError('no product variant by key found');
   }
 }

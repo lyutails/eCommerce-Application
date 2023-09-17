@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 const clickedPersonal = localStorage.getItem('clickedPersonal');
 const clickedAddress = localStorage.getItem('clickedAddress');
 let information, addresses;
@@ -11,8 +12,8 @@ clickedAddress && clickedAddress === 'true'
 const personalReducer = createSlice({
   name: 'personal',
   initialState: {
-    information,
-    addresses,
+    information: true,
+    addresses: false,
   },
   reducers: {
     changeStatusPersonal(state, action) {

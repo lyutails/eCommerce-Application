@@ -3,6 +3,7 @@ import {
   CustomerPagedQueryResponse,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClientAdmin';
+import { throwNewError } from '../utils/throwNewError';
 
 export async function checkCustomerEmail(
   emailUser: string
@@ -15,6 +16,6 @@ export async function checkCustomerEmail(
     );
     return customers;
   } catch {
-    throw new Error('cannot get a customer');
+    throwNewError('cannot get a customer by email');
   }
 }

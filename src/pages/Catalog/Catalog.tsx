@@ -31,17 +31,19 @@ function CatalogPage(): JSX.Element {
           </h1>
           <div className={style.catalog_categories}>
             {allCategories.map((category) => {
-              return (
-                <Link
-                  to={category.name['en-US']}
-                  className={style.catalog_category}
-                  key={category.name['en-US']}
-                >
-                  <div className={style.catalog_category_title}>
-                    {category.name['en-US']}
-                  </div>
-                </Link>
-              );
+              if (category.name['en-US'] !== 'Custom') {
+                return (
+                  <Link
+                    to={category.name['en-US']}
+                    className={style.catalog_category}
+                    key={category.name['en-US']}
+                  >
+                    <div className={style.catalog_category_title}>
+                      {category.name['en-US']}
+                    </div>
+                  </Link>
+                );
+              }
             })}
           </div>
         </div>
@@ -55,22 +57,6 @@ function CatalogPage(): JSX.Element {
             <div className={style.catalog_sloth_right}></div>
           </div>
         </Link>
-        <div className={style.catalog_slider}>
-          {/* <div className={`${style.catalog_arrow} ${style.left}`}></div> */}
-          <div className={style.catalog_slide}>
-            <div className={`${style.catalog_slide_pic} ${style.one}`}></div>
-          </div>
-          <div className={style.catalog_slide}>
-            <div className={`${style.catalog_slide_pic} ${style.two}`}></div>
-          </div>
-          <div className={style.catalog_slide}>
-            <div className={`${style.catalog_slide_pic} ${style.three}`}></div>
-          </div>
-          <div className={style.catalog_slide}>
-            <div className={`${style.catalog_slide_pic} ${style.four}`}></div>
-          </div>
-          {/* <div className={`${style.catalog_arrow} ${style.right}`}></div> */}
-        </div>
       </div>
     </div>
   );

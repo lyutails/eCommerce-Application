@@ -1,8 +1,10 @@
 import { setAuthStatus } from '../store/reducers/userReducer';
 import {
+  Cart,
   ClientResponse,
   createApiBuilderFromCtpClient,
   CustomerSignInResult,
+  MyCartUpdate,
 } from '@commercetools/platform-sdk';
 import {
   Client,
@@ -13,18 +15,18 @@ import { Dispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import { PROJECT_KEY } from '../constants';
 import { httpMiddlewareOptions } from './clientBuilder';
-import { NavigateFunction } from 'react-router-dom';
 import { IMyCustomerLoginDraft } from '../types/interfaces';
+import { throwNewError } from '../utils/throwNewError';
 
 const authMiddlewareOptionsForPasswordFlow = (
   username: string,
   password: string
 ): PasswordAuthMiddlewareOptions => {
   if (typeof process.env.CLIENT_ID !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client id found');
   }
   if (typeof process.env.CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client secret found');
   }
   const options: PasswordAuthMiddlewareOptions = {
     host: 'https://auth.us-central1.gcp.commercetools.com/',
@@ -56,8 +58,7 @@ export function loginUserCTPClient(username: string, password: string): Client {
 
 export const loginCustomerThroughMe = async (
   request: IMyCustomerLoginDraft,
-  dispatch: Dispatch<AnyAction>,
-  navigator: NavigateFunction
+  dispatch: Dispatch<AnyAction>
 ): Promise<ClientResponse<CustomerSignInResult> | undefined> => {
   const apiRoot = createApiBuilderFromCtpClient(
     loginUserCTPClient(request.email, request.password),
@@ -106,6 +107,93 @@ export const loginCustomerThroughReg = async (
       })
       .execute();
     setSuccessfulMessage(true);
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// CREATE CUSTOMER'S CART
+export const createCartThroughMe = async (
+  request: IMyCustomerLoginDraft
+): Promise<ClientResponse<Cart> | undefined> => {
+  const apiRoot = createApiBuilderFromCtpClient(
+    loginUserCTPClient(request.email, request.password),
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRoot
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// GET CUSTOMER'S CART
+export const getCartThroughMe = async (
+  request: IMyCustomerLoginDraft,
+  id: string
+): Promise<ClientResponse<Cart> | undefined> => {
+  const apiRoot = createApiBuilderFromCtpClient(
+    loginUserCTPClient(request.email, request.password),
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRoot
+      .me()
+      .carts()
+      .withId({
+        ID: id,
+      })
+      .get()
+      .execute();
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//UPDATE CUSTOMER'S CART
+export const updateCartThroughMe = async (
+  request: IMyCustomerLoginDraft,
+  id: string,
+  data: MyCartUpdate
+): Promise<ClientResponse<Cart> | undefined> => {
+  const apiRoot = createApiBuilderFromCtpClient(
+    loginUserCTPClient(request.email, request.password),
+    'https://auth.us-central1.gcp.commercetools.com/'
+  ).withProjectKey({
+    projectKey: PROJECT_KEY,
+  });
+  try {
+    const customer = await apiRoot
+      .me()
+      .carts()
+      .withId({
+        ID: id,
+      })
+      .post({
+        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .execute();
     return customer;
   } catch (error) {
     console.log(error);

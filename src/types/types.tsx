@@ -9,3 +9,17 @@ export type CategoryCardProps = {
   brand?: string;
   description?: string;
 };
+
+export type CartProductProps = {
+  name: string;
+  images?: Image[];
+  keyCard?: string;
+  prices?: number | string;
+  discounted?: number | string;
+  sku: string;
+  onDelete: () => void;
+  quantity: number;
+  reduceQuantity: () => void;
+  increaseQuantity: () => void;
+  idCard: string;
+};

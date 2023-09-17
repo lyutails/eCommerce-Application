@@ -14,18 +14,24 @@
     background-image: url('../../../public/ui-kit/product_blue.svg');
     background-repeat: no-repeat;
     background-position: center center;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-image: url('../../../public/ui-kit/product_green_blue.svg');
+    }
   }
 
   &_pic {
     aspect-ratio: 1 / 1;
-    width: 60%;
-    margin-top: 5%;
+    width: 50%;
 
     background-repeat: no-repeat;
     background-position: center center;
   }
 
   &_name {
+    padding-top: 50px;
     padding-right: 5%;
     padding-left: 5%;
 
@@ -64,4 +70,9 @@
     transform: translateY(100px);
     width: 15vw;
   }
+}
+
+.linethrough {
+  font-size: 1.5rem;
+  text-decoration: line-through;
 }

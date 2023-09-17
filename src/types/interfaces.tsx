@@ -1,4 +1,9 @@
-import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
+import {
+  AddressDraft,
+  BaseAddress,
+  DiscountCodeInfo,
+  LineItem,
+} from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
 
 export interface ICustomerFields {
@@ -109,7 +114,8 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
-    refreshToken: string;
+    customerRefreshToken: string;
+    accessToken: string;
   };
 }
 
@@ -140,7 +146,6 @@ export interface IProfileState {
       defaultBillingId: string;
       shippingAddressesId: string[];
       billingAddressesId: string[];
-      id: string;
     };
     bio: {
       [key: string]: IAddressInput;
@@ -191,9 +196,74 @@ export interface IMyCustomerDraft {
   shippingAddresses: number[];
   defaultBillingAddress?: number | undefined;
   billingAddresses: number[];
+  anonymousCart?: {
+    id: string;
+    typeId: string;
+  };
+  anonymousCartSignInMode?: string;
+  anonymousID?: string;
 }
 
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
+  anonymousCart?: {
+    id: string;
+    typeId: string;
+  };
+  anonymousCartSignInMode?: string;
+  anonymousID?: string;
 }
+
+export interface ICategoryState {
+  category: {
+    category: string[];
+  };
+}
+
+export interface ICartState {
+  cart: {
+    anonymousCart: {
+      anonymousID: string;
+      versionAnonCart: number;
+      cartID: string;
+      anonymousRefreshToken: string;
+      anonymousAccessToken: string;
+    };
+    discountCodes: [{ name: string; id: string }];
+    userCart: {
+      userCartId: string;
+      versionUserCart: number;
+    };
+    cartItems: LineItem[];
+    cartPrice: number;
+    cartQuantity: number;
+    promocode: string;
+    cartPriceDiscount: number;
+    discountCodesCart: DiscountCodeInfo[] | undefined;
+  };
+}
+
+export interface IMyCartUpdate {
+  version: number;
+  actions: IMyCartUpdateAction[];
+}
+
+export type IMyCartUpdateAction =
+  | IMyCartAddLineItemAction
+  | IMyCartRemoveLineItemAction;
+
+export interface IMyCartAddLineItemAction {
+  action: string;
+  sku: string;
+  quantity: number;
+}
+
+export interface IMyCartRemoveLineItemAction {
+  action: string;
+  lineItemId: string;
+  quantity: number;
+}
+
+// yana3@mail.com
+// 22327Ybv!
