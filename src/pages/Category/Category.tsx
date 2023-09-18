@@ -3,12 +3,12 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
-  MyCartUpdate,
+  LineItem,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -84,6 +84,8 @@ function CategoryPage(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
+  const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
+  const [productFoundInCart, setProductFoundInCart] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -872,21 +874,30 @@ function CategoryPage(): JSX.Element {
   //   setSearchValue(await criteria);
   // }, 500);
 
-  const debounceSearchInput = useMemo(
-    () =>
-      debounce((e) => {
-        setSearchValue(e);
-      }, 500),
-    []
-  );
+  // const debounceSearchInput = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setSearchValue(e);
+  //     }, 500),
+  //   []
+  // );
 
-  const debouncePriceRange = useMemo(
-    () =>
-      debounce((e) => {
-        setPriceSliderValue(e);
-      }, 500),
-    []
-  );
+  // const debouncePriceRange = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setPriceSliderValue(e);
+  //     }, 500),
+  //   []
+  // );
+
+  const ref = useRef();
+
+  function isProductInCart(card: ProductVariant): LineItem | undefined {
+    const foundProduct = cartItems.find(
+      (item) => card.sku === item.name['en-US']
+    );
+    return foundProduct;
+  }
 
   return (
     <div className={style.category}>
@@ -1019,7 +1030,7 @@ function CategoryPage(): JSX.Element {
             <div className={style.category_filters_color}>
               {allColours.map((colour) => {
                 return (
-                  <div key={colour} className={style.category_colours_wrapper}>
+                  <div key={colour} className={style.category_colour_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -1032,6 +1043,10 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={colour}
                       className={style[`category_filters_${colour}`]}
+                    ></label>
+                    <label
+                      htmlFor={colour}
+                      className={style[`colour_outer_circle_${colour}`]}
                     ></label>
                   </div>
                 );
@@ -1226,26 +1241,21 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void => {
-                            if (cartItems.length > 0) {
-                              console.log('popali');
-                              const foundProduct = cartItems.find(
-                                (item) => card.sku === item.name['en-US']
-                              );
-                              if (foundProduct) {
-                                alert('already in cart');
-                                console.log('product already in cart');
-                              } else {
-                                updateCustomerCart(updateAnonCartData);
-                                console.log('add to cart, cart is full');
-                              }
+                          onClick={(e): void => {
+                            const foundProduct = isProductInCart(card);
+                            if (cartItems.length > 0 && foundProduct) {
+                              setAlreadyInCartModal(true);
+                              e.currentTarget.textContent = 'in Cart';
+                              setTimeout(() => {
+                                setAlreadyInCartModal(false);
+                              }, 2000);
                             } else {
                               updateCustomerCart(updateAnonCartData);
-                              console.log('add to cart, cart is empty');
+                              e.currentTarget.textContent = 'to Cart';
                             }
                           }}
                         >
-                          to Cart
+                          {isProductInCart(card) ? 'in Cart' : 'to Cart'}
                         </button>
                         <Link
                           to={`/catalog/${category}/${card.key}`}
@@ -1318,6 +1328,20 @@ function CategoryPage(): JSX.Element {
           </div>
         </div>
       </div>
+      <div
+        className={
+          alreadyInCartModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          alreadyInCartModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }

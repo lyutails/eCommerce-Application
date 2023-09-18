@@ -42,6 +42,7 @@ function CartPage(): JSX.Element {
   const { address, version, bio, email, password } = useSelector(
     (state: IProfileState) => state.profile
   );
+  const [isIncorrectPromo, setIsIncorrectPromo] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
 
@@ -203,8 +204,11 @@ function CartPage(): JSX.Element {
           });
         }
       });
+    } else {
+      setIsIncorrectPromo(true);
     }
   };
+
   useEffect(() => {
     discountCodes.map((code) => {
       if (
@@ -388,7 +392,9 @@ function CartPage(): JSX.Element {
             <div className={style.cart_price_name}>Total Price</div>
             <div
               className={
-                !cartPriceDiscount ? style.cart_price_amount : style.linethrough
+                cartPriceDiscount == cartPrice
+                  ? style.cart_price_amount
+                  : style.linethrough
               }
             >
               {(cartPrice / 100).toFixed(2)}$
@@ -409,13 +415,25 @@ function CartPage(): JSX.Element {
         </div>
         <div className={style.cart_discount_codes}>
           <div className={style.cart_discount}>
-            <input
-              className={style.cart_discount_input}
-              onChange={(event): void => addDiscountCode(event)}
-              type="text"
-              placeholder="Type discount code here..."
-              value={promocode}
-            />
+            <div className={style.cart_discount_input_wrapper}>
+              <input
+                id="discount-input"
+                className={style.cart_discount_input}
+                onChange={(event): void => addDiscountCode(event)}
+                type="text"
+                placeholder="Type discount code here..."
+                value={promocode}
+              />
+              <label
+                className={`${style.cart_discount_clue} ${
+                  isIncorrectPromo ? style.visible : style.hidden
+                }`}
+                htmlFor="discount-input"
+              >
+                Incorrect discount
+              </label>
+            </div>
+
             <div className={style.cart_discount_button_wrapper}>
               <button
                 onClick={debounce(
