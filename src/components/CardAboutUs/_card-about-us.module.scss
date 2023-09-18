@@ -147,6 +147,9 @@
           font-weight: 300;
         }
       }
+      .card_biography{
+        height: 130px;
+      }
     }
   }
 }
@@ -172,7 +175,7 @@
           top: 70%;
           color: rgb(250, 250, 250);
           font-family: 'No Signal';
-          font-size: 10px;
+          font-size: 9px;
           width: 100%;
           .image_title {
             width: 100%;
@@ -196,7 +199,7 @@
         .card_biography,
         .card_contribution,
         .card_cooperation {
-          font-size: 12px;
+          font-size: 11px;
           margin: 5px 10px;
           text-shadow:
             0 0 5px #84f1ff,
@@ -207,7 +210,11 @@
             font-size: 12px;
           }
         }
+        .card_biography{
+          height: 100px;
+        }
       }
+
     }
   }
 }
