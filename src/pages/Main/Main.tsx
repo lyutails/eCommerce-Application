@@ -10,12 +10,13 @@ import {
   useRef,
   useState,
 } from 'react';
+import { getBestsellers } from '../../api/getBestsellers';
 
 export const mainPageOffersSlides = [
   'RSSchool and Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
   'HOT SALES 10% OFF for all red t-shirts and caps during hot summer and autumn!',
-  'Winter is coming - so get the 10% OFF for all white hoodies, mugs and mice.',
-  '2 = 1 !!! Back to black... all designers favourite colour - Two Black t-shirts by the price of One!',
+  'Winter is coming - so get 10% OFF for all white hoodies, mugs and mice.',
+  '2 = 1 !!! Back to black... all designers favourite colour - Two Black T-Shirts by the price of One!',
 ];
 
 function MainPage(): JSX.Element {
@@ -115,6 +116,10 @@ function MainPage(): JSX.Element {
       }
     };
   }, [actionHandler]);
+
+  // useEffect(() => {
+  //   allProductsArray.map((bestsellerProduct))
+  // }, []);
 
   return (
     <div className={style.main} data-testid="main-component">

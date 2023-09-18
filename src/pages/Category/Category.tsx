@@ -3,7 +3,7 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
@@ -84,6 +84,7 @@ function CategoryPage(): JSX.Element {
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
   const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
+  const [productFoundInCart, setProductFoundInCart] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -888,6 +889,8 @@ function CategoryPage(): JSX.Element {
   //   []
   // );
 
+  const ref = useRef();
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -1236,6 +1239,7 @@ function CategoryPage(): JSX.Element {
                                 (item) => card.sku === item.name['en-US']
                               );
                               if (foundProduct) {
+                                setProductFoundInCart(true);
                                 setAlreadyInCartModal(true);
                                 setTimeout(() => {
                                   setAlreadyInCartModal(false);
@@ -1249,6 +1253,7 @@ function CategoryPage(): JSX.Element {
                           }}
                         >
                           to Cart
+                          {/* {productFoundInCart === true ? 'in Cart' : 'to Cart'} */}
                         </button>
                         <Link
                           to={`/catalog/${category}/${card.key}`}
