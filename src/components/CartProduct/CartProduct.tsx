@@ -39,10 +39,23 @@ export function CartProduct(props: CartProductProps): JSX.Element {
             className={`${style.cartproduct_counter_button} ${style.plus}`}
           ></button>
         </div>
-        <div className={style.cartproduct_product_price}>
+        <div
+          className={`${style.cartproduct_product_price} ${style.cartproduct_product_piece}`}
+        >
           {props.discounted
             ? (Number(props.discounted) / 100).toFixed(2)
             : (Number(props.prices) / 100).toFixed(2)}
+          $/per piece
+        </div>
+        <div className={style.cartproduct_product_price}>
+          {props.discounted
+            ? (
+                (Number(props.discounted) * Number(props.quantity)) /
+                100
+              ).toFixed(2)
+            : ((Number(props.prices) * Number(props.quantity)) / 100).toFixed(
+                2
+              )}
           $
         </div>
         <button
