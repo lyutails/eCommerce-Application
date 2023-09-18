@@ -10,7 +10,7 @@ function AboutUsPage(): JSX.Element {
       position: 'Teamlead, Frontend developer ',
       githab: `https://github.com/lyutails`,
       biography:
-        'Wonderful girl from St. Petersburg who found herself in Frontend development',
+        'To create art… like it’s your personal pole star and flickering light, leading from a mechanism to mechanism, through art schools and from engineering university to public relations one, making me to land here in coding school finding that’s the way to create too.',
       contribution:
         'Creator of Main, Catalog, Cart, Category pages. Goddess of Commercetools. Creator of all UI-Kit ',
       cooperation:
@@ -23,7 +23,7 @@ function AboutUsPage(): JSX.Element {
       position: 'Frontend developer ',
       githab: `https://github.com/yanabel1996`,
       biography:
-        'Wonderful girl from Poland who found herself in Frontend development',
+        'Every field I have ever studied and every job I have ever taken have finally led me to falling in love with IT. I write code with humor and ready to become your frontend slave.',
       contribution:
         'Creator of the Registration, Authorization, Profile and Card pages.  Goddess of Arti and React-Store.',
       cooperation:
@@ -36,9 +36,9 @@ function AboutUsPage(): JSX.Element {
       position: 'Frontend developer ',
       githab: `https://github.com/CRAFTSW0MAN/`,
       biography:
-        'A former lawyer who realized he wanted to do more than read contracts. Loves to code and create amazing things out of nothing.',
+        'A former lawyer who realized he wanted to do more than read contracts. Loves coding and creating amazing things out of nothing. Loves to communicate and break boundaries and limits, which is why he chose this profession.',
       contribution:
-        'Creator of the Product, About Us, Customize pages.  Goddess "console.log"  ',
+        'Creator of the Product, About Us, Customize pages.  Goddess "console.log". Found a lot of art and project ideas.',
       cooperation:
         'Figoro of this team, tried to participate in the creation of each page and always forgot to make a commit',
       img: 'red',
