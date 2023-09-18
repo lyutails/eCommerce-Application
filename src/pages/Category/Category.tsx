@@ -8,7 +8,6 @@ import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
-  MyCartUpdate,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -40,7 +39,7 @@ import '../../../global.d.ts';
 import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
 import _debounce from 'lodash/debounce';
-import { debounce, transform } from 'lodash';
+import { debounce } from 'lodash';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -84,7 +83,7 @@ function CategoryPage(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
-  const [colourCircle, setColourCircle] = useState(false);
+  const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -873,21 +872,21 @@ function CategoryPage(): JSX.Element {
   //   setSearchValue(await criteria);
   // }, 500);
 
-  const debounceSearchInput = useMemo(
-    () =>
-      debounce((e) => {
-        setSearchValue(e);
-      }, 500),
-    []
-  );
+  // const debounceSearchInput = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setSearchValue(e);
+  //     }, 500),
+  //   []
+  // );
 
-  const debouncePriceRange = useMemo(
-    () =>
-      debounce((e) => {
-        setPriceSliderValue(e);
-      }, 500),
-    []
-  );
+  // const debouncePriceRange = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setPriceSliderValue(e);
+  //     }, 500),
+  //   []
+  // );
 
   return (
     <div className={style.category}>
@@ -1233,20 +1232,19 @@ function CategoryPage(): JSX.Element {
                           className={style.category_to_cart}
                           onClick={(): void => {
                             if (cartItems.length > 0) {
-                              console.log('popali');
                               const foundProduct = cartItems.find(
                                 (item) => card.sku === item.name['en-US']
                               );
                               if (foundProduct) {
-                                alert('already in cart');
-                                console.log('product already in cart');
+                                setAlreadyInCartModal(true);
+                                setTimeout(() => {
+                                  setAlreadyInCartModal(false);
+                                }, 2000);
                               } else {
                                 updateCustomerCart(updateAnonCartData);
-                                console.log('add to cart, cart is full');
                               }
                             } else {
                               updateCustomerCart(updateAnonCartData);
-                              console.log('add to cart, cart is empty');
                             }
                           }}
                         >
@@ -1323,6 +1321,20 @@ function CategoryPage(): JSX.Element {
           </div>
         </div>
       </div>
+      <div
+        className={
+          alreadyInCartModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          alreadyInCartModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }

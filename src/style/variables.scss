@@ -1,26 +1,47 @@
-$scroll-color: linear-gradient(#11E5B3, #CF52FE);
+$scroll-color: linear-gradient(#11e5b3, #cf52fe);
 $background-color-primary-one: #030e1b;
 $background-color-primary-two: #053245;
-$background-color-primary-three: #9541DE;
-$background-color-primary-four: #CF52FE;
-$background-color-primary-five: #3AB2C0;
-$background-color-primary-six: #11E5B3;
-$gradient-one: linear-gradient(#CF52FE, #19DBB6);
-$gradient-two: linear-gradient(#9541DE, #3AB2C0);
-$gradient-three: linear-gradient(#11E5B3, #5263FE);
-$gradient-four: linear-gradient(#FCDAFF, #CF52FE);
-$background-gradient-one: linear-gradient(to left, rgba(82, 99, 254, 0.05), rgba(207, 82, 254, 0.2));
-$background-gradient-two: linear-gradient(to right, rgba(82, 99, 254, 0.15), rgba(207, 82, 254, 0.3));
-$background-gradient-three: linear-gradient(to right, rgba(82, 99, 254, 0.2), rgba(207, 82, 254, 0.3));
-$background-gradient-four: linear-gradient(to right, rgba(17, 229, 179, 0.3), rgba(207, 82, 254, 0.3));
+$background-color-primary-three: #9541de;
+$background-color-primary-four: #cf52fe;
+$background-color-primary-five: #3ab2c0;
+$background-color-primary-six: #11e5b3;
+$gradient-one: linear-gradient(#cf52fe, #19dbb6);
+$gradient-two: linear-gradient(#9541de, #3ab2c0);
+$gradient-three: linear-gradient(#11e5b3, #5263fe);
+$gradient-four: linear-gradient(#fcdaff, #cf52fe);
+$background-gradient-one: linear-gradient(
+  to left,
+  rgba(82, 99, 254, 0.05),
+  rgba(207, 82, 254, 0.2)
+);
+$background-gradient-two: linear-gradient(
+  to right,
+  rgba(82, 99, 254, 0.15),
+  rgba(207, 82, 254, 0.3)
+);
+$background-gradient-three: linear-gradient(
+  to right,
+  rgba(82, 99, 254, 0.2),
+  rgba(207, 82, 254, 0.3)
+);
+$background-gradient-four: linear-gradient(
+  to right,
+  rgba(17, 229, 179, 0.3),
+  rgba(207, 82, 254, 0.3)
+);
+$overlay-gradient: linear-gradient(
+  to right,
+  rgba(2, 5, 37, 0.9),
+  rgba(20, 2, 26, 0.9)
+);
 $font-color-primary-one: #f0fbfc;
 $font-color-primary-two: #041426;
 $font-color-title: #e6ff2d;
 $font-color-violet: rgb(176, 112, 186);
 $glow-green: #10ffd7;
 $glow-violet: #e62cff;
-$font-green: #11E5B3;
-$border-default: #CF52FE;
+$font-green: #11e5b3;
+$border-default: #cf52fe;
 $border-focus: #f705ff;
 $border-hover: #9c00a2;
 $border-error: #f91403;

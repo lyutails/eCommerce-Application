@@ -1022,6 +1022,8 @@ input[type='checkbox'] {
   transform: translateY(30px);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 1;
+  position: relative;
 }
 
 .category_cards_background_bottom {
@@ -1031,6 +1033,8 @@ input[type='checkbox'] {
   transform: scaleY(-1) translateY(30px);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 1;
+  position: relative;
 }
 
 .catalog {
@@ -1140,6 +1144,46 @@ label:hover {
 
   &_input:checked ~ .colour_outer_circle_white {
     transform: rotate(-90deg);
+  }
+}
+
+.modal {
+  &_wrapper {
+    position: absolute;
+    display: none;
+    width: 60vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    transition: all 0.4s ease-in-out;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  &_body {
+    width: 100%;
+    aspect-ratio: 1 / 0.5;
+    background-image: url('../../../public/ui-kit/already_in_cart_02.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  background: $overlay-gradient;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 1000;
+  transition: all 0.4s ease-in-out;
+
+  &.show {
+    display: block;
   }
 }
 
