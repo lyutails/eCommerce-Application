@@ -48,10 +48,12 @@
     font-size: 3rem;
     margin-right: 3vw;
     user-select: none;
+    font-weight: 800;
+    align-self: center;
   }
 
   &_price_amount {
-    font-size: 3rem;
+    font-size: 3.6rem;
     font-family: 'No Signal', cursive;
     color: $font-color-primary-one;
     user-select: none;
@@ -84,6 +86,11 @@
     font-size: 3rem;
   }
 
+  &_product_piece {
+    font-size: 2rem;
+    opacity: 0.6;
+  }
+
   &_discount_name {
     font-size: 3rem;
     color: $glow-green;
@@ -111,7 +118,7 @@
   }
 
   &_discount_price {
-    font-size: 4rem;
+    font-size: 4.5rem;
     color: $font-color-primary-one;
     text-shadow:
       0 0 5px $glow-violet,
@@ -489,4 +496,17 @@
       width: 25vw;
     }
   }
+}
+
+.linethrough {
+  font-size: 3.6rem;
+  font-family: 'No Signal', cursive;
+  color: $font-color-primary-one;
+  user-select: none;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
+  text-decoration: line-through;
+  text-decoration-color: $glow-violet;
+  text-decoration-thickness: 6px;
 }

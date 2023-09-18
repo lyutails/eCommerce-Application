@@ -3,12 +3,11 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
-  MyCartUpdate,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -39,6 +38,8 @@ import { refreshTokenFlow } from '../../api/adminBuilder';
 import '../../../global.d.ts';
 import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
+import _debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -59,6 +60,7 @@ function CategoryPage(): JSX.Element {
 
   const { category } = useParams();
   const { query } = useParams();
+  const { cartItems } = useSelector((state: ICartState) => state.cart);
 
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
@@ -81,6 +83,8 @@ function CategoryPage(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
+  const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
+  const [productFoundInCart, setProductFoundInCart] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -323,12 +327,12 @@ function CategoryPage(): JSX.Element {
             : searchValue === '' && category === 'Stickers'
             ? productsForSearchStickers
             : searchValue,
-          fuzzylevel,
           queryStringPriceRangeStart,
           queryStringPriceRangeFinish,
           queryLimitStart,
           queryOffsetStart,
-          winterSale
+          winterSale,
+          fuzzylevel
         ).then((response) => {
           const subtreeArray = response.body.results;
           const allSubTreeArray = subtreeArray.map((item) => {
@@ -493,8 +497,11 @@ function CategoryPage(): JSX.Element {
 
       let fuzzylevel = 0;
 
-      if (searchValue.length > 5) {
-        fuzzylevel = 2;
+      if (searchValue.length === 1) {
+        fuzzylevel = 0;
+      }
+      if (searchValue.length === 2) {
+        fuzzylevel = 0;
       }
       if (searchValue.length === 3) {
         fuzzylevel = 1;
@@ -505,8 +512,8 @@ function CategoryPage(): JSX.Element {
       if (searchValue.length === 5) {
         fuzzylevel = 1;
       }
-      if (searchValue.length === 1 || searchValue.length === 2) {
-        fuzzylevel = 0;
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
       }
 
       const queryLimit =
@@ -533,12 +540,12 @@ function CategoryPage(): JSX.Element {
         queryBrandString,
         queryStringPriceNameSort,
         querySearchValue,
-        fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
         queryLimit,
         queryOffset,
-        winterSale
+        winterSale,
+        fuzzylevel
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -560,12 +567,12 @@ function CategoryPage(): JSX.Element {
               queryBrandString,
               queryStringPriceNameSort,
               querySearchValue,
-              fuzzylevel,
               queryPriceRangeStart,
               queryPriceRangeFinish,
               100,
               0,
-              winterSale
+              winterSale,
+              fuzzylevel
             ).then((response) => {
               const parentResults = response.body.results;
               const maxPageParent = Math.ceil(parentResults.length / pageLimit);
@@ -857,6 +864,33 @@ function CategoryPage(): JSX.Element {
     setSearchInputPlaceholderVisibility,
   ] = useState(false);
 
+  // const debounceSearchInput = useCallback(
+  //   _debounce((e) => setSearchValue(e.target.value), 500, { trailing: true }),
+  //   []
+  // );
+
+  // const debounceSearchInput = debounce(async (criteria) => {
+  //   setSearchValue(await criteria);
+  // }, 500);
+
+  // const debounceSearchInput = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setSearchValue(e);
+  //     }, 500),
+  //   []
+  // );
+
+  // const debouncePriceRange = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setPriceSliderValue(e);
+  //     }, 500),
+  //   []
+  // );
+
+  const ref = useRef();
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -879,6 +913,17 @@ function CategoryPage(): JSX.Element {
               onChange={(e): void => {
                 setSearchValue(e.target.value);
               }}
+              // onChange={debounce((e): void => {
+              //   setSearchValue(e.target.value);
+              // }, 500)}
+              // onChange={(e): void => {
+              //   debounceSearchInput(e.target.value);
+              // }}
+              // onChange={(): void => {
+              //   _debounce((e) => setSearchValue(e.target.value), 500, {
+              //     trailing: true,
+              //   });
+              // }}
               onFocus={(): void => setSearchInputPlaceholderVisibility(true)}
               onBlur={(): void => setSearchInputPlaceholderVisibility(false)}
             ></input>
@@ -977,7 +1022,7 @@ function CategoryPage(): JSX.Element {
             <div className={style.category_filters_color}>
               {allColours.map((colour) => {
                 return (
-                  <div key={colour} className={style.category_colours_wrapper}>
+                  <div key={colour} className={style.category_colour_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -990,6 +1035,10 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={colour}
                       className={style[`category_filters_${colour}`]}
+                    ></label>
+                    <label
+                      htmlFor={colour}
+                      className={style[`colour_outer_circle_${colour}`]}
                     ></label>
                   </div>
                 );
@@ -1111,6 +1160,9 @@ function CategoryPage(): JSX.Element {
               // renderThumb={(props: number[], state) => (
               //   <div {...props}>{state.valueNow}</div>
               // )}
+              // onChange={(value: number[]): void => {
+              //   debouncePriceRange(value);
+              // }}
               onChange={(value: number[]): void => {
                 setPriceSliderValue(value);
               }}
@@ -1181,11 +1233,27 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void =>
-                            updateCustomerCart(updateAnonCartData)
-                          }
+                          onClick={(): void => {
+                            if (cartItems.length > 0) {
+                              const foundProduct = cartItems.find(
+                                (item) => card.sku === item.name['en-US']
+                              );
+                              if (foundProduct) {
+                                setProductFoundInCart(true);
+                                setAlreadyInCartModal(true);
+                                setTimeout(() => {
+                                  setAlreadyInCartModal(false);
+                                }, 2000);
+                              } else {
+                                updateCustomerCart(updateAnonCartData);
+                              }
+                            } else {
+                              updateCustomerCart(updateAnonCartData);
+                            }
+                          }}
                         >
                           to Cart
+                          {/* {productFoundInCart === true ? 'in Cart' : 'to Cart'} */}
                         </button>
                         <Link
                           to={`/catalog/${category}/${card.key}`}
@@ -1258,6 +1326,20 @@ function CategoryPage(): JSX.Element {
           </div>
         </div>
       </div>
+      <div
+        className={
+          alreadyInCartModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          alreadyInCartModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }
