@@ -2,48 +2,154 @@
 .about_us {
   display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  background-image: url(../../../public/assets/about-us/about-us-bg.png);
+  background-color: rgba(0, 0, 0, 0.8);
+  background-blend-mode: overlay;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
-  .map_block{
-    .map_block_title{
+  .motto_title,
+  .motto_title2 {
+    font-size: 3rem;
+    padding: 0;
+    text-align: center;
+    font-family: 'No Signal';
+    color: rgb(250, 250, 250);
+    text-shadow:
+      0 0 5px #84f1ff,
+      0 0 10px #84d8ff,
+      0 0 20px #84fff3;
+  }
+  .motto_title2 {
+    text-shadow:
+      0 0 5px #ebff84,
+      0 0 10px #ebff84,
+      0 0 20px #ebff84;
+  }
+
+  .about_us_developers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .desc_training_platform {
+    width: 100%;
+    max-width: 600px;
+    padding: 0;
+    margin: 20px;
+    .training_platform_title {
+      position: relative;
+      font-size: 25px;
+      font-family: Assassin;
+      color: rgb(250, 250, 250);
+      padding: 0 20px 0 60px;
+      margin: 0;
+      text-shadow:
+        0 0 5px #84f1ff,
+        0 0 10px #84d8ff,
+        0 0 20px #84fff3;
+      .training_platform_title_span {
+        font-size: 30px;
+        color: rgb(250, 250, 250);
+        cursor: pointer;
+        text-shadow:
+          0 0 5px #ebff84,
+          0 0 5px #ebff84;
+      }
+    }
+    .training_platform_title::before {
+      content: '';
+      width: 100%;
+      max-width: 600px;
+      top: 25%;
+      left: -10%;
+      position: absolute;
+      height: 100%;
+      background: url(../../../public/assets/about-us/product_bottom_purple_green.svg);
+      background-position: 0 -30%;
+      background-repeat: no-repeat;
+      background-size: 40%;
+    }
+    .desc_training_platform_block {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      margin: 0;
+      background: url(../../../public/assets/about-us/message_13_purple_green.svg);
+      background-repeat: no-repeat;
+      font-family: Assassin;
+      font-size: 30px;
+      padding: 11% 20px 0 80px;
+      background-size: 100%;
+      color: rgb(250, 250, 250);
+      text-shadow:
+        0 0 5px #84f1ff,
+        0 0 10px #84d8ff,
+        0 0 20px #84fff3;
+      .desc_span {
+        font-size: 30px;
+        color: rgb(250, 250, 250);
+        cursor: pointer;
+        text-shadow:
+          0 0 5px #ebff84,
+          0 0 5px #ebff84;
+      }
+      .link {
+        .link_img {
+          width: 100px;
+          filter: drop-shadow(5px 5px 5px rgb(48, 204, 243));
+          animation: pulse 2.5s linear infinite;
+        }
+      }
+    }
+  }
+
+  .map_block {
+    margin: 0 auto;
+    .map_block_title {
       font-size: 3rem;
-      color: $scroll-color;
+      font-family: 'No Signal';
+      color: rgb(250, 250, 250);
+      text-shadow:
+        0 0 5px #84f1ff,
+        0 0 10px #84d8ff,
+        0 0 20px #84fff3;
     }
     .map {
-      width: 600px;
-      height: 400px;
+      width: 100%;
+      max-width: 600px;
+      padding-bottom: 66.66667%;
       background: url(../../../public/assets/about-us/map.png);
       background-position: 0 0;
       background-repeat: no-repeat;
       background-size: cover;
-      filter: drop-shadow( 0px 5px 5px rgb(48, 204, 243));
+      filter: drop-shadow(0px 5px 5px rgb(48, 204, 243));
       position: relative;
+      margin: 20px auto;
     }
     .map::before,
     .map::after,
-    .map .map_children,
-    .map .map_children2{
+    .map .map_children {
       content: '';
       position: absolute;
       top: 38%;
       left: 55%;
       width: 10px;
       height: 10px;
-      background-color: rgb(198, 48, 243);
+      background-color: #84fff3;
       border-radius: 50%;
       animation: pulse 2.5s linear infinite;
     }
-    .map::after{
+    .map::after {
       top: 45%;
       left: 62%;
     }
-    .map .map_children{
-      top: 45%;
-      left: 55%;
-    }
-    .map .map_children2{
+    .map .map_children {
       top: 43%;
       left: 52%;
     }
@@ -60,6 +166,63 @@
     100% {
       transform: scale(1.2);
       opacity: 0;
+    }
+  }
+}
+@media screen and (min-width: (390px)) and (max-width: (677.99px)) {
+  .about_us {
+    .about_us_developers {
+      display: block;
+    }
+    .desc_training_platform {
+      margin: 20px 0;
+      width: 90%;
+      .training_platform_title {
+        font-size: 20px;
+        padding: 0 20px 0 150px;
+        .training_platform_title_span {
+          font-size: 20px;
+        }
+      }
+      .training_platform_title::before {
+        content: '';
+        left: 5%;
+        background-position: 0 30%;
+        background-size: 40%;
+      }
+      .desc_training_platform_block {
+        font-size: 20px;
+        padding: 20% 40px 0 80px;
+        .desc_span {
+          font-size: 20px;
+        }
+        .link {
+          .link_img {
+            width: 80px;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: (390px)) and (max-width: (569.99px)) {
+  .about_us {
+    .desc_training_platform {
+      .training_platform_title {
+        padding: 0 20px 0 100px;
+      }
+      .desc_training_platform_block {
+        font-size: 18px;
+        padding: 10% 20px 0 80px;
+        .desc_span {
+          font-size: 18px;
+        }
+        .link {
+          .link_img {
+            width: 60px;
+          }
+        }
+      }
     }
   }
 }

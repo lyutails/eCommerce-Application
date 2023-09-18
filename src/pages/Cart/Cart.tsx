@@ -169,12 +169,13 @@ function CartPage(): JSX.Element {
         },
       ],
     };
-    const existPromo = discountCodes.map((code) => {
-      if (code.name === promocode.toLowerCase()) {
+    const existPromo = discountCodes.map((itemPromo) => {
+      if (itemPromo.name === promocode.toLowerCase()) {
         return true;
       }
       return false;
     });
+    console.log(existPromo);
     if (existPromo.includes(true)) {
       refreshTokenFlow(refreshToken).then((response) => {
         if (response) {
@@ -211,9 +212,10 @@ function CartPage(): JSX.Element {
   useEffect(() => {
     discountCodes.map((code) => {
       if (
-        discountCodesCart &&
+        discountCodesCart?.length &&
         code.id === discountCodesCart[0]?.discountCode.id
       ) {
+        console.log('lalala');
         dispatch(setPromocode(code.name));
       }
     });
