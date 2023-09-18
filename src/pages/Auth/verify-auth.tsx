@@ -70,8 +70,6 @@ export const handleСreationAuth = (
         )
           .then((responseTwo) => {
             if (responseTwo) {
-              localStorage.removeItem('anonymousID');
-              localStorage.removeItem('refreshAnonToken');
               localStorage.setItem('customerId', responseTwo.body.customer.id);
               dispatch(changeAnonymousCart({ anonymousID: '' }));
               dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
@@ -82,11 +80,13 @@ export const handleСreationAuth = (
             return token;
           })
           .then((responseThree) => {
-            localStorage.setItem('refreshToken', responseThree.refresh_token);
+            if (responseThree.refresh_token) {
+              localStorage.setItem('refreshToken', responseThree.refresh_token);
+            }
             dispatch(setRefreshTokenStatus(responseThree.refresh_token));
             dispatch(setAccessTokenStatus(responseThree.access_token));
-            dispatch(setAuthStatus(true));
-            localStorage.setItem('isAuth', 'true');
+            localStorage.removeItem('anonymousID');
+            localStorage.removeItem('refreshAnonToken');
           })
           .catch((error) => {
             if (error) {

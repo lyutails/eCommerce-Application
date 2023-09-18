@@ -12,7 +12,7 @@ import {
 } from 'react';
 
 export const mainPageOffersSlides = [
-  'RSSchool and Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
+  'RSSchool or Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
   'HOT SALES 10% OFF for all red t-shirts and caps during hot summer and autumn!',
   'Winter is coming - so get the 10% OFF for all white hoodies, mugs and mice.',
   '2 = 1 !!! Back to black... all designers favourite colour - Two Black t-shirts by the price of One!',

@@ -349,7 +349,7 @@ function CartPage(): JSX.Element {
             card.quantity,
             !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
           );
-        }, 800)}
+        }, 600)}
         quantity={card.quantity}
         reduceQuantity={debounce(
           (): void =>
@@ -360,7 +360,7 @@ function CartPage(): JSX.Element {
                 ? anonymousCart.anonymousRefreshToken
                 : customerRefreshToken
             ),
-          800
+          600
         )}
         increaseQuantity={debounce(
           (): void =>
@@ -370,17 +370,19 @@ function CartPage(): JSX.Element {
                 ? anonymousCart.anonymousRefreshToken
                 : customerRefreshToken
             ),
-          800
+          600
         )}
       ></CartProduct>
     );
   });
+  const addCustomerName = (): string => {
+    return isAuth
+      ? `${bio.firstname?.value} ${bio.lastname?.value}`
+      : `customer`;
+  };
   return (
     <div className={style.cart_wrapper}>
-      <h2 className={style.cart_title}>
-        Your cart, dear{' '}
-        {isAuth ? `${bio.firstname?.value} ${bio.lastname?.value}` : `customer`}
-      </h2>
+      <h2 className={style.cart_title}>Your cart, dear {addCustomerName()}</h2>
       <div
         className={`${style.cart_content} ${
           cartItems.length ? style.shown : style.hidden
@@ -410,7 +412,7 @@ function CartPage(): JSX.Element {
             }
             className={style.cart_clear}
           >
-            Delete All Products
+            Clear Shopping Cart
           </button>
         </div>
         <div className={style.cart_discount_codes}>
@@ -443,7 +445,7 @@ function CartPage(): JSX.Element {
                         ? anonymousCart.anonymousRefreshToken
                         : customerRefreshToken
                     ),
-                  800
+                  600
                 )}
                 className={style.cart_discount_button}
                 disabled={
@@ -492,7 +494,7 @@ function CartPage(): JSX.Element {
                       ? anonymousCart.anonymousRefreshToken
                       : customerRefreshToken
                   ),
-                800
+                600
               )}
               className={style.cart_discount_delete}
             >
@@ -532,8 +534,8 @@ function CartPage(): JSX.Element {
         }`}
       >
         <div className={style.cart_empty_message}>
-          Dear user, your cart is currently empty, we would be glad you continue
-          shopping by following the link.
+          Dear {addCustomerName()}, your cart is currently empty, we would be
+          glad you continue shopping by following the link.
         </div>
         <Link to={'/catalog'} className={style.cart_catalog_link}>
           Catalog

@@ -218,6 +218,7 @@ body {
     transition: 2s;
 
     &_visible {
+      overflow-y: hidden;
       animation: open-modal 2s forwards;
       animation-iteration-count: 1;
     }

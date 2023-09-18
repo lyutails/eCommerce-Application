@@ -83,6 +83,5 @@ export const anonymousSessionFlow = async (
   } else {
     customer = authClient.anonymousFlow();
   }
-  console.log(customer);
   return customer;
 };
