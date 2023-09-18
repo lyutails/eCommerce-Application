@@ -87,6 +87,11 @@
     user-select: none;
   }
 
+  &_product_piece {
+    font-size: 2rem;
+opacity: 0.6;
+  }
+
   &_delete {
     width: 4vw;
     aspect-ratio: 1 / 1;
