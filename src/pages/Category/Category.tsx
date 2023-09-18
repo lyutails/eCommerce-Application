@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
+  LineItem,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -891,6 +892,13 @@ function CategoryPage(): JSX.Element {
 
   const ref = useRef();
 
+  function isProductInCart(card: ProductVariant): LineItem | undefined {
+    const foundProduct = cartItems.find(
+      (item) => card.sku === item.name['en-US']
+    );
+    return foundProduct;
+  }
+
   return (
     <div className={style.category}>
       <div className={style.category_wrapper}>
@@ -1233,27 +1241,21 @@ function CategoryPage(): JSX.Element {
                       <div key={card.key} className={style.category_whole_card}>
                         <button
                           className={style.category_to_cart}
-                          onClick={(): void => {
-                            if (cartItems.length > 0) {
-                              const foundProduct = cartItems.find(
-                                (item) => card.sku === item.name['en-US']
-                              );
-                              if (foundProduct) {
-                                setProductFoundInCart(true);
-                                setAlreadyInCartModal(true);
-                                setTimeout(() => {
-                                  setAlreadyInCartModal(false);
-                                }, 2000);
-                              } else {
-                                updateCustomerCart(updateAnonCartData);
-                              }
+                          onClick={(e): void => {
+                            const foundProduct = isProductInCart(card);
+                            if (cartItems.length > 0 && foundProduct) {
+                              setAlreadyInCartModal(true);
+                              e.currentTarget.textContent = 'in Cart';
+                              setTimeout(() => {
+                                setAlreadyInCartModal(false);
+                              }, 2000);
                             } else {
                               updateCustomerCart(updateAnonCartData);
+                              e.currentTarget.textContent = 'to Cart';
                             }
                           }}
                         >
-                          to Cart
-                          {/* {productFoundInCart === true ? 'in Cart' : 'to Cart'} */}
+                          {isProductInCart(card) ? 'in Cart' : 'to Cart'}
                         </button>
                         <Link
                           to={`/catalog/${category}/${card.key}`}

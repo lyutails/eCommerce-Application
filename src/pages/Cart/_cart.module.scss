@@ -82,6 +82,11 @@
     justify-content: space-between;
   }
 
+  &_discount_input_wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
   &_discount_amount {
     font-size: 3rem;
   }
@@ -178,6 +183,11 @@
     background-size: contain;
   }
 
+  &_discount_clue {
+    font-size: 2rem;
+    color: red;
+  }
+
   &_discount_input {
     background: $background-gradient-one;
     border-radius: 5px;
@@ -190,6 +200,7 @@
     padding-left: 5px;
     text-overflow: ellipsis;
     user-select: none;
+    margin-bottom: 15px;
 
     &:focus {
       border: 1px solid $glow-violet;

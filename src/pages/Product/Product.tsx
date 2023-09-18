@@ -433,10 +433,8 @@ function ProductPage(): JSX.Element {
       deleteItem(productId, quantity, refreshTokenProduct);
     }
   }
- 
 
   useEffect(() => {
-    console.log(id, 456);
     id &&
       getProductProjectionsByVariantKey(id).then((response) => {
         const productObtained = response.body.results[0];
