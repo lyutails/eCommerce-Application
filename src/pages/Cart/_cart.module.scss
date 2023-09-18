@@ -49,10 +49,11 @@
     margin-right: 3vw;
     user-select: none;
     font-weight: 800;
+    align-self: center;
   }
 
   &_price_amount {
-    font-size: 3rem;
+    font-size: 3.6rem;
     font-family: 'No Signal', cursive;
     color: $font-color-primary-one;
     user-select: none;
@@ -112,7 +113,7 @@
   }
 
   &_discount_price {
-    font-size: 4rem;
+    font-size: 4.5rem;
     color: $font-color-primary-one;
     text-shadow:
       0 0 5px $glow-violet,
@@ -493,7 +494,7 @@
 }
 
 .linethrough {
-  font-size: 3rem;
+  font-size: 3.6rem;
   font-family: 'No Signal', cursive;
   color: $font-color-primary-one;
   user-select: none;

@@ -433,7 +433,6 @@ function ProductPage(): JSX.Element {
       deleteItem(productId, quantity, refreshTokenProduct);
     }
   }
- 
 
   useEffect(() => {
     console.log(id, 456);

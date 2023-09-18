@@ -40,7 +40,7 @@ import '../../../global.d.ts';
 import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
 import _debounce from 'lodash/debounce';
-import { debounce } from 'lodash';
+import { debounce, transform } from 'lodash';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -84,6 +84,7 @@ function CategoryPage(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
+  const [colourCircle, setColourCircle] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -1019,7 +1020,7 @@ function CategoryPage(): JSX.Element {
             <div className={style.category_filters_color}>
               {allColours.map((colour) => {
                 return (
-                  <div key={colour} className={style.category_colours_wrapper}>
+                  <div key={colour} className={style.category_colour_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -1032,6 +1033,10 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={colour}
                       className={style[`category_filters_${colour}`]}
+                    ></label>
+                    <label
+                      htmlFor={colour}
+                      className={style[`colour_outer_circle_${colour}`]}
                     ></label>
                   </div>
                 );
