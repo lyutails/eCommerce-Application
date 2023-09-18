@@ -12,7 +12,7 @@ function AboutUsPage(): JSX.Element {
       biography:
         'To create art… like it’s your personal pole star and flickering light, leading from a mechanism to mechanism, through art schools and from engineering university to public relations one, making me to land here in coding school finding that’s the way to create too.',
       contribution:
-        'Creator of Main, Catalog, Cart, Category pages. Goddess of Commercetools. Creator of all UI-Kit ',
+        'Creator of Main, Catalog, Cart, Category pages. Goddess of Commercetools and Pull Requests. Creator of all UI-Kit ',
       cooperation:
         'Our leader who always finds the right words of encouragement. Bringing us all together and helping us all make friends',
       img: 'black',
@@ -25,7 +25,7 @@ function AboutUsPage(): JSX.Element {
       biography:
         'Every field I have ever studied and every job I have ever taken have finally led me to falling in love with IT. I write code with humor and ready to become your frontend slave.',
       contribution:
-        'Creator of the Registration, Authorization, Profile and Card pages.  Goddess of Arti and React-Store.',
+        'Creator of the Registration, Authorization, Profile and Cart pages.  Goddess of Api and React-Store.',
       cooperation:
         'Inexhaustible source of energy, always came to the rescue at any second, loves the code and is always there to help with it',
       img: 'white',
@@ -38,7 +38,7 @@ function AboutUsPage(): JSX.Element {
       biography:
         'A former lawyer who realized he wanted to do more than read contracts. Loves coding and creating amazing things out of nothing. Loves to communicate and break boundaries and limits, which is why he chose this profession.',
       contribution:
-        'Creator of the Product, About Us, Customize pages.  Goddess "console.log". Found a lot of art and project ideas.',
+        'Creator of the Product, About Us, Customize pages and Routing.  Goddess "console.log". Found a lot of art and project ideas.',
       cooperation:
         'Figoro of this team, tried to participate in the creation of each page and always forgot to make a commit',
       img: 'red',
@@ -91,7 +91,7 @@ function AboutUsPage(): JSX.Element {
           <span className={style.desc_span}>Join us! Follow this link!</span>
           <a
             className={style.link}
-            href="https:/rs.school"
+            href="https://rs.school/"
             target="_blank"
             rel="noreferrer"
           >
