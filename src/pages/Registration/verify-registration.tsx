@@ -227,9 +227,6 @@ export const handleСreationReg = (
     setCheckmarkBirthday
   );
 
-  console.log(anonymousCartData.cartID);
-  console.log(anonymousCartData.anonymousID);
-
   const createCustomerData: IMyCustomerDraft = {
     email: loginField,
     firstName: fistnameField,
@@ -316,7 +313,9 @@ export const handleСreationReg = (
           return token;
         })
         .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
+          if (response.refresh_token) {
+            localStorage.setItem('refreshToken', response.refresh_token);
+          }
           dispatch(setRefreshTokenStatus(response.refresh_token));
           dispatch(setAccessTokenStatus(response.access_token));
           loginAnonUser(
@@ -373,11 +372,14 @@ export const handleСreationReg = (
               return token;
             })
             .then((responseThree) => {
-              localStorage.setItem('refreshToken', responseThree.refresh_token);
+              if (responseThree.refresh_token) {
+                localStorage.setItem(
+                  'refreshToken',
+                  responseThree.refresh_token
+                );
+              }
               dispatch(setRefreshTokenStatus(responseThree.refresh_token));
               dispatch(setAccessTokenStatus(responseThree.access_token));
-              dispatch(setAuthStatus(true));
-              localStorage.setItem('isAuth', 'true');
             })
             .catch((error) => {
               if (error) {

@@ -402,7 +402,6 @@ function ProductPage(): JSX.Element {
   function openModalWindow(): void {
     dispatch(changeflagInModalWindow(true));
   }
-  console.log(productExistence);
 
   function deleteProduct(): void {
     const refreshTokenProduct = !isAuth
@@ -438,7 +437,6 @@ function ProductPage(): JSX.Element {
     id &&
       getProductProjectionsByVariantKey(id).then((response) => {
         const productObtained = response.body.results[0];
-        console.log(id, 123);
         if (productObtained.masterVariant.key === id) {
           creatingQueryForMaster(productObtained);
         } else {
@@ -451,7 +449,6 @@ function ProductPage(): JSX.Element {
   }, [creatingQueryForMaster, creatingQueryForVariant, id]);
 
   useEffect(() => {
-    console.log(id, cartItems);
     if (cartItems.length) {
       cartItems.map((item) => {
         if (item.variant.key === id) {
@@ -601,12 +598,12 @@ function ProductPage(): JSX.Element {
             {productExistence && (
               <div className="block-buttons-quantity">
                 <button
-                  onClick={debounce(deleteOneProduct, 800)}
+                  onClick={debounce(deleteOneProduct, 600)}
                   className="quantity-minus"
                 ></button>
                 <div className="quantity">{quantityProduct}</div>
                 <button
-                  onClick={debounce(addOneProduct, 800)}
+                  onClick={debounce(addOneProduct, 600)}
                   className="quantity-plus"
                 ></button>
               </div>

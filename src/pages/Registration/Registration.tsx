@@ -111,7 +111,6 @@ function RegistrationPage(): JSX.Element {
       setTimeout(() => {
         dispatch(setAuthStatus(true));
         localStorage.setItem('isAuth', 'true');
-        navigate('/');
       }, 5300);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
@@ -134,7 +133,7 @@ function RegistrationPage(): JSX.Element {
     }
   }
   return (
-    <div className={style.login}>
+    <div className={modal ? style.registriation_visible : style.login}>
       <div className={style.authorization}>
         <h2 className={style.title}>LogIn</h2>
         <ButtonForm
