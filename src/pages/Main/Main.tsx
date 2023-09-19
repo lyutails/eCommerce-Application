@@ -14,9 +14,9 @@ import { getBestsellers } from '../../api/getBestsellers';
 import { Attribute } from '@commercetools/platform-sdk';
 
 export const mainPageOffersSlides = [
-  'RSSchool and Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
+  'RSSchool or Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
   'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
-  'Winter is coming - so get the 10% OFF for all WHITE hoodies, mugs and mice.',
+  'Winter is coming - so get 10% OFF for all WHITE Hoodies, Mugs and Mice.',
   '2 = 1 !!! Back to black... all designers favourite colour - Two BLACK T-Shirts by the price of One!',
 ];
 
