@@ -736,7 +736,7 @@ input[type='checkbox'] {
   &_to_cart {
     background-color: transparent;
     color: $font-color-primary-one;
-    font-size: 2rem;
+    font-size: 1.5rem;
     align-self: flex-start;
     font-weight: 700;
     display: flex;
@@ -749,7 +749,7 @@ input[type='checkbox'] {
     text-shadow:
       0 0 5px $glow-green,
       0 0 10px $glow-green;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-left: 30px;
     border: none;
     transition: all 0.2s ease-in-out;
@@ -1440,6 +1440,14 @@ input#price-sort {
   align-items: center;
 }
 
+@media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
+  .category_to_cart {
+    font-size: 1.2rem;
+    margin-left: 20px;
+    margin-top: 15px;
+  }
+}
+
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
   .category_filters {
     width: 100%;
@@ -1495,19 +1503,23 @@ input#price-sort {
   }
 
   .category_filters_color {
-    width: 50vw;
+    width: 60vw;
+  }
+
+  .category_colour_wrapper {
+    width: 20%;
   }
 
   .category_filters_black {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_red {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_white {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_xs {
@@ -1654,6 +1666,44 @@ input#price-sort {
       transform: rotate(0deg);
     }
   }
+
+  .category_reset_button {
+    width: 80vw;
+    margin: 0 auto;
+  }
+
+  .category_filters_xs {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_s {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_m {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_l {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xxl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xxxl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_universal {
+    font-size: 3rem;
+    padding: 5vw;
+  }
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1199.98px)) {
@@ -1714,5 +1764,11 @@ input#price-sort {
     font-size: 2.8rem;
     padding-left: 5vw;
     padding-top: 15px;
+  }
+
+  .category_to_cart {
+    font-size: 1rem;
+    margin-left: 10px;
+    margin-top: 20px;
   }
 }
