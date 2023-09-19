@@ -1245,17 +1245,19 @@ function CategoryPage(): JSX.Element {
                             const foundProduct = isProductInCart(card);
                             if (cartItems.length > 0 && foundProduct) {
                               setAlreadyInCartModal(true);
-                              e.currentTarget.textContent = 'in Cart';
+                              e.currentTarget.textContent = 'Already in Cart';
                               setTimeout(() => {
                                 setAlreadyInCartModal(false);
                               }, 2000);
                             } else {
                               updateCustomerCart(updateAnonCartData);
-                              e.currentTarget.textContent = 'to Cart';
+                              e.currentTarget.textContent = 'Add to Cart';
                             }
                           }}
                         >
-                          {isProductInCart(card) ? 'in Cart' : 'to Cart'}
+                          {isProductInCart(card)
+                            ? 'Already in Cart'
+                            : 'Add to Cart'}
                         </button>
                         <Link
                           to={`/catalog/${category}/${card.key}`}
