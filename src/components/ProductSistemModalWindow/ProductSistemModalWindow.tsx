@@ -1,4 +1,4 @@
-function SistemModalWindow(): JSX.Element {
+function ProductSistemModalWindow(): JSX.Element {
   return (
     <div className="overlay">
       <div className="modal_visible modal">
@@ -9,4 +9,4 @@ function SistemModalWindow(): JSX.Element {
     </div>
   );
 }
-export default SistemModalWindow;
+export default ProductSistemModalWindow;
