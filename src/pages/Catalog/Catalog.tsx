@@ -47,14 +47,24 @@ function CatalogPage(): JSX.Element {
             })}
           </div>
         </div>
-        <Link to="/customize">
+        <Link className={style.catalog_customize} to="/customize">
           <div className={`${style.catalog_advertisment} ${style.customize}`}>
-            <div className={style.catalog_sloth_left}></div>
-            <div className={style.catalog_advertisment_text}>
-              Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by your
-              own with RSSchool amazing merch... have fun \o/
+            <div className={`${style.catalog_advertisment} ${style.customize}`}>
+              <div className={style.catalog_advertisment_info}>
+                <div className={style.catalog_glitch_container}>
+                  <div className={style.catalog_advertisment_glitch}>
+                    {/* <div className={style.catalog_advertisment_title}>CUSTOMIZE</div> */}
+                    CUSTOMIZE
+                    {/* <div className={style.catalog_advertisment_title}>CUSTOMIZE</div> */}
+                  </div>
+                </div>
+                <div className={style.catalog_advertisment_text}>
+                  Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
+                  your own with RSSchool amazing merch... have fun \o/
+                </div>
+              </div>
+              <div className={style.catalog_sloth_right}></div>
             </div>
-            <div className={style.catalog_sloth_right}></div>
           </div>
         </Link>
       </div>
