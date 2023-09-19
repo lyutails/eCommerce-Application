@@ -4,7 +4,7 @@ import { logo } from './logo';
 import { Link, NavLink } from 'react-router-dom';
 import { ICartState, IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
 
 function Header(): JSX.Element {
@@ -37,8 +37,9 @@ function Header(): JSX.Element {
   const handleToBurgerOff = (): void => {
     SetActiveBurger(false);
   };
+
   return (
-    <div className={style.header}>
+    <div id="header" className={`${style.header} ${style.sticky}`}>
       <div className={style.header_wrapper}>
         <Link className={style.logo} to="/">
           {logo}

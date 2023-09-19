@@ -102,7 +102,6 @@ function App(): JSX.Element {
           });
         })
         .catch(() => {
-          console.log('error');
           checkRefreshToken();
           localStorage.removeItem('refreshToken');
         });

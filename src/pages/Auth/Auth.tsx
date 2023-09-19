@@ -48,14 +48,14 @@ function AuthPage(): JSX.Element {
 
   useEffect(() => {
     if (successfulMessage === true) {
+      console.log(456);
       setModal(createModal());
       setTimeout(() => {
         dispatch(setAuthStatus(true));
         localStorage.setItem('isAuth', 'true');
-        navigate('/');
       }, 5300);
     }
-  }, [dispatch, isAuth, navigate, successfulMessage]);
+  }, [dispatch, navigate, successfulMessage]);
 
   function checkInputError(
     passwordField: string,

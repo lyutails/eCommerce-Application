@@ -96,7 +96,6 @@ export const updateCart = async (
         },
       })
       .execute();
-    console.log(cart);
     return cart;
   } catch (error) {
     console.log(error);
