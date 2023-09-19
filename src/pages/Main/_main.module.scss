@@ -255,8 +255,6 @@
     background-image: url('../../../public/assets/backgrounds/offer_red_sales.png');
     background-repeat: no-repeat;
     background-size: contain;
-
-    -webkit-text-stroke: 1px;
   }
 
   &_offer_text {
@@ -277,18 +275,6 @@
       0 0 5px $glow-green,
       0 0 10px $glow-green,
       0 0 20px $glow-green;
-  }
-
-  &_offer_pic {
-    display: inline-block;
-
-    aspect-ratio: 1 / 1;
-    width: 20%;
-
-    background-image: url('../../../public/assets/sloth-pics/love.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
   }
 
   &_offers_arrows {
@@ -315,7 +301,7 @@
     transition: all 0.2s ease-in-out;
 
     &.left {
-      transform: translate(-3vw, 0%);
+      transform: translate(-1.5vw, 0%);
       background-image: url('../../../public/ui-kit/offers_01_green_left.svg');
 
       &:hover {
@@ -325,7 +311,7 @@
     }
 
     &.right {
-      transform: translate(3vw, 0%);
+      transform: translate(1.5vw, 0%);
       background-image: url('../../../public/ui-kit/offers_01_green_right.svg');
 
       &:hover {
@@ -392,41 +378,41 @@
     filter: drop-shadow(0 0 5px $glow-green);
   }
 
-  &_arrow {
-    position: absolute;
+  // &_arrow {
+  //   position: absolute;
 
-    display: inline-block;
+  //   display: inline-block;
 
-    aspect-ratio: 1 / 1;
-    width: 4vw;
-    max-width: 50px;
+  //   aspect-ratio: 1 / 1;
+  //   width: 4vw;
+  //   max-width: 50px;
 
-    visibility: hidden;
-    background-repeat: no-repeat;
-    background-size: contain;
+  //   visibility: hidden;
+  //   background-repeat: no-repeat;
+  //   background-size: contain;
 
-    transition: all 0.2s ease-in-out;
+  //   transition: all 0.2s ease-in-out;
 
-    &.left {
-      transform: translate(-50px, 0);
-      background-image: url('../../../public/assets/icons/arrow_left.svg');
+  //   &.left {
+  //     transform: translate(-1.5vw, 0);
+  //     background-image: url('../../../public/assets/icons/arrow_left.svg');
 
-      &:hover {
-        cursor: pointer;
-        background-image: url('../../../public/assets/icons/arrow_left_hover.svg');
-      }
-    }
+  //     &:hover {
+  //       cursor: pointer;
+  //       background-image: url('../../../public/assets/icons/arrow_left_hover.svg');
+  //     }
+  //   }
 
-    &.right {
-      transform: translate(90vw, 0);
-      background-image: url('../../../public/assets/icons/arrow_right.svg');
+  //   &.right {
+  //     transform: translate(90vw, 0);
+  //     background-image: url('../../../public/assets/icons/arrow_right.svg');
 
-      &:hover {
-        cursor: pointer;
-        background-image: url('../../../public/assets/icons/arrow_right_hover.svg');
-      }
-    }
-  }
+  //     &:hover {
+  //       cursor: pointer;
+  //       background-image: url('../../../public/assets/icons/arrow_right_hover.svg');
+  //     }
+  //   }
+  // }
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
