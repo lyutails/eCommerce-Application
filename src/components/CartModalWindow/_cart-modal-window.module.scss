@@ -1,0 +1,118 @@
+@import '../../style/variables';
+.modal_wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+
+  background: rgba(0, 0, 0, 0.9);
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 2;
+    width: 80vw;
+    min-width: 300px;
+    max-width: 1200px;
+    padding: 0 8vw;
+
+    font-family: 'No Signal', cursive;
+    font-size: 3rem;
+    color: $font-color-primary-one;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+
+    background: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    border-radius: 10px;
+
+    transition: 2s;
+    .modal_title {
+      font-family: 'No Signal', cursive;
+      font-size: 2rem;
+      color: $font-color-primary-one;
+      text-align: center;
+    }
+    .modal_buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      .modal_button {
+        outline: none;
+        cursor: pointer;
+
+        aspect-ratio: 1 / 0.27;
+        width: 30%;
+        margin-bottom: 20px;
+
+        font-family: 'No Signal', cursive;
+        font-size: 3rem;
+        color: white;
+        text-align: center;
+        text-shadow:
+          0 0 5px #63b6bf,
+          0 0 10px #2ea4cf,
+          0 0 20px #4dafbc;
+
+        background-color: transparent;
+        background-image: url('../../../public/assets/productPage/profile_menu_green_blue.svg');
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        background-size: cover;
+        border: none;
+
+        transition: background-image 0.3s ease-in-out;
+
+        &:focus {
+          background-image: url('../../../public/assets/productPage/profile_menu_purple_green.svg');
+        }
+
+        &:hover {
+          background-image: url('../../../public/assets/productPage/profile_menu_purple_green.svg');
+        }
+
+        &:active {
+          background-image: url('../../../public/assets/productPage/profile_menu_purple.svg');
+        }
+      }
+    }
+
+    &_visible {
+      animation: open-modal 2s forwards;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes open-modal {
+      from {
+        top: -100%;
+      }
+
+      to {
+        top: 50%;
+      }
+    }
+  }
+}
+@media screen and (min-width: (390px)) and (max-width: (560px)) {
+  .modal_wrapper {
+    .modal {
+      .modal_title {
+        padding: 10% 10px 0;
+      }
+    }
+  }
+}

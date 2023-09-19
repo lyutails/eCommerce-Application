@@ -15,7 +15,6 @@ import {
   changeflagInModalWindow,
   createProductImgArr,
 } from '../../store/reducers/productReduser';
-import ModalWindow from './ModalWindow/ModalWindow';
 import {
   ICartState,
   IMyCartUpdate,
@@ -35,7 +34,8 @@ import {
   setCartQuantity,
 } from '../../store/reducers/cartReducer';
 import { updateCart } from '../../api/existTokenFlow';
-import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
+import ProductSistemModalWindow from '../../components/ProductSistemModalWindow/ProductSistemModalWindow';
+import ProductModalWindow from '../../components/ProductModalWindow/ProductModalWindow';
 
 interface IDataProduct {
   name: string;
@@ -55,6 +55,7 @@ function ProductPage(): JSX.Element {
   const navigate = useNavigate();
   const [quantityProduct, setQuantityProduct] = useState(1);
   const [productExistence, setProductExistence] = useState(false);
+  const [flagDisablingButton, setFlagDisablingButton] = useState(false);
   const [productId, setProductId] = useState('');
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
@@ -596,14 +597,32 @@ function ProductPage(): JSX.Element {
               </div>
             </div>
             {productExistence && (
-              <div className="block-buttons-quantity">
+              <div
+                className={
+                  flagDisablingButton
+                    ? 'block-buttons-quantity-noclick'
+                    : 'block-buttons-quantity'
+                }
+              >
                 <button
-                  onClick={debounce(deleteOneProduct, 600)}
+                  onClick={(): void => {
+                    deleteOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
                   className="quantity-minus"
                 ></button>
                 <div className="quantity">{quantityProduct}</div>
                 <button
-                  onClick={debounce(addOneProduct, 600)}
+                  onClick={(): void => {
+                    addOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
                   className="quantity-plus"
                 ></button>
               </div>
@@ -630,8 +649,8 @@ function ProductPage(): JSX.Element {
           </div>
         </div>
       </div>
-      <div>{flagModalWindow ? <ModalWindow /> : ''}</div>
-      <div>{modal ? <SistemModalWindow /> : ''}</div>
+      <div>{flagModalWindow ? <ProductModalWindow /> : ''}</div>
+      <div>{modal ? <ProductSistemModalWindow /> : ''}</div>
     </section>
   );
 }
