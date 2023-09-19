@@ -87,6 +87,16 @@
     -webkit-text-stroke: 1px;
     border: 1px dotted $glow-violet;
     box-shadow: 0 0 15px $glow-violet;
+    border-radius: 20px;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0%,
+        $red-scanline 4px,
+        $red-scanline 8px,
+        $red-scanline 10px,
+        transparent 0.5%
+      ),
+      repeating-linear-gradient(to left, $black-scanline, $black-scanline 50%);
 
     &.customize {
       display: flex;
