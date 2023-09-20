@@ -5,12 +5,13 @@ import { GetParentCategory } from '../../api/getCategories';
 import { Category } from '@commercetools/platform-sdk';
 import { useDispatch } from 'react-redux';
 import { createCategory } from '../../store/reducers/categoryReducer';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 
 function CatalogPage(): JSX.Element {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const dispatch = useDispatch();
   useEffect(() => {
-    GetParentCategory().then((response) => {
+    trackPromise(GetParentCategory()).then((response) => {
       const parentCategory = response.body.results;
       const onlyWithoutAncestors = parentCategory.filter(
         (data) => data.ancestors.length === 0
@@ -22,8 +23,22 @@ function CatalogPage(): JSX.Element {
       dispatch(createCategory(subCategories));
     });
   }, [dispatch]);
+
+  const { promiseInProgress } = usePromiseTracker();
+
   return (
     <div className={style.catalog} data-testid="catalog-component">
+      <div className={style.spinner}>
+        {promiseInProgress === true ? (
+          <div className={style.spinner_container}>
+            <div className={style.spinner_wrapper}>
+              <div className={style.spinner_text}>Loading...</div>
+              <div className={style.spinner_icon}></div>
+            </div>
+            <div className={style.spinner_overlay}></div>
+          </div>
+        ) : null}
+      </div>
       <div className={style.catalog_wrapper}>
         <div className={style.catalog_categories_block}>
           <h1 className={style.catalog_title}>

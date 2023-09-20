@@ -41,8 +41,7 @@ import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
 import _debounce from 'lodash/debounce';
 import { debounce } from 'lodash';
-import { trackPromise } from 'react-promise-tracker';
-import { usePromiseTracker } from 'react-promise-tracker';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
