@@ -7,31 +7,34 @@
     align-items: center;
     justify-content: space-between;
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.3;
     width: 100%;
-    padding-bottom: 5%;
+    padding-bottom: 10%;
+    padding-top: 10%;
 
-    background-image: url('../../../public/ui-kit/product_blue.svg');
+    background-image: url('../../../public/ui-kit/card_frame_01.svg');
     background-repeat: no-repeat;
     background-position: center center;
     transition: all 0.2s ease-in-out;
+    position: relative;
+    z-index: 1200;
 
     &:hover {
       cursor: pointer;
-      background-image: url('../../../public/ui-kit/product_green_blue.svg');
+      background-image: url('../../../public/ui-kit/card_frame_02.svg');
     }
   }
 
   &_pic {
     aspect-ratio: 1 / 1;
-    width: 50%;
+    width: 55%;
 
     background-repeat: no-repeat;
     background-position: center center;
   }
 
   &_name {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-right: 5%;
     padding-left: 5%;
 
@@ -40,6 +43,7 @@
     text-shadow:
       0 0 5px $glow-green,
       0 0 10px $glow-green;
+    text-align: center;
   }
 
   &_buy {
@@ -47,18 +51,27 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+    padding-top: 5px;
 
-    width: 100%;
+    width: 80%;
+    border-top: 2px dotted $glow-violet;
   }
 
   &_price {
     font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
   }
 
   &_discount {
     font-size: 2rem;
     font-weight: 700;
-    color: $discount;
+    color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 
   &_description {
@@ -75,4 +88,7 @@
 .linethrough {
   font-size: 1.5rem;
   text-decoration: line-through;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
 }
