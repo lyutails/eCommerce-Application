@@ -7,7 +7,7 @@
 .catalog {
   @include page-layout-container;
   background-image: linear-gradient(to right, rgba(3, 14, 27, 0.9) 0 100%),
-    url('../../../public/assets/backgrounds/cyberpunk_02.png');
+    url('../../../public/assets/backgrounds/catalog_girl_01.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -353,7 +353,7 @@
     0 0 5px $glow-green,
     0 0 10px $glow-green,
     0 0 15px $glow-green;
-    user-select: none;
+  user-select: none;
 }
 
 .spinner_icon {
