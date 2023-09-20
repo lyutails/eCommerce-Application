@@ -59,12 +59,19 @@
 
   &_price {
     font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
   }
 
   &_discount {
     font-size: 2rem;
     font-weight: 700;
-    color: $discount;
+    color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 
   &_description {
@@ -81,4 +88,7 @@
 .linethrough {
   font-size: 1.5rem;
   text-decoration: line-through;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
 }

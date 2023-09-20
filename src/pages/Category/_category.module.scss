@@ -59,7 +59,7 @@ input[type='checkbox'] {
     aspect-ratio: 1 / 1;
     width: 3vw;
 
-    background-color: $discount;
+    background-color: $filter-red;
     border: 3px solid $background-color-primary-five;
     border-radius: 50%;
 
@@ -999,7 +999,7 @@ input[type='checkbox'] {
   text-shadow:
     0 0 5px,
     0 0 10px $glow-green;
-  color: $discount;
+  color: $filter-red;
 }
 
 .category_filters_sale
