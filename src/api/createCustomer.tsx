@@ -4,10 +4,13 @@ import {
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
-import { loginCustomerThroughReg } from './passwordFlowSession';
+import { AnyAction, Dispatch } from 'redux';
+import { loginAnonUser } from './existTokenFlow';
 
 export async function createCustomerMe(
   data: IMyCustomerDraft,
+  accessToken: string,
+  dispatch: Dispatch<AnyAction>,
   setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<ClientResponse<CustomerSignInResult> | undefined> {
   try {
@@ -21,32 +24,9 @@ export async function createCustomerMe(
         },
       })
       .execute();
-    loginCustomerThroughReg(data, setSuccessfulMessage);
+    loginAnonUser(accessToken, data, dispatch, setSuccessfulMessage);
     return customer;
   } catch {
     console.log('cannot create customer');
   }
 }
-
-export const customerOne = {
-  email: 'johnIanaTestAddress@example.com',
-  firstName: 'Iana',
-  lastName: 'Belousova',
-  password: 'snmthjs',
-  addresses: [
-    {
-      streetName: 'Hhdjlzld',
-      streetNumber: '45',
-      postalCode: '30100',
-      city: 'hbcbjisne',
-      country: 'usa',
-    },
-    {
-      streetName: 'PPPPPPPP',
-      streetNumber: '45',
-      postalCode: '30100',
-      city: 'PPPPPPP',
-      country: 'canada',
-    },
-  ],
-};

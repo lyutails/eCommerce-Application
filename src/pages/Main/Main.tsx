@@ -10,12 +10,14 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Attribute } from '@commercetools/platform-sdk';
+import { getBestsellers } from '../../api/getBestsellers';
 
 export const mainPageOffersSlides = [
-  'RSSchool is infinitely working DISCOUNT code giving you 20% OFF per one purchase.',
-  'HOT SALES 20% OFF on all red t-shirts and caps during hot summer and autumn!',
-  'Winter is coming so get the 10% OFF on all white hoodies, mugs and mice.',
-  '2 = 1 !!! two t-shirts of the same colour by price of one!',
+  'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
+  'RSSchool or Trinity are infinitely working DISCOUNT codes giving you 10% OFF or 30% OFF respectively per one purchase.',
+  'Winter is coming - so get 10% OFF for all WHITE Hoodies, Mugs and Mice.',
+  '2 = 1 !!! Back to black... all designers favourite colour - Two BLACK T-Shirts by the price of One!',
 ];
 
 function MainPage(): JSX.Element {
@@ -70,29 +72,33 @@ function MainPage(): JSX.Element {
   const offerSlides = useMemo(() => {
     if (mainPageOffersSlides.length > 1) {
       const items = Children.map(mainPageOffersSlides, (child, index) => (
-        <div className={style.main_offer}>
+        <div className={`${style.main_offer}`}>
           <div className={style.main_offer_text} key={index}>
             {child}
           </div>
-          <span className={style.main_offer_pic}></span>
         </div>
       ));
       return [
-        <div className={style.main_offer} key={mainPageOffersSlides.length + 1}>
+        <div
+          className={`${style.main_offer}`}
+          key={mainPageOffersSlides.length + 1}
+        >
           <div className={style.main_offer_text}>
             {mainPageOffersSlides[mainPageOffersSlides.length - 1]}
           </div>
-          <span className={style.main_offer_pic}></span>
         </div>,
         ...items,
         <div className={style.main_offer} key={mainPageOffersSlides.length + 2}>
           <div className={style.main_offer_text}>{mainPageOffersSlides[0]}</div>
-          <span className={style.main_offer_pic}></span>
         </div>,
       ];
     }
 
-    return <div className={style.main_offer}>{mainPageOffersSlides[0]}</div>;
+    return (
+      <div className={`${style.main_offer} ${style.one}`}>
+        {mainPageOffersSlides[0]}
+      </div>
+    );
   }, []);
 
   useLayoutEffect(() => {
@@ -115,6 +121,26 @@ function MainPage(): JSX.Element {
       }
     };
   }, [actionHandler]);
+
+  const bestsellersArray: Attribute[][] = [];
+
+  useEffect(() => {
+    getBestsellers()
+      .then((data) => {
+        return data.map(
+          (itemAttributes) => itemAttributes.masterVariant.attributes
+        );
+      })
+      .then((response) => {
+        if (response.length) {
+          response.forEach((bestsellerItem) => {
+            if (bestsellerItem && bestsellerItem[3]?.value === true) {
+              bestsellersArray.push(bestsellerItem);
+            }
+          });
+        }
+      });
+  }, [bestsellersArray]);
 
   return (
     <div className={style.main} data-testid="main-component">
@@ -151,12 +177,20 @@ function MainPage(): JSX.Element {
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
         </div>
-        <Link to="/customize">
+        <Link className={style.main_customize} to="/customize">
           <div className={`${style.main_advertisment} ${style.customize}`}>
-            <div className={style.main_sloth_left}></div>
-            <div className={style.main_advertisment_text}>
-              Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by your
-              own with RSSchool amazing merch... have fun \o/
+            <div className={style.main_advertisment_info}>
+              <div className={style.main_glitch_container}>
+                <div className={style.main_advertisment_glitch}>
+                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
+                  CUSTOMIZE
+                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
+                </div>
+              </div>
+              <div className={style.main_advertisment_text}>
+                Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
+                your own with RSSchool amazing merch... have fun \o/
+              </div>
             </div>
             <div className={style.main_sloth_right}></div>
           </div>

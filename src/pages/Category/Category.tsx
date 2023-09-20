@@ -3,11 +3,12 @@ import {
   GetParentCategory,
   returnProductsByCategoryKey,
 } from '../../api/getCategories';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import style from '../Category/_category.module.scss';
 import {
   Category,
+  LineItem,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -21,17 +22,48 @@ import {
   SubcategoriesIDs,
 } from '../../types/enums';
 import Card from '../../components/Card/Card';
+import { throwNewError } from '../../utils/throwNewError';
+import { useDispatch, useSelector } from 'react-redux';
+import { ICartState, IMyCartUpdate, IRootState } from '../../types/interfaces';
+import {
+  changeAnonymousCart,
+  changeUserCart,
+  setCartItems,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
+} from '../../store/reducers/cartReducer';
+import { updateCart } from '../../api/existTokenFlow';
+import { refreshTokenFlow } from '../../api/adminBuilder';
 
+import '../../../global.d.ts';
+import ReactSlider from 'react-slider';
+// const { ReactSlider } = require('react-slider');
+import _debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+
+const pageLimit = 8;
+const productsForSearchClothes = 'Cap Hoodie T-Shirt';
+const productsForSearchPC = 'Mouse Pad';
+const productsForSearchSouvenirs = 'Mug Notepad';
+const productsForSearchStickers = 'Sticker';
+const allBrands = ['RSSchool', 'Logitech'];
+const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
 function CategoryPage(): JSX.Element {
-  const pageLimit = 8;
-  const productsForSearchClothes = 'Cap Hoodie T-Shirt';
-  const productsForSearchPC = 'Mouse Pad';
-  const productsForSearchSouvenirs = 'Mug Notepad';
-  const productsForSearchStickers = 'Sticker';
+  const dispatch = useDispatch();
+  const { anonymousCart, userCart } = useSelector(
+    (state: ICartState) => state.cart
+  );
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+
   const { category } = useParams();
   const { query } = useParams();
-  const allBrands = ['RSSchool', 'Logitech'];
-  const sizesArray = ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'universal'];
+  const { cartItems } = useSelector((state: ICartState) => state.cart);
+
   const [idCategory, setIdcategoty] = useState('');
   const [subtree, setSubtree] = useState<Category[]>([]);
   const [allCards, setAllCards] = useState<ProductVariant[]>([]);
@@ -42,8 +74,8 @@ function CategoryPage(): JSX.Element {
   const [sale, setSale] = useState<boolean>(false);
   const [winter, setWinter] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState('');
-  const [searchPriceStart, setSearchPriceStart] = useState('');
-  const [searchPriceFinish, setSearchPriceFinish] = useState('');
+  // const [searchPriceStart, setSearchPriceStart] = useState('');
+  // const [searchPriceFinish, setSearchPriceFinish] = useState('');
   const [count, setCount] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [isSubtreeChecked, setIsSubtreeChecked] = useState(false);
@@ -52,7 +84,11 @@ function CategoryPage(): JSX.Element {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [maxPage, setMaxPage] = useState(1);
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
-  const [isNoSort, setIsNoSort] = useState(false);
+  const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
+  const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
+  const [productFoundInCart, setProductFoundInCart] = useState(false);
+  const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
+    useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
     name: Brands.RSSchool,
     flag: false,
@@ -138,6 +174,68 @@ function CategoryPage(): JSX.Element {
     flag: false,
   });
 
+  const updateCustomerCart = (updateAnonCartData: IMyCartUpdate): void => {
+    if (!isAuth) {
+      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        updateCart(
+          anonymousCart.cartID,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(setCartItems(updatedCart?.body.lineItems));
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    } else {
+      refreshTokenFlow(customerRefreshToken).then((response) => {
+        updateCart(
+          userCart.userCartId,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(setCartItems(updatedCart?.body.lineItems));
+            dispatch(
+              changeUserCart({
+                versionUserCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    }
+  };
+
   useEffect(() => {
     getProductType().then((response) => {
       const productTypeResponse = response.body.attributes;
@@ -151,107 +249,101 @@ function CategoryPage(): JSX.Element {
         }
       });
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!category) {
-      throw new Error(`no categories found`);
+      throwNewError(`no categories found`);
     }
-    returnProductsByCategoryKey(category?.toLowerCase())
-      .then((response) => {
+    trackPromise(
+      returnProductsByCategoryKey(category?.toLowerCase()).then((response) => {
         return response;
       })
-      .then((response) => {
-        const categoryId = response.body.id;
-        setIdcategoty(response.body.id);
-        GetParentCategory().then((response) => {
-          const bodyResults = response.body.results;
-          const onlyWithAncestors = bodyResults.filter((data) => {
-            return data.ancestors.length && data.ancestors[0].id === categoryId;
-          });
-          setSubtree(onlyWithAncestors);
+    ).then((response) => {
+      const categoryId = response.body.id;
+      setIdcategoty(response.body.id);
+      GetParentCategory().then((response) => {
+        const bodyResults = response.body.results;
+        const onlyWithAncestors = bodyResults.filter((data) => {
+          return data.ancestors.length && data.ancestors[0].id === categoryId;
         });
-        let querySizesString = '';
-        const queryBestsellerString = `"true", "false"`;
-        const subtrees = `subtree("${idCategory}")`;
-        const queryStringAllColours = `"red", "black", "white"`;
-        const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
-        const querySale = `"true", "false"`;
-        const queryStringAllBrands = `"RSSchool", "Logitech"`;
-        const priceDESC = 'price desc';
-        const nameASC = 'name.en-us asc';
-        const queryStringPriceNameSort = [`${priceDESC}`, `${nameASC}`];
-        const queryStringPriceRangeStart = `0`;
-        const queryStringPriceRangeFinish = `*`;
-        let fuzzylevel = 0;
-        const queryLimitStart = 8;
-        const queryOffsetStart = 0;
-        const winterSale = `"true", "false"`;
-
-        switch (searchValue.length) {
-          case 1:
-            fuzzylevel = 0;
-            break;
-          case 2:
-            fuzzylevel = 0;
-            break;
-          case 3:
-            fuzzylevel = 1;
-            break;
-          case 4:
-            fuzzylevel = 1;
-            break;
-          case 5:
-            fuzzylevel = 1;
-            break;
-          default:
-            fuzzylevel = 2;
-        }
-
-        filterByAttributes(
-          queryStringAllColours,
-          subtrees,
-          querySizesString === '' && category === 'Clothes'
-            ? (querySizesString = queryStringAllSizes)
-            : querySizesString === '' && category !== 'Clothes'
-            ? (querySizesString = `"no"`)
-            : querySizesString,
-          queryBestsellerString,
-          querySale,
-          queryStringAllBrands,
-          queryStringPriceNameSort,
-          searchValue === '' && category === 'Clothes'
-            ? productsForSearchClothes
-            : searchValue === '' && category === 'PC'
-            ? productsForSearchPC
-            : searchValue === '' && category === 'Souvenirs'
-            ? productsForSearchSouvenirs
-            : searchValue === '' && category === 'Stickers'
-            ? productsForSearchStickers
-            : searchValue,
-          fuzzylevel,
-          queryStringPriceRangeStart,
-          queryStringPriceRangeFinish,
-          queryLimitStart,
-          queryOffsetStart,
-          winterSale
-        ).then((response) => {
-          const subtreeArray = response.body.results;
-          const allSubTreeArray = subtreeArray.map((item) => {
-            return item.masterVariant;
-          });
-          setAllCards(allSubTreeArray);
-        });
+        setSubtree(onlyWithAncestors);
       });
-  }, [
-    category,
-    idCategory,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
-    searchValue,
-  ]);
+      let querySizesString = '';
+      const queryBestsellerString = `"true", "false"`;
+      const subtrees = `subtree("${idCategory}")`;
+      const queryStringAllColours = `"red", "black", "white"`;
+      const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+      const querySale = `"true", "false"`;
+      const queryStringAllBrands = `"RSSchool", "Logitech"`;
+      const priceDESC = 'price desc';
+      const nameASC = 'name.en-us asc';
+      const queryStringPriceNameSort = [`${priceDESC}`, `${nameASC}`];
+      // const queryStringPriceRangeStart = `0`;
+      // const queryStringPriceRangeFinish = `*`;
+      const queryStringPriceRangeStart = String(+priceSliderValue[0] * 100);
+      const queryStringPriceRangeFinish = String(+priceSliderValue[1] * 100);
+      let fuzzylevel = 0;
+      const queryLimitStart = 8;
+      const queryOffsetStart = 0;
+      const winterSale = `"true", "false"`;
+
+      switch (searchValue.length) {
+        case 1:
+          fuzzylevel = 0;
+          break;
+        case 2:
+          fuzzylevel = 0;
+          break;
+        case 3:
+          fuzzylevel = 1;
+          break;
+        case 4:
+          fuzzylevel = 1;
+          break;
+        case 5:
+          fuzzylevel = 1;
+          break;
+        default:
+          fuzzylevel = 2;
+      }
+
+      filterByAttributes(
+        queryStringAllColours,
+        subtrees,
+        querySizesString === '' && category === 'Clothes'
+          ? (querySizesString = queryStringAllSizes)
+          : querySizesString === '' && category !== 'Clothes'
+          ? (querySizesString = `"no"`)
+          : querySizesString,
+        queryBestsellerString,
+        querySale,
+        queryStringAllBrands,
+        queryStringPriceNameSort,
+        searchValue === '' && category === 'Clothes'
+          ? productsForSearchClothes
+          : searchValue === '' && category === 'PC'
+          ? productsForSearchPC
+          : searchValue === '' && category === 'Souvenirs'
+          ? productsForSearchSouvenirs
+          : searchValue === '' && category === 'Stickers'
+          ? productsForSearchStickers
+          : searchValue,
+        queryStringPriceRangeStart,
+        queryStringPriceRangeFinish,
+        queryLimitStart,
+        queryOffsetStart,
+        winterSale,
+        fuzzylevel
+      ).then((response) => {
+        const subtreeArray = response.body.results;
+        const allSubTreeArray = subtreeArray.map((item) => {
+          return item.masterVariant;
+        });
+        setAllCards(allSubTreeArray);
+      });
+    });
+  }, [category, idCategory, priceSliderValue, searchValue]);
 
   const createQueryColourString = useCallback((): string => {
     const coloursArray = [
@@ -385,14 +477,14 @@ function CategoryPage(): JSX.Element {
         ? (queryBrandString = queryStringAllBrands)
         : queryBrandString;
 
-      let queryPriceRangeStart = '0';
-      let queryPriceRangeFinish = '*';
-      searchPriceStart === ''
-        ? queryPriceRangeStart
-        : (queryPriceRangeStart = String(+searchPriceStart * 100)),
-        searchPriceFinish === ''
-          ? queryPriceRangeFinish
-          : (queryPriceRangeFinish = String(+searchPriceFinish * 100));
+      const queryPriceRangeStart = String(+priceSliderValue[0] * 100);
+      const queryPriceRangeFinish = String(+priceSliderValue[1] * 100);
+      // searchPriceStart === ''
+      //   ? queryPriceRangeStart
+      //   : (queryPriceRangeStart = String(+priceSliderValue[0] * 100)),
+      //   searchPriceFinish === ''
+      //     ? queryPriceRangeFinish
+      //     : (queryPriceRangeFinish = String(+priceSliderValue[1] * 100));
 
       let querySearchValue = '';
       searchValue === '' && category === 'Clothes'
@@ -407,8 +499,11 @@ function CategoryPage(): JSX.Element {
 
       let fuzzylevel = 0;
 
-      if (searchValue.length > 5) {
-        fuzzylevel = 2;
+      if (searchValue.length === 1) {
+        fuzzylevel = 0;
+      }
+      if (searchValue.length === 2) {
+        fuzzylevel = 0;
       }
       if (searchValue.length === 3) {
         fuzzylevel = 1;
@@ -419,8 +514,8 @@ function CategoryPage(): JSX.Element {
       if (searchValue.length === 5) {
         fuzzylevel = 1;
       }
-      if (searchValue.length === 1 || searchValue.length === 2) {
-        fuzzylevel = 0;
+      if (searchValue.length > 5) {
+        fuzzylevel = 2;
       }
 
       const queryLimit =
@@ -447,12 +542,12 @@ function CategoryPage(): JSX.Element {
         queryBrandString,
         queryStringPriceNameSort,
         querySearchValue,
-        fuzzylevel,
         queryPriceRangeStart,
         queryPriceRangeFinish,
         queryLimit,
         queryOffset,
-        winterSale
+        winterSale,
+        fuzzylevel
       )
         .then((response) => {
           const parentCategory = response.body.results;
@@ -462,6 +557,7 @@ function CategoryPage(): JSX.Element {
             querySizesString === queryStringAllSizes ||
             querySizesString === `"no"`
           ) {
+            // MASTERS
             master = parentCategory.map((item) => item.masterVariant);
             setAllCards(master);
             filterByAttributes(
@@ -473,12 +569,12 @@ function CategoryPage(): JSX.Element {
               queryBrandString,
               queryStringPriceNameSort,
               querySearchValue,
-              fuzzylevel,
               queryPriceRangeStart,
               queryPriceRangeFinish,
               100,
               0,
-              winterSale
+              winterSale,
+              fuzzylevel
             ).then((response) => {
               const parentResults = response.body.results;
               const maxPageParent = Math.ceil(parentResults.length / pageLimit);
@@ -510,7 +606,7 @@ function CategoryPage(): JSX.Element {
               filteredVariantsPrices.sort(
                 (a: ProductVariant, b: ProductVariant): number => {
                   if (!a.prices || !b.prices) {
-                    throw new Error('no prices found');
+                    throwNewError('no category prices found');
                   }
                   return (
                     a.prices[0].value.centAmount - b.prices[0].value.centAmount
@@ -525,7 +621,7 @@ function CategoryPage(): JSX.Element {
               filteredVariantsPrices.sort(
                 (a: ProductVariant, b: ProductVariant): number => {
                   if (!a.prices || !b.prices) {
-                    throw new Error('no prices found');
+                    throwNewError('no category variant prices found');
                   }
                   return (
                     b.prices[0].value.centAmount - a.prices[0].value.centAmount
@@ -549,6 +645,7 @@ function CategoryPage(): JSX.Element {
                 lastNumberSlice
               );
             }
+            // VARIANTS
             setAllCards(pageVariants);
           }
         })
@@ -566,38 +663,54 @@ function CategoryPage(): JSX.Element {
     createQuerySubtreeString,
     idCategory,
     priceSort,
-    productsForSearchClothes,
-    productsForSearchPC,
-    productsForSearchSouvenirs,
-    productsForSearchStickers,
     querySizesQueryString,
     sale,
-    searchPriceFinish,
-    searchPriceStart,
     searchValue,
     currentPage,
     currentOffset,
     winter,
     query,
     nameSort,
+    priceSliderValue,
   ]);
 
-  let searchCharacter = 0;
-  const placeholder: string = '';
-  const searchPlaceholderText = 'search for...';
-  const speed = 180;
-  function typeSearch(placeholder: string): void {
-    placeholder += searchPlaceholderText.charAt(searchCharacter);
-    searchCharacter++;
-    setTimeout(typeSearch, speed);
-  }
+  // let searchCharacter = 0;
+  // const searchPlaceholderText = 'search for...';
+  // const speed = 180;
+  // function typeSearch(placeholder: string): void {
+  //   placeholder += searchPlaceholderText.charAt(searchCharacter);
+  //   searchCharacter++;
+  //   setTimeout(typeSearch, speed);
+  // }
+
+  const AnimatedInput = ({
+    placeholder: passedPlaceholder = '',
+    ...passedProps
+  }): JSX.Element => {
+    const [placeholder, setPlaceholder] = useState(
+      passedPlaceholder.slice(0, 0)
+    );
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setPlaceholder(passedPlaceholder.slice(0, placeholderIndex));
+        if (placeholderIndex + 1 > passedPlaceholder.length) {
+          setPlaceholderIndex(0);
+        } else {
+          setPlaceholderIndex(placeholderIndex + 1);
+        }
+      }, 240);
+      return () => {
+        clearInterval(interval);
+      };
+    }, [passedPlaceholder, placeholderIndex]);
+
+    return <input {...passedProps} placeholder={placeholder} />;
+  };
 
   function onChangeBestseller(): void {
     setBestseller(!bestseller);
-  }
-
-  function onChangeNoSort(): void {
-    setIsNoSort(!isNoSort);
   }
 
   function onChangeSale(): void {
@@ -748,8 +861,60 @@ function CategoryPage(): JSX.Element {
     }
   }
 
+  const [
+    searchInputPlaceholderVisibility,
+    setSearchInputPlaceholderVisibility,
+  ] = useState(false);
+
+  // const debounceSearchInput = useCallback(
+  //   _debounce((e) => setSearchValue(e.target.value), 500, { trailing: true }),
+  //   []
+  // );
+
+  // const debounceSearchInput = debounce(async (criteria) => {
+  //   setSearchValue(await criteria);
+  // }, 500);
+
+  // const debounceSearchInput = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setSearchValue(e);
+  //     }, 500),
+  //   []
+  // );
+
+  // const debouncePriceRange = useMemo(
+  //   () =>
+  //     debounce((e) => {
+  //       setPriceSliderValue(e);
+  //     }, 500),
+  //   []
+  // );
+
+  // const ref = useRef();
+
+  function isProductInCart(card: ProductVariant): LineItem | undefined {
+    const foundProduct = cartItems.find(
+      (item) => card.sku === item.name['en-US']
+    );
+    return foundProduct;
+  }
+
+  const { promiseInProgress } = usePromiseTracker();
+
   return (
     <div className={style.category}>
+      <div className={style.spinner}>
+        {promiseInProgress === true ? (
+          <div className={style.spinner_container}>
+            <div className={style.spinner_wrapper}>
+              <div className={style.spinner_text}>Loading...</div>
+              <div className={style.spinner_icon}></div>
+            </div>
+            <div className={style.spinner_overlay}></div>
+          </div>
+        ) : null}
+      </div>
       <div className={style.category_wrapper}>
         <div className={style.breadcrumbs_search}>
           <div className={style.breadcrumbs}>
@@ -765,18 +930,33 @@ function CategoryPage(): JSX.Element {
             {category}
           </div>
           <div className={style.category_filters_search}>
-            <div>
-              <input
-                name="filterSearch"
-                type="text"
-                className={style.category_search_input}
-                placeholder="🔎Search For..."
-                onChange={(e): void => {
-                  setSearchValue(e.target.value);
-                  typeSearch(placeholder);
-                }}
-              />
-            </div>
+            <input
+              className={style.category_real_search_input}
+              onChange={(e): void => {
+                setSearchValue(e.target.value);
+              }}
+              // onChange={debounce((e): void => {
+              //   setSearchValue(e.target.value);
+              // }, 500)}
+              // onChange={(e): void => {
+              //   debounceSearchInput(e.target.value);
+              // }}
+              // onChange={(): void => {
+              //   _debounce((e) => setSearchValue(e.target.value), 500, {
+              //     trailing: true,
+              //   });
+              // }}
+              onFocus={(): void => setSearchInputPlaceholderVisibility(true)}
+              onBlur={(): void => setSearchInputPlaceholderVisibility(false)}
+            ></input>
+            <AnimatedInput
+              name="filterSearch"
+              type="text"
+              className={style.category_search_input}
+              placeholder={
+                searchInputPlaceholderVisibility ? '' : 'Search For...'
+              }
+            />
           </div>
         </div>
         <div className={style.category_filters_cards_wrapper}>
@@ -864,7 +1044,7 @@ function CategoryPage(): JSX.Element {
             <div className={style.category_filters_color}>
               {allColours.map((colour) => {
                 return (
-                  <div key={colour} className={style.category_colours_wrapper}>
+                  <div key={colour} className={style.category_colour_wrapper}>
                     <input
                       name="filterColor"
                       type="checkbox"
@@ -877,6 +1057,10 @@ function CategoryPage(): JSX.Element {
                     <label
                       htmlFor={colour}
                       className={style[`category_filters_${colour}`]}
+                    ></label>
+                    <label
+                      htmlFor={colour}
+                      className={style[`colour_outer_circle_${colour}`]}
                     ></label>
                   </div>
                 );
@@ -980,28 +1164,31 @@ function CategoryPage(): JSX.Element {
                 </div>
               </div>
             </div>
-            <div className={style.category_filters_priceStart}>
-              <div>
-                <input
-                  name="filterPriceStart"
-                  type="number"
-                  className={style.category_search_input_price}
-                  placeholder="price from"
-                  onChange={(e): void => setSearchPriceStart(e.target.value)}
-                />
+            <div className={style.priceslider_values}>
+              <div className={style.priceslider_value_one}>
+                $ start: {priceSliderValue[0]}
+              </div>
+              <div className={style.priceslider_value_two}>
+                $ finish: {priceSliderValue[1]}
               </div>
             </div>
-            <div className={style.category_filters_priceFinish}>
-              <div>
-                <input
-                  name="filterPriceFinish"
-                  type="number"
-                  className={style.category_search_input_price}
-                  placeholder="price to"
-                  onChange={(e): void => setSearchPriceFinish(e.target.value)}
-                />
-              </div>
-            </div>
+            <ReactSlider
+              className={style.horizontal_slider}
+              thumbClassName={style.slider_thumb}
+              trackClassName={style.slider_track}
+              defaultValue={[0, 100]}
+              min={0}
+              max={100}
+              // renderThumb={(props: number[], state) => (
+              //   <div {...props}>{state.valueNow}</div>
+              // )}
+              // onChange={(value: number[]): void => {
+              //   debouncePriceRange(value);
+              // }}
+              onChange={(value: number[]): void => {
+                setPriceSliderValue(value);
+              }}
+            />
             <div className={style.category_filters_brand}>
               {allBrands.map((brand) => {
                 return (
@@ -1037,6 +1224,18 @@ function CategoryPage(): JSX.Element {
                 <div className={style.category_cards_background_top}></div>
                 <div className={style.category_cards_wrapper}>
                   {allCards.map((card) => {
+                    const updateAnonCartData: IMyCartUpdate = {
+                      version: !isAuth
+                        ? anonymousCart.versionAnonCart
+                        : userCart.versionUserCart,
+                      actions: [
+                        {
+                          action: 'addLineItem',
+                          sku: card.sku ? card.sku : '',
+                          quantity: 1,
+                        },
+                      ],
+                    };
                     let productPrice = 0;
                     let productDiscount;
                     let ifProductDiscount = 0;
@@ -1053,22 +1252,46 @@ function CategoryPage(): JSX.Element {
                         (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
                       : '';
                     return (
-                      <Link
-                        to={`/category/${category}/${card.key}`}
-                        className={style.category_card}
-                        key={card.key}
-                      >
-                        <Card
-                          description={
-                            variantDescription?.description['en-US'] ?? ' '
-                          }
-                          keyCard={card.key ? card.key : ''}
-                          images={card.images}
-                          prices={productPrice.toFixed(2)}
-                          discounted={productDiscount}
-                          sku={card.sku ? card.sku : ''}
-                        />
-                      </Link>
+                      <div key={card.key} className={style.category_whole_card}>
+                        <button
+                          className={style.category_to_cart}
+                          onClick={(e): void => {
+                            const foundProduct = isProductInCart(card);
+                            if (cartItems.length > 0 && foundProduct) {
+                              setAlreadyInCartModal(true);
+                              e.currentTarget.textContent = 'Already in Cart';
+                              setTimeout(() => {
+                                setAlreadyInCartModal(false);
+                              }, 2000);
+                            } else {
+                              updateCustomerCart(updateAnonCartData);
+                              e.currentTarget.textContent = 'Add to Cart';
+                            }
+                          }}
+                        >
+                          {isProductInCart(card)
+                            ? 'Already in Cart'
+                            : 'Add to Cart'}
+                        </button>
+                        <Link
+                          to={`/catalog/${category}/${card.key}`}
+                          className={style.category_card}
+                          key={card.key}
+                        >
+                          <Card
+                            description={
+                              variantDescription?.description
+                                ? variantDescription?.description['en-US']
+                                : ' '
+                            }
+                            keyCard={card.key ? card.key : ''}
+                            images={card.images}
+                            prices={productPrice.toFixed(2)}
+                            discounted={productDiscount}
+                            sku={card.sku ? card.sku : ''}
+                          />
+                        </Link>
+                      </div>
                     );
                   })}
                 </div>
@@ -1077,6 +1300,7 @@ function CategoryPage(): JSX.Element {
                   <button
                     className={`${style.category_pagination_button} ${style.previous}`}
                     onClick={(): void => {
+                      setIsPaginationNumberAnimPlaying(true);
                       currentPage > 1
                         ? setCurrentPage(currentPage - 1)
                         : setCurrentPage(1);
@@ -1093,6 +1317,7 @@ function CategoryPage(): JSX.Element {
                   <button
                     className={`${style.category_pagination_button} ${style.next}`}
                     onClick={(): void => {
+                      setIsPaginationNumberAnimPlaying(true);
                       currentPage !== maxPage
                         ? setCurrentPage(currentPage + 1)
                         : setCurrentPage(maxPage);
@@ -1102,26 +1327,39 @@ function CategoryPage(): JSX.Element {
                     }}
                   ></button>
                   <div className={style.category_number_circle}></div>
-                  <div className={style.category_number_inner_circle}></div>
+                  <div className={style.category_inner_circle_wrapper}>
+                    <div
+                      className={`${style.category_number_inner_circle} ${
+                        isPaginationNumberAnimPlaying ? style.anim : ''
+                      }`}
+                      onAnimationEnd={(): void => {
+                        setIsPaginationNumberAnimPlaying(false);
+                      }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-              <Link to="/customize">
-                <div
-                  className={`${style.catalog_advertisment} ${style.customize}`}
-                >
-                  <div className={style.catalog_sloth_left}></div>
-                  <div className={style.catalog_advertisment_text}>
-                    Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
-                    your own with RSSchool amazing merch... have fun \o/
-                  </div>
-                  <div className={style.catalog_sloth_right}></div>
-                </div>
-              </Link>
             </div>
+            <div className={style.category_cybersloth}></div>
           </div>
         </div>
       </div>
+      <div
+        className={
+          alreadyInCartModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          alreadyInCartModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }
+
 export default CategoryPage;

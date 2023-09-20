@@ -6,15 +6,18 @@ import {
 } from '@commercetools/sdk-client-v2';
 import { httpMiddlewareOptions } from './clientBuilder';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import { throwNewError } from '../utils/throwNewError';
+
+// i don't need that
 
 const authMiddlewareOptionsForRefreshTokenFlow = (
   refreshToken: string
 ): RefreshAuthMiddlewareOptions => {
   if (typeof process.env.ADMIN_CLIENT_ID !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client id found');
   }
   if (typeof process.env.ADMIN_CLIENT_SECRET !== 'string') {
-    throw new Error('no client id found');
+    throwNewError('no client secret found');
   }
 
   const options: RefreshAuthMiddlewareOptions = {

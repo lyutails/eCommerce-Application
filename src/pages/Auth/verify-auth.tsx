@@ -1,15 +1,19 @@
 import {
   createCustomerId,
+  setAccessTokenStatus,
+  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { NavigateFunction } from 'react-router-dom';
-import { handleLoginInput, handlePasswordInput, clue } from '../verification';
+import { handleLoginInput, handlePasswordInput } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { loginCustomerThroughMe } from '../../api/passwordFlowSession';
-import { getCustomerToken } from '../../api/adminBuilder';
+import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { changeVersion } from '../../store/reducers/profileReducer';
-/* 
-eslint-disable-next-line prefer-const */
+import { IAnonymousCartData } from '../Registration/Registration';
+import { loginAnonUser } from '../../api/existTokenFlow';
+import { IMyCustomerLoginDraft } from '../../types/interfaces';
+import { changeAnonymousCart } from '../../store/reducers/cartReducer';
+
 let loginСheck = false;
 let passwordСheck = false;
 
@@ -23,7 +27,9 @@ export const handleСreationAuth = (
   isAuth: boolean,
   dispatch: Dispatch<AnyAction>,
   setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
-  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>
+  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
+  anonymousCartData: IAnonymousCartData,
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
   loginСheck = handleLoginInput(
@@ -42,31 +48,52 @@ export const handleСreationAuth = (
       setErrorPassword(false);
     }
   });
-  const request = {
+  const request: IMyCustomerLoginDraft = {
     email: loginField,
     password: passwordField,
+    anonymousCart: {
+      id: anonymousCartData.cartID,
+      typeId: 'cart',
+    },
+    anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    anonymousID: anonymousCartData.anonymousID,
   };
+
   if (loginСheck === true && passwordСheck === true) {
-    loginCustomerThroughMe(request, dispatch, navigator)
-      .then((response) => {
-        if (response) {
-          localStorage.setItem('customerId', response.body.customer.id);
-          dispatch(createCustomerId(response.body.customer.id));
-          dispatch(changeVersion(response.body.customer.version));
-        }
-      })
-      .then(() => {
-        const token = getCustomerToken(loginField, passwordField);
-        return token;
-      })
-      .then((response) => {
-        localStorage.setItem('refreshToken', response.refresh_token);
-        dispatch(setRefreshTokenStatus(response.refresh_token));
-      })
-      .catch((error) => {
-        if (error) {
-          setInvalidCredentials(true);
-        }
-      });
+    refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      (response) => {
+        loginAnonUser(
+          response.access_token,
+          request,
+          dispatch,
+          setSuccessfulMessage
+        )
+          .then((responseTwo) => {
+            if (responseTwo) {
+              localStorage.setItem('customerId', responseTwo.body.customer.id);
+              dispatch(changeAnonymousCart({ anonymousID: '' }));
+              dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
+              dispatch(createCustomerId(responseTwo.body.customer.id));
+              dispatch(changeVersion(responseTwo.body.customer.version));
+            }
+            const token = getCustomerToken(loginField, passwordField);
+            return token;
+          })
+          .then((responseThree) => {
+            if (responseThree.refresh_token) {
+              localStorage.setItem('refreshToken', responseThree.refresh_token);
+            }
+            dispatch(setRefreshTokenStatus(responseThree.refresh_token));
+            dispatch(setAccessTokenStatus(responseThree.access_token));
+            localStorage.removeItem('anonymousID');
+            localStorage.removeItem('refreshAnonToken');
+          })
+          .catch((error) => {
+            if (error) {
+              setInvalidCredentials(true);
+            }
+          });
+      }
+    );
   }
 };

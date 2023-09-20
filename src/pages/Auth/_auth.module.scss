@@ -165,3 +165,72 @@ body {
   align-items: center;
   font-size: 1.2rem;
 }
+
+.overlay {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+
+  overflow: hidden;
+  display: block;
+
+  max-width: 100vw;
+  margin: 0;
+
+  visibility: visible;
+  opacity: 1;
+  background-color: $overlay;
+
+  transition: 1s;
+
+  .modal {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 2;
+    width: 80vw;
+    min-width: 300px;
+    max-width: 1200px;
+    margin-right: -50%;
+    padding: 0 8vw;
+
+    font-family: 'No Signal', cursive;
+    font-size: 3rem;
+    color: $font-color-primary-one;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+
+    background-image: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    border-radius: 10px;
+
+    transition: 2s;
+
+    &_visible {
+      overflow-y: hidden;
+      animation: open-modal 2s forwards;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes open-modal {
+      from {
+        top: -100%;
+      }
+
+      to {
+        top: 50%;
+      }
+    }
+  }
+}

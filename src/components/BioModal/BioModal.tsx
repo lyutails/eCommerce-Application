@@ -12,28 +12,20 @@ import { handleUpdateBio, IMyCustomerBioUpdate } from './bio-modal-verify';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { parseDateToServer } from '../../utils/parseDate';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState, IRootState } from '../../types/interfaces';
+import {
+  IBioModalProps,
+  IBioUpdateData,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { changeBio } from '../../store/reducers/profileReducer';
-
-export interface IBioModalProps {
-  modalClass: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  token?: string;
-  setClickedBioUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface IBioUpdateData {
-  firstnameError: boolean;
-  lastnameError: boolean;
-  birthdayError: boolean;
-  token: string;
-}
 
 function BioModal(props: IBioModalProps): JSX.Element {
   const dispatch = useDispatch();
   const { version, bio } = useSelector((state: IProfileState) => state.profile);
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
   // const [token, setToken] = useState('');
 
   // useEffect(() => {
@@ -94,7 +86,7 @@ function BioModal(props: IBioModalProps): JSX.Element {
     firstnameError: !bio.firstname.error,
     lastnameError: !bio.lastname.error,
     birthdayError: !bio.birthday.error,
-    token: refreshToken,
+    token: customerRefreshToken,
   };
   return (
     <div className={`${style.modal} ${props.modalClass}`}>

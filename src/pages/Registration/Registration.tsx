@@ -14,11 +14,19 @@ import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { useDispatch, useSelector } from 'react-redux';
 import InputPassword from '../../components/Input/inputPassword';
-import { IRootState } from '../../types/interfaces';
+import { ICartState, IRootState } from '../../types/interfaces';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 
+export interface IAnonymousCartData {
+  anonymousID: string;
+  versionAnonCart: number;
+  cartID: string;
+  anonymousRefreshToken: string;
+  anonymousAccessToken: string;
+}
 function RegistrationPage(): JSX.Element {
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { anonymousCart } = useSelector((state: ICartState) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleToLogin = (): void => {
@@ -103,7 +111,6 @@ function RegistrationPage(): JSX.Element {
       setTimeout(() => {
         dispatch(setAuthStatus(true));
         localStorage.setItem('isAuth', 'true');
-        navigate('/');
       }, 5300);
     }
   }, [dispatch, isAuth, navigate, successfulMessage]);
@@ -126,7 +133,7 @@ function RegistrationPage(): JSX.Element {
     }
   }
   return (
-    <div className={style.login}>
+    <div className={modal ? style.registriation_visible : style.login}>
       <div className={style.authorization}>
         <h2 className={style.title}>LogIn</h2>
         <ButtonForm
@@ -730,7 +737,8 @@ function RegistrationPage(): JSX.Element {
                 setInvalidCredentials,
                 checkedShipping,
                 checkedBilling,
-                setSuccessfulMessage
+                setSuccessfulMessage,
+                anonymousCart
               )
             }
             classNames={style.registration_button}

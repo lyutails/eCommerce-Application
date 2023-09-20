@@ -1,9 +1,10 @@
 /* eslint-disable import/no-unresolved */
 import { getProductProjectionsByVariantKey } from '../../api/getProducts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch, useSelector } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow } from 'swiper/modules';
@@ -14,11 +15,32 @@ import {
   changeflagInModalWindow,
   createProductImgArr,
 } from '../../store/reducers/productReduser';
-import ModalWindow from './ModalWindow/ModalWindow';
-import { IProductState } from '../../types/interfaces';
+import {
+  ICartState,
+  IMyCartUpdate,
+  IProductState,
+  IRootState,
+} from '../../types/interfaces';
 import '../Product/_product.scss';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
+import { refreshTokenFlow } from '../../api/adminBuilder';
+import {
+  changeAnonymousCart,
+  changeUserCart,
+  setCartItems,
+  setCartPrice,
+  setCartPriceDiscount,
+  setCartQuantity,
+} from '../../store/reducers/cartReducer';
+import { updateCart } from '../../api/existTokenFlow';
+
+import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+
+import ProductSistemModalWindow from '../../components/ProductSistemModalWindow/ProductSistemModalWindow';
+import ProductModalWindow from '../../components/ProductModalWindow/ProductModalWindow';
+
 
 interface IDataProduct {
   name: string;
@@ -30,14 +52,91 @@ interface IDataProduct {
   size: string;
   brand: string;
   bestseller: boolean;
+  sku: string;
 }
 
 function ProductPage(): JSX.Element {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [quantityProduct, setQuantityProduct] = useState(1);
+  const [productExistence, setProductExistence] = useState(false);
+  const [flagDisablingButton, setFlagDisablingButton] = useState(false);
+  const [productId, setProductId] = useState('');
+  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
+  const { anonymousCart, userCart, cartItems } = useSelector(
+    (state: ICartState) => state.cart
+  );
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
+  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { promiseInProgress } = usePromiseTracker();
+
+  const updateCustomerCart = (): void => {
+    if (!isAuth) {
+      refreshTokenFlow(anonymousCart.anonymousRefreshToken).then((response) => {
+        updateCart(
+          anonymousCart.cartID,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeAnonymousCart({
+                versionAnonCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartItems(updatedCart?.body.lineItems));
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    } else {
+      refreshTokenFlow(customerRefreshToken).then((response) => {
+        updateCart(
+          userCart.userCartId,
+          updateAnonCartData,
+          response.access_token
+        ).then((updatedCart) => {
+          if (updatedCart) {
+            dispatch(
+              changeUserCart({
+                versionUserCart: updatedCart.body.version,
+              })
+            );
+            dispatch(setCartQuantity(updatedCart?.body.totalLineItemQuantity));
+            dispatch(
+              setCartPriceDiscount(updatedCart?.body.totalPrice.centAmount)
+            );
+            let totalPrice = 0;
+            updatedCart?.body.lineItems.map((item) => {
+              if (item) {
+                totalPrice += item.price.value.centAmount * item.quantity;
+              }
+              return totalPrice;
+            });
+            dispatch(setCartPrice(totalPrice));
+          }
+        });
+      });
+    }
+  };
+
   const flagModalWindow = useSelector(
     (state: IProductState) => state.product.flagInModalWindow
   );
-  const { id } = useParams();
   const [dataProduct, setDataProduct] = useState<IDataProduct>({
     name: '',
     description: '',
@@ -48,6 +147,7 @@ function ProductPage(): JSX.Element {
     size: '',
     brand: '',
     bestseller: false,
+    sku: '',
   });
 
   const creatingQueryForMaster = useCallback(
@@ -62,6 +162,7 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       product.name ? (intermediateProduct.name = product.name['en-US']) : '';
 
@@ -76,6 +177,9 @@ function ProductPage(): JSX.Element {
         intermediateProduct.images = imagesArr;
         dispatch(createProductImgArr(imagesArr));
       }
+      product.masterVariant.sku
+        ? (intermediateProduct.sku = product.masterVariant.sku)
+        : '';
 
       product.masterVariant.prices
         ? (intermediateProduct.price =
@@ -119,7 +223,6 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
-
   const creatingQueryForVariant = useCallback(
     (product: ProductProjection, variant: ProductVariant): void => {
       const intermediateProduct: IDataProduct = {
@@ -132,8 +235,11 @@ function ProductPage(): JSX.Element {
         size: '',
         brand: '',
         bestseller: false,
+        sku: '',
       };
       variant.sku ? (intermediateProduct.name = variant.sku) : '';
+
+      variant.sku ? (intermediateProduct.sku = variant.sku) : '';
 
       product.description
         ? (intermediateProduct.description = product.description['en-US'])
@@ -187,11 +293,157 @@ function ProductPage(): JSX.Element {
     },
     [dispatch]
   );
+
+  const updateAnonCartData: IMyCartUpdate = {
+    version: !isAuth ? anonymousCart.versionAnonCart : userCart.versionUserCart,
+    actions: [
+      {
+        action: 'addLineItem',
+        sku: dataProduct.sku,
+        quantity: quantityProduct,
+      },
+    ],
+  };
+
+  const increaseItem = (itemId: string, refreshToken: string): void => {
+    const increaseItemData: IMyCartUpdate = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'addLineItem',
+          sku: itemId,
+          quantity: 1,
+        },
+      ],
+    };
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          isAuth ? userCart.userCartId : anonymousCart.cartID,
+          increaseItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
+  };
+  const deleteItem = (
+    itemId: string,
+    quantity: number,
+    refreshToken: string
+  ): void => {
+    const deleteItemData: IMyCartUpdate = {
+      version: !isAuth
+        ? anonymousCart.versionAnonCart
+        : userCart.versionUserCart,
+      actions: [
+        {
+          action: 'removeLineItem',
+          lineItemId: itemId,
+          quantity: quantity,
+        },
+      ],
+    };
+    refreshTokenFlow(refreshToken).then((response) => {
+      if (response) {
+        updateCart(
+          !isAuth ? anonymousCart.cartID : userCart.userCartId,
+          deleteItemData,
+          response.access_token
+        ).then((responseTwo) => {
+          dispatch(setCartItems(responseTwo?.body.lineItems));
+          dispatch(setCartQuantity(responseTwo?.body.totalLineItemQuantity));
+          dispatch(
+            setCartPriceDiscount(responseTwo?.body.totalPrice.centAmount)
+          );
+          let totalPrice = 0;
+          responseTwo?.body.lineItems.map((item) => {
+            if (item) {
+              totalPrice += item.price.value.centAmount * item.quantity;
+            }
+            return totalPrice;
+          });
+          dispatch(setCartPrice(totalPrice));
+          isAuth
+            ? dispatch(
+                changeUserCart({
+                  versionUserCart: responseTwo?.body.version,
+                })
+              )
+            : dispatch(
+                changeAnonymousCart({
+                  versionAnonCart: responseTwo?.body.version,
+                })
+              );
+        });
+      }
+    });
+  };
+
+  function openModalWindow(): void {
+    dispatch(changeflagInModalWindow(true));
+  }
+
+  function deleteProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    deleteItem(productId, quantityProduct, refreshTokenProduct);
+    setProductExistence(false);
+    setQuantityProduct(1);
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 3000);
+  }
+  function addOneProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    setQuantityProduct(quantityProduct + 1);
+    increaseItem(dataProduct.sku, refreshTokenProduct);
+  }
+  function deleteOneProduct(): void {
+    const refreshTokenProduct = !isAuth
+      ? anonymousCart.anonymousRefreshToken
+      : customerRefreshToken;
+    if (quantityProduct > 1) {
+      setQuantityProduct(quantityProduct - 1);
+      const quantity = 1;
+      deleteItem(productId, quantity, refreshTokenProduct);
+    }
+  }
+
   useEffect(() => {
     id &&
-      getProductProjectionsByVariantKey(id).then((response) => {
+      trackPromise(getProductProjectionsByVariantKey(id)).then((response) => {
         const productObtained = response.body.results[0];
-
         if (productObtained.masterVariant.key === id) {
           creatingQueryForMaster(productObtained);
         } else {
@@ -202,11 +454,32 @@ function ProductPage(): JSX.Element {
         }
       });
   }, [creatingQueryForMaster, creatingQueryForVariant, id]);
-  function openModalWindow(): void {
-    dispatch(changeflagInModalWindow(true));
-  }
+
+  useEffect(() => {
+    if (cartItems.length) {
+      cartItems.map((item) => {
+        if (item.variant.key === id) {
+          setProductExistence(true);
+          setQuantityProduct(item.quantity);
+          setProductId(item.id);
+        }
+      });
+    }
+  }, [cartItems, id]);
+
   return (
     <section className="showcase">
+      <div className="spinner">
+        {promiseInProgress === true ? (
+          <div className="spinner_container">
+            <div className="spinner_wrapper">
+              <div className="spinner_text">Loading...</div>
+              <div className="spinner_icon"></div>
+            </div>
+            <div className="spinner_overlay"></div>
+          </div>
+        ) : null}
+      </div>
       <div className="showcase_header">
         <h2 className="showcase_header-title">{dataProduct.name}</h2>
         <div
@@ -224,7 +497,6 @@ function ProductPage(): JSX.Element {
           <div className="showcase_carousel">
             <Swiper
               grabCursor={true}
-              // loop={true}
               effect={'coverflow'}
               centeredSlides={true}
               spaceBetween={100}
@@ -237,12 +509,6 @@ function ProductPage(): JSX.Element {
                 slideShadows: false,
               }}
               modules={[EffectCoverflow]}
-              // keyboard={{
-              //   enabled: true,
-              // }}
-              // mousewheel={{
-              //   thresholdDelta: 70,
-              // }}
               initialSlide={1}
               breakpoints={{
                 3900: {
@@ -276,8 +542,6 @@ function ProductPage(): JSX.Element {
                 );
               })}
             </Swiper>
-            {/* <div className="showcase-navigation_prev"></div>
-            <div className="showcase-navigation_next"></div> */}
           </div>
         </div>
       </div>
@@ -348,13 +612,62 @@ function ProductPage(): JSX.Element {
                   {dataProduct.size}
                 </span>
               </div>
-              {/* <div>bestseller {dataProduct.bestseller ? 'true' : 'false'}</div> */}
             </div>
-            <button className="wrapper-characteristics_button">To Cart</button>
+            {productExistence && (
+              <div
+                className={
+                  flagDisablingButton
+                    ? 'block-buttons-quantity-noclick'
+                    : 'block-buttons-quantity'
+                }
+              >
+                <button
+                  onClick={(): void => {
+                    deleteOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
+                  className="quantity-minus"
+                ></button>
+                <div className="quantity">{quantityProduct}</div>
+                <button
+                  onClick={(): void => {
+                    addOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
+                  className="quantity-plus"
+                ></button>
+              </div>
+            )}
+
+            <div className="wrapper-characteristics_buttons">
+              <button
+                className="wrapper-characteristics_button"
+                onClick={debounce(
+                  (): void =>
+                    productExistence ? navigate('/cart') : updateCustomerCart(),
+                  300
+                )}
+              >
+                {productExistence ? 'Go To Cart' : 'Add To Card'}
+              </button>
+              {productExistence && (
+                <button
+                  onClick={debounce(deleteProduct, 500)}
+                  className="wrapper-characteristics-delete_button"
+                ></button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <div>{flagModalWindow ? <ModalWindow /> : ''}</div>
+      <div>{flagModalWindow ? <ProductModalWindow /> : ''}</div>
+      <div>{modal ? <ProductSistemModalWindow /> : ''}</div>
     </section>
   );
 }

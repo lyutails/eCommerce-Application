@@ -4,12 +4,10 @@ import {
   MyCustomerSetFirstNameAction,
   MyCustomerSetLastNameAction,
 } from '@commercetools/platform-sdk';
-import { IPersonalData } from '../../pages/Profile/Profile';
-import { parseDateToWeb } from '../../utils/parseDate';
-import { IBioUpdateData } from './BioModal';
 import { changeVersion } from '../../store/reducers/profileReducer';
 import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
+import { IBioUpdateData } from '../../types/interfaces';
 
 export interface IMyCustomerBioUpdate {
   version: number;
@@ -32,12 +30,18 @@ export const handleUpdateBio = (
     updateBioData.lastnameError &&
     updateBioData.birthdayError
   ) {
-    updateCustomer(updateBioData.token, data).then((response) => {
-      if (response) {
-        alert('Personal information change was successful');
-        dispatch(changeVersion(response.body.version));
-      }
-    });
+    updateCustomer(updateBioData.token, data)
+      .then((response) => {
+        if (response) {
+          alert('Personal information change was successful');
+          dispatch(changeVersion(response.body.version));
+        }
+      })
+      .catch((error) => {
+        if (error) {
+          alert('Personal information change was failed');
+        }
+      });
     setClickedBioUpdate(false);
     setShowModal(false);
   }

@@ -10,7 +10,8 @@ body {
   color: white;
 }
 
-.login {
+.login,
+.registriation_visible {
   flex: 1 1 auto;
 
   width: 30%;
@@ -353,6 +354,9 @@ body {
   }
 }
 
+.registriation_visible {
+  overflow-y: hidden;
+}
 
 .password{
 &_color {

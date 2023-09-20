@@ -1,3 +1,5 @@
+@use '../../style/mixins.scss' as *;
+
 @import '../../style/variables';
 
 input[type='checkbox'] {
@@ -5,20 +7,7 @@ input[type='checkbox'] {
 }
 
 .category {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-
-  width: 100%;
-
-  background-color: $background-color-primary-one;
-
-  &_wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 90vw;
-    margin: 0 auto;
-  }
+  @include page-layout-container;
 
   &_filters_cards_wrapper {
     display: flex;
@@ -48,10 +37,20 @@ input[type='checkbox'] {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    align-self: center;
 
     aspect-ratio: 1 / 0.2;
-    width: 70%;
+    width: 80%;
     margin-bottom: 20px;
+  }
+
+  &_colour_wrapper {
+    width: 4vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../../public/ui-kit/colour_filter_01.svg');
   }
 
   &_filters_red {
@@ -60,8 +59,8 @@ input[type='checkbox'] {
     aspect-ratio: 1 / 1;
     width: 3vw;
 
-    background-color: $discount;
-    border: 1px solid $glow-green;
+    background-color: $filter-red;
+    border: 3px solid $background-color-primary-five;
     border-radius: 50%;
 
     &:hover {
@@ -76,7 +75,7 @@ input[type='checkbox'] {
     width: 3vw;
 
     background-color: black;
-    border: 1px solid $glow-green;
+    border: 3px solid $background-color-primary-five;
     border-radius: 50%;
 
     &:hover {
@@ -91,7 +90,7 @@ input[type='checkbox'] {
     width: 3vw;
 
     background-color: white;
-    border: 1px solid $glow-green;
+    border: 3px solid $background-color-primary-five;
     border-radius: 50%;
   }
 
@@ -137,8 +136,17 @@ input[type='checkbox'] {
     width: 100%;
   }
 
-  &_card {
+  &_whole_card {
     width: 25%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &_card {
+    width: 100%;
+    // aspect-ratio: 1 / 0.8;
   }
 
   &_pagination_buttons {
@@ -160,11 +168,8 @@ input[type='checkbox'] {
     aspect-ratio: 1 / 1;
     width: 25%;
 
-    font-size: 2.5rem;
-    color: $font-color-primary-one;
-
     background-color: transparent;
-    border: 2px solid $glow-green;
+    border: none;
     border-radius: 50%;
 
     &:hover {
@@ -172,23 +177,25 @@ input[type='checkbox'] {
     }
 
     &:active {
-      box-shadow: 0 0 5px $glow-green, 0 0 10px $glow-green;
+      box-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green;
     }
 
     &.previous {
-      transform: rotate(180deg);
-
-      background-image: url('../../../public/ui-kit/arrow_02_green_blue.svg');
+      background-image: url('../../../public/ui-kit/pagination_arrow_previous_1.svg');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 80% 80%;
+      background-size: contain;
     }
 
     &.next {
-      background-image: url('../../../public/ui-kit/arrow_02_green_blue.svg');
+      background-image: url('../../../public/ui-kit/pagination_arrow_next_2.svg');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 80% 80%;
+      background-size: contain;
     }
   }
 
@@ -218,19 +225,29 @@ input[type='checkbox'] {
     transform: translate(4.5vw, 0);
   }
 
+  &_inner_circle_wrapper {
+    position: absolute;
+    width: 6vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(4.5vw, 0);
+  }
+
   &_number_inner_circle {
     position: absolute;
     width: 4vw;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
     background-repeat: no-repeat;
-    transform: translate(5.5vw, 0);
-    animation-name: number_circle_anim;
-    animation-duration: 2s;
-    animation-iteration-count: 1;
-    animation-timing-function: linear;
-    transform-origin: 2vw center;
-    animation-play-state: paused;
+
+    &.anim {
+      animation-name: number_circle_anim;
+      animation-duration: 2s;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+    }
   }
 
   &_filters_sizes {
@@ -253,10 +270,11 @@ input[type='checkbox'] {
     width: 100%;
     aspect-ratio: 1 / 0.4;
     padding-left: 2vw;
-    padding-top: 8px;
+    padding-top: 12px;
     transition: all 0.2s ease-in-out;
     text-shadow: 0 0 5px $glow-green;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/subtree_green_blue.svg');
@@ -280,10 +298,11 @@ input[type='checkbox'] {
     width: 100%;
     height: 100%;
     padding-left: 2vw;
-    padding-top: 8px;
+    padding-top: 12px;
     transition: all 0.2s ease-in-out;
     text-shadow: 0 0 5px $glow-green;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/bestseller_input_green_blue.svg');
@@ -314,20 +333,22 @@ input[type='checkbox'] {
 
   &_filters_sale_red {
     margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     text-shadow:
       0 0 5px,
       0 0 10px $glow-green;
-      user-select: none;
+    user-select: none;
+    font-family: 'No Signal';
   }
 
   &_filters_sale_winter {
     margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     text-shadow:
       0 0 5px,
       0 0 10px $glow-green;
-      user-select: none;
+    user-select: none;
+    font-family: 'No Signal';
   }
 
   &_filter_button {
@@ -339,26 +360,6 @@ input[type='checkbox'] {
     &:hover {
       cursor: pointer;
     }
-  }
-
-  &_search_input {
-    resize: both;
-
-    aspect-ratio: 1 / 0.36;
-    width: 20vw;
-    min-width: 300px;
-    max-width: 420px;
-    padding-left: 2vw;
-
-    font-family: Assassin;
-    font-size: 2.5rem;
-    color: $glow-green;
-
-    background-color: transparent;
-    background-image: url('../../../public/ui-kit/search_purple_blue.svg');
-    background-repeat: no-repeat;
-    border: none;
-    outline: none;
   }
 
   &_search_input_price {
@@ -495,6 +496,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -522,6 +524,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -549,6 +552,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -576,6 +580,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -603,6 +608,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -630,6 +636,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -657,6 +664,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -689,6 +697,7 @@ input[type='checkbox'] {
       0 0 10px $glow-green;
     transition: all 0.2s ease-in-out;
     user-select: none;
+    font-family: 'No Signal';
 
     &:hover {
       background-image: url('../../../public/ui-kit/circle_size_hover.svg');
@@ -696,32 +705,172 @@ input[type='checkbox'] {
   }
 
   &_reset_button {
+    width: 20vw;
+    aspect-ratio: 1 / 0.35;
     margin-bottom: 20px;
     font-size: 3rem;
     user-select: none;
+    background-color: transparent;
+    border: none;
+    color: transparent;
+    background-image: url('../../../public/ui-kit/reset_filters_01.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: all 0.4s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-image: url('../../../public/ui-kit/reset_filters_02.svg');
+    }
+  }
+
+  &_cybersloth {
+    width: 50vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/assets/cybersloths/cybersloth_01.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  &_to_cart {
+    width: 16vw;
+    background-color: transparent;
+    color: $font-color-primary-one;
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    position: absolute;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+    margin-top: 30px;
+    border: none;
+    transition: all 0.2s ease-in-out;
+    z-index: 1600;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px dotted $glow-violet;
+
+    &:hover {
+      cursor: pointer;
+      text-shadow:
+        0 0 5px $glow-violet,
+        0 0 10px $glow-violet;
+    }
+  }
+
+  &_real_search_input {
+    position: absolute;
+    width: 25vw;
+    aspect-ratio: 1 / 0.14;
+    background-color: transparent;
+    font-family: Assassin;
+    font-size: 3rem;
+    color: $glow-green;
+    border: none;
+    outline: none;
+    padding-left: 1vw;
+
+    &::placeholder {
+      font-family: Assassin;
+      font-size: 3rem;
+      color: $glow-green;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+
+    &:focus {
+      color: $glow-green;
+      outline: none;
+    }
   }
 }
 
 @keyframes number_circle_anim {
   0% {
-    transform: translate(5.5vw, 0);
-    width: 6vw;
+    width: 4vw;
+    transform: rotate(0deg);
   }
   25% {
-    width: 4vw;
-    transform: translate(5.5vw, 0) rotate(360deg);
+    width: 6vw;
+    transform: rotate(190deg);
   }
   50% {
-    width: 7vw;
-    transform: translate(5.5vw, 0) rotate(-360deg);
+    transform: rotate(-220deg);
   }
   75% {
-    transform: translate(5.5vw, 0);
+    transform: rotate(30deg);
     width: 5vw;
   }
   100% {
-    width: 6vw;
-    transform: translate(5.5vw, 0);
+    width: 4vw;
+    transform: rotate(0deg);
+  }
+}
+
+.colour_circle_wrapper {
+  width: 4.8vw;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colour_outer_circle_red {
+  position: absolute;
+  width: 4.8vw;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../../public/ui-kit/colour_filter_02.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all 0.2s ease-in-out;
+
+  &.rotate {
+    transform: rotate(-90deg);
+  }
+}
+
+.colour_outer_circle_white {
+  position: absolute;
+  width: 4.8vw;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../../public/ui-kit/colour_filter_02.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all 0.2s ease-in-out;
+
+  &.rotate {
+    transform: rotate(-90deg);
+  }
+}
+
+.colour_outer_circle_black {
+  position: absolute;
+  width: 4.8vw;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../../public/ui-kit/colour_filter_02.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all 0.2s ease-in-out;
+
+  &.rotate {
+    transform: rotate(-90deg);
   }
 }
 
@@ -753,7 +902,7 @@ input[type='checkbox'] {
 .category_sizes_divider {
   width: 100%;
   aspect-ratio: 1 / 0.4;
-  background-image: url('../../../public/ui-kit/divider_subtree_06.svg');
+  background-image: url('../../../public/ui-kit/divider_subtree_07.svg');
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -850,7 +999,7 @@ input[type='checkbox'] {
   text-shadow:
     0 0 5px,
     0 0 10px $glow-green;
-  color: $discount;
+  color: $filter-red;
 }
 
 .category_filters_sale
@@ -875,6 +1024,8 @@ input[type='checkbox'] {
   transform: translateY(30px);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 1;
+  position: relative;
 }
 
 .category_cards_background_bottom {
@@ -884,6 +1035,8 @@ input[type='checkbox'] {
   transform: scaleY(-1) translateY(30px);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 1;
+  position: relative;
 }
 
 .catalog {
@@ -967,20 +1120,72 @@ label:hover {
 
   &_input:checked ~ .category_filters_red {
     box-shadow:
-      0 0 10px $glow-green,
+      0 0 5px $glow-green,
       0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .colour_outer_circle_red {
+    transform: rotate(-90deg);
   }
 
   &_input:checked ~ .category_filters_black {
     box-shadow:
-      0 0 10px $glow-green,
+      0 0 5px $glow-green,
       0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .colour_outer_circle_black {
+    transform: rotate(-90deg);
   }
 
   &_input:checked ~ .category_filters_white {
     box-shadow:
-      0 0 10px $glow-green,
+      0 0 5px $glow-green,
       0 0 20px $glow-green;
+  }
+
+  &_input:checked ~ .colour_outer_circle_white {
+    transform: rotate(-90deg);
+  }
+}
+
+.modal {
+  &_wrapper {
+    position: absolute;
+    display: none;
+    width: 60vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    transition: all 0.4s ease-in-out;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  &_body {
+    width: 100%;
+    aspect-ratio: 1 / 0.5;
+    background-image: url('../../../public/ui-kit/already_in_cart_02.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  background: $overlay-gradient;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 1800;
+  transition: all 0.4s ease-in-out;
+
+  &.show {
+    display: block;
   }
 }
 
@@ -1114,6 +1319,7 @@ input#price-sort {
   font-family: Cyberpunk, cursive;
   font-size: 5rem;
   color: $font-color-title;
+  text-shadow: 3px 3px $background-color-primary-three;
 }
 
 .breadcrumbs_symbol {
@@ -1132,17 +1338,37 @@ input#price-sort {
   font-size: 2rem;
 }
 
-.category_search_input::placeholder {
+.category_filters_search {
+  width: 30vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category_search_input {
+  resize: both;
+
+  aspect-ratio: 1 / 0.36;
+  width: 100%;
+  min-width: 200px;
+  max-width: 420px;
+  padding-left: 3vw;
+
   font-family: Assassin;
-  font-size: 2.8rem;
+  font-size: 3rem;
   color: $glow-green;
 
-  opacity: 1;
+  background-color: transparent;
+  background-image: url('../../../public/ui-kit/search_purple_blue.svg');
+  background-repeat: no-repeat;
+  border: none;
+  outline: none;
+}
 
-  animation-name: search-anim;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+.category_search_input::placeholder {
+  font-family: Assassin;
+  font-size: 3rem;
+  color: $glow-green;
 }
 
 .category_search_input:focus::placeholder {
@@ -1154,20 +1380,73 @@ input#price-sort {
   outline: none;
 }
 
-@keyframes search-anim {
-  0% {
-    color: transparent;
-    opacity: 0.1;
-  }
+.anim_input::placeholder {
+  font-family: Assassin;
+  font-size: 2.8rem;
+  color: $glow-green;
+  background: transparent;
+  border: none;
+  outline: none;
+}
 
-  50% {
-    color: $glow-green;
-    opacity: 1;
-  }
+.horizontal_slider {
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  100% {
-    color: transparent;
-    opacity: 0.1;
+.slider_thumb {
+  width: 30px;
+  height: 30px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 1px;
+  border: 2px solid $font-color-primary-one;
+  border-radius: 50%;
+  background-color: $glow-green;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.slider_track {
+  height: 5px;
+  background-color: $font-color-primary-one;
+  border-radius: 5px;
+}
+
+.slider_track.slider_track-0 {
+  background: green;
+}
+
+.slider_track.slider_track-1 {
+  background: $glow-violet;
+}
+
+.slider_track.slider_track-2 {
+  background: rgb(200, 200, 200);
+}
+
+.priceslider_values {
+  font-size: 1.6rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
+  .category_to_cart {
+    font-size: 1.6rem;
+    margin-top: 30px;
+    width: 16vw;
   }
 }
 
@@ -1190,12 +1469,23 @@ input#price-sort {
     width: 100%;
   }
 
+  .category_filters_search {
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .category_cards_wrapper {
     width: 100%;
   }
 
   .category_pagination_buttons {
     width: 50%;
+  }
+
+  .category_pagination_number {
+    font-size: 4rem;
   }
 
   .pricesort_switch {
@@ -1215,19 +1505,23 @@ input#price-sort {
   }
 
   .category_filters_color {
-    width: 50vw;
+    width: 60vw;
+  }
+
+  .category_colour_wrapper {
+    width: 20%;
   }
 
   .category_filters_black {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_red {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_white {
-    width: 10vw;
+    width: 30vw;
   }
 
   .category_filters_xs {
@@ -1279,10 +1573,11 @@ input#price-sort {
   }
 
   .category_search_input {
-    width: 60vw;
+    width: 80vw;
     min-width: 150px;
     padding-left: 30px;
     max-width: 320px;
+    align-self: center;
   }
 
   .category_search_input_price {
@@ -1312,6 +1607,171 @@ input#price-sort {
     font-size: 3rem;
     padding-left: 5vw;
     padding-top: 15px;
+  }
+
+  .category_cybersloth {
+    width: 80vw;
+  }
+
+  .category_number_circle {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_1.svg');
+    background-repeat: no-repeat;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_inner_circle_wrapper {
+    position: absolute;
+    width: 18vw;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(13.5vw, 0);
+  }
+
+  .category_number_inner_circle {
+    position: absolute;
+    width: 13vw;
+    aspect-ratio: 1 / 1;
+    background-image: url('../../../public/ui-kit/circle_number_blue_inner.svg');
+    background-repeat: no-repeat;
+
+    &.anim {
+      animation-name: number_circle_anim;
+      animation-duration: 2s;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+    }
+
+    .category_to_cart {
+      font-size: 1.6rem;
+      margin-top: 30px;
+      width: 18vw;
+    }
+  }
+
+  @keyframes number_circle_anim {
+    0% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
+    25% {
+      width: 16vw;
+      transform: rotate(190deg);
+    }
+    50% {
+      transform: rotate(-220deg);
+    }
+    75% {
+      transform: rotate(30deg);
+      width: 14vw;
+    }
+    100% {
+      width: 13vw;
+      transform: rotate(0deg);
+    }
+  }
+
+  .category_reset_button {
+    width: 80vw;
+    margin: 0 auto;
+  }
+
+  .category_filters_xs {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_s {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_m {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_l {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xxl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_xxxl {
+    font-size: 4.5rem;
+  }
+
+  .category_filters_universal {
+    font-size: 3rem;
+    padding: 5vw;
+  }
+}
+
+.spinner_container {
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  z-index: 6000;
+}
+
+.spinner_overlay {
+  width: 100vw;
+  height: 100%;
+  background: $overlay-gradient;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.spinner_wrapper {
+  width: 50vw;
+  aspect-ratio: 1 / 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 7000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.spinner {
+  font-size: 6rem;
+  color: $font-color-primary-one;
+  text-align: center;
+  font-family: 'No Signal', cursive;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green,
+    0 0 15px $glow-green;
+  user-select: none;
+}
+
+.spinner_icon {
+  margin-top: 50px;
+  width: 150px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #ff16ff 94%, #0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%, #ff16dc);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: spinner_anim 1s infinite linear;
+  user-select: none;
+}
+
+@keyframes spinner_anim {
+  100% {
+    transform: rotate(1turn);
   }
 }
 
@@ -1351,6 +1811,12 @@ input#price-sort {
     padding-left: 5vw;
     padding-top: 20px;
   }
+
+  .category_to_cart {
+    font-size: 1.6rem;
+    margin-top: 20px;
+    width: 20vw;
+  }
 }
 
 @media screen and (min-width: (320px)) and (max-width: (499.98px)) {
@@ -1373,5 +1839,11 @@ input#price-sort {
     font-size: 2.8rem;
     padding-left: 5vw;
     padding-top: 15px;
+  }
+
+  .category_to_cart {
+    font-size: 1rem;
+    margin-top: 20px;
+    width: 20vw;
   }
 }

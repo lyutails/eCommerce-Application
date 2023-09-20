@@ -6,18 +6,18 @@ import {
   MyCustomerSetDefaultShippingAddressAction,
   MyCustomerUpdate,
 } from '@commercetools/platform-sdk';
-import {
-  IAddAddressData,
-  IAddAddressStatusData,
-  IAddressUpdateData,
-  IChangeAddressData,
-} from './AddressModal';
 import { updateCustomer } from '../../api/updateBio';
 import { AnyAction, Dispatch } from 'redux';
 import {
   changeAddress,
   changeVersion,
 } from '../../store/reducers/profileReducer';
+import {
+  IAddAddressData,
+  IAddAddressStatusData,
+  IAddressUpdateData,
+  IChangeAddressData,
+} from '../../types/interfaces';
 
 export interface IMyCustomerAddressUpdate {
   version: number;
@@ -49,8 +49,8 @@ export const handleUpdateAddress = (
     updateAddressData.countryError
   ) {
     if (isAdd) {
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           const id = response?.body.addresses.filter(
             (item) => item.key === `address${version}`
           );
@@ -79,11 +79,15 @@ export const handleUpdateAddress = (
               }
             });
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('New address creation was failed');
+          }
+        });
     } else {
-      updateCustomer(updateAddressData.token, data as MyCustomerUpdate).then(
-        (response) => {
+      updateCustomer(updateAddressData.token, data as MyCustomerUpdate)
+        .then((response) => {
           if (response) {
             alert('Address change was successful');
             dispatch(
@@ -101,8 +105,12 @@ export const handleUpdateAddress = (
             );
             dispatch(changeVersion(response.body.version));
           }
-        }
-      );
+        })
+        .catch((error) => {
+          if (error) {
+            alert('Address change was failed');
+          }
+        });
     }
     setClickedAddressUpdate(false);
     setShowModal(false);

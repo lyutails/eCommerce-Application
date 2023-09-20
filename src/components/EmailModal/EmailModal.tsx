@@ -1,43 +1,28 @@
-import { ChangeEventHandler, ReactNode, useEffect, useState } from 'react';
 import style from '../EmailModal/_emailModal.module.scss';
 import ButtonForm from '../shared/ButtonForm/Button';
 import CloseIcon from '../../../public/assets/icons/close.svg';
 import Input from '../Input/Input';
-import {
-  handleLoginInput,
-  handleLoginInputTwo,
-  inputHandler,
-} from '../../pages/verification';
+import { handleLoginInputTwo } from '../../pages/verification';
 import iconEmail from '../../../public/assets/icons/email.svg';
 import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
-import { MyCustomerChangeEmailAction } from '@commercetools/platform-sdk';
 import { handleUpdateEmail } from './email-modal-verify';
 import { useDispatch, useSelector } from 'react-redux';
-import { IProfileState, IRootState } from '../../types/interfaces';
+import {
+  IEmailModalProps,
+  IMyCustomerEmailUpdate,
+  IProfileState,
+  IRootState,
+} from '../../types/interfaces';
 import { changeEmail } from '../../store/reducers/profileReducer';
-
-export interface IEmailModalProps {
-  modalClass: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  token?: string;
-  setClickedEmailUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface IMyCustomerEmailUpdate {
-  version: number;
-  actions: [MyCustomerChangeEmailAction];
-}
 
 function EmailModal(props: IEmailModalProps): JSX.Element {
   const dispatch = useDispatch();
   const { email, version } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const { refreshToken } = useSelector((state: IRootState) => state.user);
-  const [emailError, setEmailError] = useState('');
-  const [emailCheck, setEmailCheck] = useState(false);
-  const [checkmarkEmail, setCheckmarkEmail] = useState(true);
+  const { customerRefreshToken } = useSelector(
+    (state: IRootState) => state.user
+  );
 
   const customerUpdateData: IMyCustomerEmailUpdate = {
     version: version,
@@ -96,7 +81,7 @@ function EmailModal(props: IEmailModalProps): JSX.Element {
         onClick={(): void =>
           handleUpdateEmail(
             !email.error,
-            refreshToken,
+            customerRefreshToken,
             customerUpdateData,
             props.setClickedEmailUpdate,
             props.setShowModal,

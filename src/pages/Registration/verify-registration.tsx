@@ -23,12 +23,18 @@ import {
 import { AnyAction, Dispatch } from 'redux';
 import {
   createCustomerId,
+  setAccessTokenStatus,
+  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
-import { getCustomerToken } from '../../api/adminBuilder';
-import { loginCustomerThroughReg } from '../../api/passwordFlowSession';
+import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
+import { IMyCustomerDraft } from '../../types/interfaces';
+import { IAnonymousCartData } from './Registration';
+import { loginAnonUser } from '../../api/existTokenFlow';
+import { changeAnonymousCart } from '../../store/reducers/cartReducer';
+import { updateAnonAccessToken } from '../../utils/updateAccessToken';
 
 let loginСheck = false;
 let passwordСheck = false;
@@ -107,7 +113,8 @@ export const handleСreationReg = (
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
   checkedShipping: boolean,
   checkedBilling: boolean,
-  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>,
+  anonymousCartData: IAnonymousCartData
 ): void => {
   e.preventDefault();
   firstnameСheck = handleFirstnameInput(
@@ -220,37 +227,7 @@ export const handleСreationReg = (
     setCheckmarkBirthday
   );
 
-  const dataBill = {
-    email: loginField,
-    firstName: fistnameField,
-    lastName: lastnameField,
-    password: passwordField,
-    dateOfBirth: parseDateToServer(birthdayField),
-    addresses: [
-      {
-        streetName: streetShipField,
-        building: buildingShipField,
-        apartment: apartmentShipField,
-        postalCode: postalShipField,
-        city: cityShipField,
-        country: countryShipField === 'usa' ? 'US' : 'CA',
-      },
-      {
-        streetName: streetBillField,
-        building: buildingBillField,
-        apartment: apartmentBillField,
-        postalCode: postalBillField,
-        city: postalBillField,
-        country: countryBillField === 'usa' ? 'US' : 'CA',
-      },
-    ],
-    defaultShippingAddress: checkedShipping ? 0 : undefined,
-    shippingAddresses: [0],
-    defaultBillingAddress: checkedBilling ? 1 : undefined,
-    billingAddresses: [1],
-  };
-
-  const dataShip = {
+  const createCustomerData: IMyCustomerDraft = {
     email: loginField,
     firstName: fistnameField,
     lastName: lastnameField,
@@ -269,7 +246,25 @@ export const handleСreationReg = (
     defaultShippingAddress: checkedShipping ? 0 : undefined,
     shippingAddresses: [0],
     billingAddresses: [0],
+    anonymousCart: {
+      id: anonymousCartData.cartID,
+      typeId: 'cart',
+    },
+    anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    anonymousID: anonymousCartData.anonymousID,
   };
+
+  if (checkedBill) {
+    createCustomerData.addresses.push({
+      streetName: streetBillField,
+      building: buildingBillField,
+      apartment: apartmentBillField,
+      postalCode: postalBillField,
+      city: postalBillField,
+      country: countryBillField === 'usa' ? 'US' : 'CA',
+    });
+  }
+
   if (checkedBill) {
     if (
       loginСheck === true &&
@@ -290,10 +285,25 @@ export const handleСreationReg = (
       apartmentBillСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataBill, setSuccessfulMessage)
+      updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
+      // refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      //   (response) => {
+      //     dispatch(
+      //       changeAnonymousCart({ anonymousAccessToken: response.access_token })
+      //     );
+      //   }
+      // );
+      createCustomerMe(
+        createCustomerData,
+        anonymousCartData.anonymousAccessToken,
+        dispatch,
+        setSuccessfulMessage
+      )
         .then((response) => {
           if (response) {
             localStorage.setItem('customerId', response.body.customer.id);
+            localStorage.removeItem('anonymousID');
+            localStorage.removeItem('refreshAnonToken');
             dispatch(createCustomerId(response.body.customer.id));
             dispatch(changeVersion(response.body.customer.version));
           }
@@ -303,8 +313,17 @@ export const handleСreationReg = (
           return token;
         })
         .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
+          if (response.refresh_token) {
+            localStorage.setItem('refreshToken', response.refresh_token);
+          }
           dispatch(setRefreshTokenStatus(response.refresh_token));
+          dispatch(setAccessTokenStatus(response.access_token));
+          loginAnonUser(
+            response.access_token,
+            createCustomerData,
+            dispatch,
+            setSuccessfulMessage
+          );
         })
         .catch((error) => {
           if (error) {
@@ -328,29 +347,49 @@ export const handleСreationReg = (
       buildingShipСheck === true &&
       apartmentShipСheck === true
     ) {
-      createCustomerMe(dataShip, setSuccessfulMessage)
-        .then((response) => {
-          if (response) {
-            localStorage.setItem('customerId', response.body.customer.id);
-            dispatch(createCustomerId(response.body.customer.id));
-            dispatch(changeVersion(response.body.customer.version));
-          }
-        })
-        .then(() => {
-          const token = getCustomerToken(loginField, passwordField);
-          return token;
-        })
-        .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
-          dispatch(setRefreshTokenStatus(response.refresh_token));
-        })
-        .catch((error) => {
-          if (error) {
-            setErrorLogin('Invalid email or password');
-            setCheckmarkLogin(false);
-            setInvalidCredentials(true);
-          }
-        });
+      // updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
+      refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+        (response) => {
+          createCustomerMe(
+            createCustomerData,
+            response.access_token,
+            dispatch,
+            setSuccessfulMessage
+          )
+            .then((responseTwo) => {
+              if (responseTwo) {
+                localStorage.removeItem('anonymousID');
+                localStorage.removeItem('refreshAnonToken');
+                localStorage.setItem(
+                  'customerId',
+                  responseTwo.body.customer.id
+                );
+                dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
+                dispatch(createCustomerId(responseTwo.body.customer.id));
+                dispatch(changeVersion(responseTwo.body.customer.version));
+              }
+              const token = getCustomerToken(loginField, passwordField);
+              return token;
+            })
+            .then((responseThree) => {
+              if (responseThree.refresh_token) {
+                localStorage.setItem(
+                  'refreshToken',
+                  responseThree.refresh_token
+                );
+              }
+              dispatch(setRefreshTokenStatus(responseThree.refresh_token));
+              dispatch(setAccessTokenStatus(responseThree.access_token));
+            })
+            .catch((error) => {
+              if (error) {
+                setErrorLogin('Invalid email or password');
+                setCheckmarkLogin(false);
+                setInvalidCredentials(true);
+              }
+            });
+        }
+      );
     }
   }
 };

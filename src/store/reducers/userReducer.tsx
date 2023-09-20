@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-const language = localStorage.getItem('isAuth');
-let isAuth;
-language && language === 'true' ? (isAuth = true) : (isAuth = false);
+const local = localStorage.getItem('isAuth');
+const localCustomerId = localStorage.getItem('customerId');
 const userReducer = createSlice({
   name: 'user',
   initialState: {
-    isAuth,
-    customerId: localStorage.getItem('customerId'),
-    refreshToken: localStorage.getItem('refreshToken'),
+    isAuth: local && local === 'true' ? true : false,
+    customerId: localCustomerId ? localCustomerId : '',
+    customerRefreshToken: localStorage.getItem('refreshToken'),
+    accessToken: '',
   },
   reducers: {
     createCustomerId(state, action) {
@@ -17,11 +17,18 @@ const userReducer = createSlice({
       state.isAuth = action.payload;
     },
     setRefreshTokenStatus(state, action) {
-      state.refreshToken = action.payload;
+      state.customerRefreshToken = action.payload;
+    },
+    setAccessTokenStatus(state, action) {
+      state.accessToken = action.payload;
     },
   },
 });
 
-export const { setAuthStatus, createCustomerId, setRefreshTokenStatus } =
-  userReducer.actions;
+export const {
+  setAuthStatus,
+  createCustomerId,
+  setRefreshTokenStatus,
+  setAccessTokenStatus,
+} = userReducer.actions;
 export default userReducer.reducer;
