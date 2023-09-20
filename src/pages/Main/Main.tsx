@@ -72,29 +72,33 @@ function MainPage(): JSX.Element {
   const offerSlides = useMemo(() => {
     if (mainPageOffersSlides.length > 1) {
       const items = Children.map(mainPageOffersSlides, (child, index) => (
-        <div className={style.main_offer}>
+        <div className={`${style.main_offer} ${style.one}`}>
           <div className={style.main_offer_text} key={index}>
             {child}
           </div>
-          {/* <span className={style.main_offer_pic}></span> */}
         </div>
       ));
       return [
-        <div className={style.main_offer} key={mainPageOffersSlides.length + 1}>
+        <div
+          className={`${style.main_offer} ${style.two}`}
+          key={mainPageOffersSlides.length + 1}
+        >
           <div className={style.main_offer_text}>
             {mainPageOffersSlides[mainPageOffersSlides.length - 1]}
           </div>
-          {/* <span className={style.main_offer_pic}></span> */}
         </div>,
         ...items,
         <div className={style.main_offer} key={mainPageOffersSlides.length + 2}>
           <div className={style.main_offer_text}>{mainPageOffersSlides[0]}</div>
-          {/* <span className={style.main_offer_pic}></span> */}
         </div>,
       ];
     }
 
-    return <div className={style.main_offer}>{mainPageOffersSlides[0]}</div>;
+    return (
+      <div className={`${style.main_offer} ${style.one}`}>
+        {mainPageOffersSlides[0]}
+      </div>
+    );
   }, []);
 
   useLayoutEffect(() => {
