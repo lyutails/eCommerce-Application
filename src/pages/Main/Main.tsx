@@ -140,7 +140,7 @@ function MainPage(): JSX.Element {
           });
         }
       });
-  }, []);
+  }, [bestsellersArray]);
 
   return (
     <div className={style.main} data-testid="main-component">
