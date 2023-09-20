@@ -1,0 +1,155 @@
+@import '../../style/variables';
+
+.modal {
+  position: fixed;
+
+  overflow-y: scroll;
+  flex-direction: column;
+
+  width: 70vw;
+  max-width: 700px;
+  height: 70vh;
+  padding: 50px;
+
+  background-color: white;
+
+  &::-webkit-scrollbar {
+    width: 15px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-color;
+    border-radius: 20px;
+    outline: 1px solid transparent;
+  }
+
+  &_bio {
+    width: 60%;
+    min-width: 200px;
+  }
+
+  &_button {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 100%;
+    min-width: 100px;
+
+    // height: 60px;
+    padding: 20px;
+    
+    font-size: 1.8rem;
+    color: white;
+    
+    background-color: $button-default;
+    border: 1px solid white;
+    
+    transition: background-color 0.2s ease-in-out, border 0.1s ease-in-out;
+  }
+
+  &_button:focus {
+    background-color: $button-focus;
+    border: none;
+  }
+        
+  &_button:hover {
+    background-color: $button-hover;
+    border: none;
+  }
+        
+  &_button:active {
+    background-color: $button-active;
+    border: none;
+  }
+
+  &_title {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: black;
+  }
+
+  &_close {
+    cursor: pointer;
+
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    background-color: transparent;
+    border: none;
+  }
+
+}
+
+.address {
+  &_status {
+display: flex;
+flex-direction: column;
+  }
+
+  &_title {
+    margin: 0;
+    font-size: 2rem;
+    color: black;
+  }
+
+  &_label {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    font-size: 2rem;
+    color: black;
+  }
+
+  &_input {
+    position: absolute;
+    z-index: -1;
+
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+
+    opacity: 0;
+  }
+
+  &_label + &_input {
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &_label::before {
+    content: '';
+
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    border: 1px solid #adb5bd;
+  }
+
+  &_input:checked + &_label::before {
+    background-image: url('../../../public/assets/icons/checkmark.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 1.5rem 1.5rem;
+  }
+}

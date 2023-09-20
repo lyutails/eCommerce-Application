@@ -10,10 +10,6 @@
   width: 100%;
 
   background-color: $background-color-primary-one;
-  background-image: url('../../../public/assets/backgrounds/cyberpunk_02.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-blend-mode: difference;
 
   &_wrapper {
     display: flex;
@@ -27,11 +23,13 @@
 
   &_title {
     flex: 0 1 auto;
+    align-items: center;
 
+    height: 50px;
     margin-bottom: 20px;
 
     font-family: Cyberpank, cursive;
-    font-size: 2rem;
+    font-size: 3rem;
     color: $font-color-title;
   }
 
@@ -39,6 +37,7 @@
     display: flex;
     flex-flow: row wrap;
     row-gap: 2vh;
+    align-content: center;
     justify-content: space-between;
 
     width: 100%;
@@ -46,49 +45,109 @@
 
   &_category {
     display: flex;
-    align-items: center;
     justify-content: center;
 
     aspect-ratio: 1 / 1.2;
     width: 23%;
-    max-width: 400px;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 0 1vw;
 
-    font-size: 2rem;
-    color: $font-color-title;
-    text-align: center;
+    text-shadow: 0 0 5px $glow-green;
 
-    background-color: $background-color-category;
-    border-radius: 10px;
-    box-shadow: 0 0 10px $glow-violet;
+    background-image: url('../../../public/ui-kit/category_green_blue.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
 
+    transition: all 0.2s ease-in-out;
     animation-name: category-border-shine-anim;
     animation-duration: 2s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+
+    &:hover {
+      text-shadow:
+        0 0 5px $glow-green,
+        0 0 10px $glow-green;
+    }
   }
 
-  &_advertisment {
+  &_category_title {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 0.15;
+    height: 33%;
+
+    font-family: Kingslay, cursive;
+    font-size: 2rem;
+    color: $font-color-primary-one;
+    text-align: center;
+  }
+
+  &_advertisment {
+    resize: both;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    aspect-ratio: 1 / 0.36;
     width: 100%;
     min-height: 80px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 10px 4vw 0;
 
-    font-size: 2rem;
-    text-align: center;
-
-    background-color: $background-color-customize;
-    filter: drop-shadow(0 0 8px $glow-green);
+    background-image: url('../../../public/ui-kit/main_advertisment.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
     border-radius: 10px;
-    box-shadow:
-      0 0 10px $glow-green,
-      0 0 10px $glow-green;
 
     -webkit-text-stroke: 1px;
+
+    &.customize {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+  }
+
+  &_advertisment_text {
+    width: 50%;
+    font-size: 3.6rem;
+    text-align: center;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green,
+      0 0 20px $glow-green;
+  }
+
+  &_sloth_left {
+    resize: both;
+
+    transform: scaleX(-1);
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/congrats.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+  }
+
+  &_sloth_right {
+    resize: both;
+
+    aspect-ratio: 1 / 1;
+    width: 20%;
+
+    background-image: url('../../../public/assets/sloth-pics/good.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
   }
 
   &_slider {
@@ -98,29 +157,42 @@
     justify-content: space-between;
 
     width: 90vw;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
 
   &_slide {
+    resize: both;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     aspect-ratio: 1 / 1;
-    width: 20%;
-    max-width: 200px;
+    width: 24%;
+    min-width: 60px;
+    max-width: 400px;
 
     font-size: 2rem;
     color: $font-color-primary-one;
     text-align: center;
 
-    background-color: $background-color-category;
-    border-radius: 10px;
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
+    background-image: url('../../../public/ui-kit/square_02_02.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
 
     -webkit-text-stroke: 1px;
+  }
+
+  &_slide_pic {
+    aspect-ratio: 1 / 1.1;
+    width: 70%;
+    margin-top: 10%;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    filter: drop-shadow(0 0 5px $glow-green);
   }
 
   &_arrow {
@@ -159,40 +231,18 @@
   }
 }
 
-@keyframes category-border-shine-anim {
-  0% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
-  }
-
-  50% {
-    box-shadow:
-      0 0 10px $glow-violet,
-      0 0 15px $glow-violet;
-  }
-
-  100% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
-  }
-}
-
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
-  html {
+  .catalog {
     font-size: 8px;
-  }
 
-  .main {
     &_category {
-      aspect-ratio: 1 / 0.6;
+      aspect-ratio: 1 / 1.2;
       width: 48%;
-      max-width: unset;
+      min-width: 330px;
+      max-width: 500px;
     }
 
     &_advertisment {
-      aspect-ratio: 1 / 0.2;
       width: 100%;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -200,18 +250,26 @@
 
     &_slide {
       aspect-ratio: 1 / 1;
-      width: 20%;
+      width: 24%;
       max-width: 250px;
+    }
+
+    &_offer_text {
+      padding-bottom: 20px;
+      font-size: 2.2rem;
+    }
+
+    &_advertisment_text {
+      width: 50%;
+      font-size: 2.8rem;
     }
   }
 }
 
 @media screen and (min-width: (320px)) and (max-width: (767.98px)) {
-  html {
+  .catalog {
     font-size: 6px;
-  }
 
-  .main {
     &_title {
       text-align: center;
     }
@@ -221,9 +279,9 @@
     }
 
     &_category {
-      aspect-ratio: 1 / 0.4;
-      width: 100%;
-      max-width: unset;
+      aspect-ratio: 1 / 1.1;
+      min-width: 300px;
+      max-width: 600px;
     }
 
     &_advertisment {
@@ -238,5 +296,19 @@
       width: 20%;
       max-width: 250px;
     }
+  }
+}
+
+@media screen and (min-width: (500px)) and (max-width: (767.98px)) {
+  .catalog_advertisment_text {
+    width: 50%;
+    font-size: 2.2rem;
+  }
+}
+
+@media screen and (min-width: (320px)) and (max-width: (499.98px)) {
+  .catalog_advertisment_text {
+    width: 50%;
+    font-size: 1.6rem;
   }
 }

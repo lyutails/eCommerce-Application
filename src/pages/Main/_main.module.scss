@@ -10,10 +10,6 @@
   width: 100%;
 
   background-color: $background-color-primary-one;
-  background-image: url('../../../public/assets/backgrounds/cyberpunk_02_02.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-blend-mode: difference;
 
   &_wrapper {
     display: flex;
@@ -38,7 +34,7 @@
     margin-bottom: 20px;
 
     font-family: Cyberpank, cursive;
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: $font-color-title;
   }
 
@@ -92,8 +88,8 @@
     aspect-ratio: 1 / 0.36;
     width: 100%;
     min-height: 80px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     padding: 10px 4vw 0;
 
     background-image: url('../../../public/ui-kit/main_advertisment.svg');
@@ -217,21 +213,21 @@
 
     &.left {
       transform: translate(-3vw, 0%);
-      background-image: url('../../../public/ui-kit/arrow_01_green_left.svg');
+      background-image: url('../../../public/ui-kit/offers_01_green_left.svg');
 
       &:hover {
         cursor: pointer;
-        background-image: url('../../../public/ui-kit/arrow_01_left.svg');
+        background-image: url('../../../public/ui-kit/offers_01_left.svg');
       }
     }
 
     &.right {
       transform: translate(3vw, 0%);
-      background-image: url('../../../public/ui-kit/arrow_01_green_right.svg');
+      background-image: url('../../../public/ui-kit/offers_01_green_right.svg');
 
       &:hover {
         cursor: pointer;
-        background-image: url('../../../public/ui-kit/arrow_01_right.svg');
+        background-image: url('../../../public/ui-kit/offers_01_right.svg');
       }
     }
   }
@@ -269,7 +265,7 @@
     justify-content: space-between;
 
     width: 90vw;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
 
   &_slide {
@@ -305,22 +301,6 @@
     background-position: center center;
     background-size: contain;
     filter: drop-shadow(0 0 5px $glow-green);
-
-    &.one {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-bug.png');
-    }
-
-    &.two {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-deadline.png');
-    }
-
-    &.three {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-git.png');
-    }
-
-    &.four {
-      background-image: url('../../../public/assets/main-slider-bestsellers/t-shirt-slothorian.png');
-    }
   }
 
   &_arrow {
@@ -357,26 +337,6 @@
         background-image: url('../../../public/assets/icons/arrow_right_hover.svg');
       }
     }
-  }
-}
-
-@keyframes category-border-shine-anim {
-  0% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
-  }
-
-  50% {
-    box-shadow:
-      0 0 10px $glow-violet,
-      0 0 15px $glow-violet;
-  }
-
-  100% {
-    box-shadow:
-      0 0 5px $glow-violet,
-      0 0 10px $glow-violet;
   }
 }
 

@@ -1,0 +1,84 @@
+@import '../../style/variables';
+
+.card {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    padding-bottom: 5%;
+
+    background-image: url('../../../public/ui-kit/product_blue.svg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-image: url('../../../public/ui-kit/product_green_blue.svg');
+    }
+  }
+
+  &_pic {
+    aspect-ratio: 1 / 1;
+    width: 60%;
+    margin-top: 5%;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  &_name {
+    padding-right: 5%;
+    padding-left: 5%;
+
+    font-size: 1.6rem;
+    color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+  }
+
+  &_buy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100%;
+  }
+
+  &_price {
+    font-size: 1.5rem;
+  }
+
+  &_discount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $discount;
+  }
+
+  &_description {
+    font-size: 1.2rem;
+    text-align: center;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    position: absolute;
+    transform: translateY(100px);
+    width: 15vw;
+  }
+
+  &_to_cart {
+    background-color: transparent;
+    border: none;
+    color: $font-color-primary-one;
+    font-size: 2rem;
+    align-self: flex-start;
+    font-weight: 700;
+    padding-left: 20%;
+    transform: translateY(50%);
+  }
+}

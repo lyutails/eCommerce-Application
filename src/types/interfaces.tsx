@@ -1,4 +1,4 @@
-import { BaseAddress } from '@commercetools/platform-sdk';
+import { AddressDraft, BaseAddress } from '@commercetools/platform-sdk';
 import { ChangeEventHandler, ReactNode } from 'react';
 
 export interface ICustomerFields {
@@ -53,7 +53,7 @@ export interface IInputProps {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;
@@ -63,20 +63,17 @@ export interface IInputProps {
 }
 
 export interface IInputPropsPassword {
-  type?: string;
-  classInput: string;
-  classClue: string;
-  classWrapper: string;
-  placeholder?: string;
-  childrenBefore?: ReactNode;
-  childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
-  clue?: string;
-  tooltip?: ReactNode;
-  value?: string;
-  max?: string;
-  onfocus?: ChangeEventHandler<HTMLInputElement>;
-  onblur?: ChangeEventHandler<HTMLInputElement>;
+  placeholder: string;
+  passwordError: boolean;
+  setPasswordField?: React.Dispatch<React.SetStateAction<string>>;
+  passwordField: string;
+  clueColor: string;
+  clueError: string;
+  tooltipColor?: string;
+  setPasswordCheck?: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+  setCheckmarkPassword?: React.Dispatch<React.SetStateAction<boolean>>;
+  checkmarkPassword?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IInputPropsMask {
@@ -87,11 +84,13 @@ export interface IInputPropsMask {
   placeholder: string;
   childrenBefore?: ReactNode;
   childrenAfter?: ReactNode;
-  func?: ChangeEventHandler<HTMLInputElement>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onAccept?: any;
   clue?: string;
   tooltip?: ReactNode;
   value?: string;
   max?: string;
+  onblur?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export interface IButtonFields {
@@ -110,10 +109,65 @@ export interface IRootState {
   user: {
     customerId: string;
     isAuth: boolean;
+    refreshToken: string;
   };
 }
-export interface ICategoryState {
-  category: string[];
+
+interface IAddressInput {
+  value: string;
+  error: string;
+  isChecked: boolean;
+}
+
+export interface IProfileState {
+  profile: {
+    address: {
+      street: IAddressInput;
+      building: IAddressInput;
+      apartment: IAddressInput;
+      city: IAddressInput;
+      country: IAddressInput;
+      postal: IAddressInput;
+      defaultShipping: boolean;
+      defaultBilling: boolean;
+      shippingAddress: boolean;
+      billingAddress: boolean;
+      isUpdate: boolean;
+      isAdd: boolean;
+      idAddress: string;
+      addressStore: AddressDraft[];
+      defaultShippingId: string;
+      defaultBillingId: string;
+      shippingAddressesId: string[];
+      billingAddressesId: string[];
+    };
+    bio: {
+      [key: string]: IAddressInput;
+    };
+    email: IAddressInput;
+    password: {
+      [key: string]: {
+        value: string;
+        error: boolean;
+        isChecked: boolean;
+      };
+    };
+    version: number;
+  };
+}
+
+export interface IPersonalState {
+  personal: {
+    information: boolean;
+    addresses: boolean;
+  };
+}
+
+export interface IProductState {
+  product: {
+    productImg: string[];
+    flagInModalWindow: boolean;
+  };
 }
 
 export interface IPasswordErrors {
@@ -141,4 +195,10 @@ export interface IMyCustomerDraft {
 export interface IMyCustomerLoginDraft {
   email: string;
   password: string;
+}
+
+export interface ICategoryState {
+  category: {
+    category: string[];
+  };
 }

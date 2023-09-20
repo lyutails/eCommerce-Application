@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css2?family=Roboto&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
 
 @font-face {
   font-family: Cyberpank;
@@ -20,4 +20,10 @@
   src:
     url('../../public/fonts/no-signal.woff') format(truetype),
     url('../../public/fonts/no-signal.woff') format(woff);
+}
+
+@font-face {
+  font-family: Assassin;
+  src:
+    url('../../public/fonts/assassin.woff2') format(woff2);
 }

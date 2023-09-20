@@ -1,0 +1,117 @@
+@import '../../style/variables';
+
+.address {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  
+    &_label {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+    }
+  
+    &_input {
+      position: absolute;
+      z-index: -1;
+  
+      width: 2rem;
+      height: 2rem;
+      margin-right: 1rem;
+  
+      opacity: 0;
+    }
+  
+    &_label + &_input {
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+    }
+  
+    &_label::before {
+      content: '';
+  
+      display: inline-block;
+      flex-grow: 0;
+      flex-shrink: 0;
+  
+      width: 2rem;
+      height: 2rem;
+      margin-right: 0.5rem;
+  
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 50% 50%;
+      border: 1px solid #adb5bd;
+    }
+  
+    &_input:checked ~ &_label::before {
+      background-image: url('../../../public/assets/icons/checkmark.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 1.5rem 1.5rem;
+    }
+  }
+
+  .completed {
+    visibility: visible;
+  }
+  
+  .uncompleted {
+    visibility: hidden;
+  }
+  
+  .country {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+  
+    &_wrapper {
+      display: flex;
+      aspect-ratio: 1 / 0.1;
+      background-color: white;
+      border: 2px solid $border-default;
+    }
+  
+    &_select {
+      cursor: pointer;
+  
+      width: 100%;
+      padding: 0 55px;
+  
+      font-size: 1.8rem;
+  
+      border: none;
+    }
+  
+    &_select option:disabled {
+      color: grey;
+    }
+  
+    &_select:focus {
+      outline: none;
+    }
+  }
+
+  .error {
+    margin: 0;
+    padding: 0;
+    color: red;
+    background-image: none;
+  }
+
+  .approved {
+    background-image: url('../../../public/assets/icons/checkmark.svg');
+    background-repeat: no-repeat;
+    background-position: left 20px center;
+  }
+
+  .visible {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }

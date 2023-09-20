@@ -1,0 +1,90 @@
+@import '../../style/variables';
+
+.modal {
+    position: fixed;
+
+    flex-direction: column;
+
+    width: 70vw;
+    max-width: 700px;
+    min-height: 50vh;
+    padding: 50px;
+
+    background-color: white;
+
+    &_bio {
+        width: 60%;
+      min-width: 200px;
+    }
+
+    &_button {
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        width: 100%;
+        min-width: 100px;
+        height: 60px;
+    
+        font-size: 1.8rem;
+        color: white;
+    
+        background-color: $button-default;
+        border: 1px solid white;
+    
+        transition: background-color 0.2s ease-in-out, border 0.1s ease-in-out;
+    }
+
+    &_button:focus {
+        background-color: $button-focus;
+            border: none;
+          }
+        
+          &_button:hover {
+            background-color: $button-hover;
+            border: none;
+          }
+        
+          &_button:active {
+            background-color: $button-active;
+            border: none;
+          }
+
+    &_title {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      color: black;
+    }
+
+    &_close {
+      cursor: pointer;
+
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      background-color: transparent;
+      border: none;
+    }
+}
+
+.completed {
+  visibility: visible;
+}
+
+.uncompleted {
+  visibility: hidden;
+}
+
+.error {
+  margin: 0;
+  padding: 0;
+
+  font-size: 1.2rem;
+  color: red;
+
+  background-image: none;
+}

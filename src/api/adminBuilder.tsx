@@ -39,7 +39,7 @@ const authClient = new SdkAuth({
   fetch,
 });
 
-/* export const tokenAdmin =  authClient.clientCredentialsFlow(); */
+export const tokenAdmin = authClient.clientCredentialsFlow();
 
 /* Configure httpMiddlewareOptions */
 const httpMiddlewareOptions: HttpMiddlewareOptions = {

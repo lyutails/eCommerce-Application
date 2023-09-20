@@ -3,39 +3,398 @@
 .profile{
   display: flex;
   flex: 1 1 auto;
-  align-items: center;
-  justify-content: space-around;
+  flex-direction: column;
 
-  .title{
-    font-size: 50px;
+  width: 90vw;
+  margin: 0 auto;
+
+  &_top {
+    display: flex;
+    width: 100%;
+    padding: 50px 0;
+  }
+
+  &_bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+  }
+
+  &_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 25%;
+  }
+
+  &_info {
+    width: 75%;
+
+    &_title {
+      width: 70%;
+    }
+
+    &_top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+  }
+
+  &_logout {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 0.3;
+    width: 100%;
+
+    font-family: "No Signal", cursive;
+    font-size: 2.4rem;
+    color: white;
+    text-shadow: 0 0 5px #de84ff, 0 0 10px #de84ff, 0 0 20px #de84ff;
+
+    background-color: transparent;
+    background-image: url('../../../public/ui-kit/profile_log_out_default.svg');
+    background-repeat: no-repeat;
+    background-size: cover;    border: none;
+
+    transition: background-image ease-in-out 0.3s;
+
+    &:focus {
+      background-image: url('../../../public/ui-kit/profile_log_out_focus.svg');
+    }
+
+    &:hover {
+      background-image: url('../../../public/ui-kit/profile_log_out_hover.svg');
+    }
+
+    &:active {
+      background-image: url('../../../public/ui-kit/profile_log_out_active.svg');
+    }
   }
 
   &_button {
     cursor: pointer;
 
-    aspect-ratio: 1 / 0.1;
-    width: 10%;
-    max-height: 60px;
-    padding: 10px 20px;
+    aspect-ratio: 1 / 0.27;
+    width: 80%;
+    max-width: 300px;
+    margin-bottom: 20px;
 
-    font-size: 2rem;
+    font-family: "No Signal", cursive;
+    font-size: 1.8rem;
     color: white;
+    text-align: center;
+    text-shadow: 0 0 5px #de84ff, 0 0 10px #de84ff, 0 0 20px #de84ff;
 
-    background-color: $button-default;
+    background-color: transparent;
+    background-image: url('../../../public/ui-kit/profile_menu_purple.svg');
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: cover;
     border: none;
 
-    transition: background-color ease-in-out 0.2s;
+    transition: background-image 0.3s ease-in-out;
+
+    &:focus {
+      background-image: url('../../../public/ui-kit/profile_menu_focus.svg');
+    }
+  
+    &:hover {
+      background-image: url('../../../public/ui-kit/profile_menu_hover.svg');
+    }
+  
+    &:active {
+      background-image: url('../../../public/ui-kit/profile_menu_active.svg');
+    }
   }
 
-  &_button:focus {
-    background-color: $button-focus;
+  &_personal {
+    display: flex;
+    flex-direction: column;
+
+    &_bio, &_password, &_mail {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+      padding: 30px 10px 30px 100px;
+  
+      background-repeat: no-repeat;
+      background-position: top 25px left 10px;
+      background-size: 80px 30%;
+      border-bottom: 1px solid white;
+    }
+
+    &_bio {
+      background-image: url('../../../public/assets/icons/user.svg');
+    }
+
+    &_password {
+      background-image: url('../../../public/assets/icons/password-profile.svg');
+    }
+
+    &_mail {
+      background-image: url('../../../public/assets/icons/email-profile.svg');
+    }
+
+    &_text {
+      width: 75%;
+      padding-right: 15px;
+    }
+
+    &_list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+    }
+
+    &_title {
+      margin: 0;
+      margin-bottom: 15px;
+      font-size: 2.4rem;
+    }
+
+    &_describe {
+      margin: 0;
+      font-size: 1.8rem;
+      color: rgb(172 172 172)
+    }
   }
 
-  &_button:hover {
-    background-color: $button-hover;
+  &_title {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 3rem;
+    text-shadow: 0 0 5px #de84ff, 0 0 10px #de84ff, 0 0 20px #de84ff;
   }
 
-  &_button:active {
-    background-color: $button-active;
+  &_describe {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #e7aefc;
+  }
+
+  &_update {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 20%;
+    min-width: 100px;
+    height: 60px;
+
+    font-size: 1.8rem;
+    color: white;
+
+    background-color: transparent;
+    border: 1px solid white;
+
+    transition: background-color 0.2s ease-in-out, border 0.1s ease-in-out;
+
+    &:focus {
+      background-color: $button-focus;
+      border: none;
+    }
+  
+    &:hover {
+      background-color: $button-hover;
+      border: none;
+    }
+
+    &:active {
+      background-color: $button-active;
+      border: none;
+    }
+
+    &_img {
+      margin-right: 7px;
+    }
+  }
+
+  &_modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba($color: #000, $alpha: 60%);
+  }
+
+  &_address {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+
+
+    &_card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: space-between;
+
+      width: 250px;
+     padding: 30px;
+
+      border: 1px solid white;
+
+
+      &_add {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 250px;
+      min-height: 350px;
+
+      border: 1px solid white;
+
+      }
+    }
+
+    &_top {
+      display: flex;
+      flex-direction: column;
+      height: 80%;
+    }
+
+    &_type {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    &_name {
+      margin: 0;
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+    }
+
+    &_add {
+      cursor: pointer;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      height: 100%;
+
+      background-color: transparent;
+border: none;
+
+      &_img {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 15px;
+      }
+
+      &_title {
+        margin: 0;
+        font-size: 1.6rem;
+        color: white;
+      }
+    }
+
+    &_item {
+      display: flex;
+      justify-content: space-between;
+
+      width: 70%;
+      margin: 0;
+
+      font-size: 1.4rem;
+      color: rgb(240 251 252);
+    }
+
+    &_fields {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    &_bottom {
+      display: flex;
+      gap: 15px;
+      aspect-ratio: 1 / 0.1;
+    }
+
+    &_delete {
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 25%;
+
+      background-color: white;
+      border: none;
+    }
+
+    &_update {
+      width: 75%;
+      min-width: 0;
+      height: 40px;
+    }
+
+    &_default_ship, &_default_bill {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      opacity: 0.7;
+    }
+
+  }
+
+  &_address_update &_update_img {
+width: 15px;
+height: 15px;
+  }
+}
+
+.visible {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (min-width: (791px)) and (max-width: (1199.98px)) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: (320px)) and (max-width: (790px)) {
+  html {
+    font-size: 6px;
+  }
+
+  .profile_top {
+flex-direction: column;
   }
 }

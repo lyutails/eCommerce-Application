@@ -85,6 +85,22 @@ export const handleLoginInput = (
   return loginСheck;
 };
 
+//hjfgluyfvli
+export const handleLoginInputTwo = (loginField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.mail.lastIndex = 0;
+  if (loginField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.mail.test(loginField)) {
+    error.message = clue.invalidEmail;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handlePasswordInput = (passwordField: string): IPasswordErrors => {
   REGEXP.uppercasePassword.lastIndex = 0;
   REGEXP.lowercasePassword.lastIndex = 0;
@@ -160,6 +176,31 @@ export const handleFirstnameInput = (
   return firstnameСheck;
 };
 
+export const handleFirstnameInputTwo = (
+  firstnameField: string
+  // setErrorFirstname: React.Dispatch<React.SetStateAction<string>>,
+  // firstnameСheck: boolean,
+): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.fistname.lastIndex = 0;
+  if (firstnameField === '') {
+    error.message = clue.requiredField;
+    // setErrorFirstname(clue.requiredField);
+    // firstnameСheck = false;
+  } else if (!REGEXP.fistname.test(firstnameField)) {
+    error.message = clue.character;
+    // setErrorFirstname(clue.character);
+    // firstnameСheck = false;
+  } else {
+    error.message = '';
+    // setErrorFirstname('');
+    // firstnameСheck = true;
+  }
+  return error.message;
+};
+
 export const handleLastnameInput = (
   lastnameField: string,
   setErrorLastname: React.Dispatch<React.SetStateAction<string>>,
@@ -181,6 +222,23 @@ export const handleLastnameInput = (
     lastnameСheck = true;
   }
   return lastnameСheck;
+};
+
+//ghcfkjv
+
+export const handleLastnameInputTwo = (lastnameField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.lastname.lastIndex = 0;
+  if (lastnameField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.lastname.test(lastnameField)) {
+    error.message = clue.character;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };
 
 export const handleStreetShipInput = (
@@ -206,6 +264,22 @@ export const handleStreetShipInput = (
   return streetShipСheck;
 };
 
+///hsdcgblsaiducg
+export const handleStreetShipInputTwo = (streetShipField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.street.lastIndex = 0;
+  if (streetShipField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.street.test(streetShipField)) {
+    error.message = clue.character;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handleCityShipInput = (
   cityShipField: string,
   setErrorCityShip: React.Dispatch<React.SetStateAction<string>>,
@@ -227,6 +301,22 @@ export const handleCityShipInput = (
     cityShipСheck = true;
   }
   return cityShipСheck;
+};
+
+//jgbliugyuh
+export const handleCityShipInputTwo = (cityShipField: string): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.city.lastIndex = 0;
+  if (cityShipField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.city.test(cityShipField)) {
+    error.message = clue.character;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };
 
 export const handlePostalShipInput = (
@@ -264,6 +354,34 @@ export const handlePostalShipInput = (
   return postalShipСheck;
 };
 
+//hvlkhvhlvb
+export const handlePostalShipInputTwo = (
+  postalShipField: string,
+  countryShipField: string
+): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.postalUSA.lastIndex = 0;
+  REGEXP.postalCanada.lastIndex = 0;
+  if (postalShipField === '') {
+    error.message = clue.requiredField;
+  } else if (
+    countryShipField === 'usa' &&
+    !REGEXP.postalUSA.test(postalShipField)
+  ) {
+    error.message = clue.postalUsa;
+  } else if (
+    countryShipField === 'canada' &&
+    !REGEXP.postalBillCanada.test(postalShipField)
+  ) {
+    error.message = clue.postalCanada;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handleCountryShipInput = (
   countryShipField: string,
   setErrorCountryShip: React.Dispatch<React.SetStateAction<string>>,
@@ -282,6 +400,19 @@ export const handleCountryShipInput = (
   return countryShipСheck;
 };
 
+//hjglvhh;viug
+export const handleCountryShipInputTwo = (countryShipField: string): string => {
+  const error = {
+    message: '',
+  };
+  if (countryShipField === '') {
+    error.message = clue.requiredField;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handleBirthdayInput = (
   birthdayField: string,
   setErrorBirthday: React.Dispatch<React.SetStateAction<string>>,
@@ -298,6 +429,19 @@ export const handleBirthdayInput = (
     birthdayСheck = true;
   }
   return birthdayСheck;
+};
+
+//jgljb;l;
+export const handleBirthdayInputTwo = (birthdayField: string): string => {
+  const error = {
+    message: '',
+  };
+  if (birthdayField.length < 10) {
+    error.message = clue.requiredField;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };
 
 export const handleStreetBillInput = (
@@ -468,6 +612,24 @@ export const handleBuildingShipInput = (
   return buildingShipСheck;
 };
 
+//hgvfkhgvcyhu
+export const handleBuildingShipInputTwo = (
+  buildingShipField: string
+): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.building.lastIndex = 0;
+  if (buildingShipField === '') {
+    error.message = clue.requiredField;
+  } else if (!REGEXP.building.test(buildingShipField)) {
+    error.message = clue.building;
+  } else {
+    error.message = '';
+  }
+  return error.message;
+};
+
 export const handleApartmentShipInput = (
   apartmentShipField: string,
   setErrorApartmentShip: React.Dispatch<React.SetStateAction<string>>,
@@ -489,4 +651,22 @@ export const handleApartmentShipInput = (
     apartmentShipСheck = true;
   }
   return apartmentShipСheck;
+};
+
+//hgvfkhgvcyhu
+export const handleApartmentShipInputTwo = (
+  apartmentShipField: string
+): string => {
+  const error = {
+    message: '',
+  };
+  REGEXP.apartment.lastIndex = 0;
+  if (apartmentShipField === '') {
+    error.message = '';
+  } else if (!REGEXP.apartment.test(apartmentShipField)) {
+    error.message = clue.apartment;
+  } else {
+    error.message = '';
+  }
+  return error.message;
 };

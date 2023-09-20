@@ -8,7 +8,7 @@ import { useState } from 'react';
 import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
 
 function Header(): JSX.Element {
-  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { isAuth, customerId } = useSelector((state: IRootState) => state.user);
   const cartCounter = 0;
   const walletCost = 0;
   const nameRouteHeader = [
@@ -25,7 +25,7 @@ function Header(): JSX.Element {
     '/catalog',
     '/customize',
     '/about-us',
-    '/profile',
+    `/profile/${customerId}`,
     '/cart',
     'walletCost',
   ];
