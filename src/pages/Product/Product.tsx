@@ -34,8 +34,13 @@ import {
   setCartQuantity,
 } from '../../store/reducers/cartReducer';
 import { updateCart } from '../../api/existTokenFlow';
+
+import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+
 import ProductSistemModalWindow from '../../components/ProductSistemModalWindow/ProductSistemModalWindow';
 import ProductModalWindow from '../../components/ProductModalWindow/ProductModalWindow';
+
 
 interface IDataProduct {
   name: string;
@@ -66,6 +71,7 @@ function ProductPage(): JSX.Element {
     (state: IRootState) => state.user
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { promiseInProgress } = usePromiseTracker();
 
   const updateCustomerCart = (): void => {
     if (!isAuth) {
@@ -436,7 +442,7 @@ function ProductPage(): JSX.Element {
 
   useEffect(() => {
     id &&
-      getProductProjectionsByVariantKey(id).then((response) => {
+      trackPromise(getProductProjectionsByVariantKey(id)).then((response) => {
         const productObtained = response.body.results[0];
         if (productObtained.masterVariant.key === id) {
           creatingQueryForMaster(productObtained);
@@ -463,6 +469,17 @@ function ProductPage(): JSX.Element {
 
   return (
     <section className="showcase">
+      <div className="spinner">
+        {promiseInProgress === true ? (
+          <div className="spinner_container">
+            <div className="spinner_wrapper">
+              <div className="spinner_text">Loading...</div>
+              <div className="spinner_icon"></div>
+            </div>
+            <div className="spinner_overlay"></div>
+          </div>
+        ) : null}
+      </div>
       <div className="showcase_header">
         <h2 className="showcase_header-title">{dataProduct.name}</h2>
         <div
