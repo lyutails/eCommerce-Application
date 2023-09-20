@@ -139,6 +139,7 @@ input[type='checkbox'] {
   &_whole_card {
     width: 25%;
     display: flex;
+    align-items: center;
     flex-direction: column;
     justify-content: space-between;
   }
@@ -734,26 +735,26 @@ input[type='checkbox'] {
   }
 
   &_to_cart {
+    width: 12vw;
     background-color: transparent;
     color: $font-color-primary-one;
-    font-size: 1.5rem;
-    align-self: flex-start;
+    font-size: 1.8rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 8vw;
-    aspect-ratio: 1 / 0.2;
     z-index: 200;
     position: absolute;
     text-shadow:
       0 0 5px $glow-green,
       0 0 10px $glow-green;
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-top: 30px;
     border: none;
     transition: all 0.2s ease-in-out;
     z-index: 1600;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px dotted $glow-violet;
 
     &:hover {
       cursor: pointer;
@@ -1443,9 +1444,9 @@ input#price-sort {
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
   .category_to_cart {
-    font-size: 1.2rem;
-    margin-left: 20px;
-    margin-top: 15px;
+    font-size: 1.6rem;
+    margin-top: 30px;
+    width: 20vw;
   }
 }
 
@@ -1644,6 +1645,12 @@ input#price-sort {
       animation-iteration-count: 1;
       animation-timing-function: linear;
     }
+
+    .category_to_cart {
+      font-size: 1.6rem;
+      margin-top: 30px;
+      width: 20vw;
+    }
   }
 
   @keyframes number_circle_anim {
@@ -1804,6 +1811,12 @@ input#price-sort {
     padding-left: 5vw;
     padding-top: 20px;
   }
+
+  .category_to_cart {
+    font-size: 1.6rem;
+    margin-top: 20px;
+    width: 20vw;
+  }
 }
 
 @media screen and (min-width: (320px)) and (max-width: (499.98px)) {
@@ -1830,7 +1843,7 @@ input#price-sort {
 
   .category_to_cart {
     font-size: 1rem;
-    margin-left: 10px;
     margin-top: 20px;
+    width: 20vw;
   }
 }
