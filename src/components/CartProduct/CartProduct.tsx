@@ -2,11 +2,16 @@ import { throwNewError } from '../../utils/throwNewError';
 import { CartProductProps } from '../../types/types';
 import style from './_cart_product.module.scss';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ICartState } from '../../types/interfaces';
+import { setIsClickedButton } from '../../store/reducers/cartReducer';
 
 export function CartProduct(props: CartProductProps): JSX.Element {
   if (!props.images) {
     throwNewError('no product images for cart product found');
   }
+  const { isClickedButton } = useSelector((state: ICartState) => state.cart);
+
   return (
     <div className={style.cartproduct_wrapper}>
       <div className={style.cartproduct_item}>
@@ -26,7 +31,13 @@ export function CartProduct(props: CartProductProps): JSX.Element {
             alt=""
           />
         </Link>
-        <div className={style.cartproduct_product_counter}>
+        <div
+          className={
+            isClickedButton
+              ? style.cartproduct_product_counter_noclick
+              : style.cartproduct_product_counter
+          }
+        >
           <button
             onClick={props.reduceQuantity}
             className={`${style.cartproduct_counter_button} ${style.minus}`}
