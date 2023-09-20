@@ -23,3 +23,8 @@ export type CartProductProps = {
   increaseQuantity: () => void;
   idCard: string;
 };
+
+export type BestsellerProps = {
+  sku: string;
+  images?: Image[];
+};

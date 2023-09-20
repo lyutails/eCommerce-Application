@@ -41,6 +41,8 @@ import ReactSlider from 'react-slider';
 // const { ReactSlider } = require('react-slider');
 import _debounce from 'lodash/debounce';
 import { debounce } from 'lodash';
+import { trackPromise } from 'react-promise-tracker';
+import { usePromiseTracker } from 'react-promise-tracker';
 
 const pageLimit = 8;
 const productsForSearchClothes = 'Cap Hoodie T-Shirt';
@@ -254,94 +256,94 @@ function CategoryPage(): JSX.Element {
     if (!category) {
       throwNewError(`no categories found`);
     }
-    returnProductsByCategoryKey(category?.toLowerCase())
-      .then((response) => {
+    trackPromise(
+      returnProductsByCategoryKey(category?.toLowerCase()).then((response) => {
         return response;
       })
-      .then((response) => {
-        const categoryId = response.body.id;
-        setIdcategoty(response.body.id);
-        GetParentCategory().then((response) => {
-          const bodyResults = response.body.results;
-          const onlyWithAncestors = bodyResults.filter((data) => {
-            return data.ancestors.length && data.ancestors[0].id === categoryId;
-          });
-          setSubtree(onlyWithAncestors);
+    ).then((response) => {
+      const categoryId = response.body.id;
+      setIdcategoty(response.body.id);
+      GetParentCategory().then((response) => {
+        const bodyResults = response.body.results;
+        const onlyWithAncestors = bodyResults.filter((data) => {
+          return data.ancestors.length && data.ancestors[0].id === categoryId;
         });
-        let querySizesString = '';
-        const queryBestsellerString = `"true", "false"`;
-        const subtrees = `subtree("${idCategory}")`;
-        const queryStringAllColours = `"red", "black", "white"`;
-        const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
-        const querySale = `"true", "false"`;
-        const queryStringAllBrands = `"RSSchool", "Logitech"`;
-        const priceDESC = 'price desc';
-        const nameASC = 'name.en-us asc';
-        const queryStringPriceNameSort = [`${priceDESC}`, `${nameASC}`];
-        // const queryStringPriceRangeStart = `0`;
-        // const queryStringPriceRangeFinish = `*`;
-        const queryStringPriceRangeStart = String(+priceSliderValue[0] * 100);
-        const queryStringPriceRangeFinish = String(+priceSliderValue[1] * 100);
-        let fuzzylevel = 0;
-        const queryLimitStart = 8;
-        const queryOffsetStart = 0;
-        const winterSale = `"true", "false"`;
-
-        switch (searchValue.length) {
-          case 1:
-            fuzzylevel = 0;
-            break;
-          case 2:
-            fuzzylevel = 0;
-            break;
-          case 3:
-            fuzzylevel = 1;
-            break;
-          case 4:
-            fuzzylevel = 1;
-            break;
-          case 5:
-            fuzzylevel = 1;
-            break;
-          default:
-            fuzzylevel = 2;
-        }
-
-        filterByAttributes(
-          queryStringAllColours,
-          subtrees,
-          querySizesString === '' && category === 'Clothes'
-            ? (querySizesString = queryStringAllSizes)
-            : querySizesString === '' && category !== 'Clothes'
-            ? (querySizesString = `"no"`)
-            : querySizesString,
-          queryBestsellerString,
-          querySale,
-          queryStringAllBrands,
-          queryStringPriceNameSort,
-          searchValue === '' && category === 'Clothes'
-            ? productsForSearchClothes
-            : searchValue === '' && category === 'PC'
-            ? productsForSearchPC
-            : searchValue === '' && category === 'Souvenirs'
-            ? productsForSearchSouvenirs
-            : searchValue === '' && category === 'Stickers'
-            ? productsForSearchStickers
-            : searchValue,
-          queryStringPriceRangeStart,
-          queryStringPriceRangeFinish,
-          queryLimitStart,
-          queryOffsetStart,
-          winterSale,
-          fuzzylevel
-        ).then((response) => {
-          const subtreeArray = response.body.results;
-          const allSubTreeArray = subtreeArray.map((item) => {
-            return item.masterVariant;
-          });
-          setAllCards(allSubTreeArray);
-        });
+        setSubtree(onlyWithAncestors);
       });
+      let querySizesString = '';
+      const queryBestsellerString = `"true", "false"`;
+      const subtrees = `subtree("${idCategory}")`;
+      const queryStringAllColours = `"red", "black", "white"`;
+      const queryStringAllSizes = `"xs", "s", "m", "l", "xl", "xxl", "xxl", "universal"`;
+      const querySale = `"true", "false"`;
+      const queryStringAllBrands = `"RSSchool", "Logitech"`;
+      const priceDESC = 'price desc';
+      const nameASC = 'name.en-us asc';
+      const queryStringPriceNameSort = [`${priceDESC}`, `${nameASC}`];
+      // const queryStringPriceRangeStart = `0`;
+      // const queryStringPriceRangeFinish = `*`;
+      const queryStringPriceRangeStart = String(+priceSliderValue[0] * 100);
+      const queryStringPriceRangeFinish = String(+priceSliderValue[1] * 100);
+      let fuzzylevel = 0;
+      const queryLimitStart = 8;
+      const queryOffsetStart = 0;
+      const winterSale = `"true", "false"`;
+
+      switch (searchValue.length) {
+        case 1:
+          fuzzylevel = 0;
+          break;
+        case 2:
+          fuzzylevel = 0;
+          break;
+        case 3:
+          fuzzylevel = 1;
+          break;
+        case 4:
+          fuzzylevel = 1;
+          break;
+        case 5:
+          fuzzylevel = 1;
+          break;
+        default:
+          fuzzylevel = 2;
+      }
+
+      filterByAttributes(
+        queryStringAllColours,
+        subtrees,
+        querySizesString === '' && category === 'Clothes'
+          ? (querySizesString = queryStringAllSizes)
+          : querySizesString === '' && category !== 'Clothes'
+          ? (querySizesString = `"no"`)
+          : querySizesString,
+        queryBestsellerString,
+        querySale,
+        queryStringAllBrands,
+        queryStringPriceNameSort,
+        searchValue === '' && category === 'Clothes'
+          ? productsForSearchClothes
+          : searchValue === '' && category === 'PC'
+          ? productsForSearchPC
+          : searchValue === '' && category === 'Souvenirs'
+          ? productsForSearchSouvenirs
+          : searchValue === '' && category === 'Stickers'
+          ? productsForSearchStickers
+          : searchValue,
+        queryStringPriceRangeStart,
+        queryStringPriceRangeFinish,
+        queryLimitStart,
+        queryOffsetStart,
+        winterSale,
+        fuzzylevel
+      ).then((response) => {
+        const subtreeArray = response.body.results;
+        const allSubTreeArray = subtreeArray.map((item) => {
+          return item.masterVariant;
+        });
+        setAllCards(allSubTreeArray);
+      });
+    });
   }, [category, idCategory, priceSliderValue, searchValue]);
 
   const createQueryColourString = useCallback((): string => {
@@ -890,7 +892,7 @@ function CategoryPage(): JSX.Element {
   //   []
   // );
 
-  const ref = useRef();
+  // const ref = useRef();
 
   function isProductInCart(card: ProductVariant): LineItem | undefined {
     const foundProduct = cartItems.find(
@@ -899,8 +901,21 @@ function CategoryPage(): JSX.Element {
     return foundProduct;
   }
 
+  const { promiseInProgress } = usePromiseTracker();
+
   return (
     <div className={style.category}>
+      <div className={style.spinner}>
+        {promiseInProgress === true ? (
+          <div className={style.spinner_container}>
+            <div className={style.spinner_wrapper}>
+              <div className={style.spinner_text}>Loading...</div>
+              <div className={style.spinner_icon}></div>
+            </div>
+            <div className={style.spinner_overlay}></div>
+          </div>
+        ) : null}
+      </div>
       <div className={style.category_wrapper}>
         <div className={style.breadcrumbs_search}>
           <div className={style.breadcrumbs}>
@@ -1347,4 +1362,5 @@ function CategoryPage(): JSX.Element {
     </div>
   );
 }
+
 export default CategoryPage;
