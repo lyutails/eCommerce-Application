@@ -192,7 +192,7 @@ function MainPage(): JSX.Element {
           <button
             className={style.main_rsschool}
             onClick={(e): string | void => {
-              copyTextToClipboard(e.currentTarget.textContent).then(
+              copyTextToClipboard(e.currentTarget.textContent!).then(
                 (response) => {
                   return response;
                 }
@@ -208,7 +208,7 @@ function MainPage(): JSX.Element {
           <button
             className={style.main_trinity}
             onClick={(e): string | void => {
-              copyTextToClipboard(e.currentTarget.textContent);
+              copyTextToClipboard(e.currentTarget.textContent!);
               setDiscountCopiedModal(true);
               setTimeout(() => {
                 setDiscountCopiedModal(false);
