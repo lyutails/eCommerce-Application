@@ -12,6 +12,7 @@ import {
 } from 'react';
 import { Attribute } from '@commercetools/platform-sdk';
 import { getBestsellers } from '../../api/getBestsellers';
+import { throwNewError } from '../../utils/throwNewError';
 
 export const mainPageOffersSlides = [
   'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
@@ -25,6 +26,7 @@ function MainPage(): JSX.Element {
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
+  const [discountCopiedModal, setDiscountCopiedModal] = useState(false);
 
   const actionHandler = useCallback(
     (mode: string): void => {
@@ -142,6 +144,15 @@ function MainPage(): JSX.Element {
       });
   }, [bestsellersArray]);
 
+  async function copyTextToClipboard(text: string): Promise<string | void> {
+    try {
+      const copiedDiscount = await navigator.clipboard.writeText(text);
+      return copiedDiscount;
+    } catch {
+      throwNewError('failed to copy discount');
+    }
+  }
+
   return (
     <div className={style.main} data-testid="main-component">
       <div className={style.main_wrapper}>
@@ -176,6 +187,36 @@ function MainPage(): JSX.Element {
             onClick={(): void => actionHandler('next')}
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
+        </div>
+        <div className={style.main_discounts_wrapper}>
+          <button
+            className={style.main_rsschool}
+            onClick={(e): string | void => {
+              copyTextToClipboard(e.currentTarget.textContent).then(
+                (response) => {
+                  return response;
+                }
+              );
+              setDiscountCopiedModal(true);
+              setTimeout(() => {
+                setDiscountCopiedModal(false);
+              }, 1500);
+            }}
+          >
+            RSSchool
+          </button>
+          <button
+            className={style.main_trinity}
+            onClick={(e): string | void => {
+              copyTextToClipboard(e.currentTarget.textContent);
+              setDiscountCopiedModal(true);
+              setTimeout(() => {
+                setDiscountCopiedModal(false);
+              }, 1500);
+            }}
+          >
+            Trinity
+          </button>
         </div>
         <Link className={style.main_customize} to="/customize">
           <div className={`${style.main_advertisment} ${style.customize}`}>
@@ -212,6 +253,20 @@ function MainPage(): JSX.Element {
           <div className={`${style.main_arrow} ${style.right}`}></div>
         </div>
       </div>
+      <div
+        className={
+          discountCopiedModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          discountCopiedModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }

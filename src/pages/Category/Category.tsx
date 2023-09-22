@@ -1262,7 +1262,7 @@ function CategoryPage(): JSX.Element {
                               e.currentTarget.textContent = 'Already in Cart';
                               setTimeout(() => {
                                 setAlreadyInCartModal(false);
-                              }, 2000);
+                              }, 1500);
                             } else {
                               updateCustomerCart(updateAnonCartData);
                               e.currentTarget.textContent = 'Add to Cart';
