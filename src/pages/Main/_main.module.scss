@@ -360,16 +360,6 @@
     opacity: 0.75;
   }
 
-  &_slider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 90vw;
-    margin-bottom: 50px;
-  }
-
   &_slide {
     resize: both;
 
@@ -469,6 +459,7 @@
   outline: none;
   color: $font-color-primary-one;
   transition: all 0.4s ease-in-out;
+  user-select: none;
 
   &:hover {
     cursor: pointer;
@@ -497,6 +488,7 @@
   outline: none;
   color: $font-color-primary-one;
   transition: all 0.4s ease-in-out;
+  user-select: none;
 
   &:hover {
     cursor: pointer;
@@ -544,6 +536,21 @@
   &.show {
     display: block;
   }
+}
+
+.main_bestsellers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 90vw;
+  margin-bottom: 50px;
+}
+
+.bestseller_card {
+  width: 30vw;
+  aspect-ratio: 1 / 1;
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {

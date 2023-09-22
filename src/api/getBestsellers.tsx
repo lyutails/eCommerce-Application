@@ -1,23 +1,25 @@
 import {
   ClientResponse,
-  ProductProjection,
   ProductProjectionPagedSearchResponse,
-  ProductType,
 } from '@commercetools/platform-sdk';
 import { apiRoot } from './createClient';
-import { apiRoot as apiRootAdmin } from './createClientAdmin';
 import { throwNewError } from '../utils/throwNewError';
 
-export async function getBestsellers(): Promise<ProductProjection[]> {
+export async function getBestsellers(): Promise<
+  ClientResponse<ProductProjectionPagedSearchResponse>
+> {
   try {
-    const allProductsArray = await apiRoot
+    const productsByColour = await apiRoot
       .productProjections()
       .search()
-      .get()
-      .execute()
-      .then((response) => response.body.results);
-    return allProductsArray;
+      .get({
+        queryArgs: {
+          'filter.query': [`variants.attributes.bestseller:"true"`],
+        },
+      })
+      .execute();
+    return productsByColour;
   } catch {
-    throwNewError('no bestsellers found');
+    throwNewError('no product by attribute or filter found');
   }
 }

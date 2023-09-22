@@ -10,9 +10,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Attribute } from '@commercetools/platform-sdk';
+import { Attribute, ProductVariant } from '@commercetools/platform-sdk';
 import { getBestsellers } from '../../api/getBestsellers';
 import { throwNewError } from '../../utils/throwNewError';
+import { Bestseller } from '../../components/Bestseller/Bestseller';
 
 export const mainPageOffersSlides = [
   'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
@@ -27,6 +28,7 @@ function MainPage(): JSX.Element {
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
   const [discountCopiedModal, setDiscountCopiedModal] = useState(false);
+  const [allProducts, setAllProducts] = useState<ProductVariant[]>([]);
 
   const actionHandler = useCallback(
     (mode: string): void => {
@@ -124,25 +126,40 @@ function MainPage(): JSX.Element {
     };
   }, [actionHandler]);
 
+  useEffect(() => {
+    getBestsellers().then((data) => {
+      const allResults = data.body.results;
+      let product = [];
+      product = allResults.map((item) => item.masterVariant);
+      setAllProducts(product);
+      console.log(product);
+    });
+  }, []);
+
   const bestsellersArray: Attribute[][] = [];
 
-  useEffect(() => {
-    getBestsellers()
-      .then((data) => {
-        return data.map(
-          (itemAttributes) => itemAttributes.masterVariant.attributes
-        );
-      })
-      .then((response) => {
-        if (response.length) {
-          response.forEach((bestsellerItem) => {
-            if (bestsellerItem && bestsellerItem[3]?.value === true) {
-              bestsellersArray.push(bestsellerItem);
-            }
-          });
-        }
-      });
-  }, [bestsellersArray]);
+  // useEffect(() => {
+  //   getBestsellers()
+  //     .then((data) => {
+  //       return data.map(
+  //         (itemAttributes) => itemAttributes.masterVariant.attributes
+  //       );
+  //     })
+  //     .then((response) => {
+  //       if (response.length) {
+  //         response.forEach((bestsellerItem) => {
+  //           if (bestsellerItem && bestsellerItem[3]?.value === true) {
+  //             bestsellersArray.push(bestsellerItem);
+  //           }
+  //         });
+  //       }
+  //     });
+  // }, [bestsellersArray]);
+
+  const randomBestsellerSliderItems =
+    bestsellersArray[Math.floor(Math.random() * bestsellersArray.length)];
+
+  console.log(randomBestsellerSliderItems);
 
   async function copyTextToClipboard(text: string): Promise<string | void> {
     try {
@@ -236,21 +253,36 @@ function MainPage(): JSX.Element {
             <div className={style.main_sloth_right}></div>
           </div>
         </Link>
-        <div className={style.main_slider}>
-          <div className={`${style.main_arrow} ${style.left}`}></div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.one}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.two}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.three}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.four}`}></div>
-          </div>
-          <div className={`${style.main_arrow} ${style.right}`}></div>
+        <div className={style.main_bestsellers}>
+          {allProducts.map((card) => {
+            let productPrice = 0;
+            let productDiscount;
+            let ifProductDiscount = 0;
+            card.prices
+              ? (productPrice = card.prices[0].value.centAmount / 100)
+              : 0;
+            card.prices && card.prices[0].discounted?.value.centAmount
+              ? ((ifProductDiscount =
+                  card.prices[0].discounted?.value.centAmount / 100),
+                (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+              : '';
+            return (
+              <div className={style.bestseller_card} key={card.key}>
+                <Link
+                  to={`/main/${card.key}`}
+                  className={style.category_card}
+                  key={card.key}
+                >
+                  <Bestseller
+                    images={card?.images}
+                    sku={card?.sku ? card.sku : ''}
+                    prices={productPrice.toFixed(2)}
+                    discounted={productDiscount}
+                  />
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div
