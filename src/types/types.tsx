@@ -29,4 +29,5 @@ export type BestsellerProps = {
   images?: Image[];
   prices?: number | string;
   discounted?: number | string;
+  idBestseller?: string;
 };

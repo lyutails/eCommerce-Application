@@ -132,34 +132,11 @@ function MainPage(): JSX.Element {
       let product = [];
       product = allResults.map((item) => item.masterVariant);
       setAllProducts(product);
-      console.log(product);
     });
   }, []);
 
-  const bestsellersArray: Attribute[][] = [];
-
-  // useEffect(() => {
-  //   getBestsellers()
-  //     .then((data) => {
-  //       return data.map(
-  //         (itemAttributes) => itemAttributes.masterVariant.attributes
-  //       );
-  //     })
-  //     .then((response) => {
-  //       if (response.length) {
-  //         response.forEach((bestsellerItem) => {
-  //           if (bestsellerItem && bestsellerItem[3]?.value === true) {
-  //             bestsellersArray.push(bestsellerItem);
-  //           }
-  //         });
-  //       }
-  //     });
-  // }, [bestsellersArray]);
-
-  const randomBestsellerSliderItems =
-    bestsellersArray[Math.floor(Math.random() * bestsellersArray.length)];
-
-  console.log(randomBestsellerSliderItems);
+  /* const randomBestsellerSliderItems =
+    bestsellersArray[Math.floor(Math.random() * bestsellersArray.length)]; */
 
   async function copyTextToClipboard(text: string): Promise<string | void> {
     try {
@@ -268,18 +245,13 @@ function MainPage(): JSX.Element {
               : '';
             return (
               <div className={style.bestseller_card} key={card.key}>
-                <Link
-                  to={`/main/${card.key}`}
-                  className={style.category_card}
-                  key={card.key}
-                >
-                  <Bestseller
-                    images={card?.images}
-                    sku={card?.sku ? card.sku : ''}
-                    prices={productPrice.toFixed(2)}
-                    discounted={productDiscount}
-                  />
-                </Link>
+                <Bestseller
+                  images={card?.images}
+                  sku={card?.sku ? card.sku : ''}
+                  prices={productPrice.toFixed(2)}
+                  discounted={productDiscount}
+                  idBestseller={card?.key}
+                />
               </div>
             );
           })}

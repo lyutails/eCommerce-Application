@@ -247,6 +247,10 @@ function App(): JSX.Element {
           <Route path={ParhRoute.ProductPage} element={<ProductPage />} />
           <Route path={ParhRoute.ProductPageCart} element={<ProductPage />} />
           <Route path={ParhRoute.NotFoundPage} element={<NotFoundPage />} />
+          <Route
+            path={ParhRoute.ProductPageBestseller}
+            element={<ProductPage />}
+          />
           {isAuth ? (
             <>
               <Route path={ParhRoute.ProfilePage} element={<ProfilePage />} />
