@@ -4,8 +4,9 @@ import { logo } from './logo';
 import { Link, NavLink } from 'react-router-dom';
 import { ICartState, IRootState } from '../../types/interfaces';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import iconBurger from '../../../public/assets/burger/burger_icon_green_01.svg';
+import ParalaxHeader from './ParalaxHeader/ParalaxHeader';
 
 function Header(): JSX.Element {
   const { isAuth, customerId } = useSelector((state: IRootState) => state.user);
@@ -15,7 +16,7 @@ function Header(): JSX.Element {
   const nameRouteHeader = [
     'Main',
     'Catalog',
-    'Customize',
+    /* 'Customize', */
     'About Us',
     'Profile',
     'Cart',
@@ -24,13 +25,14 @@ function Header(): JSX.Element {
   const parhRouteHeader = [
     '/',
     '/catalog',
-    '/customize',
+    /* '/customize', */
     '/about-us',
     `/profile/${customerId}`,
     '/cart',
     'walletCost',
   ];
   const [activeBurger, SetActiveBurger] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
   const handleToBurger = (): void => {
     SetActiveBurger(true);
   };
@@ -38,9 +40,18 @@ function Header(): JSX.Element {
     SetActiveBurger(false);
   };
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {
+        setIsScroll(window.pageYOffset > 0);
+      });
+    }
+  }, []);
+
   return (
-    <div id="header" className={`${style.header} ${style.sticky}`}>
-      <div className={style.header_wrapper}>
+    <div className={`${style.header} ${style.sticky}`}>
+      <ParalaxHeader />
+      <div className={style.header_wrapper} id="Header">
         <Link className={style.logo} to="/">
           {logo}
         </Link>

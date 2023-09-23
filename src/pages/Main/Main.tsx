@@ -10,8 +10,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Attribute } from '@commercetools/platform-sdk';
+import { ProductVariant } from '@commercetools/platform-sdk';
 import { getBestsellers } from '../../api/getBestsellers';
+import { Bestseller } from '../../components/Bestseller/Bestseller';
+import { copyTextToClipboard } from '../../utils/copyTextToClipboard';
 
 export const mainPageOffersSlides = [
   'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
@@ -25,6 +27,8 @@ function MainPage(): JSX.Element {
   const intervalRef = useRef(null) as MutableRefObject<number | null>;
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
+  const [discountCopiedModal, setDiscountCopiedModal] = useState(false);
+  const [allBestsellers, setAllBestsellers] = useState<ProductVariant[]>([]);
 
   const actionHandler = useCallback(
     (mode: string): void => {
@@ -122,25 +126,14 @@ function MainPage(): JSX.Element {
     };
   }, [actionHandler]);
 
-  const bestsellersArray: Attribute[][] = [];
-
   useEffect(() => {
-    getBestsellers()
-      .then((data) => {
-        return data.map(
-          (itemAttributes) => itemAttributes.masterVariant.attributes
-        );
-      })
-      .then((response) => {
-        if (response.length) {
-          response.forEach((bestsellerItem) => {
-            if (bestsellerItem && bestsellerItem[3]?.value === true) {
-              bestsellersArray.push(bestsellerItem);
-            }
-          });
-        }
-      });
-  }, [bestsellersArray]);
+    getBestsellers().then((data) => {
+      const allResults = data.body.results;
+      let product = [];
+      product = allResults.map((item) => item.masterVariant);
+      setAllBestsellers(product);
+    });
+  }, []);
 
   return (
     <div className={style.main} data-testid="main-component">
@@ -177,15 +170,41 @@ function MainPage(): JSX.Element {
             className={`${style.main_offers_arrow} ${style.right}`}
           ></button>
         </div>
-        <Link className={style.main_customize} to="/customize">
+        <div className={style.main_discounts_wrapper}>
+          <button
+            className={style.main_rsschool}
+            onClick={(e): string | void => {
+              copyTextToClipboard(e.currentTarget.textContent!).then(
+                (response) => {
+                  return response;
+                }
+              );
+              setDiscountCopiedModal(true);
+              setTimeout(() => {
+                setDiscountCopiedModal(false);
+              }, 1500);
+            }}
+          >
+            RSSchool
+          </button>
+          <button
+            className={style.main_trinity}
+            onClick={(e): string | void => {
+              copyTextToClipboard(e.currentTarget.textContent!);
+              setDiscountCopiedModal(true);
+              setTimeout(() => {
+                setDiscountCopiedModal(false);
+              }, 1500);
+            }}
+          >
+            Trinity
+          </button>
+        </div>
+        {/* <Link className={style.main_customize} to="/customize">
           <div className={`${style.main_advertisment} ${style.customize}`}>
             <div className={style.main_advertisment_info}>
               <div className={style.main_glitch_container}>
-                <div className={style.main_advertisment_glitch}>
-                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
-                  CUSTOMIZE
-                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
-                </div>
+                <div className={style.main_advertisment_glitch}>CUSTOMIZE</div>
               </div>
               <div className={style.main_advertisment_text}>
                 Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
@@ -194,24 +213,52 @@ function MainPage(): JSX.Element {
             </div>
             <div className={style.main_sloth_right}></div>
           </div>
-        </Link>
-        <div className={style.main_slider}>
-          <div className={`${style.main_arrow} ${style.left}`}></div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.one}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.two}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.three}`}></div>
-          </div>
-          <div className={style.main_slide}>
-            <div className={`${style.main_slide_pic} ${style.four}`}></div>
-          </div>
-          <div className={`${style.main_arrow} ${style.right}`}></div>
+        </Link> */}
+        <div className={style.main_bestsellers}>
+          {allBestsellers
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 4)
+            .map((card) => {
+              let productPrice = 0;
+              let productDiscount;
+              let ifProductDiscount = 0;
+              card.prices
+                ? (productPrice = card.prices[0].value.centAmount / 100)
+                : 0;
+              card.prices && card.prices[0].discounted?.value.centAmount
+                ? ((ifProductDiscount =
+                    card.prices[0].discounted?.value.centAmount / 100),
+                  (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+                : '';
+              return (
+                <div className={style.bestseller_card} key={card.key}>
+                  <div className={style.bestseller_title}>Bestseller</div>
+                  <Bestseller
+                    images={card?.images}
+                    sku={card?.sku ? card.sku : ''}
+                    prices={productPrice.toFixed(2)}
+                    discounted={productDiscount}
+                    idBestseller={card?.key}
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
+      <div
+        className={
+          discountCopiedModal
+            ? `${style.modal_wrapper} ${style.show}`
+            : style.modal_wrapper
+        }
+      >
+        <div className={style.modal_body}></div>
+      </div>
+      <div
+        className={
+          discountCopiedModal ? `${style.overlay} ${style.show}` : style.overlay
+        }
+      ></div>
     </div>
   );
 }

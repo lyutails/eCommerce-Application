@@ -74,6 +74,10 @@ function InputPasswordTwo(props: IInputPropsPassword): JSX.Element {
           type={passwordVisible ? 'text' : 'password'}
           placeholder={placeholder}
         />
+        {/* <span className={style.wrapper_placeholder}>{placeholder}</span>
+        <span
+          className={`${style.wrapper_placeholder_line} ${style.wrapper_placeholder_password}`}
+        ></span> */}
         <ButtonForm
           onClick={(): void =>
             passwordVisible

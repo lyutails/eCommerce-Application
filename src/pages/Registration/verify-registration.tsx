@@ -1,249 +1,47 @@
-/* eslint-disable prefer-const */
 import { createCustomerMe } from '../../api/createCustomer';
-import { NavigateFunction } from 'react-router-dom';
-import {
-  handleCountryShipInput,
-  handleCityShipInput,
-  handleFirstnameInput,
-  handleLastnameInput,
-  handleLoginInput,
-  handlePasswordInput,
-  handlePostalShipInput,
-  handleStreetShipInput,
-  handleBirthdayInput,
-  handleStreetBillInput,
-  handleCityBillInput,
-  handlePostalBillInput,
-  handleCountryBillInput,
-  handleBuildingBillInput,
-  handleBuildingShipInput,
-  handleApartmentBillInput,
-  handleApartmentShipInput,
-} from '../verification';
 import { AnyAction, Dispatch } from 'redux';
 import {
   createCustomerId,
   setAccessTokenStatus,
-  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
-import { IMyCustomerDraft } from '../../types/interfaces';
-import { IAnonymousCartData } from './Registration';
-import { loginAnonUser } from '../../api/existTokenFlow';
+import {
+  IAnonymousCartData,
+  IMyCustomerDraft,
+  IRegistrationData,
+} from '../../types/interfaces';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';
-import { updateAnonAccessToken } from '../../utils/updateAccessToken';
-
-let loginСheck = false;
-let passwordСheck = false;
-let firstnameСheck = false;
-let lastnameСheck = false;
-let streetShipСheck = false;
-let cityShipСheck = false;
-let postalShipСheck = false;
-let countryShipСheck = false;
-let birthdayСheck = false;
-let streetBillСheck = false;
-let cityBillСheck = false;
-let postalBillСheck = false;
-let countryBillСheck = false;
-let buildingBillСheck = false;
-let buildingShipСheck = false;
-let apartmentBillСheck = false;
-let apartmentShipСheck = false;
 
 export const handleСreationReg = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  setErrorLogin: React.Dispatch<React.SetStateAction<string>>,
-  setErrorPassword: React.Dispatch<React.SetStateAction<boolean>>,
-  setErrorFirstname: React.Dispatch<React.SetStateAction<string>>,
-  setErrorLastname: React.Dispatch<React.SetStateAction<string>>,
-  setErrorStreetShip: React.Dispatch<React.SetStateAction<string>>,
-  setErrorCityShip: React.Dispatch<React.SetStateAction<string>>,
-  setErrorPostalShip: React.Dispatch<React.SetStateAction<string>>,
-  setErrorCountryShip: React.Dispatch<React.SetStateAction<string>>,
-  setErrorStreetBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorCityBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorPostalBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorCountryBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorBirthday: React.Dispatch<React.SetStateAction<string>>,
-  setErrorApartmentBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorBuildingBill: React.Dispatch<React.SetStateAction<string>>,
-  setErrorApartmentShip: React.Dispatch<React.SetStateAction<string>>,
-  setErrorBuildingShip: React.Dispatch<React.SetStateAction<string>>,
-  loginField: string,
-  passwordField: string,
-  fistnameField: string,
-  lastnameField: string,
-  streetShipField: string,
-  cityShipField: string,
-  postalShipField: string,
-  countryShipField: string,
-  streetBillField: string,
-  cityBillField: string,
-  postalBillField: string,
-  countryBillField: string,
-  birthdayField: string,
-  apartmentBillField: string,
-  buildingBillField: string,
-  apartmentShipField: string,
-  buildingShipField: string,
-  navigator: NavigateFunction,
   dispatch: Dispatch<AnyAction>,
-  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkFirstname: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkLastname: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkStreetShip: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkCityShip: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkPostalShip: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkCountryShip: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkStreetBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkCityBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkPostalBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkCountryBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkBirthday: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkApartmentBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkBuildingBill: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkApartmentShip: React.Dispatch<React.SetStateAction<boolean>>,
-  setCheckmarkBuildingShip: React.Dispatch<React.SetStateAction<boolean>>,
-  checkedBill: boolean,
-  setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
-  checkedShipping: boolean,
-  checkedBilling: boolean,
+  registrationData: IRegistrationData,
   setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>,
-  anonymousCartData: IAnonymousCartData
+  anonymousCartData: IAnonymousCartData,
+  setUnsuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
-  firstnameСheck = handleFirstnameInput(
-    fistnameField,
-    setErrorFirstname,
-    firstnameСheck,
-    setCheckmarkFirstname
-  );
-  lastnameСheck = handleLastnameInput(
-    lastnameField,
-    setErrorLastname,
-    lastnameСheck,
-    setCheckmarkLastname
-  );
-  streetShipСheck = handleStreetShipInput(
-    streetShipField,
-    setErrorStreetShip,
-    streetShipСheck,
-    setCheckmarkStreetShip
-  );
-  cityShipСheck = handleCityShipInput(
-    cityShipField,
-    setErrorCityShip,
-    cityShipСheck,
-    setCheckmarkCityShip
-  );
-  postalShipСheck = handlePostalShipInput(
-    postalShipField,
-    setErrorPostalShip,
-    postalShipСheck,
-    setCheckmarkPostalShip,
-    countryShipField
-  );
-  countryShipСheck = handleCountryShipInput(
-    countryShipField,
-    setErrorCountryShip,
-    countryShipСheck,
-    setCheckmarkCountryShip
-  );
-  loginСheck = handleLoginInput(
-    loginField,
-    setErrorLogin,
-    loginСheck,
-    setCheckmarkLogin
-  );
-  streetBillСheck = handleStreetBillInput(
-    streetBillField,
-    setErrorStreetBill,
-    streetBillСheck,
-    setCheckmarkStreetBill
-  );
-  cityBillСheck = handleCityBillInput(
-    cityBillField,
-    setErrorCityBill,
-    cityBillСheck,
-    setCheckmarkCityBill
-  );
-  postalBillСheck = handlePostalBillInput(
-    postalBillField,
-    setErrorPostalBill,
-    postalBillСheck,
-    setCheckmarkPostalBill,
-    countryBillField
-  );
-  countryBillСheck = handleCountryBillInput(
-    countryBillField,
-    setErrorCountryBill,
-    countryBillСheck,
-    setCheckmarkCountryBill
-  );
-  buildingBillСheck = handleBuildingBillInput(
-    buildingBillField,
-    setErrorBuildingBill,
-    buildingBillСheck,
-    setCheckmarkBuildingBill
-  );
-  buildingShipСheck = handleBuildingShipInput(
-    buildingShipField,
-    setErrorBuildingShip,
-    buildingShipСheck,
-    setCheckmarkBuildingShip
-  );
-  apartmentBillСheck = handleApartmentBillInput(
-    apartmentBillField,
-    setErrorApartmentBill,
-    apartmentBillСheck,
-    setCheckmarkApartmentBill
-  );
-  apartmentShipСheck = handleApartmentShipInput(
-    apartmentShipField,
-    setErrorApartmentShip,
-    apartmentShipСheck,
-    setCheckmarkApartmentShip
-  );
-  const passwordErr = handlePasswordInput(passwordField);
-  Object.keys(passwordErr).every((key): void => {
-    if (passwordErr[key].isError === true) {
-      passwordСheck = false;
-      setErrorPassword(true);
-    } else {
-      setCheckmarkPassword(true);
-      passwordСheck = true;
-      setErrorPassword(false);
-    }
-  });
-  birthdayСheck = handleBirthdayInput(
-    birthdayField,
-    setErrorBirthday,
-    birthdayСheck,
-    setCheckmarkBirthday
-  );
 
   const createCustomerData: IMyCustomerDraft = {
-    email: loginField,
-    firstName: fistnameField,
-    lastName: lastnameField,
-    password: passwordField,
-    dateOfBirth: parseDateToServer(birthdayField),
+    email: registrationData.bio.email.value,
+    firstName: registrationData.bio.firstname.value,
+    lastName: registrationData.bio.lastname.value,
+    password: registrationData.password.currentPassword.value,
+    dateOfBirth: parseDateToServer(registrationData.bio.birthday.value),
     addresses: [
       {
-        streetName: streetShipField,
-        building: buildingShipField,
-        apartment: apartmentShipField,
-        postalCode: postalShipField,
-        city: cityShipField,
-        country: countryShipField.toLowerCase() === 'usa' ? 'US' : 'CA',
+        streetName: registrationData.addressShip.street.value,
+        building: registrationData.addressShip.building.value,
+        apartment: registrationData.addressShip.apartment.value,
+        postalCode: registrationData.addressShip.postal.value,
+        city: registrationData.addressShip.city.value,
+        country: registrationData.addressShip.country.value,
       },
     ],
-    defaultShippingAddress: checkedShipping ? 0 : undefined,
+    defaultShippingAddress: registrationData.checkedShipping ? 0 : undefined,
     shippingAddresses: [0],
     billingAddresses: [0],
     anonymousCart: {
@@ -254,142 +52,81 @@ export const handleСreationReg = (
     anonymousID: anonymousCartData.anonymousID,
   };
 
-  if (checkedBill) {
-    createCustomerData.addresses.push({
-      streetName: streetBillField,
-      building: buildingBillField,
-      apartment: apartmentBillField,
-      postalCode: postalBillField,
-      city: postalBillField,
-      country: countryBillField === 'usa' ? 'US' : 'CA',
-    });
+  function registerCustomer(): void {
+    refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
+      (response) => {
+        createCustomerMe(
+          createCustomerData,
+          response.access_token,
+          dispatch,
+          setSuccessfulMessage,
+          setUnsuccessfulMessage
+        )
+          .then((responseTwo) => {
+            if (responseTwo) {
+              localStorage.removeItem('anonymousID');
+              localStorage.removeItem('refreshAnonToken');
+              localStorage.setItem('customerId', responseTwo.body.customer.id);
+              dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
+              dispatch(createCustomerId(responseTwo.body.customer.id));
+              dispatch(changeVersion(responseTwo.body.customer.version));
+            }
+            const token = getCustomerToken(
+              registrationData.bio.email.value,
+              registrationData.password.currentPassword.value
+            );
+            return token;
+          })
+          .then((responseThree) => {
+            if (responseThree.refresh_token) {
+              localStorage.setItem('refreshToken', responseThree.refresh_token);
+            }
+            dispatch(setRefreshTokenStatus(responseThree.refresh_token));
+            dispatch(setAccessTokenStatus(responseThree.access_token));
+          })
+          .catch((error) => {
+            if (error) {
+              setUnsuccessfulMessage(true);
+            }
+          });
+      }
+    );
   }
 
-  if (checkedBill) {
-    if (
-      loginСheck === true &&
-      passwordСheck === true &&
-      firstnameСheck === true &&
-      lastnameСheck === true &&
-      streetShipСheck === true &&
-      cityShipСheck === true &&
-      postalShipСheck === true &&
-      countryShipСheck === true &&
-      birthdayСheck === true &&
-      streetBillСheck === true &&
-      cityBillСheck === true &&
-      postalBillСheck === true &&
-      countryBillСheck === true &&
-      buildingBillСheck === true &&
-      buildingShipСheck === true &&
-      apartmentBillСheck === true &&
-      apartmentShipСheck === true
-    ) {
-      updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
-      // refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
-      //   (response) => {
-      //     dispatch(
-      //       changeAnonymousCart({ anonymousAccessToken: response.access_token })
-      //     );
-      //   }
-      // );
-      createCustomerMe(
-        createCustomerData,
-        anonymousCartData.anonymousAccessToken,
-        dispatch,
-        setSuccessfulMessage
-      )
-        .then((response) => {
-          if (response) {
-            localStorage.setItem('customerId', response.body.customer.id);
-            localStorage.removeItem('anonymousID');
-            localStorage.removeItem('refreshAnonToken');
-            dispatch(createCustomerId(response.body.customer.id));
-            dispatch(changeVersion(response.body.customer.version));
-          }
-        })
-        .then(() => {
-          const token = getCustomerToken(loginField, passwordField);
-          return token;
-        })
-        .then((response) => {
-          if (response.refresh_token) {
-            localStorage.setItem('refreshToken', response.refresh_token);
-          }
-          dispatch(setRefreshTokenStatus(response.refresh_token));
-          dispatch(setAccessTokenStatus(response.access_token));
-          loginAnonUser(
-            response.access_token,
-            createCustomerData,
-            dispatch,
-            setSuccessfulMessage
-          );
-        })
-        .catch((error) => {
-          if (error) {
-            setErrorLogin('Invalid email or password');
-            setCheckmarkLogin(false);
-            setInvalidCredentials(true);
-          }
-        });
-    }
-  } else {
-    if (
-      loginСheck === true &&
-      passwordСheck === true &&
-      firstnameСheck === true &&
-      lastnameСheck === true &&
-      streetShipСheck === true &&
-      cityShipСheck === true &&
-      postalShipСheck === true &&
-      countryShipСheck === true &&
-      birthdayСheck === true &&
-      buildingShipСheck === true &&
-      apartmentShipСheck === true
-    ) {
-      // updateAnonAccessToken(anonymousCartData.anonymousRefreshToken, dispatch);
-      refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
-        (response) => {
-          createCustomerMe(
-            createCustomerData,
-            response.access_token,
-            dispatch,
-            setSuccessfulMessage
-          )
-            .then((responseTwo) => {
-              if (responseTwo) {
-                localStorage.removeItem('anonymousID');
-                localStorage.removeItem('refreshAnonToken');
-                localStorage.setItem(
-                  'customerId',
-                  responseTwo.body.customer.id
-                );
-                dispatch(changeAnonymousCart({ anonymousRefreshToken: '' }));
-                dispatch(createCustomerId(responseTwo.body.customer.id));
-                dispatch(changeVersion(responseTwo.body.customer.version));
-              }
-              const token = getCustomerToken(loginField, passwordField);
-              return token;
-            })
-            .then((responseThree) => {
-              if (responseThree.refresh_token) {
-                localStorage.setItem(
-                  'refreshToken',
-                  responseThree.refresh_token
-                );
-              }
-              dispatch(setRefreshTokenStatus(responseThree.refresh_token));
-              dispatch(setAccessTokenStatus(responseThree.access_token));
-            })
-            .catch((error) => {
-              if (error) {
-                setErrorLogin('Invalid email or password');
-                setCheckmarkLogin(false);
-                setInvalidCredentials(true);
-              }
-            });
-        }
-      );
+  if (
+    registrationData.bio.email.isChecked &&
+    registrationData.password.currentPassword.isChecked &&
+    registrationData.bio.firstname.isChecked &&
+    registrationData.bio.lastname.isChecked &&
+    registrationData.addressShip.street.isChecked &&
+    registrationData.addressShip.city.isChecked &&
+    registrationData.addressShip.postal.isChecked &&
+    registrationData.addressShip.country.isChecked &&
+    registrationData.bio.birthday.isChecked &&
+    registrationData.addressShip.building.isChecked &&
+    registrationData.addressShip.apartment.isChecked
+  ) {
+    if (registrationData.checkedInput) {
+      createCustomerData.addresses.push({
+        streetName: registrationData.addressBill.street.value,
+        building: registrationData.addressBill.building.value,
+        apartment: registrationData.addressBill.apartment.value,
+        postalCode: registrationData.addressBill.postal.value,
+        city: registrationData.addressBill.city.value,
+        country: registrationData.addressBill.country.value,
+      });
+      if (
+        registrationData.addressBill.street.isChecked &&
+        registrationData.addressBill.building.isChecked &&
+        registrationData.addressBill.apartment.isChecked &&
+        registrationData.addressBill.postal.isChecked &&
+        registrationData.addressBill.city.isChecked &&
+        registrationData.addressBill.country.isChecked
+      ) {
+        registerCustomer();
+      }
+    } else {
+      registerCustomer();
     }
   }
 };

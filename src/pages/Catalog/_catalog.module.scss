@@ -10,6 +10,11 @@
     url('../../../public/assets/backgrounds/catalog_girl_01.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
+  // flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   &_title {
     flex: 0 1 auto;
@@ -367,6 +372,32 @@
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
   animation: spinner_anim 1s infinite linear;
   user-select: none;
+}
+
+.main_bestsellers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 90vw;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.bestseller_card {
+  width: 30vw;
+  aspect-ratio: 1 / 1;
+}
+
+.bestseller_title {
+  font-family: 'No Signal', cursive;
+  font-size: 1.8rem;
+  position: absolute;
+  transform: translate(120%, 200%) rotate(15deg);
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 10px $glow-violet;
 }
 
 @keyframes spinner_anim {

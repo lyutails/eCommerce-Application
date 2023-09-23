@@ -22,6 +22,7 @@ export enum ParhRoute {
   RegistrationPage = '/registration',
   AuthPage = '/login',
   NotFoundPage = '*',
+  ProductPageBestseller = '/main/:id',
 }
 
 export enum SubCategories {

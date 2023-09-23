@@ -7,15 +7,18 @@
   justify-content: center;
 
   background-color: $background-color-primary-one;
-  background-image: url('../../../public/assets/backgrounds/rolalune_a_cyberpunk-style_small_mexican_city_by_the_sea_fish_a_b4fd7d4b-07e0-4a22-95ae-83e33ecd7f8f.png');
+  background-image: url('../../../public/assets/backgrounds/rolalune_cyberpunk_city.png');
   background-repeat: no-repeat;
   background-position: 50%;
   background-size: cover;
   background-blend-mode: difference;
+  text-shadow:
+    -1px -1px 1px rgb(255, 39, 10),
+    2px 2px 1px rgb(25, 251, 255);
 
   .title {
-    font-size: 30rem;
-    color: #c0efae;
+    font-size: 24rem;
+    color: #7effbf;
     text-align: center;
     animation: glitch 1s linear infinite;
   }
@@ -23,16 +26,16 @@
   @keyframes glitch {
     2%,
     64% {
-      transform: translate(2px, 0) skew(0deg);
+      transform: translate(3px, 0) skew(0deg);
     }
 
     4%,
     60% {
-      transform: translate(-2px, 0) skew(0deg);
+      transform: translate(-3px, 0) skew(0deg);
     }
 
     62% {
-      transform: translate(0, 0) skew(5deg);
+      transform: translate(0, 0) skew(12deg);
     }
   }
 
@@ -63,8 +66,7 @@
     font-family: 'No Signal', cursive;
     font-size: 2.6rem;
     color: $font-color-primary-one;
-    text-shadow:
-      0 0 10px $glow-green;
+    text-shadow: 0 0 10px $glow-green;
     text-transform: uppercase;
 
     background-color: transparent;
@@ -75,6 +77,7 @@
     outline: none;
 
     transition: all 0.4s ease-in-out;
+    margin-bottom: 10px;
 
     &:hover {
       cursor: pointer;

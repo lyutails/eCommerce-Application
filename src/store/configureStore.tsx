@@ -5,6 +5,7 @@ import personalReducer from './reducers/personalReducer';
 import profileReducer from './reducers/profileReducer';
 import productReducer from './reducers/productReduser';
 import cartReducer from './reducers/cartReducer';
+import registrationReducer from './reducers/registrationReducer';
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     profile: profileReducer,
     product: productReducer,
     cart: cartReducer,
+    registration: registrationReducer,
   },
 });

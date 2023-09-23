@@ -5,8 +5,10 @@ $footer-background-color: #041426;
 @media screen and (min-width: (1200px)) {
   .header {
     background-color: $background-color-primary-one;
+    width: 100%;
 
     &_wrapper {
+      background-color: $background-color-primary-one;
       display: flex;
       flex: 0 1 auto;
       align-items: center;
@@ -128,16 +130,15 @@ $footer-background-color: #041426;
       }
     }
   }
-  .sticky {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  background-color: $background-color-primary-one;
-  box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%);
+  // .sticky {
+  //   position: sticky;
+  //   top: 0;
+  //   left: 0;
+  //   z-index: 999;
+  //   background-color: $background-color-primary-one;
+  //   box-shadow: 0 2px 24px 0 rgb(0 0 0 / 15%);
+  // }
 }
-}
-
 @media screen and (min-width: (768px)) and (max-width: (1199.98px)) {
   html {
     font-size: 8px;

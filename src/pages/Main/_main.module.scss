@@ -257,27 +257,27 @@
     background-size: contain;
 
     &:nth-child(1) {
-      background-image: url('../../../public/assets/backgrounds/offer_red_sales.png');
+      background-image: url('../../../public/assets/backgrounds/offer_red_sales_01.png');
     }
 
     &:nth-child(2) {
-      background-image: url('../../../public/assets/backgrounds/offer_red_sales.png');
+      background-image: url('../../../public/assets/backgrounds/offer_red_sales_01.png');
     }
 
     &:nth-child(3) {
-      background-image: url('../../../public/assets/backgrounds/cyberpunk-style-modern-girl-batman.png');
+      background-image: url('../../../public/assets/backgrounds/cyberpunk-style-modern-girl-batman_01.png');
     }
 
     &:nth-child(4) {
-      background-image: url('../../../public/assets/backgrounds/white_02.png');
+      background-image: url('../../../public/assets/backgrounds/white_02_01.png');
     }
 
     &:nth-child(5) {
-      background-image: url('../../../public/assets/backgrounds/black_03.png');
+      background-image: url('../../../public/assets/backgrounds/black_03_01.png');
     }
 
     &:nth-child(6) {
-      background-image: url('../../../public/assets/backgrounds/offer_red_sales.png');
+      background-image: url('../../../public/assets/backgrounds/offer_red_sales_01.png');
     }
   }
 
@@ -360,16 +360,6 @@
     opacity: 0.75;
   }
 
-  &_slider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 90vw;
-    margin-bottom: 50px;
-  }
-
   &_slide {
     resize: both;
 
@@ -442,6 +432,138 @@
   // }
 }
 
+.main_discounts_wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.main_rsschool {
+  width: 30vw;
+  aspect-ratio: 1 / 0.3;
+  background-image: url('../../../public/ui-kit/main_discount_02.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'No Signal', cursive;
+  font-size: 2.8rem;
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 10px $glow-violet;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: $font-color-primary-one;
+  transition: all 0.4s ease-in-out;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+  }
+}
+
+.main_trinity {
+  width: 30vw;
+  aspect-ratio: 1 / 0.3;
+  background-image: url('../../../public/ui-kit/main_discount_02.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'No Signal', cursive;
+  font-size: 2.8rem;
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 10px $glow-violet;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: $font-color-primary-one;
+  transition: all 0.4s ease-in-out;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+  }
+}
+
+.modal {
+  &_wrapper {
+    position: fixed;
+    display: none;
+    width: 60vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    transition: all 0.4s ease-in-out;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  &_body {
+    width: 100%;
+    aspect-ratio: 1 / 0.5;
+    background-image: url('../../../public/ui-kit/discount_copied_01.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  background: $overlay-gradient;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  z-index: 1800;
+  transition: all 0.4s ease-in-out;
+
+  &.show {
+    display: block;
+  }
+}
+
+.main_bestsellers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 90vw;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.bestseller_card {
+  width: 30vw;
+  aspect-ratio: 1 / 1;
+}
+
+.bestseller_title {
+  font-family: 'No Signal', cursive;
+  font-size: 1.8rem;
+  position: absolute;
+  transform: translate(120%, 200%) rotate(15deg);
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 10px $glow-violet;
+}
+
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
   .main {
     font-size: 8px;
@@ -466,6 +588,16 @@
       font-size: 3rem;
     }
   }
+
+  .bestseller_title {
+    font-family: 'No Signal', cursive;
+    font-size: 1.6rem;
+    position: absolute;
+    transform: translate(100%, 300%) rotate(15deg);
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+  }
 }
 
 @media screen and (min-width: (1000px)) and (max-width: (1399.98px)) {
@@ -486,7 +618,7 @@
 
     &_offer_text {
       padding-bottom: 20px;
-      font-size: 3.2rem;
+      font-size: 3rem;
     }
 
     &_advertisment_text {
@@ -558,6 +690,16 @@
     &_profile_buttons {
       width: 80%;
     }
+  }
+
+  .bestseller_title {
+    font-family: 'No Signal', cursive;
+    font-size: 1.2rem;
+    position: absolute;
+    transform: translate(60%, 300%) rotate(15deg);
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 }
 

@@ -8,22 +8,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
 import { useEffect, useState } from 'react';
-import { handlePasswordInput, inputHandler } from '../verification';
-import { ICartState, IRootState } from '../../types/interfaces';
-import InputPassword from '../../components/Input/inputPassword';
+import { handleLoginInputTwo } from '../verification';
+import {
+  ICartState,
+  IProfileState,
+  IRegistrationState,
+} from '../../types/interfaces';
+import { changeBioReg } from '../../store/reducers/registrationReducer';
+import { checkPasswordError } from '../verificationTwo';
+import { changePassword } from '../../store/reducers/profileReducer';
+import InputPasswordTwo from '../../components/Input/inputPasswordTwo';
+
+export interface ILoginCustomerData {
+  email: string;
+  password: string;
+  anonymousCart: {
+    anonymousID: string;
+    versionAnonCart: number;
+    cartID: string;
+    anonymousRefreshToken: string;
+    anonymousAccessToken: string;
+  };
+  loginError: boolean;
+  passwordError: boolean;
+}
 
 function AuthPage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { bio } = useSelector(
+    (state: IRegistrationState) => state.registration
+  );
+  const { password } = useSelector((state: IProfileState) => state.profile);
   const { anonymousCart } = useSelector((state: ICartState) => state.cart);
-
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [loginError, setLoginError] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [checkmarkLogin, setCheckmarkLogin] = useState(false);
   const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
   const [successfulMessage, setSuccessfulMessage] = useState(false);
 
@@ -48,7 +65,6 @@ function AuthPage(): JSX.Element {
 
   useEffect(() => {
     if (successfulMessage === true) {
-      console.log(456);
       setModal(createModal());
       setTimeout(() => {
         dispatch(setAuthStatus(true));
@@ -57,23 +73,43 @@ function AuthPage(): JSX.Element {
     }
   }, [dispatch, navigate, successfulMessage]);
 
-  function checkInputError(
-    passwordField: string,
-    setCheckmarkPassword: React.Dispatch<React.SetStateAction<boolean>>
-  ): void {
-    const passwordErrors = handlePasswordInput(passwordField);
-    const error = Object.keys(passwordErrors).map((key): boolean => {
-      if (passwordErrors[key].isError === true) {
-        return true;
-      }
-      return false;
-    });
-    if (error.includes(true)) {
-      setCheckmarkPassword(true);
-    } else {
-      setCheckmarkPassword(false);
-    }
-  }
+  const loginCustomerData: ILoginCustomerData = {
+    email: bio.email.value,
+    password: password.currentPassword.value,
+    anonymousCart: anonymousCart,
+    loginError: !bio.email.error,
+    passwordError: !password.currentPassword.error,
+  };
+
+  const setInputLogin = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checkErrorInput: (inputField: string) => string | boolean
+  ): void => {
+    const errorMessage = checkErrorInput(event.target.value);
+    dispatch(
+      changeBioReg({
+        value: event.target.value,
+        error: errorMessage,
+        isChecked: !errorMessage,
+      })
+    );
+  };
+
+  const setInputPassword = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checkErrorInput: (inputField: string) => string | boolean
+  ): void => {
+    const errorMessage = checkErrorInput(event.target.value);
+    dispatch(
+      changePassword({
+        currentPassword: {
+          value: event.target.value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
+      })
+    );
+  };
   return (
     <div className={style.login} data-testid="auth-component">
       <div className={style.login_wrapper}>
@@ -94,17 +130,22 @@ function AuthPage(): JSX.Element {
           </div>
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
+            {/* <div className="field label border">
+              <input />
+              <label>Username</label>
+            </div> */}
+
             <Input
-              onChange={(e): void => inputHandler(e, setLogin)}
-              clue={loginError ? loginError : 'This is required field'}
+              onChange={(e): void => setInputLogin(e, handleLoginInputTwo)}
+              clue={
+                bio.email.error ? bio.email.error : 'This is required field'
+              }
               type="email"
               placeholder="E-mail"
               classWrapper={style.email}
-              classClue={
-                loginError
-                  ? `${style.email_clue} ${style.error}`
-                  : style.email_clue
-              }
+              classClue={`${style.email_clue} ${
+                bio.email.error ? style.error : ''
+              }`}
               classInput={style.email_input}
               childrenBefore={
                 <div className={style.wrapper_img}>
@@ -116,29 +157,22 @@ function AuthPage(): JSX.Element {
                 </div>
               }
             />
-            <InputPassword
-              onChange={(e): void => {
-                inputHandler(e, setPassword);
-                checkInputError(e.target.value, setPasswordError);
-              }}
+            <InputPasswordTwo
+              onChange={(e): void => setInputPassword(e, checkPasswordError)}
+              checkmarkPassword={password.currentPassword.isChecked}
+              passwordError={!!password.currentPassword.error}
+              passwordField={'currentPassword'}
+              tooltipColor={style.tooltip_color}
               clueError={style.password_error}
-              clueColor={style.password_color}
+              clueColor={style.modal_color}
               placeholder="Password *"
-              passwordError={passwordError}
-              passwordField={password}
             />
             <ButtonForm
               onClick={(event): void =>
                 handleСreationAuth(
                   event,
-                  setLoginError,
-                  login,
-                  password,
-                  navigate,
-                  setPasswordError,
-                  isAuth,
+                  loginCustomerData,
                   dispatch,
-                  setCheckmarkLogin,
                   setInvalidCredentials,
                   anonymousCart,
                   setSuccessfulMessage

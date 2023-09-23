@@ -5,6 +5,7 @@ import {
   LineItem,
   MyCustomerChangeEmailAction,
 } from '@commercetools/platform-sdk';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { ChangeEventHandler, ReactNode } from 'react';
 import { AnyAction, Dispatch } from 'redux';
 
@@ -120,40 +121,56 @@ export interface IRootState {
   };
 }
 
-interface IAddressInput {
+export interface IAddressInput {
   value: string;
   error: string;
   isChecked: boolean;
 }
 
+export interface IAddressDraftState {
+  street: IAddressInput;
+  building: IAddressInput;
+  apartment: IAddressInput;
+  city: IAddressInput;
+  country: IAddressInput;
+  postal: IAddressInput;
+  defaultShipping: boolean;
+  defaultBilling: boolean;
+  shippingAddress: boolean;
+  billingAddress: boolean;
+  isUpdate: boolean;
+  isAdd: boolean;
+  idAddress: string;
+  addressStore: AddressDraft[];
+  defaultShippingId: string;
+  defaultBillingId: string;
+  shippingAddressesId: string[];
+  billingAddressesId: string[];
+}
+
 export interface IProfileState {
   profile: {
-    address: {
-      street: IAddressInput;
-      building: IAddressInput;
-      apartment: IAddressInput;
-      city: IAddressInput;
-      country: IAddressInput;
-      postal: IAddressInput;
-      defaultShipping: boolean;
-      defaultBilling: boolean;
-      shippingAddress: boolean;
-      billingAddress: boolean;
-      isUpdate: boolean;
-      isAdd: boolean;
-      idAddress: string;
-      addressStore: AddressDraft[];
-      defaultShippingId: string;
-      defaultBillingId: string;
-      shippingAddressesId: string[];
-      billingAddressesId: string[];
-    };
+    address: IAddressDraftState;
     bio: {
       [key: string]: IAddressInput;
     };
     email: IAddressInput;
     password: {
-      [key: string]: {
+      [key: string]: IAddressInput;
+    };
+    version: number;
+  };
+}
+
+export interface IRegistrationState {
+  registration: {
+    addressShip: IAddressDraftState;
+    addressBill: IAddressDraftState;
+    bio: {
+      [key: string]: IAddressInput;
+    };
+    password: {
+      currentPassword: {
         value: string;
         error: boolean;
         isChecked: boolean;
@@ -301,6 +318,8 @@ export interface IAddressFormProps {
   setDefault?: ReactNode;
   setAddressStatus?: ReactNode;
   titleStyle: string;
+  dispatchMethod: string;
+  addressStore: IAddressDraftState;
 }
 
 export interface IAddressDataObject {
@@ -469,5 +488,20 @@ export interface IPasswordUpdateData {
   };
 }
 
-// yana3@mail.com
-// 22327Ybv!
+export interface IRegistrationData {
+  bio: { [key: string]: IAddressInput };
+  password: { [key: string]: IAddressInput };
+  addressShip: IAddressDraftState;
+  addressBill: IAddressDraftState;
+  checkedInput: boolean;
+  checkedShipping: boolean;
+  checkedBilling: boolean;
+}
+
+export interface IAnonymousCartData {
+  anonymousID: string;
+  versionAnonCart: number;
+  cartID: string;
+  anonymousRefreshToken: string;
+  anonymousAccessToken: string;
+}

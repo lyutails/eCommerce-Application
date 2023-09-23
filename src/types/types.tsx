@@ -27,4 +27,7 @@ export type CartProductProps = {
 export type BestsellerProps = {
   sku: string;
   images?: Image[];
+  prices?: number | string;
+  discounted?: number | string;
+  idBestseller?: string;
 };

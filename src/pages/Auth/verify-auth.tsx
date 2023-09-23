@@ -13,44 +13,20 @@ import { IAnonymousCartData } from '../Registration/Registration';
 import { loginAnonUser } from '../../api/existTokenFlow';
 import { IMyCustomerLoginDraft } from '../../types/interfaces';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';
-
-let loginСheck = false;
-let passwordСheck = false;
+import { ILoginCustomerData } from './Auth';
 
 export const handleСreationAuth = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  setErrorLogin: React.Dispatch<React.SetStateAction<string>>,
-  loginField: string,
-  passwordField: string,
-  navigator: NavigateFunction,
-  setErrorPassword: React.Dispatch<React.SetStateAction<boolean>>,
-  isAuth: boolean,
+  loginCustomerData: ILoginCustomerData,
   dispatch: Dispatch<AnyAction>,
-  setCheckmarkLogin: React.Dispatch<React.SetStateAction<boolean>>,
   setInvalidCredentials: React.Dispatch<React.SetStateAction<boolean>>,
   anonymousCartData: IAnonymousCartData,
   setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
   e.preventDefault();
-  loginСheck = handleLoginInput(
-    loginField,
-    setErrorLogin,
-    loginСheck,
-    setCheckmarkLogin
-  );
-  const passwordErr = handlePasswordInput(passwordField);
-  Object.keys(passwordErr).every((key): void => {
-    if (passwordErr[key].isError === true) {
-      passwordСheck = false;
-      setErrorPassword(true);
-    } else {
-      passwordСheck = true;
-      setErrorPassword(false);
-    }
-  });
   const request: IMyCustomerLoginDraft = {
-    email: loginField,
-    password: passwordField,
+    email: loginCustomerData.email,
+    password: loginCustomerData.password,
     anonymousCart: {
       id: anonymousCartData.cartID,
       typeId: 'cart',
@@ -59,7 +35,7 @@ export const handleСreationAuth = (
     anonymousID: anonymousCartData.anonymousID,
   };
 
-  if (loginСheck === true && passwordСheck === true) {
+  if (loginCustomerData.loginError && loginCustomerData.passwordError) {
     refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
       (response) => {
         loginAnonUser(
@@ -76,7 +52,10 @@ export const handleСreationAuth = (
               dispatch(createCustomerId(responseTwo.body.customer.id));
               dispatch(changeVersion(responseTwo.body.customer.version));
             }
-            const token = getCustomerToken(loginField, passwordField);
+            const token = getCustomerToken(
+              loginCustomerData.email,
+              loginCustomerData.password
+            );
             return token;
           })
           .then((responseThree) => {

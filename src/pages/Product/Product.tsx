@@ -34,14 +34,9 @@ import {
   setCartQuantity,
 } from '../../store/reducers/cartReducer';
 import { updateCart } from '../../api/existTokenFlow';
-
-import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
-
 import ProductSistemModalWindow from '../../components/ProductSistemModalWindow/ProductSistemModalWindow';
 import ProductModalWindow from '../../components/ProductModalWindow/ProductModalWindow';
-
-
 interface IDataProduct {
   name: string;
   description: string;
