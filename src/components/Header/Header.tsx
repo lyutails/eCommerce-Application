@@ -16,7 +16,7 @@ function Header(): JSX.Element {
   const nameRouteHeader = [
     'Main',
     'Catalog',
-    'Customize',
+    /* 'Customize', */
     'About Us',
     'Profile',
     'Cart',
@@ -25,7 +25,7 @@ function Header(): JSX.Element {
   const parhRouteHeader = [
     '/',
     '/catalog',
-    '/customize',
+    /* '/customize', */
     '/about-us',
     `/profile/${customerId}`,
     '/cart',
