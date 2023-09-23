@@ -1,0 +1,69 @@
+@import '../../style/variables';
+:root {
+  --sizeindex: calc(1vw + 1vh);
+  --transition: 0.75s cubic-bezier(0.2, 0.6, 0, 1);
+}
+.category_slider {
+  width: 90vw;
+  height: 50vh;
+  color: #fff;
+  line-height: 1.8;
+  margin: 0 auto;
+}
+.slider {
+  height: 100%;
+  // overflow: visible;
+}
+.slier__wrapper {
+  transition: var(--transition) !important;
+  will-change: transform;
+}
+.slider__item {
+  max-height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
+    border-radius: 5px;
+  
+}
+.slider__img {
+  width: 200%;
+  height: 100%;
+  background-size: contain;
+  position: absolute;
+  left: -50%;
+  transition: var(--transition) !important;
+  will-change: transform;
+  border-radius: 5px;
+}
+.slider_title_img {
+  position: absolute;
+  font-family: No Signal;
+  font-size: calc(var(--sizeindex)*1.5);
+  z-index: 2;
+  left: 50%;
+  top: 55%;
+  color: #fff;
+  text-shadow:
+    0 0 10px rgb(254, 181, 92),
+    0 0 10px rgb(254, 181, 92),
+    0 0 10px rgb(254, 181, 92);
+}
+.souvenirs {
+  background: url(../../../public/assets/catalog/slider-mug.jpg) no-repeat;
+  background-position: center;
+}
+.pc {
+  background: url(../../../public/assets/catalog/pc-slider.jpg) no-repeat;
+  background-position: center;
+}
+.stickers {
+  background: url(../../../public/assets/catalog/sliuder-stiker.jpg) no-repeat;
+  background-position: center;
+}
+.clothes {
+  background: url(../../../public/assets/catalog/slider-hoodie.jpg) no-repeat;
+  background-position: center;
+}

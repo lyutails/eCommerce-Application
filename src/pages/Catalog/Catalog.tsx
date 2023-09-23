@@ -6,6 +6,7 @@ import { Category } from '@commercetools/platform-sdk';
 import { useDispatch } from 'react-redux';
 import { createCategory } from '../../store/reducers/categoryReducer';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import CatalogCategoryParalax from '../../components/CatalogCategoryParalax/CatalogCategoryParalax';
 
 function CatalogPage(): JSX.Element {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
@@ -44,8 +45,11 @@ function CatalogPage(): JSX.Element {
           <h1 className={style.catalog_title}>
             Awesome RSSchool Merch Categories
           </h1>
+          <div>
+            <CatalogCategoryParalax />
+          </div>
           <div className={style.catalog_categories}>
-            {allCategories.map((category) => {
+            {/* {allCategories.map((category) => {
               if (category.name['en-US'] !== 'Custom') {
                 return (
                   <Link
@@ -59,7 +63,7 @@ function CatalogPage(): JSX.Element {
                   </Link>
                 );
               }
-            })}
+            })} */}
           </div>
         </div>
         <Link className={style.catalog_customize} to="/customize">
