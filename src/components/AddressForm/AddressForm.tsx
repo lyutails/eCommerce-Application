@@ -13,20 +13,88 @@ import Input from '../Input/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   IAddressDataObject,
+  IAddressDraftState,
   IAddressFormProps,
+  IAddressInput,
   IProfileState,
+  IRegistrationState,
 } from '../../types/interfaces';
 import { changeAddress } from '../../store/reducers/profileReducer';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import {
+  changeAddressBillReg,
+  changeAddressShipReg,
+} from '../../store/reducers/registrationReducer';
 
 function AddressForm(props: IAddressFormProps): JSX.Element {
-  const { address } = useSelector((state: IProfileState) => state.profile);
+  // const { address } = useSelector((state: IProfileState) => state.profile);
+  // const { addressShip, addressBill } = useSelector(
+  //   (state: IRegistrationState) => state.registration
+  // );
   const dispatch = useDispatch();
   const [addressData, setAddressData] = useState<IAddressDataObject | null>(
     null
   );
+  const [method, setMethod] = useState('');
+
   useEffect(() => {
+    // props.addressStore;
+    setMethod(props.dispatchMethod);
     setAddressData(props.addressData);
-  }, [props.addressData]);
+  }, [props.addressData, props.dispatchMethod]);
+
+  const chooseMethod = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+    fieldName: string,
+    errorMessage: string
+  ):
+    | {
+        payload: IAddressInput;
+        type: 'registration/changeAddressShipReg';
+      }
+    | {
+        payload: IAddressInput;
+        type: 'registration/changeAddressBillReg';
+      }
+    | {
+        payload: IAddressInput;
+        type: 'profile/changeAddress';
+      }
+    | undefined => {
+    if (method === 'shippingRegistration') {
+      return dispatch(
+        changeAddressShipReg({
+          [fieldName]: {
+            value: event.target.value,
+            error: errorMessage,
+            isChecked: !errorMessage,
+          },
+        })
+      );
+    } else if (method === 'billingRegistration') {
+      return dispatch(
+        changeAddressBillReg({
+          [fieldName]: {
+            value: event.target.value,
+            error: errorMessage,
+            isChecked: !errorMessage,
+          },
+        })
+      );
+    } else if (method === 'addressProfile') {
+      return dispatch(
+        changeAddress({
+          [fieldName]: {
+            value: event.target.value,
+            error: errorMessage,
+            isChecked: !errorMessage,
+          },
+        })
+      );
+    }
+  };
 
   const setInputAction = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -34,15 +102,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
     checkErrorInput: (streetShipField: string) => string
   ): void => {
     const errorMessage = checkErrorInput(event.target.value);
-    dispatch(
-      changeAddress({
-        [fieldName]: {
-          value: event.target.value,
-          error: errorMessage,
-          isChecked: !errorMessage,
-        },
-      })
-    );
+    chooseMethod(event, fieldName, errorMessage);
   };
 
   const setInputPostalAction = (
@@ -58,15 +118,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
       event.target.value,
       fieldCountryInput
     );
-    dispatch(
-      changeAddress({
-        [fieldName]: {
-          value: event.target.value,
-          error: errorMessage,
-          isChecked: !errorMessage,
-        },
-      })
-    );
+    chooseMethod(event, fieldName, errorMessage);
   };
 
   const setSelectAction = (
@@ -75,45 +127,30 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
     checkErrorInput: (streetShipField: string) => string
   ): void => {
     const errorMessage = checkErrorInput(event.target.value);
-    dispatch(
-      changeAddress({
-        [fieldName]: {
-          value: event.target.value,
-          error: errorMessage,
-          isChecked: !errorMessage,
-        },
-      })
-    );
+    chooseMethod(event, fieldName, errorMessage);
   };
+
   return (
     <div className={style.shipping}>
       <div className={style.address}>
         <h4 className={props.titleStyle}>{addressData?.title}</h4>
         {props.setDefault}
-        {/* <input
-          onChange={(e): void => handleCheckbox(e, props.setDefaultAddress)}
-          className={style.address_input}
-          id={addressData?.checboxId}
-          name="address"
-          type="checkbox"
-        />
-        <label htmlFor={addressData?.checboxId} className={style.address_label}>
-          Set like default shipping address
-        </label> */}
       </div>
       <Input
-        value={address.street.value}
+        value={props.addressStore.street.value}
         onChange={(e): void =>
           setInputAction(e, 'street', handleStreetShipInputTwo)
         }
         type="text"
         clue={
-          address.street.error ? address.street.error : 'This is required field'
+          props.addressStore.street.error
+            ? props.addressStore.street.error
+            : 'This is required field'
         }
         placeholder="Street *"
         classWrapper={style.street}
         classClue={
-          address.street.error
+          props.addressStore.street.error
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -121,7 +158,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              address.street.isChecked
+              props.addressStore.street.isChecked
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -135,7 +172,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        value={address.building.value}
+        value={props.addressStore.building.value}
         onChange={(e): void =>
           setInputAction(e, 'building', handleBuildingShipInputTwo)
         }
@@ -143,20 +180,20 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         placeholder="Building *"
         classWrapper={style.building}
         classClue={
-          address.building.error
+          props.addressStore.building.error
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
         classInput={style.building_input}
         clue={
-          address.building.error
-            ? address.building.error
+          props.addressStore.building.error
+            ? props.addressStore.building.error
             : 'This is required field'
         }
         childrenBefore={
           <div
             className={
-              address.building.isChecked
+              props.addressStore.building.isChecked
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -170,7 +207,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        value={address.apartment.value}
+        value={props.addressStore.apartment.value}
         onChange={(e): void =>
           setInputAction(e, 'apartment', handleApartmentShipInputTwo)
         }
@@ -178,20 +215,20 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         placeholder="Apartment"
         classWrapper={style.apartment}
         classClue={
-          address.apartment.error
+          props.addressStore.apartment.error
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
         classInput={style.apartment_input}
         clue={
-          address.apartment.error
-            ? address.apartment.error
+          props.addressStore.apartment.error
+            ? props.addressStore.apartment.error
             : 'This is required field'
         }
         childrenBefore={
           <div
             className={
-              address.apartment.isChecked
+              props.addressStore.apartment.isChecked
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -205,18 +242,20 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         }
       />
       <Input
-        value={address.city.value}
+        value={props.addressStore.city.value}
         onChange={(e): void =>
           setInputAction(e, 'city', handleCityShipInputTwo)
         }
         type="text"
         clue={
-          address.city.error ? address.city.error : 'This is required field'
+          props.addressStore.city.error
+            ? props.addressStore.city.error
+            : 'This is required field'
         }
         placeholder="City *"
         classWrapper={style.city}
         classClue={
-          address.city.error
+          props.addressStore.city.error
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -224,7 +263,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              address.city.isChecked
+              props.addressStore.city.isChecked
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }
@@ -244,7 +283,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
               setSelectAction(e, 'country', handleCountryShipInputTwo)
             }
             className={
-              address.country.isChecked
+              props.addressStore.country.isChecked
                 ? `${style.country_select} ${style.approved}`
                 : style.country_select
             }
@@ -252,53 +291,57 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
             <option value="" className={style.country_head}>
               Please, select the country
             </option>
-            {address.country.value === 'US' ? (
+            {props.addressStore.country.value === 'US' ? (
               <option selected value="US">
                 USA
               </option>
             ) : (
-              <option value="usa">USA</option>
+              <option value="US">USA</option>
             )}
 
-            {address.country.value === 'CA' ? (
+            {props.addressStore.country.value === 'CA' ? (
               <option selected value="CA">
                 Canada
               </option>
             ) : (
-              <option value="canada">Canada</option>
+              <option value="CA">Canada</option>
             )}
           </select>
         </div>
         <div
           className={
-            address.country.error
+            props.addressStore.country.error
               ? `${style.completed} ${style.error}`
               : style.uncompleted
           }
         >
-          {address.country.error
-            ? address.country.error
+          {props.addressStore.country.error
+            ? props.addressStore.country.error
             : 'This is required field'}
         </div>
       </div>
       <Input
-        value={address.postal.value}
+        value={props.addressStore.postal.value}
         onChange={(e): void =>
           setInputPostalAction(
             e,
             'postal',
             handlePostalShipInputTwo,
-            address.country.value
+            props.addressStore.country.value
+              ? props.addressStore.country.value
+              : ''
           )
         }
         type="text"
         clue={
-          address.postal.error ? address.postal.error : 'This is required field'
+          props.addressStore.postal.error
+            ? props.addressStore.postal.error
+            : 'This is required field'
         }
         placeholder="Postal *"
         classWrapper={style.postal}
         classClue={
-          address.postal.error
+          props.addressStore.postal.error
             ? `${style.completed} ${style.error}`
             : style.uncompleted
         }
@@ -306,7 +349,7 @@ function AddressForm(props: IAddressFormProps): JSX.Element {
         childrenBefore={
           <div
             className={
-              address.postal.isChecked
+              props.addressStore.postal.isChecked
                 ? `${style.wrapper_img} ${style.completed}`
                 : `${style.wrapper_img} ${style.uncompleted}`
             }

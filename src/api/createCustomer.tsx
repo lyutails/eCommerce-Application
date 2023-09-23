@@ -11,7 +11,8 @@ export async function createCustomerMe(
   data: IMyCustomerDraft,
   accessToken: string,
   dispatch: Dispatch<AnyAction>,
-  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
+  setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>,
+  setUnsuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<ClientResponse<CustomerSignInResult> | undefined> {
   try {
     const customer = await apiRoot
@@ -27,6 +28,7 @@ export async function createCustomerMe(
     loginAnonUser(accessToken, data, dispatch, setSuccessfulMessage);
     return customer;
   } catch {
+    setUnsuccessfulMessage(true);
     console.log('cannot create customer');
   }
 }

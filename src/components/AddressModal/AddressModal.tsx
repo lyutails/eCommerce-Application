@@ -160,6 +160,8 @@ function AddressModal(props: IAddressModalProps): JSX.Element {
         <img src={CloseIcon} alt="Close Modal" />
       </ButtonForm>
       <AddressForm
+        addressStore={address}
+        dispatchMethod="addressProfile"
         titleStyle={style.address_title}
         addressData={addressFormData}
         setAddressStatus={

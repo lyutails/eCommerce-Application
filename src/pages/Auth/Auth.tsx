@@ -22,7 +22,7 @@ import {
 } from '../../types/interfaces';
 import InputPassword from '../../components/Input/inputPassword';
 import {
-  changeEmailReg,
+  changeBioReg,
   changePasswordReg,
 } from '../../store/reducers/registrationReducer';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
@@ -48,7 +48,7 @@ function AuthPage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //const isAuth = useSelector((state: IRootState) => state.user.isAuth);
-  const { email } = useSelector(
+  const { bio } = useSelector(
     (state: IRegistrationState) => state.registration
   );
   const { password } = useSelector((state: IProfileState) => state.profile);
@@ -93,10 +93,10 @@ function AuthPage(): JSX.Element {
   }, [dispatch, navigate, successfulMessage]);
 
   const loginCustomerData: ILoginCustomerData = {
-    email: email.value,
+    email: bio.email.value,
     password: password.currentPassword.value,
     anonymousCart: anonymousCart,
-    loginError: !email.error,
+    loginError: !bio.email.error,
     passwordError: !password.currentPassword.error,
   };
 
@@ -106,7 +106,7 @@ function AuthPage(): JSX.Element {
   ): void => {
     const errorMessage = checkErrorInput(event.target.value);
     dispatch(
-      changeEmailReg({
+      changeBioReg({
         value: event.target.value,
         error: errorMessage,
         isChecked: !errorMessage,
@@ -151,12 +151,14 @@ function AuthPage(): JSX.Element {
           <form action="" className={style.authorization_form}>
             <Input
               onChange={(e): void => setInputLogin(e, handleLoginInputTwo)}
-              clue={email.error ? email.error : 'This is required field'}
+              clue={
+                bio.email.error ? bio.email.error : 'This is required field'
+              }
               type="email"
               placeholder="E-mail"
               classWrapper={style.email}
               classClue={`${style.email_clue} ${
-                email.error ? style.error : ''
+                bio.email.error ? style.error : ''
               }`}
               classInput={style.email_input}
               childrenBefore={

@@ -23,6 +23,7 @@ import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { recalculatePrice } from '../../utils/recalculatePrice';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
@@ -45,6 +46,18 @@ function CartPage(): JSX.Element {
   const [isIncorrectPromo, setIsIncorrectPromo] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
+
+  // useEffect(() => {
+  //   let as = 0;
+  //   const pi = 10;
+
+  //   const r = setInterval(() => {
+  //     //console.log(as++);
+  //     if (as === pi) {
+  //       clearInterval(r);
+  //     }
+  //   }, 100);
+  // });
 
   // DELETE ITEM FROM CART
   const deleteItem = (
@@ -378,8 +391,27 @@ function CartPage(): JSX.Element {
       ? `${bio.firstname?.value} ${bio.lastname?.value}`
       : `customer`;
   };
+  const [priceTest, setPriceTest] = useState(0);
   return (
     <div className={style.cart_wrapper}>
+      <button
+        onClick={
+          (): void => recalculatePrice(0, 10, setPriceTest)
+          //{
+          //   let as = 0;
+          //   const pi = 10;
+
+          //   const r = setInterval(() => {
+          //     setPriceTest(as++);
+          //     if (as > pi) {
+          //       clearInterval(r);
+          //     }
+          //   }, 70);
+          // }
+        }
+      >
+        {priceTest}
+      </button>
       <h2 className={style.cart_title}>Your cart, dear {addCustomerName()}</h2>
       <div
         className={`${style.cart_content} ${

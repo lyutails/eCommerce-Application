@@ -107,12 +107,13 @@ const registrationReducer = createSlice({
         error: '',
         isChecked: false,
       },
+      email: {
+        value: '',
+        error: '',
+        isChecked: false,
+      },
     },
-    email: {
-      value: '',
-      error: '',
-      isChecked: false,
-    },
+
     password: {
       currentPassword: {
         value: '',
@@ -141,9 +142,6 @@ const registrationReducer = createSlice({
       // });
       state.bio = { ...state.bio, ...action.payload };
     },
-    changeEmailReg(state, action) {
-      state.email = { ...state.email, ...action.payload };
-    },
     changePasswordReg(state, action) {
       state.password = { ...state.password, ...action.payload };
     },
@@ -157,7 +155,6 @@ export const {
   changeAddressShipReg,
   changeAddressBillReg,
   changeBioReg,
-  changeEmailReg,
   changePasswordReg,
   changeVersionReg,
 } = registrationReducer.actions;

@@ -15,9 +15,6 @@ import { IMyCustomerLoginDraft } from '../../types/interfaces';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';
 import { ILoginCustomerData } from './Auth';
 
-// let loginСheck = false;
-// let passwordСheck = false;
-
 export const handleСreationAuth = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   loginCustomerData: ILoginCustomerData,
