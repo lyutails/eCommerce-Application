@@ -48,6 +48,7 @@ function CatalogPage(): JSX.Element {
       let product = [];
       product = allResults.map((item) => item.masterVariant);
       setAllBestsellers(product);
+      setSliceBestseller(product.sort(() => Math.random() - 0.5).slice(0, 4));
     });
   }, []);
 
