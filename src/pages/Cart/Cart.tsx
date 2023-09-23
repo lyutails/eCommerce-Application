@@ -2,7 +2,6 @@ import {
   ICartState,
   IMyCartUpdate,
   IProfileState,
-  IMyCartRemoveLineItemAction,
   IRootState,
 } from '../../types/interfaces';
 import style from './_cart.module.scss';
@@ -39,9 +38,7 @@ function CartPage(): JSX.Element {
   const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
-  const { address, version, bio, email, password } = useSelector(
-    (state: IProfileState) => state.profile
-  );
+  const { bio } = useSelector((state: IProfileState) => state.profile);
   const [isIncorrectPromo, setIsIncorrectPromo] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
