@@ -269,6 +269,7 @@
   }
 
   &_discount_button {
+    outline: none;
     width: 40vw;
     aspect-ratio: 1 / 0.25;
     background-color: transparent;
@@ -486,11 +487,13 @@
     }
 
     &_discount_button_wrapper {
+      outline: none;
       width: 80vw;
       align-self: center;
     }
 
     &_discount_button {
+      outline: none;
       width: 80vw;
       align-self: center;
     }

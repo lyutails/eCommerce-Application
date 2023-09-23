@@ -10,6 +10,11 @@
     url('../../../public/assets/backgrounds/catalog_girl_01.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
+  // flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   &_title {
     flex: 0 1 auto;

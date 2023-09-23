@@ -17,12 +17,14 @@ import {
   setCartPriceDiscount,
   setCartQuantity,
   setDiscountCodesCart,
+  setIsClickedButton,
   setPromocode,
 } from '../../store/reducers/cartReducer';
 import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import CartModalWindow from '../../components/CartModalWindow/CartModalWindow';
 
 function CartPage(): JSX.Element {
   const dispatch = useDispatch();
@@ -43,6 +45,7 @@ function CartPage(): JSX.Element {
     (state: IProfileState) => state.profile
   );
   const [isIncorrectPromo, setIsIncorrectPromo] = useState(false);
+  const [flagModalWindowCart, setFlagModalWindowCart] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
 
@@ -351,27 +354,27 @@ function CartPage(): JSX.Element {
           );
         }, 600)}
         quantity={card.quantity}
-        reduceQuantity={debounce(
-          (): void =>
-            deleteItem(
-              card.id,
-              1,
-              !isAuth
-                ? anonymousCart.anonymousRefreshToken
-                : customerRefreshToken
-            ),
-          600
-        )}
-        increaseQuantity={debounce(
-          (): void =>
-            increaseItem(
-              card.variant.sku ? card.variant.sku : '',
-              !isAuth
-                ? anonymousCart.anonymousRefreshToken
-                : customerRefreshToken
-            ),
-          600
-        )}
+        reduceQuantity={(): void => {
+          deleteItem(
+            card.id,
+            1,
+            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+          );
+          dispatch(setIsClickedButton(true));
+          setTimeout(() => {
+            dispatch(setIsClickedButton(false));
+          }, 500);
+        }}
+        increaseQuantity={(): void => {
+          increaseItem(
+            card.variant.sku ? card.variant.sku : '',
+            !isAuth ? anonymousCart.anonymousRefreshToken : customerRefreshToken
+          );
+          dispatch(setIsClickedButton(true));
+          setTimeout(() => {
+            dispatch(setIsClickedButton(false));
+          }, 500);
+        }}
       ></CartProduct>
     );
   });
@@ -438,7 +441,6 @@ function CartPage(): JSX.Element {
                   Incorrect discount
                 </label>
               </div>
-
               <div className={style.cart_discount_button_wrapper}>
                 <button
                   onClick={debounce(
@@ -544,6 +546,25 @@ function CartPage(): JSX.Element {
             Catalog
           </Link>
         </div>
+      </div>
+      <div className={style.block_modal}>
+        {flagModalWindowCart ? (
+          <CartModalWindow
+            deleteFanc={(): void => {
+              deleteAllProducts(
+                !isAuth
+                  ? anonymousCart.anonymousRefreshToken
+                  : customerRefreshToken
+              );
+              setFlagModalWindowCart(false);
+            }}
+            abolishFanc={function (): void {
+              setFlagModalWindowCart(false);
+            }}
+          />
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

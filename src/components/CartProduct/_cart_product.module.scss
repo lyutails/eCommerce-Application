@@ -44,13 +44,47 @@
     }
   }
 
-  &_product_counter {
+  &_product_counter,
+  &_product_counter_noclick {
     width: 10vw;
     aspect-ratio: 1 / 0.4;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    opacity: 1;
+    visibility: visible;
+    animation: fade_on 1s ease forwards;
+  }
+  @keyframes fade {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    50% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  @keyframes fade_on {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &_product_counter_noclick {
+    cursor: none;
+    pointer-events: none;
+    animation: fade 1s ease forwards;
   }
 
   &_product_amount {
@@ -67,6 +101,7 @@
     filter: invert(1);
     background-size: contain;
     transition: all 0.3s ease-in-out;
+    outline: none;
 
     &.minus {
       background-image: url('../../../public/assets/icons/minus.svg');

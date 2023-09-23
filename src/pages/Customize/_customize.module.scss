@@ -2,8 +2,10 @@
 
 .container {
   display: flex;
-  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
+  min-height: calc(100vh - 160px);
   width: 90vw;
   margin: 0 auto;
 }

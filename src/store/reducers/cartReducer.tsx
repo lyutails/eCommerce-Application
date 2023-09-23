@@ -21,6 +21,7 @@ const cartReducer = createSlice({
     cartPriceDiscount: 0,
     cartQuantity: 0,
     discountCodesCart: [],
+    isClickedButton: false,
   },
   reducers: {
     changeAnonymousCart(state, action) {
@@ -50,6 +51,9 @@ const cartReducer = createSlice({
     setDiscountCodesCart(state, action) {
       state.discountCodesCart = action.payload;
     },
+    setIsClickedButton(state, action) {
+      state.isClickedButton = action.payload;
+    },
   },
 });
 
@@ -63,6 +67,7 @@ export const {
   setPromocode,
   setCartPriceDiscount,
   setDiscountCodesCart,
+  setIsClickedButton,
 } = cartReducer.actions;
 
 export default cartReducer.reducer;
