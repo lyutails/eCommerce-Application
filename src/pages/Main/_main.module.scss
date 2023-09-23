@@ -546,11 +546,40 @@
 
   width: 90vw;
   margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 .bestseller_card {
   width: 30vw;
   aspect-ratio: 1 / 1;
+}
+
+.bestseller_title {
+  font-family: 'No Signal', cursive;
+  font-size: 1.8rem;
+  position: absolute;
+  transform: translate(120%, 200%) rotate(15deg);
+  text-shadow:
+    0 0 5px $glow-violet,
+    0 0 10px $glow-violet;
+}
+
+.bestseller_dice {
+  width: 5vw;
+  aspect-ratio: 1 / 1;
+  background-image: url('../../../public/assets/icons/dice.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  outline: none;
+  filter: invert(1) drop-shadow(0 0 10px $glow-green);
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    filter: invert(1) drop-shadow(0 0 10px $glow-violet);
+  }
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {
@@ -576,6 +605,16 @@
     &_title {
       font-size: 3rem;
     }
+  }
+
+  .bestseller_title {
+    font-family: 'No Signal', cursive;
+    font-size: 1.6rem;
+    position: absolute;
+    transform: translate(100%, 300%) rotate(15deg);
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 }
 
@@ -669,6 +708,16 @@
     &_profile_buttons {
       width: 80%;
     }
+  }
+
+  .bestseller_title {
+    font-family: 'No Signal', cursive;
+    font-size: 1.2rem;
+    position: absolute;
+    transform: translate(60%, 300%) rotate(15deg);
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
   }
 }
 

@@ -10,10 +10,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Attribute, ProductVariant } from '@commercetools/platform-sdk';
+import { ProductVariant } from '@commercetools/platform-sdk';
 import { getBestsellers } from '../../api/getBestsellers';
-import { throwNewError } from '../../utils/throwNewError';
 import { Bestseller } from '../../components/Bestseller/Bestseller';
+import { copyTextToClipboard } from '../../utils/copyTextToClipboard';
 
 export const mainPageOffersSlides = [
   'HOT SALES 10% OFF for all RED T-Shirts and Caps during hot summer and autumn!',
@@ -28,7 +28,7 @@ function MainPage(): JSX.Element {
   const [current, setCurrent] = useState(1);
   const [translateX, setTranslateX] = useState(0);
   const [discountCopiedModal, setDiscountCopiedModal] = useState(false);
-  const [allProducts, setAllProducts] = useState<ProductVariant[]>([]);
+  const [allBestsellers, setAllBestsellers] = useState<ProductVariant[]>([]);
 
   const actionHandler = useCallback(
     (mode: string): void => {
@@ -131,21 +131,9 @@ function MainPage(): JSX.Element {
       const allResults = data.body.results;
       let product = [];
       product = allResults.map((item) => item.masterVariant);
-      setAllProducts(product);
+      setAllBestsellers(product);
     });
   }, []);
-
-  /* const randomBestsellerSliderItems =
-    bestsellersArray[Math.floor(Math.random() * bestsellersArray.length)]; */
-
-  async function copyTextToClipboard(text: string): Promise<string | void> {
-    try {
-      const copiedDiscount = await navigator.clipboard.writeText(text);
-      return copiedDiscount;
-    } catch {
-      throwNewError('failed to copy discount');
-    }
-  }
 
   return (
     <div className={style.main} data-testid="main-component">
@@ -212,15 +200,11 @@ function MainPage(): JSX.Element {
             Trinity
           </button>
         </div>
-        <Link className={style.main_customize} to="/customize">
+        {/* <Link className={style.main_customize} to="/customize">
           <div className={`${style.main_advertisment} ${style.customize}`}>
             <div className={style.main_advertisment_info}>
               <div className={style.main_glitch_container}>
-                <div className={style.main_advertisment_glitch}>
-                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
-                  CUSTOMIZE
-                  {/* <div className={style.main_advertisment_title}>CUSTOMIZE</div> */}
-                </div>
+                <div className={style.main_advertisment_glitch}>CUSTOMIZE</div>
               </div>
               <div className={style.main_advertisment_text}>
                 Pick and CUSTOMIZE RSSchool MERCHBAR&apos;s cool products by
@@ -229,32 +213,36 @@ function MainPage(): JSX.Element {
             </div>
             <div className={style.main_sloth_right}></div>
           </div>
-        </Link>
+        </Link> */}
         <div className={style.main_bestsellers}>
-          {allProducts.map((card) => {
-            let productPrice = 0;
-            let productDiscount;
-            let ifProductDiscount = 0;
-            card.prices
-              ? (productPrice = card.prices[0].value.centAmount / 100)
-              : 0;
-            card.prices && card.prices[0].discounted?.value.centAmount
-              ? ((ifProductDiscount =
-                  card.prices[0].discounted?.value.centAmount / 100),
-                (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
-              : '';
-            return (
-              <div className={style.bestseller_card} key={card.key}>
-                <Bestseller
-                  images={card?.images}
-                  sku={card?.sku ? card.sku : ''}
-                  prices={productPrice.toFixed(2)}
-                  discounted={productDiscount}
-                  idBestseller={card?.key}
-                />
-              </div>
-            );
-          })}
+          {allBestsellers
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 4)
+            .map((card) => {
+              let productPrice = 0;
+              let productDiscount;
+              let ifProductDiscount = 0;
+              card.prices
+                ? (productPrice = card.prices[0].value.centAmount / 100)
+                : 0;
+              card.prices && card.prices[0].discounted?.value.centAmount
+                ? ((ifProductDiscount =
+                    card.prices[0].discounted?.value.centAmount / 100),
+                  (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+                : '';
+              return (
+                <div className={style.bestseller_card} key={card.key}>
+                  <div className={style.bestseller_title}>Bestseller</div>
+                  <Bestseller
+                    images={card?.images}
+                    sku={card?.sku ? card.sku : ''}
+                    prices={productPrice.toFixed(2)}
+                    discounted={productDiscount}
+                    idBestseller={card?.key}
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
       <div

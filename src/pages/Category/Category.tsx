@@ -86,7 +86,6 @@ function CategoryPage(): JSX.Element {
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
   const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
-  const [productFoundInCart, setProductFoundInCart] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
