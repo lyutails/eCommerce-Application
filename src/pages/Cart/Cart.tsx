@@ -45,7 +45,6 @@ function CartPage(): JSX.Element {
   const [flagModalWindowCart, setFlagModalWindowCart] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
-  const [flagModalWindowCart, setFlagModalWindowCart] = useState(false);
 
   // DELETE ITEM FROM CART
   const deleteItem = (
