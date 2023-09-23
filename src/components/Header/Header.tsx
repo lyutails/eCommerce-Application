@@ -32,12 +32,21 @@ function Header(): JSX.Element {
     'walletCost',
   ];
   const [activeBurger, SetActiveBurger] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
   const handleToBurger = (): void => {
     SetActiveBurger(true);
   };
   const handleToBurgerOff = (): void => {
     SetActiveBurger(false);
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {
+        setIsScroll(window.pageYOffset > 0);
+      });
+    }
+  }, []);
 
   return (
     <div className={`${style.header} ${style.sticky}`}>

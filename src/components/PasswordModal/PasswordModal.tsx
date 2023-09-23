@@ -28,15 +28,19 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
     newPassword: password.newPassword.value,
   };
   const passwordUpdateData: IPasswordUpdateData = {
-    currentError: password.currentPassword.error,
-    newError: password.newPassword.error,
-    repeateError: password.repeatePassword.error,
+    currentError: !!password.currentPassword.error,
+    newError: !!password.newPassword.error,
+    repeateError: !!password.repeatePassword.error,
     token: customerRefreshToken,
     passwordNewField: password.newPassword.value,
     passwordRepeatField: password.repeatePassword.value,
     dispatch: dispatch,
     login: email.value,
-    currentPassword: password.currentPassword,
+    currentPassword: {
+      value: password.currentPassword.value,
+      error: !!password.currentPassword.error,
+      isChecked: password.currentPassword.isChecked,
+    },
   };
   const setInputAction = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -66,7 +70,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
             setInputAction(e, 'currentPassword', checkPasswordError)
           }
           checkmarkPassword={password.currentPassword.isChecked}
-          passwordError={password.currentPassword.error}
+          passwordError={!!password.currentPassword.error}
           passwordField={'currentPassword'}
           tooltipColor={style.tooltip_color}
           clueError={style.password_error}
@@ -79,7 +83,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
             setInputAction(e, 'newPassword', checkPasswordError)
           }
           checkmarkPassword={password.newPassword.isChecked}
-          passwordError={password.newPassword.error}
+          passwordError={!!password.newPassword.error}
           passwordField={'newPassword'}
           tooltipColor={style.tooltip_color}
           clueError={style.password_error}
@@ -92,7 +96,7 @@ function PasswordModal(props: IPasswordModalProps): JSX.Element {
             setInputAction(e, 'repeatePassword', checkPasswordError)
           }
           checkmarkPassword={password.repeatePassword.isChecked}
-          passwordError={password.repeatePassword.error}
+          passwordError={!!password.repeatePassword.error}
           passwordField={'repeatePassword'}
           tooltipColor={style.tooltip_color}
           clueError={style.password_error}

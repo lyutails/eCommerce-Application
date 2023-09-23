@@ -3,9 +3,9 @@ import {
   changeVersion,
 } from '../../store/reducers/profileReducer';
 import { updatePassword } from '../../api/changePassword';
-import { IPasswordUpdateData } from './PasswordModal';
 import { getCustomerToken } from '../../api/adminBuilder';
 import { setRefreshTokenStatus } from '../../store/reducers/userReducer';
+import { IPasswordUpdateData } from '../../types/interfaces';
 
 export interface IMyCustomerPasswordUpdate {
   version: number;
@@ -48,9 +48,12 @@ export const handleUpdatePassword = (
           }
         })
         .then((response) => {
-          localStorage.setItem('refreshToken', response.refresh_token);
+          localStorage.setItem(
+            'refreshToken',
+            response?.refresh_token ? response?.refresh_token : ''
+          );
           passwordUpdateData.dispatch(
-            setRefreshTokenStatus(response.refresh_token)
+            setRefreshTokenStatus(response?.refresh_token)
           );
         })
         .catch((error) => {

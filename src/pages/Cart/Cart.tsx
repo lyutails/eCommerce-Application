@@ -23,6 +23,7 @@ import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { recalculatePrice } from '../../utils/recalculatePrice';
 import CartModalWindow from '../../components/CartModalWindow/CartModalWindow';
 
 function CartPage(): JSX.Element {
@@ -45,6 +46,18 @@ function CartPage(): JSX.Element {
   const [flagModalWindowCart, setFlagModalWindowCart] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
+
+  // useEffect(() => {
+  //   let as = 0;
+  //   const pi = 10;
+
+  //   const r = setInterval(() => {
+  //     //console.log(as++);
+  //     if (as === pi) {
+  //       clearInterval(r);
+  //     }
+  //   }, 100);
+  // });
 
   // DELETE ITEM FROM CART
   const deleteItem = (
@@ -379,6 +392,7 @@ function CartPage(): JSX.Element {
       ? `${bio.firstname?.value} ${bio.lastname?.value}`
       : `customer`;
   };
+  const [priceTest, setPriceTest] = useState(0);
   return (
     <div className={style.cart}>
       <div className={style.cart_wrapper}>

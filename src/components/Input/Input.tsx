@@ -16,6 +16,8 @@ function Input(props: IInputProps): JSX.Element {
           type={props.type}
           placeholder={props.placeholder}
         />
+        {/* <span className={style.wrapper_placeholder}>{props.placeholder}</span>
+        <span className={style.wrapper_placeholder_line}></span> */}
         {props.childrenAfter}
       </div>
       {props.tooltip}
