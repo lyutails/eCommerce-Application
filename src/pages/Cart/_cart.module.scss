@@ -1,6 +1,10 @@
 @import '../../style/variables';
 
 .cart {
+  background-image: linear-gradient(to right, rgba(3, 14, 27, 0.9) 0 100%),
+    url('../../../public/assets/backgrounds/cart_background.png');
+  background-size: cover;
+
   &_content {
     flex-direction: column;
   }
@@ -191,32 +195,46 @@
   &_discount_input {
     background: $background-gradient-one;
     border-radius: 5px;
-    border: 1px solid $glow-green;
+    border: none;
     outline: none;
     width: 30vw;
-    height: 50px;
-    font-size: 2.8rem;
+    aspect-ratio: 1 / 0.3;
+    font-size: 2.6rem;
     color: $font-color-primary-one;
     padding-left: 5px;
     text-overflow: ellipsis;
     user-select: none;
     margin-bottom: 15px;
+    background-image: url('../../../public/ui-kit/promo_input_03.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 2vw;
+    text-shadow: 0 0 5px $glow-green;
+    font-family: 'No Signal', cursive;
+    padding-right: 1vw;
 
     &:focus {
-      border: 1px solid $glow-violet;
+      border: none;
+      outline: none;
+      text-shadow: none;
     }
 
     &::placeholder {
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       color: $font-color-primary-one;
       padding-left: 5px;
       user-select: none;
       text-overflow: ellipsis;
+      padding-left: 1vw;
+      text-shadow: 0 0 5px $glow-green;
+      font-family: 'No Signal', cursive;
+      padding-right: 1vw;
     }
 
     &:focus::placeholder {
       outline: none;
       color: transparent;
+      text-shadow: none;
     }
   }
 
@@ -251,6 +269,7 @@
   }
 
   &_discount_button {
+    outline: none;
     width: 40vw;
     aspect-ratio: 1 / 0.25;
     background-color: transparent;
@@ -457,14 +476,24 @@
       width: 80vw;
       margin-bottom: 30px;
       align-self: center;
+      font-size: 3rem;
+      padding-left: 3vw;
+      padding-right: 3vw;
+
+      &::placeholder {
+        font-size: 3rem;
+        padding-left: 3vw;
+      }
     }
 
     &_discount_button_wrapper {
+      outline: none;
       width: 80vw;
       align-self: center;
     }
 
     &_discount_button {
+      outline: none;
       width: 80vw;
       align-self: center;
     }

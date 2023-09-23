@@ -6,7 +6,8 @@ function CustomizePage(): JSX.Element {
       <h2 className={style.title}>Pick a product you wanna customize</h2>
       <p className={style.subtitle}>
         Choose desired art and signature and we will create and paint picked
-        product for you as well as deliver it right to your door.
+        product for you as well as deliver it right to your door. This thing
+        will be personal and unique just like you!
       </p>
     </div>
   );

@@ -33,14 +33,6 @@ function Card(props: CategoryCardProps): JSX.Element {
         setCurrentSecondImage('');
       }}
     >
-      {/* <button
-        className={style.card_to_cart}
-        onClick={(): void => {
-          console.log('cart clicked');
-        }}
-      >
-        to Cart
-      </button> */}
       <h2 className={style.card_name} id={props.keyCard}>
         <span>{props.sku}</span>
       </h2>
@@ -51,7 +43,11 @@ function Card(props: CategoryCardProps): JSX.Element {
         alt=""
       />
       <div className={style.card_buy}>
-        <span className={style.card_price}>{props.prices}$</span>
+        <span
+          className={!props.discounted ? style.card_price : style.linethrough}
+        >
+          {props.prices}$
+        </span>
         <span className={style.card_discount}>{props.discounted}</span>
       </div>
     </div>

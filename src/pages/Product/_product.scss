@@ -4,7 +4,8 @@
   position: relative;
 
   display: flex;
-  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
 
   width: 100%;
@@ -221,6 +222,7 @@
           display: flex;
           justify-content: flex-start;
           .wrapper-characteristics_button {
+            outline: none;
             cursor: pointer;
 
             aspect-ratio: 1 / 0.27;
@@ -259,6 +261,7 @@
             }
           }
           .wrapper-characteristics-delete_button {
+            outline: none;
             cursor: pointer;
             border: none;
             width: 70px;
@@ -270,12 +273,17 @@
             background-size: cover;
           }
         }
-        .block-buttons-quantity {
+        .block-buttons-quantity,
+        .block-buttons-quantity-noclick {
+          outline: none;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
           align-items: center;
-          max-width: 150px;
+          width: 300px;
           padding: 10px;
+          opacity: 1;
+          visibility: visible;
+          animation: fade_on 1s ease forwards;
           .quantity {
             font-size: 2rem;
             color: rgb(81, 224, 237);
@@ -291,7 +299,7 @@
             // -webkit-mask: url(../../../public/assets/productPage/circle_number_blue_inner.svg)
             //   0 0/cover no-repeat;
             // mask: url(../../../public/assets/productPage/circle_number_blue_inner.svg)
-              // 0 0/cover no-repeat;
+            // 0 0/cover no-repeat;
             background-repeat: no-repeat;
             background-position: 0;
             background-size: cover;
@@ -324,8 +332,39 @@
           }
           .quantity-minus:hover,
           .quantity-plus:hover {
-            background: url(../../../public/assets/productPage/circle_number_blue_inner.svg),#4d61bc,;
+            background: url(../../../public/assets/productPage/circle_number_blue_inner.svg),
+              #4d61bc;
           }
+        }
+        @keyframes fade {
+          0% {
+            opacity: 1;
+            visibility: visible;
+          }
+          50% {
+            opacity: 0;
+            visibility: hidden;
+          }
+          100% {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+        @keyframes fade_on {
+          0% {
+            opacity: 0;
+            visibility: hidden;
+          }
+          100% {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        .block-buttons-quantity-noclick {
+          cursor: none;
+          pointer-events: none;
+          animation: fade 1s ease forwards;
         }
 
         .specifications {
@@ -408,7 +447,8 @@
       0 0 10px $glow-green,
       0 0 20px $glow-green;
 
-    background: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg'), rgba(0, 0, 0, 0.8);
+    background: url('../../../public/ui-kit/modal-profile-successfull-system-mesage_01.svg'),
+      rgba(0, 0, 0, 0.8);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -497,6 +537,62 @@
     transform: rotateY(1deg) scaleX(0.92);
   }
 }
+
+.spinner_container {
+  width: 100vw;
+  height: 100%;
+  position: relative;
+  z-index: 6000;
+}
+
+.spinner_overlay {
+  width: 100vw;
+  height: 100%;
+  background: $overlay-gradient;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.spinner_wrapper {
+  width: 50vw;
+  aspect-ratio: 1 / 1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 7000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.spinner {
+  font-size: 6rem;
+  color: $font-color-primary-one;
+  text-align: center;
+  font-family: 'No Signal', cursive;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green,
+    0 0 15px $glow-green;
+  user-select: none;
+}
+
+.spinner_icon {
+  margin-top: 50px;
+  width: 150px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #ff16ff 94%, #0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%, #ff16dc);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: spinner_anim 1s infinite linear;
+  user-select: none;
+}
+
 @media screen and (min-width: (800px)) and (max-width: (1399.99px)) {
   .showcase {
     .showcase_header {

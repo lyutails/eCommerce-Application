@@ -1,0 +1,71 @@
+@import '../../style/variables';
+
+.bestseller {
+  &_wrapper {
+    width: 20vw;
+    aspect-ratio: 1 / 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px dotted $glow-green;
+    padding: 5px;
+    box-shadow: 0 0 10px $glow-green;
+  }
+
+  &_pic {
+    width: 60%;
+    aspect-ratio: 1 / 1;
+    filter: drop-shadow(0 0 10px $glow-green);
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      filter: drop-shadow(0 0 10px $glow-violet);
+    }
+  }
+
+  &_name {
+    font-family: 'No Signal', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+
+  &_buy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top: 5px;
+    margin: 0 auto;
+
+    width: 80%;
+    border-top: 2px dotted $glow-violet;
+  }
+
+  &_price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow:
+      0 0 5px $glow-green,
+      0 0 10px $glow-green;
+  }
+
+  &_discount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $font-color-primary-one;
+    text-shadow:
+      0 0 5px $glow-violet,
+      0 0 10px $glow-violet;
+  }
+}
+
+.linethrough {
+  font-size: 1.5rem;
+  text-decoration: line-through;
+  text-shadow:
+    0 0 5px $glow-green,
+    0 0 10px $glow-green;
+}

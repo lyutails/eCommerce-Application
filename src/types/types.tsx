@@ -19,7 +19,15 @@ export type CartProductProps = {
   sku: string;
   onDelete: () => void;
   quantity: number;
-  reduceQuantity: () => void;
+  reduceQuantity: React.MouseEventHandler<HTMLButtonElement> | undefined;
   increaseQuantity: () => void;
   idCard: string;
+};
+
+export type BestsellerProps = {
+  sku: string;
+  images?: Image[];
+  prices?: number | string;
+  discounted?: number | string;
+  idBestseller?: string;
 };

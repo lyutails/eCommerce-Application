@@ -259,6 +259,7 @@ export interface ICartState {
     promocode: string;
     cartPriceDiscount: number;
     discountCodesCart: DiscountCodeInfo[] | undefined;
+    isClickedButton: boolean;
   };
 }
 

@@ -15,7 +15,6 @@ import {
   changeflagInModalWindow,
   createProductImgArr,
 } from '../../store/reducers/productReduser';
-import ModalWindow from './ModalWindow/ModalWindow';
 import {
   ICartState,
   IMyCartUpdate,
@@ -35,8 +34,9 @@ import {
   setCartQuantity,
 } from '../../store/reducers/cartReducer';
 import { updateCart } from '../../api/existTokenFlow';
-import SistemModalWindow from './SistemModalWindow/SistemModalWindow';
-
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import ProductSistemModalWindow from '../../components/ProductSistemModalWindow/ProductSistemModalWindow';
+import ProductModalWindow from '../../components/ProductModalWindow/ProductModalWindow';
 interface IDataProduct {
   name: string;
   description: string;
@@ -55,6 +55,7 @@ function ProductPage(): JSX.Element {
   const navigate = useNavigate();
   const [quantityProduct, setQuantityProduct] = useState(1);
   const [productExistence, setProductExistence] = useState(false);
+  const [flagDisablingButton, setFlagDisablingButton] = useState(false);
   const [productId, setProductId] = useState('');
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ function ProductPage(): JSX.Element {
     (state: IRootState) => state.user
   );
   const isAuth = useSelector((state: IRootState) => state.user.isAuth);
+  const { promiseInProgress } = usePromiseTracker();
 
   const updateCustomerCart = (): void => {
     if (!isAuth) {
@@ -435,7 +437,7 @@ function ProductPage(): JSX.Element {
 
   useEffect(() => {
     id &&
-      getProductProjectionsByVariantKey(id).then((response) => {
+      trackPromise(getProductProjectionsByVariantKey(id)).then((response) => {
         const productObtained = response.body.results[0];
         if (productObtained.masterVariant.key === id) {
           creatingQueryForMaster(productObtained);
@@ -462,6 +464,17 @@ function ProductPage(): JSX.Element {
 
   return (
     <section className="showcase">
+      <div className="spinner">
+        {promiseInProgress === true ? (
+          <div className="spinner_container">
+            <div className="spinner_wrapper">
+              <div className="spinner_text">Loading...</div>
+              <div className="spinner_icon"></div>
+            </div>
+            <div className="spinner_overlay"></div>
+          </div>
+        ) : null}
+      </div>
       <div className="showcase_header">
         <h2 className="showcase_header-title">{dataProduct.name}</h2>
         <div
@@ -596,14 +609,32 @@ function ProductPage(): JSX.Element {
               </div>
             </div>
             {productExistence && (
-              <div className="block-buttons-quantity">
+              <div
+                className={
+                  flagDisablingButton
+                    ? 'block-buttons-quantity-noclick'
+                    : 'block-buttons-quantity'
+                }
+              >
                 <button
-                  onClick={debounce(deleteOneProduct, 600)}
+                  onClick={(): void => {
+                    deleteOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
                   className="quantity-minus"
                 ></button>
                 <div className="quantity">{quantityProduct}</div>
                 <button
-                  onClick={debounce(addOneProduct, 600)}
+                  onClick={(): void => {
+                    addOneProduct();
+                    setFlagDisablingButton(true);
+                    setTimeout(() => {
+                      setFlagDisablingButton(false);
+                    }, 500);
+                  }}
                   className="quantity-plus"
                 ></button>
               </div>
@@ -630,8 +661,8 @@ function ProductPage(): JSX.Element {
           </div>
         </div>
       </div>
-      <div>{flagModalWindow ? <ModalWindow /> : ''}</div>
-      <div>{modal ? <SistemModalWindow /> : ''}</div>
+      <div>{flagModalWindow ? <ProductModalWindow /> : ''}</div>
+      <div>{modal ? <ProductSistemModalWindow /> : ''}</div>
     </section>
   );
 }

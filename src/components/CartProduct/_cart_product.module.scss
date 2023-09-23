@@ -14,6 +14,7 @@
     background: $background-gradient-one;
     border-radius: 5px;
     margin-bottom: 20px;
+    border: 1px solid $glow-green;
   }
 
   &_name {
@@ -35,15 +36,55 @@
     background-repeat: no-repeat;
     user-select: none;
     filter: drop-shadow(0 0 10px $glow-violet);
+    transition: all 0.4s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      filter: drop-shadow(0 0 10px $glow-green);
+    }
   }
 
-  &_product_counter {
+  &_product_counter,
+  &_product_counter_noclick {
     width: 10vw;
     aspect-ratio: 1 / 0.4;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    opacity: 1;
+    visibility: visible;
+    animation: fade_on 1s ease forwards;
+  }
+  @keyframes fade {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    50% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  @keyframes fade_on {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &_product_counter_noclick {
+    cursor: none;
+    pointer-events: none;
+    animation: fade 1s ease forwards;
   }
 
   &_product_amount {
@@ -60,6 +101,7 @@
     filter: invert(1);
     background-size: contain;
     transition: all 0.3s ease-in-out;
+    outline: none;
 
     &.minus {
       background-image: url('../../../public/assets/icons/minus.svg');
@@ -94,6 +136,7 @@
 
   &_delete {
     width: 4vw;
+    max-width: 50px;
     aspect-ratio: 1 / 1;
     background-image: url('../../../public/assets/icons/trash_cart.svg');
     background-repeat: no-repeat;
