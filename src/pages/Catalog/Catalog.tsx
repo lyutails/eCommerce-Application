@@ -2,14 +2,18 @@ import { Link } from 'react-router-dom';
 import style from './_catalog.module.scss';
 import { useEffect, useState } from 'react';
 import { GetParentCategory } from '../../api/getCategories';
-import { Category } from '@commercetools/platform-sdk';
+import { Category, ProductVariant } from '@commercetools/platform-sdk';
 import { useDispatch } from 'react-redux';
 import { createCategory } from '../../store/reducers/categoryReducer';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import CatalogCategoryParalax from '../../components/CatalogCategoryParalax/CatalogCategoryParalax';
+import { getBestsellers } from '../../api/getBestsellers';
+import { Bestseller } from '../../components/Bestseller/Bestseller';
 
 function CatalogPage(): JSX.Element {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [allBestsellers, setAllBestsellers] = useState<ProductVariant[]>([]);
+  const [sliceBestseller, setSliceBestseller] = useState<ProductVariant[]>([]);
   const dispatch = useDispatch();
   useEffect(() => {
     trackPromise(GetParentCategory()).then((response) => {
@@ -26,6 +30,26 @@ function CatalogPage(): JSX.Element {
   }, [dispatch]);
 
   const { promiseInProgress } = usePromiseTracker();
+
+  useEffect(() => {
+    const bestsellersInterval = setInterval(() => {
+      setSliceBestseller(
+        allBestsellers.sort(() => Math.random() - 0.5).slice(0, 4)
+      );
+    }, 2000);
+    return () => {
+      clearInterval(bestsellersInterval);
+    };
+  }, [allBestsellers]);
+
+  useEffect(() => {
+    getBestsellers().then((data) => {
+      const allResults = data.body.results;
+      let product = [];
+      product = allResults.map((item) => item.masterVariant);
+      setAllBestsellers(product);
+    });
+  }, []);
 
   return (
     <div className={style.catalog} data-testid="catalog-component">
@@ -84,6 +108,33 @@ function CatalogPage(): JSX.Element {
             </div>
           </div>
         </Link> */}
+      </div>
+      <div className={style.main_bestsellers}>
+        {sliceBestseller.map((card) => {
+          let productPrice = 0;
+          let productDiscount;
+          let ifProductDiscount = 0;
+          card.prices
+            ? (productPrice = card.prices[0].value.centAmount / 100)
+            : 0;
+          card.prices && card.prices[0].discounted?.value.centAmount
+            ? ((ifProductDiscount =
+                card.prices[0].discounted?.value.centAmount / 100),
+              (productDiscount = `${ifProductDiscount.toFixed(2)}$`))
+            : '';
+          return (
+            <div className={style.bestseller_card} key={card.key}>
+              <div className={style.bestseller_title}>Bestseller</div>
+              <Bestseller
+                images={card?.images}
+                sku={card?.sku ? card.sku : ''}
+                prices={productPrice.toFixed(2)}
+                discounted={productDiscount}
+                idBestseller={card?.key}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

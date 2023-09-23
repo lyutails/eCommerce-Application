@@ -500,12 +500,12 @@
 
 .modal {
   &_wrapper {
-    position: absolute;
+    position: fixed;
     display: none;
     width: 60vw;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 100%);
+    transform: translate(-50%, -50%);
     z-index: 2000;
     transition: all 0.4s ease-in-out;
 
@@ -562,24 +562,6 @@
   text-shadow:
     0 0 5px $glow-violet,
     0 0 10px $glow-violet;
-}
-
-.bestseller_dice {
-  width: 5vw;
-  aspect-ratio: 1 / 1;
-  background-image: url('../../../public/assets/icons/dice.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  border: none;
-  outline: none;
-  filter: invert(1) drop-shadow(0 0 10px $glow-green);
-  background-color: transparent;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    cursor: pointer;
-    filter: invert(1) drop-shadow(0 0 10px $glow-violet);
-  }
 }
 
 @media screen and (min-width: (768px)) and (max-width: (1399.98px)) {

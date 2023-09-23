@@ -13,7 +13,6 @@ function CatalogCategoryParalax(): JSX.Element {
   const allCategories = useSelector(
     (state: ICategoryState) => state.category.category
   );
-  console.log(allCategories);
 
   return (
     <div className="category_slider">
