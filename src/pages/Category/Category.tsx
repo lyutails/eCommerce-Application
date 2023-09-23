@@ -86,7 +86,6 @@ function CategoryPage(): JSX.Element {
   const [allParents, setAllParents] = useState<ProductProjection[]>([]);
   const [priceSliderValue, setPriceSliderValue] = useState<number[]>([0, 100]);
   const [alreadyInCartModal, setAlreadyInCartModal] = useState(false);
-  const [productFoundInCart, setProductFoundInCart] = useState(false);
   const [isPaginationNumberAnimPlaying, setIsPaginationNumberAnimPlaying] =
     useState(false);
   const [brandRSSchool, setBrandRSSchool] = useState({
@@ -1262,7 +1261,7 @@ function CategoryPage(): JSX.Element {
                               e.currentTarget.textContent = 'Already in Cart';
                               setTimeout(() => {
                                 setAlreadyInCartModal(false);
-                              }, 2000);
+                              }, 1500);
                             } else {
                               updateCustomerCart(updateAnonCartData);
                               e.currentTarget.textContent = 'Add to Cart';

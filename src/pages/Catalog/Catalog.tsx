@@ -66,15 +66,13 @@ function CatalogPage(): JSX.Element {
             })} */}
           </div>
         </div>
-        <Link className={style.catalog_customize} to="/customize">
+        {/* <Link className={style.catalog_customize} to="/customize">
           <div className={`${style.catalog_advertisment} ${style.customize}`}>
             <div className={`${style.catalog_advertisment} ${style.customize}`}>
               <div className={style.catalog_advertisment_info}>
                 <div className={style.catalog_glitch_container}>
                   <div className={style.catalog_advertisment_glitch}>
-                    {/* <div className={style.catalog_advertisment_title}>CUSTOMIZE</div> */}
                     CUSTOMIZE
-                    {/* <div className={style.catalog_advertisment_title}>CUSTOMIZE</div> */}
                   </div>
                 </div>
                 <div className={style.catalog_advertisment_text}>
@@ -85,7 +83,7 @@ function CatalogPage(): JSX.Element {
               <div className={style.catalog_sloth_right}></div>
             </div>
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
