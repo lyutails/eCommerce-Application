@@ -3,10 +3,6 @@
 The [eCommerce Application](https://starlit-rabanadas-510a4b.netlify.app) is an application for the [RSSchool](https://rs.school/) final task of 2023Q1 stage#2.
 Done in eager to match latest Front-end technologies alongside with pursue of learning [Commerce Tools](https://commercetools.com/) while following the goal of creating awesome design.
 
-## Design Layout
-
-[Design](paste link here) Layout with UIKit and responsive versions for tablet and mobile.
-
 ## Tech Stack
 
 ![js](./public/assets/tech-stack-images/js.png)
