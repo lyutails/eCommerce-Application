@@ -45,6 +45,7 @@ function CartPage(): JSX.Element {
   const [isIncorrectPromo, setIsIncorrectPromo] = useState(false);
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
+  const [flagModalWindowCart, setFlagModalWindowCart] = useState(false);
 
   // DELETE ITEM FROM CART
   const deleteItem = (
@@ -175,7 +176,7 @@ function CartPage(): JSX.Element {
       }
       return false;
     });
-    console.log(existPromo);
+
     if (existPromo.includes(true)) {
       refreshTokenFlow(refreshToken).then((response) => {
         if (response) {
@@ -215,7 +216,6 @@ function CartPage(): JSX.Element {
         discountCodesCart?.length &&
         code.id === discountCodesCart[0]?.discountCode.id
       ) {
-        console.log('lalala');
         dispatch(setPromocode(code.name));
       }
     });
@@ -406,13 +406,7 @@ function CartPage(): JSX.Element {
               </div>
             </div>
             <button
-              onClick={(): void =>
-                deleteAllProducts(
-                  !isAuth
-                    ? anonymousCart.anonymousRefreshToken
-                    : customerRefreshToken
-                )
-              }
+              onClick={(): void => setFlagModalWindowCart(true)}
               className={style.cart_clear}
             >
               Clear Shopping Cart
