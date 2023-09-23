@@ -5,48 +5,29 @@ import iconCheckmark from '../../../public/assets/icons/checkmark.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
-  clue,
   handleBirthdayInputTwo,
   handleFirstnameInputTwo,
   handleLastnameInputTwo,
   handleLoginInputTwo,
-  handlePasswordInput,
-  inputHandler,
-  selectHandler,
 } from '../verification';
 import { handleСreationReg } from './verify-registration';
 import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { useDispatch, useSelector } from 'react-redux';
-import CloseIcon from '../../../public/assets/icons/close.svg';
-import InputPassword from '../../components/Input/inputPassword';
 import {
   IAddressDraftState,
   IAddressInput,
   ICartState,
   IProfileState,
   IRegistrationState,
-  IRootState,
 } from '../../types/interfaces';
 import { setAuthStatus } from '../../store/reducers/userReducer';
-import {
-  changeAddressShipReg,
-  changeAddressBillReg,
-  changeBioReg,
-} from '../../store/reducers/registrationReducer';
+import { changeBioReg } from '../../store/reducers/registrationReducer';
 import { checkPasswordError } from '../verificationTwo';
 import { changePassword } from '../../store/reducers/profileReducer';
 import InputPasswordTwo from '../../components/Input/inputPasswordTwo';
 import AddressForm from '../../components/AddressForm/AddressForm';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-
-export interface IAnonymousCartData {
-  anonymousID: string;
-  versionAnonCart: number;
-  cartID: string;
-  anonymousRefreshToken: string;
-  anonymousAccessToken: string;
-}
 
 const addressFormShippingData = {
   title: 'Shipping address',
@@ -57,16 +38,6 @@ const addressFormBillingData = {
   title: 'Billing address',
   checboxId: 'address-modal-id',
 };
-
-export interface IRegistrationData {
-  bio: { [key: string]: IAddressInput };
-  password: { [key: string]: IAddressInput };
-  addressShip: IAddressDraftState;
-  addressBill: IAddressDraftState;
-  checkedInput: boolean;
-  checkedShipping: boolean;
-  checkedBilling: boolean;
-}
 
 const createModal = (): JSX.Element => {
   return (
@@ -81,7 +52,6 @@ const createModal = (): JSX.Element => {
 };
 
 function RegistrationPage(): JSX.Element {
-  //const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const { bio, addressShip, addressBill } = useSelector(
     (state: IRegistrationState) => state.registration
   );

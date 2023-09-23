@@ -8,24 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthStatus } from '../../store/reducers/userReducer';
 import { handleСreationAuth } from './verify-auth';
 import { useEffect, useState } from 'react';
-import {
-  handleLoginInputTwo,
-  handlePasswordInput,
-  inputHandler,
-} from '../verification';
+import { handleLoginInputTwo } from '../verification';
 import {
   ICartState,
-  IMyCustomerLoginDraft,
   IProfileState,
   IRegistrationState,
-  IRootState,
 } from '../../types/interfaces';
-import InputPassword from '../../components/Input/inputPassword';
-import {
-  changeBioReg,
-  changePasswordReg,
-} from '../../store/reducers/registrationReducer';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { changeBioReg } from '../../store/reducers/registrationReducer';
 import { checkPasswordError } from '../verificationTwo';
 import { changePassword } from '../../store/reducers/profileReducer';
 import InputPasswordTwo from '../../components/Input/inputPasswordTwo';
@@ -47,19 +36,11 @@ export interface ILoginCustomerData {
 function AuthPage(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //const isAuth = useSelector((state: IRootState) => state.user.isAuth);
   const { bio } = useSelector(
     (state: IRegistrationState) => state.registration
   );
   const { password } = useSelector((state: IProfileState) => state.profile);
   const { anonymousCart } = useSelector((state: ICartState) => state.cart);
-
-  // const [login, setLogin] = useState('');
-  //const [password, setPassword] = useState('');
-
-  // const [loginError, setLoginError] = useState('');
-  // const [passwordError, setPasswordError] = useState(false);
-  // const [checkmarkLogin, setCheckmarkLogin] = useState(false);
   const [modal, setModal] = useState<JSX.Element | undefined>(undefined);
   const [successfulMessage, setSuccessfulMessage] = useState(false);
 
@@ -149,6 +130,11 @@ function AuthPage(): JSX.Element {
           </div>
           <h2 className={style.title}>Login</h2>
           <form action="" className={style.authorization_form}>
+            {/* <div className="field label border">
+              <input />
+              <label>Username</label>
+            </div> */}
+
             <Input
               onChange={(e): void => setInputLogin(e, handleLoginInputTwo)}
               clue={
@@ -171,20 +157,10 @@ function AuthPage(): JSX.Element {
                 </div>
               }
             />
-            {/* <InputPassword
-              onChange={(e): void =>
-                setInputAction(e, checkPasswordError, changePasswordReg)
-              }
-              clueError={style.password_error}
-              clueColor={style.password_color}
-              placeholder="Password *"
-              passwordError={passwordError}
-              passwordField={password}
-            /> */}
             <InputPasswordTwo
               onChange={(e): void => setInputPassword(e, checkPasswordError)}
               checkmarkPassword={password.currentPassword.isChecked}
-              passwordError={password.currentPassword.error}
+              passwordError={!!password.currentPassword.error}
               passwordField={'currentPassword'}
               tooltipColor={style.tooltip_color}
               clueError={style.password_error}

@@ -4,6 +4,7 @@
   margin-bottom: 30px;
 
   &_label {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,6 +31,7 @@
   }
 
   &_input {
+    outline: none;
     width: 100%;
     height: 100%;
     padding: 10px 20px;
@@ -40,13 +42,51 @@
     border: none;
   }
 
+  &_placeholder {
+    position: absolute;
+    top: 30%;
+  left: 57px;
+  z-index: 10;
+  font-size: 1.7rem;
+  transition: all 0.2s;
+  transform-origin: 0% 0%;
+  color: #ff47da;
+  }
+
   &_input::placeholder {
     font-size: 1.4rem;
+  }
+
+  &_placeholder_line {
+    z-index: -1;
+    position: absolute;
+    top: 30%;
+  left: 53px;
+    transition: all 0.2s;
+    transform-origin: 0% 0%;
+    width: 60px;
+    height: 5px;
+    background-color: white;
   }
 
   &_input:focus {
     outline: none;
   }
+
+  &_label &_input:focus + &_placeholder {
+    font-size: 1.7rem;
+    transform: scale(0.8) translateY(-28px);
+  }
+
+  &_label &_input:focus ~ &_placeholder_line {
+    z-index: 9;
+    transform: scale(0.8) translateY(-23px);
+  }
+
+  &_placeholder_password {
+    width: 100px;
+  }
+
 
   &_clue {
     font-size: 1.2rem;

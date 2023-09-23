@@ -487,5 +487,20 @@ export interface IPasswordUpdateData {
   };
 }
 
-// yana3@mail.com
-// 22327Ybv!
+export interface IRegistrationData {
+  bio: { [key: string]: IAddressInput };
+  password: { [key: string]: IAddressInput };
+  addressShip: IAddressDraftState;
+  addressBill: IAddressDraftState;
+  checkedInput: boolean;
+  checkedShipping: boolean;
+  checkedBilling: boolean;
+}
+
+export interface IAnonymousCartData {
+  anonymousID: string;
+  versionAnonCart: number;
+  cartID: string;
+  anonymousRefreshToken: string;
+  anonymousAccessToken: string;
+}

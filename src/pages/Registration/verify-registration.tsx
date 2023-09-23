@@ -1,40 +1,19 @@
-/* eslint-disable prefer-const */
 import { createCustomerMe } from '../../api/createCustomer';
-import { NavigateFunction } from 'react-router-dom';
-import {
-  handleCountryShipInput,
-  handleCityShipInput,
-  handleFirstnameInput,
-  handleLastnameInput,
-  handleLoginInput,
-  handlePasswordInput,
-  handlePostalShipInput,
-  handleStreetShipInput,
-  handleBirthdayInput,
-  handleStreetBillInput,
-  handleCityBillInput,
-  handlePostalBillInput,
-  handleCountryBillInput,
-  handleBuildingBillInput,
-  handleBuildingShipInput,
-  handleApartmentBillInput,
-  handleApartmentShipInput,
-} from '../verification';
 import { AnyAction, Dispatch } from 'redux';
 import {
   createCustomerId,
   setAccessTokenStatus,
-  setAuthStatus,
   setRefreshTokenStatus,
 } from '../../store/reducers/userReducer';
 import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { parseDateToServer } from '../../utils/parseDate';
 import { changeVersion } from '../../store/reducers/profileReducer';
-import { IMyCustomerDraft } from '../../types/interfaces';
-import { IAnonymousCartData, IRegistrationData } from './Registration';
-import { loginAnonUser } from '../../api/existTokenFlow';
+import {
+  IAnonymousCartData,
+  IMyCustomerDraft,
+  IRegistrationData,
+} from '../../types/interfaces';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';
-import { updateAnonAccessToken } from '../../utils/updateAccessToken';
 
 export const handleСreationReg = (
   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -72,6 +51,7 @@ export const handleСreationReg = (
     anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
     anonymousID: anonymousCartData.anonymousID,
   };
+
   function registerCustomer(): void {
     refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
       (response) => {
