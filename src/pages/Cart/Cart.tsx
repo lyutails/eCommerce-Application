@@ -85,7 +85,7 @@ function CartPage(): JSX.Element {
             }
             return totalPrice;
           });
-          reducePrice(oldPrice, totalPrice, setPriceTest);
+          // reducePrice(oldPrice, totalPrice, setPriceTest);
           dispatch(setCartPrice(totalPrice));
           isAuth
             ? dispatch(
@@ -135,7 +135,7 @@ function CartPage(): JSX.Element {
             }
             return totalPrice;
           });
-          increasePrice(oldPrice, totalPrice, setPriceTest);
+          // increasePrice(oldPrice, totalPrice, setPriceTest);
           dispatch(setCartPrice(totalPrice));
           isAuth
             ? dispatch(
@@ -392,9 +392,9 @@ function CartPage(): JSX.Element {
   return (
     <div className={style.cart}>
       <div className={style.cart_wrapper}>
-        <button onClick={() => increasePrice(0, 10, setPriceTest)}>
+        {/* <button onClick={() => increasePrice(0, 10, setPriceTest)}>
           {priceTest}
-        </button>
+        </button> */}
         <h2 className={style.cart_title}>
           Your cart, dear {addCustomerName()}
         </h2>
