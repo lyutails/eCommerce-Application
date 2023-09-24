@@ -15,8 +15,6 @@ import InputBirthDateMask from '../../components/Input/InputBirthDateMask';
 import { handleCheckbox } from '../../utils/handleCheckbox';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  IAddressDraftState,
-  IAddressInput,
   ICartState,
   IProfileState,
   IRegistrationState,
