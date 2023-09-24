@@ -9,9 +9,11 @@ import { handleLoginInput, handlePasswordInput } from '../verification';
 import { AnyAction, Dispatch } from '@reduxjs/toolkit';
 import { getCustomerToken, refreshTokenFlow } from '../../api/adminBuilder';
 import { changeVersion } from '../../store/reducers/profileReducer';
-import { IAnonymousCartData } from '../Registration/Registration';
 import { loginAnonUser } from '../../api/existTokenFlow';
-import { IMyCustomerLoginDraft } from '../../types/interfaces';
+import {
+  IAnonymousCartData,
+  IMyCustomerLoginDraft,
+} from '../../types/interfaces';
 import { changeAnonymousCart } from '../../store/reducers/cartReducer';
 import { ILoginCustomerData } from './Auth';
 
@@ -23,6 +25,7 @@ export const handleСreationAuth = (
   anonymousCartData: IAnonymousCartData,
   setSuccessfulMessage: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
+  console.log(loginCustomerData.email, loginCustomerData.password);
   e.preventDefault();
   const request: IMyCustomerLoginDraft = {
     email: loginCustomerData.email,
@@ -38,6 +41,7 @@ export const handleСreationAuth = (
   if (loginCustomerData.loginError && loginCustomerData.passwordError) {
     refreshTokenFlow(anonymousCartData.anonymousRefreshToken).then(
       (response) => {
+        console.log(123);
         loginAnonUser(
           response.access_token,
           request,

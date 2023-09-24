@@ -73,6 +73,8 @@ function AuthPage(): JSX.Element {
     }
   }, [dispatch, navigate, successfulMessage]);
 
+  console.log(bio.email.value);
+
   const loginCustomerData: ILoginCustomerData = {
     email: bio.email.value,
     password: password.currentPassword.value,
@@ -88,9 +90,11 @@ function AuthPage(): JSX.Element {
     const errorMessage = checkErrorInput(event.target.value);
     dispatch(
       changeBioReg({
-        value: event.target.value,
-        error: errorMessage,
-        isChecked: !errorMessage,
+        email: {
+          value: event.target.value,
+          error: errorMessage,
+          isChecked: !errorMessage,
+        },
       })
     );
   };

@@ -10,9 +10,7 @@ import {
   IProfileState,
   IRootState,
 } from '../../types/interfaces';
-import { getCustomerById } from '../../api/getCustomer';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
-import { refreshTokenFlow } from '../../api/adminBuilder';
+import { ReactNode, useState } from 'react';
 import ButtonForm from '../../components/shared/ButtonForm/Button';
 import UpdateIcon from '../../../public/assets/icons/update.svg';
 import PasswordModal from '../../components/PasswordModal/PasswordModal';
@@ -28,12 +26,14 @@ import TrashIcon from '../../../public/assets/icons/trash.svg';
 import AddressModal from '../../components/AddressModal/AddressModal';
 import {
   changeAddress,
-  changeBio,
-  changeEmail,
   changeVersion,
 } from '../../store/reducers/profileReducer';
 import { updateCustomer } from '../../api/updateBio';
-import { parseDateToWeb } from '../../utils/parseDate';
+import {
+  changeBioReg,
+  changeAddressBillReg,
+  changeAddressShipReg,
+} from '../../store/reducers/registrationReducer';
 
 export interface IPersonalData {
   [key: string]: string | undefined;
@@ -57,7 +57,7 @@ function ProfilePage(): JSX.Element {
   const { address, version, bio, email, password } = useSelector(
     (state: IProfileState) => state.profile
   );
-  const { customerId, customerRefreshToken } = useSelector(
+  const { customerRefreshToken } = useSelector(
     (state: IRootState) => state.user
   );
   // const [password, setPassword] = useState('');
@@ -69,62 +69,6 @@ function ProfilePage(): JSX.Element {
     (state: IPersonalState) => state.personal.addresses
   );
 
-  // const { customerId, customerRefreshToken } = useSelector(
-  //   (state: IRootState) => state.user
-  // );
-
-  // const checkRefreshToken = useCallback((): void => {
-  //   dispatch(setAuthStatus(false));
-  //   navigate('/login');
-  //   localStorage.removeItem('customerId');
-  //   localStorage.removeItem('isAuth');
-  //   dispatch(changeVersion(1));
-  // }, [dispatch, navigate]);
-
-  // useEffect(() => {
-  //   if (!customerRefreshToken) {
-  //     checkRefreshToken();
-  //   } else {
-  //     refreshTokenFlow(customerRefreshToken)
-  //       .then(() => {
-  //         getCustomerById({ ID: customerId }).then((response) => {
-  //           setPassword(response.body.password ? response.body.password : '');
-  //           dispatch(changeVersion(response.body.version));
-  //           dispatch(
-  //             changeBio({
-  //               firstname: {
-  //                 value: response.body.firstName,
-  //               },
-  //               lastname: {
-  //                 value: response.body.lastName,
-  //               },
-  //               birthday: {
-  //                 value: parseDateToWeb(
-  //                   response.body.dateOfBirth ? response.body.dateOfBirth : ''
-  //                 ),
-  //               },
-  //             })
-  //           );
-  //           dispatch(changeEmail({ value: response.body.email }));
-  //           dispatch(
-  //             changeAddress({
-  //               addressStore: response.body.addresses,
-  //               defaultShippingId: response.body.defaultShippingAddressId,
-  //               defaultBillingId: response.body.defaultBillingAddressId,
-  //               shippingAddressesId: response.body.shippingAddressIds,
-  //               billingAddressesId: response.body.billingAddressIds,
-  //             })
-  //           );
-  //         });
-  //       })
-  //       .catch(() => {
-  //         console.log('error');
-  //         checkRefreshToken();
-  //         localStorage.removeItem('refreshToken');
-  //       });
-  //   }
-  // }, [checkRefreshToken, customerId, dispatch, navigate, customerRefreshToken]);
-
   const handleLogOut = (): void => {
     localStorage.removeItem('customerId');
     localStorage.removeItem('refreshToken');
@@ -132,6 +76,122 @@ function ProfilePage(): JSX.Element {
     dispatch(setRefreshTokenStatus(''));
     dispatch(setAuthStatus(false));
     dispatch(changeVersion(1));
+    dispatch(
+      changeBioReg({
+        firstname: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        lastname: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        birthday: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        email: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+      })
+    );
+    dispatch(
+      changeAddressShipReg({
+        street: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        building: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        apartment: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        city: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        country: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        postal: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        defaultShipping: false,
+        defaultBilling: false,
+        shippingAddress: false,
+        billingAddress: false,
+        isUpdate: false,
+        isAdd: false,
+        idAddress: '',
+        addressStore: [],
+        defaultShippingId: '',
+        defaultBillingId: '',
+        shippingAddressesId: [],
+        billingAddressesId: [],
+      })
+    );
+    dispatch(
+      changeAddressBillReg({
+        street: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        building: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        apartment: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        city: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        country: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        postal: {
+          value: '',
+          error: '',
+          isChecked: false,
+        },
+        defaultShipping: false,
+        defaultBilling: false,
+        shippingAddress: false,
+        billingAddress: false,
+        isUpdate: false,
+        isAdd: false,
+        idAddress: '',
+        addressStore: [],
+        defaultShippingId: '',
+        defaultBillingId: '',
+        shippingAddressesId: [],
+        billingAddressesId: [],
+      })
+    );
     navigate('/');
   };
   const addressCard = address.addressStore.map((addressCard, i) => {
@@ -561,25 +621,3 @@ function ProfilePage(): JSX.Element {
   );
 }
 export default ProfilePage;
-
-/*   "email": "ianatestAPI@example.com",
-  "firstName": "Лфенф",
-  "lastName": "ывапаувас",
-  "password": "23272327Ybv"
-  */
-
-// "email": 'hi@ya.ruer';
-// "password": "2327Ybv!"
-
-// "yanatestprofile@mail.com"
-// "2327Ybv!"
-
-// Единственный рабочий!
-// kukushka@mail.ru
-// 123qweQWE
-
-// tycteam:cn-qqCLdwzkJaZFsOw4IlgdqftWdZkbtPWTO2Bi4W_c
-
-// tycteam:ZFNIpB6J4c2ilbvHWTIhpC7eY-njz54kx6tXbaARgpg
-
-// hjfjhHGF76

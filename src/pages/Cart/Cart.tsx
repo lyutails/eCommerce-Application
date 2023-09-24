@@ -23,7 +23,7 @@ import { CartProduct } from '../../components/CartProduct/CartProduct';
 import { refreshTokenFlow } from '../../api/adminBuilder';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { recalculatePrice } from '../../utils/recalculatePrice';
+import { increasePrice, reducePrice } from '../../utils/recalculatePrice';
 import CartModalWindow from '../../components/CartModalWindow/CartModalWindow';
 
 function CartPage(): JSX.Element {
@@ -47,19 +47,8 @@ function CartPage(): JSX.Element {
   const isAuth: boolean = useSelector((state: IRootState) => state.user.isAuth);
   const [applyButtonLoadingAnim, setApplyButtonLoadingAnim] = useState(false);
 
-  // useEffect(() => {
-  //   let as = 0;
-  //   const pi = 10;
+  const [priceTest, setPriceTest] = useState(cartPrice);
 
-  //   const r = setInterval(() => {
-  //     //console.log(as++);
-  //     if (as === pi) {
-  //       clearInterval(r);
-  //     }
-  //   }, 100);
-  // });
-
-  // DELETE ITEM FROM CART
   const deleteItem = (
     itemId: string,
     quantity: number,
@@ -96,6 +85,7 @@ function CartPage(): JSX.Element {
             }
             return totalPrice;
           });
+          reducePrice(oldPrice, totalPrice, setPriceTest);
           dispatch(setCartPrice(totalPrice));
           isAuth
             ? dispatch(
@@ -113,7 +103,6 @@ function CartPage(): JSX.Element {
     });
   };
 
-  // INCREASE ITEM FROM CART
   const increaseItem = (itemId: string, refreshToken: string): void => {
     const increaseItemData: IMyCartUpdate = {
       version: !isAuth
@@ -146,6 +135,7 @@ function CartPage(): JSX.Element {
             }
             return totalPrice;
           });
+          increasePrice(oldPrice, totalPrice, setPriceTest);
           dispatch(setCartPrice(totalPrice));
           isAuth
             ? dispatch(
@@ -221,6 +211,12 @@ function CartPage(): JSX.Element {
       setIsIncorrectPromo(true);
     }
   };
+
+  const [oldPrice, setOldPrice] = useState(0);
+  useEffect(() => {
+    setPriceTest(cartPrice);
+    setOldPrice(cartPrice);
+  }, [cartPrice]);
 
   useEffect(() => {
     discountCodes.map((code) => {
@@ -392,10 +388,13 @@ function CartPage(): JSX.Element {
       ? `${bio.firstname?.value} ${bio.lastname?.value}`
       : `customer`;
   };
-  const [priceTest, setPriceTest] = useState(0);
+
   return (
     <div className={style.cart}>
       <div className={style.cart_wrapper}>
+        <button onClick={() => increasePrice(0, 10, setPriceTest)}>
+          {priceTest}
+        </button>
         <h2 className={style.cart_title}>
           Your cart, dear {addCustomerName()}
         </h2>
@@ -415,7 +414,7 @@ function CartPage(): JSX.Element {
                     : style.linethrough
                 }
               >
-                {(cartPrice / 100).toFixed(2)}$
+                {(priceTest / 100).toFixed(2)}$
               </div>
             </div>
             <button
@@ -431,7 +430,9 @@ function CartPage(): JSX.Element {
                 <input
                   id="discount-input"
                   className={style.cart_discount_input}
-                  onChange={(event): void => addDiscountCode(event)}
+                  onChange={(event): void => {
+                    addDiscountCode(event);
+                  }}
                   type="text"
                   placeholder="Type discount code here..."
                   value={promocode}
